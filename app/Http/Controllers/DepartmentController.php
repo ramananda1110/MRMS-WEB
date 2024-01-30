@@ -63,8 +63,8 @@ class DepartmentController extends Controller
      */
     public function edit($id)
     {
-        $departments = Department::find($id);
-        return view('admin.department.edit', compact('departments'));
+        $department = Department::find($id);
+        return view('admin.department.edit', compact('department'));
 
     }
 
@@ -77,7 +77,11 @@ class DepartmentController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $department = Department::find($id);
+        $data = $request->all();
+        $department->update($data);
+        return redirect()->route("departments.index")->with('message', 'Record Updated Successfully');
+
     }
 
     /**

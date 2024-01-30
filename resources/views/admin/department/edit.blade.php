@@ -9,7 +9,8 @@
                           {{Session::get('message')}}
                       </div>
                 @endif
-            <form action="{{route('departments.store')}}" method="post">@csrf
+            <form action="{{route('departments.update', [$department->id])}}" method="post">@csrf
+            {{method_field('PATCH')}}
                 <div class="card">
                     <div class="card-header">Update Department</div>
 
@@ -17,7 +18,7 @@
                         <div class="form-group">
                             <label for="name">Name</label>
                             <input type="text" name="name" 
-                            class="form-control @error('name') is-invalid @enderror">
+                            class="form-control @error('name') is-invalid @enderror" value="{{$department->name}}">
 
                             @error('name')
                                     <span class="invalid-feedback" role="alert">
@@ -33,6 +34,7 @@
                                 <label>Description</label>
                                 <textarea type="text" name="description" 
                                 class="form-control @error('description') is-invalid @enderror">
+                                {{$department->description}}
                                 </textarea>
 
                                 @error('description')
@@ -46,7 +48,7 @@
                         </div>
 
                         <div class="form-group">
-                          <button class="btn btn-outline-primary">Submit</button>
+                          <button class="btn btn-outline-primary">Update</button>
                        </div>
                     </div>
                 </div>

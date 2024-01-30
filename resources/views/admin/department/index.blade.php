@@ -10,6 +10,11 @@
                     <li class="breadcrumb-item active" aria-current="page">All Departments</li>
                 </ol>
             </nav>
+            @if(Session::has('message'))
+                     <div class='alert alert-success'>
+                          {{Session::get('message')}}
+                      </div>
+            @endif
             <table id="datatablesSimple">
                 <thead>
                     <tr>
