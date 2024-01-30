@@ -92,6 +92,9 @@ class DepartmentController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $department = Department::find($id);
+        $department->delete();
+        return redirect()->route('departments.index')->with('message', 'Recored  Deleted');
+
     }
 }
