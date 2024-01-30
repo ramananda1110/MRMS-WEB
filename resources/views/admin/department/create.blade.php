@@ -4,6 +4,11 @@
 <div class="container mt-5">
     <div class="row justify-content-center">
         <div class="col-md-10">
+                @if(Session::has('message'))
+                     <div class='alert alert-success'>
+                          {{Session::get('message')}}
+                      </div>
+                @endif
             <form action="{{route('departments.store')}}" method="post">@csrf
                 <div class="card">
                     <div class="card-header">Department</div>

@@ -35,15 +35,12 @@ class DepartmentController extends Controller
     public function store(Request $request)
     {
          $this->validate($request, [
-             'name'=>'required|unique:departments',
-             'description'=>'required'
-
+             'name'=>'required|unique:departments'
          ]);
        
-
-        dd($request->all());
-
-       // return redirect()->back()->with('message', 'Food Created');
+         $data = $request->all();
+         Department::create($data);
+         return redirect()->back()->with('message', 'Department Created Successfully');
 
         // $data = $request->all();
         //  dd($data);
