@@ -4,38 +4,45 @@
 <div class="container mt-5">
     <div class="row justify-content-center">
         <div class="col-md-10">
-            <form action="" methid="post>@csrf
+            <form action="{{route('departments.store')}}" method="post">@csrf
                 <div class="card">
-                    <div class="card-header">Dashboard</div>
+                    <div class="card-header">Department</div>
 
                     <div class="card-body">
                         <div class="form-group">
-                            <label>Name</label>
+                            <label for="name">Name</label>
                             <input type="text" name="name" 
-                            class="form-control @error('name') is-invalid @enderro">
+                            class="form-control @error('name') is-invalid @enderror">
 
                             @error('name')
-                                <span class="invalid-feedback" role="alert">
-                                     <strong>{{ $message }}</strong>
-                                </span>
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
                              @enderror
+     
                         </div>
+
+
+                        <div class="row mb-3">
+                            <div class="form-group">
+                                <label>Description</label>
+                                <textarea type="text" name="description" 
+                                class="form-control @error('description') is-invalid @enderror">
+                                </textarea>
+
+                                @error('description')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                @enderror
+                            
+
+                            </div>
+                        </div>
+
                         <div class="form-group">
-                            <label>Description</label>
-                            <textarea type="text" name="description" 
-                            class="form-control @error('description') is-invalid @enderro">
-                            </textarea>
-                            @error('description')
-                                <span class="invalid-feedback" role="alert">
-                                     <strong>{{ $message }}</strong>
-                                </span>
-                            @enderror
-
-                        </div>
-
-                        <div class="form-group" style="margin-top: 10px;">
-                            <button type="submit" class="btn btn-primary">Submit</button>
-                        </div>
+                          <button class="btn btn-outline-primary">Submit</button>
+                       </div>
                     </div>
                 </div>
             </form>
