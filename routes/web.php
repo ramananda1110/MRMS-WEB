@@ -25,3 +25,5 @@ Route::view('employee', 'admin.create');
 
 Route::resource('departments', 'DepartmentController');
 
+Route::resource('roles', 'RoleController');
+
