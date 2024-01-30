@@ -13,7 +13,8 @@ class DepartmentController extends Controller
      */
     public function index()
     {
-        //
+        $departments = Department::all();
+        return view('admin.department.index', compact('departments'));
     }
 
     /**
@@ -41,10 +42,6 @@ class DepartmentController extends Controller
          $data = $request->all();
          Department::create($data);
          return redirect()->back()->with('message', 'Department Created Successfully');
-
-        // $data = $request->all();
-        //  dd($data);
-        //return("okay");
     }
 
     /**
@@ -66,7 +63,9 @@ class DepartmentController extends Controller
      */
     public function edit($id)
     {
-        //
+        $departments = Department::find($id);
+        return view('admin.department.edit', compact('departments'));
+
     }
 
     /**
