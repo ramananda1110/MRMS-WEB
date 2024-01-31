@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Department;
+use App\Models\User;
 
 class UserController extends Controller
 {
@@ -48,12 +48,27 @@ class UserController extends Controller
             'designation'=>'required'
         ]);
       
+       
         
         $data = $request->all();
-        dd(data);
-        // User::create($data);
-        // return redirect()->back()->with('message', 'User Created Successfully');
-  
+        //dd($data);
+          
+        if($request->hasFile('image')){
+            $image = $request->image->hashName();
+            $request->image->move(public_path('profile'), $image);
+        }else {
+            $image = 'avatar2.png';
+        }
+
+        $data['name'] = $request->firstname.' '.$request->lastname;
+        $data['image'] = $image;
+        $data['password'] = bcrypt($request->password);
+        $data['department_id'] = $request->department_id;
+        $data['role_id'] = $request->role_id;
+
+        User::create($data);
+        return redirect()->back()->with('message', 'User Created Successfully');
+
     }
 
     /**
