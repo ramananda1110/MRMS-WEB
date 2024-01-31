@@ -27,3 +27,4 @@ Route::resource('departments', 'DepartmentController');
 
 Route::resource('roles', 'RoleController');
 
+Route::resource('users', 'UserController');
