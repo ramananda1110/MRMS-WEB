@@ -105,10 +105,45 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $user = User::find($id);
+
+        // $this->validate($request, [
+        //     'name'=>'required',
+        //     'email'=>'required|string|email|max:255|unique:users',
+        //     'department_id'=>'required',
+        //     'role_id'=>'required',
+        //     'image'=>'mimes:jpeg,jpg,png',
+        //     'start_from'=>'required',
+        //     'designation'=>'required'
+        // ]);
+      
+        
+
         $data = $request->all();
+       
+        $user = User::find($id);
+       
+        if($request->hasFile('image')){
+            $image = $request->image->hashName();
+            $request->image->move(public_path('profile'), $image);
+        } else {
+            $image = $user->image;
+        }
+
+        if($request->password){
+            $password = $request->password;
+        } else {
+            $password = $user->password;
+        }
+
+        $data['image'] = $image;
+        $data['password'] = bcrypt($password);
+        $data['name'] = $request->name;
+        $data['department_id'] = $request->department_id;
+        $data['role_id'] = $request->role_id;
+
         $user->update($data);
-        return redirect()->route("departments.index")->with('message', 'Record Updated Successfully');
+        
+        return redirect()->route("users.index")->with('message', 'User Record Updated Successfully');
 
     }
 
