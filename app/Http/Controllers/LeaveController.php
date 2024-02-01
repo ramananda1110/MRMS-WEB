@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Leave;
 
 class LeaveController extends Controller
 {
@@ -35,7 +36,24 @@ class LeaveController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request, [
+            'from'=>'required',
+            'to'=>'required',
+            'description'=>'required',
+            'type'=>'required'
+        ]);
+      
+       
+        $data = $request->all();
+        
+       
+        $data['user_id'] = auth()->user()->id;
+        $data['message'] = '';
+        $data['status'] = 0;
+       
+        Leave::create($data);
+        return redirect()->back()->with('message', 'Leave Created Successfully');
+
     }
 
     /**
