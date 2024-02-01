@@ -42,7 +42,7 @@
                             <td><image src="{{asset('profile')}}//{{$user->image}}" width="50"></td>
                             <td>{{$user->name}}</td>
                             <td>{{$user->email}}</td>
-                            <td>{{$user->role->name}}</td>
+                            <td><span class="badge bg-success">{{$user->role->name}}</span></td>
                             <td>{{$user->department->name}}</td>
                             <td>{{$user->designation}}</td>
                             <td>{{$user->start_from}}</td>
