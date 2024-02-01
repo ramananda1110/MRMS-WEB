@@ -13,9 +13,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+
 
 Auth::routes();
 
@@ -23,16 +21,33 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 Route::view('employee', 'admin.create');
 
-Route::resource('departments', 'DepartmentController');
-Route::get('/department-list', 'DepartmentController@getDepartment');
-
-
-Route::resource('roles', 'RoleController');
-
-Route::resource('users', 'UserController');
-Route::get('/user-list', 'UserController@listOfUser');
 
 
 
-Route::resource('leaves', 'LeaveController');
+
+Route::group(['middleware'=>'auth'], function(){
+
+    Route::get('/', function () {
+        return view('welcome');
+    });
+    
+    Route::resource('departments', 'DepartmentController');
+    Route::get('/department-list', 'DepartmentController@getDepartment');
+
+    
+
+    Route::resource('roles', 'RoleController');
+
+    Route::resource('users', 'UserController');
+    Route::get('/user-list', 'UserController@listOfUser');
+
+    Route::resource('permission', 'PermissionController');
+
+
+    Route::resource('leaves', 'LeaveController');
+
+
+});
+
+
 
