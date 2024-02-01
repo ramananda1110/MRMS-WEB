@@ -68,8 +68,8 @@
 
                     <div class="form-group">
                         <label>Start Date</label>
-                        <input type="date" name="start_from" 
-                        class="form-control" required="" placeholder="dd-mm-yyyy">
+                        <input  name="start_from" 
+                        class="form-control" required="" placeholder="dd-mm-yyyy" id="datepicker1">
 
                         @error('start_from')
                             <span class="invalid-feedback" role="alert">

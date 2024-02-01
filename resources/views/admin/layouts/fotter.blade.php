@@ -19,5 +19,18 @@
         <script src="{{asset('template/dist/assets/demo/chart-bar-demo.js')}}"></script>
         <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
         <script src="{{asset('template/dist/js/datatables-simple-demo.js')}}"></script>
+        <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+
+        <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+        <script>
+                $( function() {
+                    $( "#datepicker1" ).datepicker();
+                } );
+        </script>
+        <script>
+                $( function() {
+                    $( "#datepicker2" ).datepicker();
+                } );
+        </script>
     </body>
 </html>
