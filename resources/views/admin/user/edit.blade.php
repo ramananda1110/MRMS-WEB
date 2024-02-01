@@ -68,8 +68,8 @@
 
                     <div class="form-group">
                         <label>Start Date</label>
-                        <input id="datepicker2" name="start_from" 
-                        class="form-control" value="{{$user->start_from}}" required="" placeholder="dd-mm-yyyy">
+                        <input id="datepicker" name="start_from" 
+                        class="form-control" value="{{$user->start_from}}" required="" placeholder="yy-mm-dd">
 
                         @error('start_from')
                             <span class="invalid-feedback" role="alert">

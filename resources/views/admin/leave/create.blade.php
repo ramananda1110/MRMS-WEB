@@ -25,7 +25,7 @@
                     <div class="form-group">
                         <label>From date</label>
                         <input  name="from" 
-                        class="form-control"  placeholder="dd-mm-yyyy" id="datepicker1">
+                        class="form-control"  placeholder="dd-mm-yyyy" id="datepicker">
 
                         @error('from')
                             <span class="invalid-feedback" role="alert">
@@ -38,7 +38,7 @@
                     <div class="form-group mt-2">
                         <label>To date</label>
                         <input  name="to" 
-                        class="form-control"  placeholder="dd-mm-yyyy" id="datepicker2">
+                        class="form-control"  placeholder="yy-mm-dd" id="datepicker1">
 
                         @error('to')
                             <span class="invalid-feedback" role="alert">
