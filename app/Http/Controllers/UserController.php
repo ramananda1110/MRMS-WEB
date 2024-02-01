@@ -44,7 +44,7 @@ class UserController extends Controller
             'password'=>'required|string',
             'department_id'=>'required',
             'role_id'=>'required',
-            'image'=>'required|mimes:jpeg,jpg,png',
+            'image'=>'mimes:jpeg,jpg,png',
             'start_from'=>'required',
             'designation'=>'required'
         ]);
@@ -122,7 +122,7 @@ class UserController extends Controller
     {
         $user = User::find($id);
         $user->delete();
-        return redirect()->route('departments.index')->with('message', 'Recored  Deleted');
+        return redirect()->route('users.index')->with('message', 'Recored  Deleted');
 
     }
 }

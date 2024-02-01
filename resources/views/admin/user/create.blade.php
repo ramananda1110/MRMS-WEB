@@ -82,7 +82,7 @@
                     <div class="form-group">
                         <label>Image</label>
                         <input type="file" name="image"  accept="image/*"
-                        class="form-control", required="">
+                        class="form-control">
 
                     </div>
                 
