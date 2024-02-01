@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\Department;
 
 class UserController extends Controller
 {
@@ -159,5 +160,13 @@ class UserController extends Controller
         $user->delete();
         return redirect()->route('users.index')->with('message', 'Recored  Deleted');
 
+    }
+
+    public function listOfUser() {
+       //$dataList = User::all();
+       // return response()->json($dataList);
+       //return $department = Department::with('user')->get();
+
+       return User::all();
     }
 }

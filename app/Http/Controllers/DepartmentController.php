@@ -97,4 +97,13 @@ class DepartmentController extends Controller
         return redirect()->route('departments.index')->with('message', 'Recored  Deleted');
 
     }
+
+
+    public function getDepartment() {
+        //$dataList = User::all();
+        // return response()->json($dataList);
+        //return $department = Department::with('user')->get();
+ 
+        return Department::all();
+     }
 }

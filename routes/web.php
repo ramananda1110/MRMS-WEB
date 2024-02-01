@@ -24,7 +24,15 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 Route::view('employee', 'admin.create');
 
 Route::resource('departments', 'DepartmentController');
+Route::get('/departments', 'DepartmentController@getDepartment');
+
 
 Route::resource('roles', 'RoleController');
 
 Route::resource('users', 'UserController');
+Route::get('/users', 'UserController@listOfUser');
+
+
+
+Route::resource('leaves', 'LeaveController');
+
