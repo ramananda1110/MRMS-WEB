@@ -24,7 +24,10 @@ class LeaveController extends Controller
      */
     public function create()
     {
-        return view('admin.leave.create');
+        $leaves = Leave::latest()->where('user_id', auth()->user()->id)->get();
+
+        //return $leaves;
+        return view('admin.leave.create', compact('leaves'));
 
     }
 
@@ -75,7 +78,9 @@ class LeaveController extends Controller
      */
     public function edit($id)
     {
-        //
+        $leave = Leave::find($id);
+        return view('admin.leave.edit', compact('leave'));
+
     }
 
     /**
@@ -87,7 +92,25 @@ class LeaveController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $this->validate($request, [
+            'from'=>'required',
+            'to'=>'required',
+            'description'=>'required',
+            'type'=>'required'
+        ]);
+      
+       
+        $data = $request->all();
+        
+        $leave = Leave::find($id);
+        $data['user_id'] = auth()->user()->id;
+        $data['message'] = '';
+        $data['status'] = 0;
+       
+        $leave->update($data);
+       
+        return redirect()->route('leaves.create')->with('message', 'Recored  Deleted');
+
     }
 
     /**
@@ -98,6 +121,9 @@ class LeaveController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $leave = Leave::find($id);
+        $leave->delete();
+        return redirect()->route('leaves.create')->with('message', 'Leave Recored  Deleted');
+
     }
 }

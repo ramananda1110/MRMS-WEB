@@ -86,35 +86,78 @@
                     <th scope="col">Date from</th>
                     <th scope="col">Date to</th>
                     <th scope="col">Description</th>
+                    <th scope="col">Type</th>
                     <th scope="col">Replay</th>
                     <th scope="col">Status</th>
+                    <th scope="col">Edit</th>
+                    <th scope="col">Delete</th>
                     </tr>
                 </thead>
                 <tbody>
+                    @foreach($leaves as $leave)
                     <tr>
                     <th scope="row">1</th>
-                    <td>Mark</td>
-                    <td>Otto</td>
-                    <td>Otto</td>
-                    <td>Otto</td>
-                    <td>@mdo</td>
+                    <td>{{$leave->from}}</td>
+                    <td>{{$leave->to}}</td>
+                    <td>{{$leave->description}}</td>
+                    <td>{{$leave->type}}</td>
+                    <td>{{$leave->message}}</td>
+                    <td>
+                        @if($leave->status=='0') 
+                        <span class="alert alert-danger"> pending</span>
+                        @else 
+                        <span class="alert alert-success"> Approved</span>
+
+                        @endif
+                    </td>
+
+                    <td> 
+                        
+                        <a href="{{route('leaves.edit',
+                            [$leave->id])}}">
+                            <i class="fas fa-edit"></i></a> </td>
+                    
+                        
+
+                    <td>
+
+                    <!-- Button trigger modal -->
+                    <a   data-bs-toggle="modal" data-bs-target="#exampleModal{{$leave->id}}", href="#">
+                        <i class="fas fa-trash"></i>
+                    </a>
+                    
+                    <!-- Modal -->
+                    <div class="modal fade" id="exampleModal{{$leave->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Delete!</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                            
+                            Are you sure? do you want to delete item?
+
+
+                            </div>
+                            <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <form action="{{route('leaves.destroy',
+                                            [$leave->id])}}" method="post">@csrf
+                                        {{method_field('DELETE')}}
+                                        <button class="btn btn-outline-danger">
+                                            Delete
+                                        </button>
+                            </form>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+
                     </tr>
-                    <tr>
-                    <th scope="row">2</th>
-                    <td>Jacob</td>
-                    <td>Thornton</td>
-                    <td>Otto</td>
-                    <td>Otto</td>
-                    <td>@fat</td>
-                    </tr>
-                    <tr>
-                    <th scope="row">3</th>
-                    <td>Larry</td>
-                    <td>the Bird</td>
-                    <td>@twitter</td>
-                    <td>Otto</td>
-                    <td>Otto</td>
-                    </tr>
+                   
+                    @endforeach
+                   
                 </tbody>
             </table>
     </div>

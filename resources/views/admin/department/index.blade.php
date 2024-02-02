@@ -16,7 +16,7 @@
                       </div>
             @endif
            
-            <table id="datatablesSimple">
+            <table id="datatablesSimple", class="table">
                 <thead>
                     <tr>
                         <th>SN</th>
