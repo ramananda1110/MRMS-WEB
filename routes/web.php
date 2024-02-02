@@ -41,7 +41,7 @@ Route::group(['middleware'=>'auth'], function(){
     Route::resource('users', 'UserController');
     Route::get('/user-list', 'UserController@listOfUser');
 
-    Route::resource('permission', 'PermissionController');
+    Route::resource('permissions', 'PermissionController');
 
 
     Route::resource('leaves', 'LeaveController');

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Permission;
 
 class PermissionController extends Controller
 {
@@ -34,7 +35,12 @@ class PermissionController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request, [
+            'role_id'=>'required|unique:permissions'
+        ]);
+
+        Permission::create($request->all());
+        return redirect()->back()->with('message', 'Permission Updated!');
     }
 
     /**
