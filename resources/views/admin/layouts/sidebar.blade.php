@@ -16,8 +16,14 @@
                             </a>
                             <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
                                 <nav class="sb-sidenav-menu-nested nav">
+                                    @if(isset(Auth()->user()->role->permission['name']['department']['can-add']))
+                                           
                                     <a class="nav-link" href="{{Route('departments.create')}}">Create</a>
+                                    @endif
+                                    @if(isset(Auth()->user()->role->permission['name']['department']['can-list']))
                                     <a class="nav-link" href="{{Route('departments.index')}}">View</a>
+                                    @endif
+
                                 </nav>
                             </div>
                             <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages">
@@ -33,8 +39,15 @@
                                     </a>
                                     <div class="collapse" id="pagesCollapseAuth" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">
                                         <nav class="sb-sidenav-menu-nested nav">
+                                            @if(isset(Auth()->user()->role->permission['name']['role']['can-add']))
+                                           
                                             <a class="nav-link" href="{{Route('roles.create')}}">Create Role</a>
+                                            @endif
+
+                                            @if(isset(Auth()->user()->role->permission['name']['role']['can-list']))
+                                           
                                             <a class="nav-link" href="{{Route('roles.index')}}">View Role</a>
+                                            @endif
                                            
                                         </nav>
                                     </div>
@@ -44,8 +57,15 @@
                                     </a>
                                     <div class="collapse" id="pagesCollapseError" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">
                                         <nav class="sb-sidenav-menu-nested nav">
+                                            @if(isset(Auth()->user()->role->permission['name']['user']['can-add']))
+                                           
                                             <a class="nav-link" href="{{Route('users.create')}}">Create</a>
+                                            @endif
+                                           
+                                            @if(isset(Auth()->user()->role->permission['name']['user']['can-list']))
+                                           
                                             <a class="nav-link" href="{{Route('users.index')}}">View</a>
+                                            @endif
                                            
                                         </nav>
                                     </div>
@@ -56,9 +76,12 @@
                                     </a>
                                     <div class="collapse" id="pagesCollapsePermission" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">
                                         <nav class="sb-sidenav-menu-nested nav">
-                                            <a class="nav-link" href="{{Route('permissions.create')}}">Create</a>
+                                            @if(isset(Auth()->user()->role->permission['name']['permission']['can-add']))
+                                                <a class="nav-link" href="{{Route('permissions.create')}}">Create</a>
+                                            @endif    
+                                            @if(isset(Auth()->user()->role->permission['name']['permission']['can-list']))
                                             <a class="nav-link" href="{{Route('permissions.index')}}">View</a>
-                                           
+                                            @endif
                                         </nav>
                                     </div>
 

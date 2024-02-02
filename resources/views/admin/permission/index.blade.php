@@ -32,17 +32,20 @@
                             <td>{{$key+1}}</td>
                             <td>{{$permission->role->name}}</td>
                            
-                            <td> <a href="{{route('permissions.edit',
-                                    [$permission->id])}}">
-                                                         <i class="fas fa-edit"></i></a> </td>
+                            <td>   @if(isset(Auth()->user()->role->permission['name']['permission']['can-edit']))
+                                <a href="{{route('permissions.edit',
+                                    [$permission->id])}}"><i class="fas fa-edit"></i></a> 
+                                @endif
+                            </td>
                             
                            <td>
 
                             <!-- Button trigger modal -->
-                            <a   data-bs-toggle="modal" data-bs-target="#exampleModal{{$permission->id}}", href="#">
-                            <i class="fas fa-trash"></i>
-                            </a>
-
+                            @if(isset(Auth()->user()->role->permission['name']['permission']['can-delete']))
+                                <a   data-bs-toggle="modal" data-bs-target="#exampleModal{{$permission->id}}", href="#">
+                                <i class="fas fa-trash"></i>
+                                </a>
+                            @endif
                             <!-- Modal -->
                             <div class="modal fade" id="exampleModal{{$permission->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                 <div class="modal-dialog">

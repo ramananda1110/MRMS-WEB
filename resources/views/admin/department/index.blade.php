@@ -15,6 +15,7 @@
                           {{Session::get('message')}}
                       </div>
             @endif
+           
             <table id="datatablesSimple">
                 <thead>
                     <tr>
@@ -35,18 +36,23 @@
                             <td>{{$department->name}}</td>
                             <td>{{$department->description}}</td>
                            
-                            <td> <a href="{{route('departments.edit',
+                            <td> 
+                                @if(isset(Auth()->user()->role->permission['name']['department']['can-edit']))
+                                <a href="{{route('departments.edit',
                                     [$department->id])}}">
                                  <i class="fas fa-edit"></i></a> </td>
                             
+                                 @endif
 
                             <td>
 
+                                 @if(isset(Auth()->user()->role->permission['name']['department']['can-delete']))
+                                  
                                 <!-- Button trigger modal -->
                                 <a   data-bs-toggle="modal" data-bs-target="#exampleModal{{$department->id}}", href="#">
                                   <i class="fas fa-trash"></i>
                                 </a>
-
+                                @endif
                                 <!-- Modal -->
                                 <div class="modal fade" id="exampleModal{{$department->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                     <div class="modal-dialog">

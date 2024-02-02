@@ -35,16 +35,23 @@
                             <td>{{$role->name}}</td>
                             <td>{{$role->description}}</td>
                            
-                            <td> <a href="{{Route('roles.edit', [$role->id])}}">
-                                 <i class="fas fa-edit"></i></a> </td>
+                            <td>
+                            @if(isset(Auth()->user()->role->permission['name']['role']['can-edit']))
+                             <a href="{{Route('roles.edit', [$role->id])}}">
+                                 <i class="fas fa-edit"></i></a> 
+                             @endif   
+                            </td>
                             
 
                             <td>
 
                                 <!-- Button trigger modal -->
+                                @if(isset(Auth()->user()->role->permission['name']['role']['can-delete']))
+
                                 <a   data-bs-toggle="modal" data-bs-target="#exampleModal{{$role->id}}", href="#">
                                   <i class="fas fa-trash"></i>
                                 </a>
+                                @endif
 
                                 <!-- Modal -->
                                 <div class="modal fade" id="exampleModal{{$role->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
