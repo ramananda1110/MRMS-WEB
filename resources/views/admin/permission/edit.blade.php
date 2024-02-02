@@ -100,7 +100,11 @@
                             </table>
 
                             <div class="form-group mt-3">
+                            @if(isset(Auth()->user()->role->permission['name']['permission']['can-edit']))
+
                             <button class="btn btn-outline-primary">Update</button>
+
+                            @endif
 
                             <a href="{{route('permissions.index')}}" class="float-end">Back</a> 
                         </div>

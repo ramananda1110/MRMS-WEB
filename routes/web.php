@@ -25,7 +25,7 @@ Route::view('employee', 'admin.create');
 
 
 
-Route::group(['middleware'=>'auth'], function(){
+Route::group(['middleware'=> ['auth', 'has.permission']], function(){
 
     Route::get('/', function () {
         return view('welcome');

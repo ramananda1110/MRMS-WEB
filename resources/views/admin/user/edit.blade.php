@@ -123,7 +123,11 @@
                     </div>
 
                     <div class="form-group mt-5">
+
+                         @if(isset(Auth()->user()->role->permission['name']['user']['can-edit']))
+
                         <button class="btn btn-outline-primary">Update</button>
+                        @endif
                     </div>
                 </div>
             </div>

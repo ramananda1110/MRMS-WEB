@@ -40,7 +40,10 @@
                     
 
                         <div class="form-group mt-3">
-                          <button class="btn btn-outline-primary">Update</button>
+                            @if(isset(Auth()->user()->role->permission['name']['department']['can-edit']))
+
+                             <button class="btn btn-outline-primary">Update</button>
+                             @endif
                        </div>
                     </div>
                 </div>
