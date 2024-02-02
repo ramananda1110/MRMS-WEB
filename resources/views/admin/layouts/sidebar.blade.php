@@ -49,6 +49,19 @@
                                            
                                         </nav>
                                     </div>
+
+                                    <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#pagesCollapsePermission" aria-expanded="false" aria-controls="pagesCollapsePermission">
+                                        Permission
+                                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                                    </a>
+                                    <div class="collapse" id="pagesCollapsePermission" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">
+                                        <nav class="sb-sidenav-menu-nested nav">
+                                            <a class="nav-link" href="{{Route('permissions.create')}}">Create</a>
+                                            <a class="nav-link" href="{{Route('permissions.index')}}">View</a>
+                                           
+                                        </nav>
+                                    </div>
+
                                 </nav>
                             </div>
                             <div class="sb-sidenav-menu-heading">Addons</div>

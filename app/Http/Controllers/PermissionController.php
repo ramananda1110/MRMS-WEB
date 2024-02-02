@@ -80,7 +80,7 @@ class PermissionController extends Controller
         $this->validate($request, [
             'name'=>'required'
         ]);
-        
+
         $permission = Permission::find($id);
         $data = $request->all();
         $permission->update($data);
@@ -96,6 +96,9 @@ class PermissionController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $permission = Permission::find($id);
+        $permission->delete();
+        return redirect()->route('permissions.index')->with('message', 'Recored  Deleted');
+
     }
 }
