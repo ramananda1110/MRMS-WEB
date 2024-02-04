@@ -70,7 +70,11 @@ class NoticeController extends Controller
      */
     public function edit($id)
     {
-        //
+
+        $notice = Notice::find($id);
+
+        return view('admin.notice.edit', compact('notice'));
+
     }
 
     /**
@@ -82,7 +86,11 @@ class NoticeController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $notice = Notice::find($id);
+        $data = $request->all();
+        $notice->update($data);
+        return redirect()->route("notices.index")->with('message', 'Notice Updated Successfully');
+
     }
 
     /**
@@ -93,6 +101,9 @@ class NoticeController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $notice = Notice::find($id);
+        $notice->delete();
+        return redirect()->route('notices.index')->with('message', 'Notice  Deleted');
+
     }
 }

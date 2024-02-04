@@ -26,10 +26,10 @@
                 <div class="card-body">
                     <p>{{$notice->description}}</p>
                     <p class="badge text-bg-success">Date: {{$notice->date}}</p>
-                    <p class="badge text-bg-warning">{{$notice->name}}</p>
+                    <p class="badge text-bg-warning">Created By: {{$notice->name}}</p>
                 </div>
                 <div class="card-footer">
-                    <a href="#">
+                    <a href="{{route('notices.edit', [$notice->id])}}">
                                  <i class="fas fa-edit"></i>
                     </a>
                     <span class="float-end">
@@ -54,7 +54,7 @@
                                         </div>
                                         <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                        <form action="#" method="post">@csrf
+                                        <form action="{{route('notices.destroy', [$notice->id])}}" method="post">@csrf
                                                     {{method_field('DELETE')}}
                                                     <button class="btn btn-outline-danger">
                                                         Delete
