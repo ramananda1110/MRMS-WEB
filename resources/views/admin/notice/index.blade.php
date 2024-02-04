@@ -1,0 +1,82 @@
+@extends('admin.layouts.master')
+
+@section('content')
+<div class="container mt-5">
+
+    <div class="row justify-content-center">
+
+    
+   
+        <div class="col-md-11">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item active" aria-current="page">All Notice</li>
+                </ol>
+            </nav>
+            @if(Session::has('message'))
+                     <div class='alert alert-success'>
+                          {{Session::get('message')}}
+                      </div>
+            @endif
+            @if(count($notices)>0)
+            @foreach($notices as $notice)
+
+            <div class="card alert alert-info">
+                <div class="card-header alert alert-warning">{{$notice->title}}</div>
+                <div class="card-body">
+                    <p>{{$notice->description}}</p>
+                    <p class="badge text-bg-success">Date: {{$notice->date}}</p>
+                    <p class="badge text-bg-warning">{{$notice->name}}</p>
+                </div>
+                <div class="card-footer">
+                    <a href="#">
+                                 <i class="fas fa-edit"></i>
+                    </a>
+                    <span class="float-end">
+                        <!-- Button trigger modal -->
+                        <a   data-bs-toggle="modal" data-bs-target="#exampleModal{{$notice->id}}", href="#">
+                                  <i class="fas fa-trash"></i>
+                                </a>
+
+                          <!-- Modal -->
+                          <div class="modal fade" id="exampleModal{{$notice->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Delete!</h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                       
+                                        Are you sure? do you want to delete item?
+
+
+                                        </div>
+                                        <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                        <form action="#" method="post">@csrf
+                                                    {{method_field('DELETE')}}
+                                                    <button class="btn btn-outline-danger">
+                                                        Delete
+                                                    </button>
+                                        </form>
+                                        </div>
+                                    </div>
+                                    </div>
+                                </div>
+                    </span>
+                </div>
+            </div> 
+
+            @endforeach
+          
+           
+            @else 
+            <p>No notices created yet</p>
+
+            @endif
+        </div>
+    
+    </div>
+</div>
+@endsection
