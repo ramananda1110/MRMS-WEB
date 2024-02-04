@@ -52,8 +52,8 @@
 
                     <td>
                         <!-- Button trigger modal -->
-                        <a   data-bs-toggle="modal" data-bs-target="#exampleModal{{$leave->id}}", href="#">
-                            <span>Accept/Reject</span>
+                        <a data-bs-toggle="modal" data-bs-target="#exampleModal{{$leave->id}}", href="#">
+                            Accept/Reject
                         </a>
 
                         <!-- <button type="button" data-bs-target="#exampleModal{{$leave->id}}" class="btn btn-default btn-xs">inbox <span class="glyphicon glyphicon-inbox"></span></button> -->

@@ -87,15 +87,27 @@
 
                                 </nav>
                             </div>
-                            <div class="sb-sidenav-menu-heading">Addons</div>
-                            <a class="nav-link" href="charts.html">
-                                <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
-                                Charts
+
+                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayoutsLeave" aria-expanded="false" aria-controls="collapseLayoutsLeave">
+                                <div class="sb-nav-link-icon"><i class="fas fa-pencil-alt"></i></div>
+                                Staf Leaves
+                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                             </a>
-                            <a class="nav-link" href="tables.html">
-                                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-                                Tables
-                            </a>
+                            <div class="collapse" id="collapseLayoutsLeave" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                                <nav class="sb-sidenav-menu-nested nav">
+                                     
+                                @if(isset(Auth()->user()->role->permission['name']['leave']['can-add']))
+                                   
+                                        <a class="nav-link" href="{{Route('leaves.create')}}">Create</a>
+                                @endif
+                                @if(isset(Auth()->user()->role->permission['name']['leave']['can-list']))
+                              
+                                    <a class="nav-link" href="{{Route('leaves.index')}}">View</a>
+                                    @endif
+
+                                </nav>
+                            </div>
+                           
                         </div>
                     </div>
                     <div class="sb-sidenav-footer">
