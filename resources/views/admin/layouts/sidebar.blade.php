@@ -95,11 +95,11 @@
                             </a>
                             <div class="collapse" id="collapseLayoutsLeave" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
                                 <nav class="sb-sidenav-menu-nested nav">
-                                     
-                                @if(isset(Auth()->user()->role->permission['name']['leave']['can-add']))
+                                <a class="nav-link" href="{{Route('leaves.create')}}">Create</a>
+                                <!-- @if(isset(Auth()->user()->role->permission['name']['leave']['can-add'])) -->
                                    
-                                        <a class="nav-link" href="{{Route('leaves.create')}}">Create</a>
-                                @endif
+                                      
+                                <!-- @endif -->
                                 @if(isset(Auth()->user()->role->permission['name']['leave']['can-list']))
                               
                                     <a class="nav-link" href="{{Route('leaves.index')}}">View</a>

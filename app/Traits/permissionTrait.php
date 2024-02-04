@@ -41,9 +41,9 @@ trait permissionTrait{
         }
 
 
-        if(!isset(auth()->user()->role->permission['name']['leave']['can-add']) && \Route::is('leaves.create')){
-            return abort(401);
-        }
+        // if(!isset(auth()->user()->role->permission['name']['leave']['can-add']) && \Route::is('leaves.create')){
+        //     return abort(401);
+        // }
 
         if(!isset(auth()->user()->role->permission['name']['leave']['can-list']) && \Route::is('leaves.index')){
             return abort(401);
