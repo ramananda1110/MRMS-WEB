@@ -96,6 +96,22 @@
                                     
                                     </tr>
                                     
+                                   
+                                    <tr>
+                                        <td>Notice</td>
+                                        <td><input type="checkbox" name="name[notice][can-add]"
+                                            @if(isset($permission['name']['notice']['can-add'])) checked @endif value="1"></td>
+                                        <td><input type="checkbox" name="name[notice][can-edit]"
+                                            @if(isset($permission['name']['notice']['can-edit'])) checked @endif value="1"></td>
+                                        <td><input type="checkbox" name="name[notice][can-view]"
+                                            @if(isset($permission['name']['notice']['can-view'])) checked @endif value="1"></td>
+                                        <td><input type="checkbox" name="name[notice][can-delete]"
+                                            @if(isset($permission['name']['notice']['can-delete'])) checked @endif value="1"></td>
+                                        <td><input type="checkbox" name="name[notice][can-list]"
+                                            @if(isset($permission['name']['notice']['can-list'])) checked @endif value="1"></td>
+                                    
+                                    </tr>
+
                                     <tr>
                                         <td>Leave</td>
                                         <td></td>
@@ -106,6 +122,7 @@
                                             @if(isset($permission['name']['leave']['can-list'])) checked @endif value="1"></td>
                                     
                                     </tr>
+
                                 </tbody>
                             </table>
 

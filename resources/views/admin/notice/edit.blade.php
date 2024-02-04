@@ -71,7 +71,10 @@
                         </div>
 
                         <div class="form-group mt-5">
-                          <button class="btn btn-outline-primary">Submit</button>
+                        @if(isset(Auth()->user()->role->permission['name']['notice']['can-edit']))
+                               
+                          <button class="btn btn-outline-primary">Update</button>
+                         @endif 
                        </div>
                     </div>
                 </div>

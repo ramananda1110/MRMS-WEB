@@ -85,6 +85,18 @@
                                     
                                     </tr>
 
+                                    
+
+                                    <tr>
+                                        <td>Notice</td>
+                                        <td><input type="checkbox" name="name[notice][can-add]" value="1"></td>
+                                        <td><input type="checkbox" name="name[notice][can-edit]" value="1"></td>
+                                        <td><input type="checkbox" name="name[notice][can-view]" value="1"></td>
+                                        <td><input type="checkbox" name="name[notice][can-delete]" value="1"></td>
+                                        <td><input type="checkbox" name="name[notice][can-list]" value="1"></td>
+                                    
+                                    </tr>
+
                                     <tr>
                                         <td>Leave</td>
                                         <td></td>

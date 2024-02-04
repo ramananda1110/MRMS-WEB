@@ -29,15 +29,21 @@
                     <p class="badge text-bg-warning">Created By: {{$notice->name}}</p>
                 </div>
                 <div class="card-footer">
+                     @if(isset(Auth()->user()->role->permission['name']['notice']['can-edit']))
+                       
                     <a href="{{route('notices.edit', [$notice->id])}}">
                                  <i class="fas fa-edit"></i>
                     </a>
+                    @endif
                     <span class="float-end">
                         <!-- Button trigger modal -->
+                        @if(isset(Auth()->user()->role->permission['name']['notice']['can-delete']))
+                    
                         <a   data-bs-toggle="modal" data-bs-target="#exampleModal{{$notice->id}}", href="#">
                                   <i class="fas fa-trash"></i>
                                 </a>
 
+                         @endif       
                           <!-- Modal -->
                           <div class="modal fade" id="exampleModal{{$notice->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                     <div class="modal-dialog">
