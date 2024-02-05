@@ -48,6 +48,7 @@ Route::group(['middleware'=> ['auth', 'has.permission']], function(){
     Route::resource('leaves', 'LeaveController');
     Route::post('accept-reject-leave\{id}', 'LeaveController@acceptReject')->name('accept.reject');
 
+    Route::get('/mail', 'MailController@create');
 
 });
 
