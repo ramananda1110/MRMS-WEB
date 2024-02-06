@@ -10,15 +10,16 @@ use Illuminate\Queue\SerializesModels;
 class SendMail extends Mailable
 {
     use Queueable, SerializesModels;
+    public $details;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($details =[])
     {
-        //
+        $this->details = $details;
     }
 
     /**
@@ -28,6 +29,19 @@ class SendMail extends Mailable
      */
     public function build()
     {
-        return $this->view('view.name');
+        if($this->details['file']){
+            return $this->subject('Mail from DDCL')
+            ->view('admin.email.sendmail')
+            ->attach($this->details['file']->getRealPath(),
+                [
+                    'as'=>$this->details['file']->getClientOriginalName(),
+                    'mime'=>$this->details['file']->getClientMimeType()
+                ]);
+ 
+        } else {
+            return $this->subject('Mail from DDCL')
+            ->view('admin.email.sendmail');
+        }
+       
     }
 }

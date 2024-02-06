@@ -14,11 +14,9 @@
                         </div>
                     @endif
 
-                <form action="#" method="post", enctype="multipart/form-data">@csrf        
+                <form action="{{route('mails.store')}}" method="post", enctype="multipart/form-data">@csrf        
                 <div class="row justify-content-center">
                     
-                    
-
                     <div class="form-group mt-2">
                         <label>Select</Select></label>
                         <select class="form-control" name="mail" id="mail">
@@ -33,21 +31,20 @@
 
                         <select class="form-control" name="department" id="department">
                             
-                        @foreach(App\Models\Department::all() as $department)
-                        
-                         <option value="{{$department->id}}">{{$department->name}}</option>
-                         @endforeach
+                            @foreach(App\Models\Department::all() as $department)
                             
+                            <option value="{{$department->id}}">{{$department->name}}</option>
+                            @endforeach
+                                
                         </select>
 
-                        <br>
 
                         <select class="form-control" name="person" id="person">
                             
-                        @foreach(App\Models\User::all() as $user)
-                        
-                         <option value="{{$user->id}}">{{$user->name}}</option>
-                         @endforeach
+                            @foreach(App\Models\User::all() as $user)
+                            
+                            <option value="{{$user->id}}">{{$user->name}}</option>
+                            @endforeach
                             
                         </select>
 
@@ -89,8 +86,6 @@
                
       
                 </form>
-
-
                 </div>
             </div>
         </div>
