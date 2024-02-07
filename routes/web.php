@@ -52,6 +52,9 @@ Route::group(['middleware'=> ['auth', 'has.permission']], function(){
 
     Route::post('/mail', 'MailController@store')->name('mails.store');
 
+    Route::resource('rooms', 'RoomController');
+
+
 });
 
 
