@@ -13,7 +13,8 @@ class RoomController extends Controller
      */
     public function index()
     {
-        //
+        $rooms = Room::latest()->get();
+        return view('admin.room.index', compact('rooms'));
     }
 
     /**
@@ -66,7 +67,9 @@ class RoomController extends Controller
      */
     public function edit($id)
     {
-        //
+        $room = Room::find($id);
+        return view('admin.room.edit', compact('room'));
+
     }
 
     /**
@@ -78,7 +81,11 @@ class RoomController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $room = Room::find($id);
+        $data = $request->all();
+        $room->update($data);
+        return redirect()->route("rooms.index")->with('message', 'Record Updated Successfully');
+
     }
 
     /**
@@ -89,6 +96,9 @@ class RoomController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $room = Room::find($id);
+        $room->delete();
+        return redirect()->route('rooms.index')->with('message', 'Room has been  Deleted');
+
     }
 }

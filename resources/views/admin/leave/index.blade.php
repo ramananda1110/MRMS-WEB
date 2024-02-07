@@ -16,7 +16,7 @@
                 <li class="breadcrumb-item active" aria-current="page">Leave List</li>
             </ol>
         </nav>
-        <div class="card">
+    <div class="card">
         <table class="table">
                 <thead>
                     <tr>
@@ -105,7 +105,7 @@
                 </tbody>
             </table>
         </div>
-      </div>
+    </div>
 
 </div>
 @endsection

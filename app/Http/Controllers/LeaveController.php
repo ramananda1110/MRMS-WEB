@@ -110,7 +110,7 @@ class LeaveController extends Controller
        
         $leave->update($data);
        
-        return redirect()->route('leaves.create')->with('message', 'Recored  Deleted');
+        return redirect()->route('leaves.create')->with('message', 'Recored  Updated');
 
     }
 
