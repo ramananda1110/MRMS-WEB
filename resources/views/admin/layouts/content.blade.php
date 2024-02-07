@@ -81,7 +81,7 @@
                                 <div class="card mb-4">
                                     <div class="card-header">Yor details</div>
                                     <div class="card-header" style="background-color:orange">
-                                        Name{{Auth::user()->name}}
+                                        Name: {{Auth::user()->name}}
                                     </div>
                                     <div class="card-header" style="background-color:orange">
                                         Email: {{Auth::user()->email}}

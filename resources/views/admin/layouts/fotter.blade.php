@@ -3,9 +3,9 @@
                         <div class="d-flex align-items-center justify-content-between small">
                             <div class="text-muted">Copyright &copy; DDC 2024</div>
                             <div>
-                                <a href="#">Privacy Policy</a>
+                                <a href="https://ddclbd.com/about" target="_blank">Privacy Policy</a>
                                 &middot;
-                                <a href="#">Terms &amp; Conditions</a>
+                                <a href="https://ddclbd.com/about" target="_blank">Terms &amp; Conditions</a>
                             </div>
                         </div>
                     </div>

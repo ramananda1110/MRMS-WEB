@@ -34,10 +34,10 @@
                                 @enderror
                             </select>
 
-                            <table class="table table-dark mt-3">
+                            <table class="table table-gray mt-3">
                                 <thead>
                                     <tr>
-                                    <th scope="col">Permission</th>
+                                    <th scope="col">Permission Type</th>
                                     <th scope="col">can-add</th>
                                     <th scope="col">can-edit</th>
                                     <th scope="col">can-view</th>
