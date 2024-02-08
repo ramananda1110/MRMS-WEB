@@ -16,14 +16,13 @@
                       </div>
             @endif
            
-            <table id="datatablesSimple", class="table">
+            <table id="table ", class="table table-striped table-bordered">
                 <thead>
                     <tr>
                         <th>SN</th>
                         <th>Name</th>
                         <th>Description</th>
-                        <th>Edit</th>
-                        <th>Delete</th>  
+                        <th>Action</th>
                     </tr>
                 </thead>
                 
@@ -38,13 +37,14 @@
                            
                             <td> 
                                 @if(isset(Auth()->user()->role->permission['name']['department']['can-edit']))
-                                <a href="{{route('departments.edit',
+                                <a style="margin-right: 5px;" href="{{route('departments.edit',
                                     [$department->id])}}">
-                                 <i class="fas fa-edit"></i></a> </td>
+                                 <i class="fas fa-edit"></i></a> 
+                                <!-- </td> -->
                             
                                  @endif
 
-                            <td>
+                            <!-- <td> -->
 
                                  @if(isset(Auth()->user()->role->permission['name']['department']['can-delete']))
                                   

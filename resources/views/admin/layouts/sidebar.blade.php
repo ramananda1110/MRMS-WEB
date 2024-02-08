@@ -88,6 +88,27 @@
                                 </nav>
                             </div>
 
+
+                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayoutsRoom" aria-expanded="false" aria-controls="collapseLayoutsRoom">
+                                <div class="sb-nav-link-icon"><i class="fas fa-laptop-house"></i></div>
+                                Room
+                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                            </a>
+                            <div class="collapse" id="collapseLayoutsRoom" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                                <nav class="sb-sidenav-menu-nested nav">
+                                <a class="nav-link" href="{{Route('rooms.create')}}">Create</a>
+                                <!-- @if(isset(Auth()->user()->role->permission['name']['leave']['can-add'])) -->
+                                   
+                                      
+                                <!-- @endif -->
+                               
+                                    <a class="nav-link" href="{{Route('rooms.index')}}">View</a>
+                                  
+
+                                </nav>
+                            </div>
+
+
                             <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayoutsLeave" aria-expanded="false" aria-controls="collapseLayoutsLeave">
                                 <div class="sb-nav-link-icon"><i class="fas fa-pencil-alt"></i></div>
                                 Staf Leaves

@@ -15,7 +15,7 @@
                           {{Session::get('message')}}
                       </div>
             @endif
-            <table class="table">
+            <table class="table table-striped table-bordered">
                 <thead>
                     <tr>
                         <th>SN</th>
@@ -23,8 +23,7 @@
                         <th>Location</th>
                         <th>Capacity</th>
                         <th>Facilities</th>
-                        <th>Edit</th>
-                        <th>Delete</th>  
+                        <th>Action</th>
                     </tr>
                 </thead>
                 
@@ -41,19 +40,20 @@
                            
                             <td>
                             @if(isset(Auth()->user()->role->permission['name']['role']['can-edit']))
-                             <a href="{{Route('rooms.edit', [$room->id])}}">
-                                 <i class="fas fa-edit"></i></a> 
+                            <a style="margin-right: 5px;" href="{{Route('rooms.edit', [$room->id])}}">
+                                 <i style="color:gray" class="fas fa-edit"></i></a> 
                              @endif   
-                            </td>
+                            <!-- </td> -->
                             
+                           
 
-                            <td>
+                            <!-- <td> -->
 
                                 <!-- Button trigger modal -->
                                 @if(isset(Auth()->user()->role->permission['name']['role']['can-delete']))
 
-                                <a   data-bs-toggle="modal" data-bs-target="#exampleModal{{$room->id}}", href="#">
-                                  <i class="fas fa-trash"></i>
+                                <a  data-bs-toggle="modal"  data-bs-target="#exampleModal{{$room->id}}", href="#">
+                                  <i style="color:gray" class="fas fa-trash"></i>
                                 </a>
                                 @endif
 

@@ -15,7 +15,7 @@
                           {{Session::get('message')}}
                       </div>
             @endif
-            <table id="datatablesSimple">
+            <table id="datatablesSimple" class="table table-striped table-bordered">
                 <thead>
                     <tr>
                         <th>SN</th>
@@ -28,8 +28,8 @@
                         <th>Start Date</th>
                         <th>Address</th>
                         <th>Mobile</th>
-                        <th>Edit</th>
-                        <th>Delete</th>  
+                        <th>Action</th>
+                    
                     </tr>
                 </thead>
                 
@@ -53,10 +53,11 @@
 
                                 <a href="{{route('users.edit',
                                     [$user->id])}}">
-                                 <i class="fas fa-edit"></i></a> </td>
+                                 <i style="margin-right: 5px;" class="fas fa-edit"></i></a> 
+                                <!-- </td> -->
                             
                                 @endif
-                            <td>
+                            <!-- <td> -->
 
                                 <!-- Button trigger modal -->
                                 @if(isset(Auth()->user()->role->permission['name']['user']['can-delete']))
