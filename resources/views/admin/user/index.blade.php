@@ -5,6 +5,9 @@
     <div class="row">
    
         <div class="col-md-12">
+
+        <button type="button" class="btn btn-primary">Add User</button>
+
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item active" aria-current="page">All Users</li>
