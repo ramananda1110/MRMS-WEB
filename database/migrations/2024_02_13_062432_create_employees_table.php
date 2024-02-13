@@ -19,7 +19,7 @@ class CreateEmployeesTable extends Migration
             $table->string('name');
             $table->string('project');
             $table->string('division');
-            $table->string('designation');
+            $table->string('designation')->nullable();
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();

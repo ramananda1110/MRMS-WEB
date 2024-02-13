@@ -9,7 +9,7 @@
      @endif
    
     
- <form action="{{route('employee.store')}}" method="post", enctype="multipart/form-data">@csrf        
+ <form action="{{route('import.excel')}}" method="POST", enctype="multipart/form-data">@csrf        
     <div class="row justify-content-center">
         <div class="col-md-10">
              <nav aria-label="breadcrumb">

@@ -54,9 +54,13 @@ Route::group(['middleware'=> ['auth', 'has.permission']], function(){
 
     Route::resource('rooms', 'RoomController');
 
-    Route::resource('employee', 'EmployeeController');
+    // Route::resource('employee', 'EmployeeController');
 
 
+    Route::resource('employee', 'ImportController');
+
+    Route::get('/import-excel', 'ExcelImportController@index')->name('import.excel');
+    Route::post('/import-excel', 'ExcelImportController@import');
 });
 
 
