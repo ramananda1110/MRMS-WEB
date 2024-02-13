@@ -54,6 +54,8 @@ Route::group(['middleware'=> ['auth', 'has.permission']], function(){
 
     Route::resource('rooms', 'RoomController');
 
+    Route::resource('employee', 'EmployeeController');
+
 
 });
 

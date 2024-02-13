@@ -2,13 +2,18 @@
 
 @section('content')
 <div class="container mt-5">
-    <div class="row">
+    <div class="row justify-content-center">
    
         <div class="col-md-12">
 
-        <button type="button" class="btn btn-primary">Add User</button>
+        
+        <a  href="{{Route('employee.create')}}">
+                               
+        <button type="button" class="btn btn-primary"> Emport Employee</button>
+                            </a>
+                            
 
-            <nav aria-label="breadcrumb">
+            <nav aria-label="breadcrumb" class="mt-3">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item active" aria-current="page">All Users</li>
                 </ol>
