@@ -10,7 +10,7 @@
                             </a>
                             <div class="sb-sidenav-menu-heading">Interface</div>
 
-                            <a class="nav-link" href="{{Route('employee.create')}}">
+                            <a class="nav-link" href="{{url('import-excel')}}">
                                 <div class="sb-nav-link-icon"><i class="fas fa-user-alt"></i></div>
                                 Employee
                             </a>

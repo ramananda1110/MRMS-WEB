@@ -22,6 +22,7 @@ class ExcelImpoter implements ToCollection, WithHeadingRow
                 'project' => $row['project'],
                 'name' => $row['name'],
                 'designation' => $row['designation'],
+                // 'password' => bcrypt('1234'),
                 'password' => '1234',
             ]);
        }

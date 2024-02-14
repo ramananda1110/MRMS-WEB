@@ -22,9 +22,6 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 Route::view('employee', 'admin.create');
 
 
-
-
-
 Route::group(['middleware'=> ['auth', 'has.permission']], function(){
 
     Route::get('/', function () {
@@ -61,6 +58,8 @@ Route::group(['middleware'=> ['auth', 'has.permission']], function(){
 
     Route::get('/import-excel', 'ExcelImportController@index')->name('import.excel');
     Route::post('/import-excel', 'ExcelImportController@import');
+
+
 });
 
 
