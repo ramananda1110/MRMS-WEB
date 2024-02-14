@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Imports\ExcelImpoter;
 use Maatwebsite\Excel\Facades\Excel;
+use App\Models\Employee;
 
 
 
@@ -13,8 +14,13 @@ class ExcelImportController extends Controller
 {
 
     public function index() {
-        return view('admin.employee.create');
- 
+
+        // $employees = Employee::latest()->get();
+        $employees = Employee::latest()->paginate(30);
+
+
+        return view('admin.employee.index', compact('employees'));
+
     }
     
     public function import(Request $request)
@@ -30,7 +36,7 @@ class ExcelImportController extends Controller
         // Process the Excel file
         Excel::import(new ExcelImpoter, $file);
  
-        return redirect()->back()->with('success', 'Excel file imported successfully!');
+        return redirect()->back()->with('message', 'User data imported successfully!');
     }
 
 }

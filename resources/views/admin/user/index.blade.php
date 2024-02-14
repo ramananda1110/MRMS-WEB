@@ -7,10 +7,10 @@
         <div class="col-md-12">
 
         
-        <a  href="{{Route('employee.create')}}">
+            <a  href="{{Route('import.excel')}}">
                                
-        <button type="button" class="btn btn-primary"> Emport Employee</button>
-                            </a>
+                 <button type="button" class="btn btn-primary"> Emport Employee</button>
+            </a>
                             
 
             <nav aria-label="breadcrumb" class="mt-3">
