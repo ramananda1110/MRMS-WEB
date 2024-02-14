@@ -33,7 +33,7 @@
         </nav>
 
         <div class="card-body">
-        <table id="datatablesSimple" class="table table-striped table-bordered">
+            <table id="employeeTable" class="table table-striped table-bordered">
             
                 <thead>
                     <tr>
