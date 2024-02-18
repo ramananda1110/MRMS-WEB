@@ -64,7 +64,7 @@
                     <td>{{$employee->project}}</td>
                     
                     <td> 
-                                @if(isset(Auth()->user()->role->permission['name']['department']['can-edit']))
+                         @if(isset(Auth()->user()->role->permission['name']['department']['can-edit']))
                                 <a style="margin-right: 5px;" href="{{route('departments.edit',
                                     [$employee->id])}}">
                                  <i class="fas fa-edit"></i></a> 
@@ -109,13 +109,15 @@
                                     </div>
                                 </div>
 
-                              </td>
+                            </td>
 
                     </tr>
                    
                     @endforeach
                     @else
-                    <td> No Food to display</td>
+                    
+                    <p> No user found!</p>
+                    
                             @endif
                 </tbody>
             </table>

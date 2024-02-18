@@ -71,4 +71,17 @@ class ExcelImportController extends Controller
         return redirect()->back()->with('message', 'User data imported successfully!');
     }
 
+
+    public function employeeList(Request $request) {
+        //return Room::all();
+
+        return response()->json([
+            'status_code' => 200,
+            'data' => Employee::all(),
+            'message' => 'Successes'
+            
+        ], 200);
+     }
+
+
 }

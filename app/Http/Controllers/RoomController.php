@@ -101,4 +101,18 @@ class RoomController extends Controller
         return redirect()->route('rooms.index')->with('message', 'Room has been  Deleted');
 
     }
+
+
+    public function roomList(Request $request) {
+        //return Room::all();
+
+        return response()->json([
+            'status_code' => 200,
+            'data' => Room::all(),
+            'message' => 'Successes'
+            
+        ], 200);
+     }
+
+     
 }
