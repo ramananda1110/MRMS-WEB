@@ -22,38 +22,7 @@ class ExcelImportController extends Controller
 
     }
 
-        //     public function index(Request $request)
-        //     {
-        //     $query = Employee::latest();
-
-        //     // Apply filters based on request parameters
-        //     if ($request->has('division')) {
-        //         $query->where('division', $request->division);
-        //     }
-        //     if ($request->has('designation')) {
-        //         $query->where('designation', $request->designation);
-        //     }
-
-        //     // Perform server-side processing with DataTables and pagination
-        //     $employees = DataTables::of($query)
-        //         ->addColumn('action', function ($employee) {
-        //             $actionButtons = '';
-        //             // Edit button (conditional based on user role)
-        //             if (auth()->user()->can('edit employees')) {
-        //                 $actionButtons .= '<a href="' . route('employees.edit', $employee->id) . '" class="btn btn-primary btn-sm" title="Edit"><i class="fas fa-edit"></i></a>';
-        //             }
-        //             // Delete button (conditional based on user role)
-        //             if (auth()->user()->can('delete employees')) {
-        //                 $actionButtons .= '<button class="btn btn-danger btn-sm delete-employee" data-employee-id="' . $employee->id . '" title="Delete"><i class="fas fa-trash"></i></button>';
-        //             }
-        //             return $actionButtons;
-        //         })
-        //         ->addIndexColumn() // Add an index column for server-side processing
-        //         ->paginate(10) // Set the initial pagination limit to 10
-        //         ->make(true);
-
-        //     return view('admin.employee.index', compact('employees'));
-        // }
+      
     
     public function import(Request $request)
     {
@@ -73,8 +42,6 @@ class ExcelImportController extends Controller
 
 
     public function employeeList(Request $request) {
-        //return Room::all();
-
         return response()->json([
             'status_code' => 200,
             'data' => Employee::all(),
@@ -84,4 +51,34 @@ class ExcelImportController extends Controller
      }
 
 
+     public function getEmployee(Request $request) {
+        // Check if the search keyword is provided
+        $keyword = $request->input('keyword');
+        if (!$keyword) {
+            return response()->json([
+                'status_code' => 400,
+                'message' => 'Bad Request: Keyword parameter is required for searching.',
+            ], 400);
+        }
+    
+        // Build the query
+        $query = Employee::query();
+    
+        // Apply search filter across multiple columns
+        $query->where(function ($query) use ($keyword) {
+            $query->where('name', 'like', '%' . $keyword . '%')
+                  ->orWhere('project', 'like', '%' . $keyword . '%')
+                  ->orWhere('designation', 'like', '%' . $keyword . '%')
+                  ->orWhere('division', 'like', '%' . $keyword . '%');
+        });
+    
+        // Retrieve the filtered data
+        $filteredEmployees = $query->get();
+    
+        return response()->json([
+            'status_code' => 200,
+            'data' => $filteredEmployees,
+            'message' => 'Success',
+        ], 200);
+    }
 }
