@@ -37,13 +37,17 @@
             
                 <thead>
                     <tr>
-                    <th scope="col">#</th>
+                    
                     <th scope="col">Employee ID</th>
                     <th scope="col">Name</th>
                    
+                    <th scope="col">Project Code</th>
+                    <th scope="col">Project Name</th>
                     <th scope="col">Division</th>
                     <th scope="col">Designation</th>
-                    <th scope="col">Project</th>
+                    <th scope="col">Mobile</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Status</th>
                     <th scope="col">Action</th>
                    
                     </tr>
@@ -55,14 +59,17 @@
                           $key=>$employee)
                    
                     <tr>
-                    <th scope="row">{{$key+1}}</th>
+                   
                     <th scope="row">{{$employee->employee_id}}</th>
                     <td>{{$employee->name}}</td>
                     
+                    <td>{{$employee->project_code}}</td>
+                    <td>{{$employee->project_name}}</td>
                     <td>{{$employee->division}}</td>
                     <td>{{$employee->designation}}</td>
-                    <td>{{$employee->project}}</td>
-                    
+                    <td>{{$employee->mobile_number}}</td>
+                    <td>{{$employee->email}}</td>
+                    <td>{{$employee->status}}</td>
                     <td> 
                          @if(isset(Auth()->user()->role->permission['name']['department']['can-edit']))
                                 <a style="margin-right: 5px;" href="{{route('departments.edit',

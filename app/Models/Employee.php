@@ -10,11 +10,15 @@ class Employee extends Model
     protected $table = 'employees';
     protected $fillable = [
         'employee_id',
+        'grade',
         'name',
-        'project',
+        'status',
+        'division',
+        'project_name',
+        'project_code',
         'division',
         'designation',
-        'password',
+        'mobile_number',
+        'email',
     ];
-
 }

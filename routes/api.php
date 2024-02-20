@@ -24,11 +24,13 @@ Route::post('/login', 'AuthController@login');
 // Route::group(['middleware' => ['auth:sanctum']], function () {
 //     Route::get('/room-list', 'RoomController@roomList');
 // });
+
+
 Route::get('/room-list', 'RoomController@roomList');
-Route::get('/employee-list', 'ExcelImportController@getEmployee');
+Route::get('/employee-list', 'EmployeeController@getEmployee');
 
 
 // Route::group(['middleware' => ['auth:sanctum']], function () {
-//     Route::get('/employee-list', 'ExcelImportController@employeeList');
+//     Route::get('/employee-list', 'EmployeeController@employeeList');
 
 // });

@@ -16,14 +16,18 @@ class CreateEmployeesTable extends Migration
         Schema::create('employees', function (Blueprint $table) {
             $table->id();
             $table->string('employee_id')->unique();
+            $table->string('grade')->nullable();
             $table->string('name');
-            $table->string('project');
-            $table->string('division');
+            $table->string('status')->nullable();
+            $table->string('division')->nullable();
+            $table->string('project_name')->nullable();
+            $table->string('project_code')->nullable();
             $table->string('designation')->nullable();
-            $table->string('password');
-            $table->rememberToken();
+            $table->string('mobile_number')->nullable();
+            $table->string('email')->nullable();
             $table->timestamps();
         });
+
     }
 
     /**

@@ -27,11 +27,7 @@ class AuthController extends Controller
             'user' => $user
         ], Response::HTTP_OK);
     }
-
-
-  
-
-
+    
     public function login(Request $request)
         {
             $credentials = $request->only('email', 'password');

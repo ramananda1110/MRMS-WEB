@@ -11,7 +11,7 @@ use DataTables;
 
 
 
-class ExcelImportController extends Controller
+class EmployeeController extends Controller
 {
 
     public function index() {
@@ -22,8 +22,6 @@ class ExcelImportController extends Controller
 
     }
 
-      
-    
     public function import(Request $request)
     {
         // Validate the uploaded file

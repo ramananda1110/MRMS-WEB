@@ -18,12 +18,15 @@ class ExcelImpoter implements ToCollection, WithHeadingRow
        {
             Employee::create([
                 'employee_id' => $row['employee_id'],
+                'grade' => $row['job_grade'],
+                'name' => $row['employee_name'],
+                'status' => $row['status'],
                 'division' => $row['division'],
-                'project' => $row['project'],
-                'name' => $row['name'],
+                'project_name' => $row['project_name'],
+                'project_code' => $row['project_code'],
                 'designation' => $row['designation'],
-                // 'password' => bcrypt('1234'),
-                'password' => '1234',
+                'mobile_number' => $row['mobile_number'],
+                'email' => $row['email'],
             ]);
        }
     }
