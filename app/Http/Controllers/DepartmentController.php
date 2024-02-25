@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Imports\ImportDepartment;
+use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
 use App\Models\Department;
 class DepartmentController extends Controller
@@ -42,6 +44,23 @@ class DepartmentController extends Controller
          $data = $request->all();
          Department::create($data);
          return redirect()->back()->with('message', 'Department Created Successfully');
+    }
+
+
+    public function import(Request $request)
+    {
+        // Validate the uploaded file
+        $request->validate([
+            'file' => 'required|mimes:xlsx,xls',
+        ]);
+ 
+        // Get the uploaded file
+        $file = $request->file('file');
+ 
+        // Process the Excel file
+        Excel::import(new ImportDepartment, $file);
+ 
+        return redirect()->back()->with('message', 'User data imported successfully!');
     }
 
     /**

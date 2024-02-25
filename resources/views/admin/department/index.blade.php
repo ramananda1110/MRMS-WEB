@@ -2,9 +2,25 @@
 
 @section('content')
 <div class="container mt-5">
-    <div class="row">
+    <div class="row justify-content-center">
    
-        <div class="col-md-12">
+        <div class="col-md-11">
+
+            <div class="card-body">
+                <form action="{{route('import.excel')}}" method="POST", enctype="multipart/form-data">@csrf        
+
+                <div class="input-group"> 
+                    <input type="file" name="file"  placeholder="attached xlsx" class="form-control">
+
+                    <button class="btn btn-outline-primary">Import</button>
+
+                </div>
+                </form>
+
+                <div class="form-group mt-5">
+                </div>
+            </div>
+
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item active" aria-current="page">All Departments</li>
@@ -84,11 +100,11 @@
                               </td>
                         </tr>
                     @endforeach
-                     @else
+                    @else
                      
                         <td> No Department to display</td>
                        
-                      @endif
+                    @endif
                 </tbody>
             </table>
         </div>
