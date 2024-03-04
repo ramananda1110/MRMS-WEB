@@ -6,7 +6,7 @@
    
         <div class="col-md-11">
 
-            <div class="card-body">
+            <!-- <div class="card-body">
                 <form action="{{route('import.excel')}}" method="POST", enctype="multipart/form-data">@csrf        
 
                 <div class="input-group"> 
@@ -19,7 +19,7 @@
 
                 <div class="form-group mt-5">
                 </div>
-            </div>
+            </div> -->
 
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">

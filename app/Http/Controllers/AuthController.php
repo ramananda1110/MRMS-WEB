@@ -30,7 +30,7 @@ class AuthController extends Controller
     
     public function login(Request $request)
         {
-            $credentials = $request->only('email', 'password');
+            $credentials = $request->only('employee_id', 'password');
 
             // Attempt to authenticate the user
             if (Auth::attempt($credentials)) {

@@ -39,8 +39,10 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
+            'project_code'=>'required',
             'firstname'=>'required',
             'lastname'=>'required',
+            'employee_id'=>'required',
             'email'=>'required|string|email|max:255|unique:users',
             'password'=>'required|string',
             'department_id'=>'required',
@@ -50,7 +52,6 @@ class UserController extends Controller
             'designation'=>'required'
         ]);
       
-       
         
         $data = $request->all();
         //dd($data);

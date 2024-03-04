@@ -20,33 +20,48 @@
                 <div class="card-header">General Information</div>
 
                 <div class="card-body">
+
+                   
                     <div class="form-group">
+                        <label>Project Code</label>
+                        <input type="text" name="project_code" 
+                        class="form-control" required="">
+                    </div>
+
+                    <div class="form-group mt-2">
                         <label>First Name</label>
                         <input type="text" name="firstname" 
                         class="form-control" required="">
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group  mt-2">
                         <label>Last Name</label>
                         <input type="text" name="lastname" 
                         class="form-control" required="">
 
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group  mt-2">
+                        <label for="name">Email</label>
+                        <input type="email" name="email" 
+                        class="form-control" required="">
+
+                    </div>
+
+                    <div class="form-group  mt-2">
                         <label for="address">Address</label>
                         <input type="text" name="address" 
                         class="form-control" required="">
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group  mt-2">
                         <label>Mobile Number</label>
                         <input type="text" name="mobile_number" 
                         class="form-control" required="">
     
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group  mt-2">
                         <label>Department</label>
                         <select class="form-control" name="department_id"
                         require="">
@@ -57,7 +72,7 @@
 
 
                     </div>
-                    <div class="form-group">
+                    <div class="form-group  mt-2">
                         <label>Designation</label>
                         <input type="text" name="designation" 
                         class="form-control", required="">
@@ -66,7 +81,7 @@
     
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group  mt-2">
                         <label>Start Date</label>
                         <input  name="start_from" 
                         class="form-control" required="" placeholder="yy-mm-dd" id="datepicker">
@@ -79,7 +94,7 @@
     
                     </div>
                 
-                    <div class="form-group">
+                    <div class="form-group  mt-2">
                         <label>Image</label>
                         <input type="file" name="image"  accept="image/*"
                         class="form-control">
@@ -96,20 +111,21 @@
             <div class="card-header">Login Information</div>
 
                 <div class="card-body">
-                    <div class="form-group">
-                        <label for="name">Email</label>
-                        <input type="email" name="email" 
-                        class="form-control" required="">
+                   
 
+                    <div class="form-group">
+                        <label>Employee ID</label>
+                        <input type="text" name="employee_id" 
+                        class="form-control" required="">
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group  mt-2">
                         <label for="name">Password</label>
                         <input type="password" name="password" 
                         class="form-control" required="">
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group  mt-2">
                         <label>Role</label>
                         <select class="form-control" name="role_id"
                         require="">
@@ -120,7 +136,7 @@
 
                     </div>
 
-                    <div class="form-group mt-5">
+                    <div class="form-group mt-3">
                         <button class="btn btn-outline-primary">Submit</button>
                     </div>
                 </div>
