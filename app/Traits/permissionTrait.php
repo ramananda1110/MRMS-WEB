@@ -27,6 +27,11 @@ trait permissionTrait{
             return abort(401);
         }
 
+        // add permission for admin
+        if(auth()->user()->isAdmin() && \Route::is('permissions.create')){
+            return abort(401);
+        }
+
         if(!isset(auth()->user()->role->permission['name']['permission']['can-list']) && \Route::is('permissions.index')){
             return abort(401);
         }

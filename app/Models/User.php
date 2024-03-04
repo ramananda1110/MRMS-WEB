@@ -20,6 +20,8 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
+        'employee_id',
+        'project_code',
         'name',
         'email',
         'password',
@@ -58,5 +60,15 @@ class User extends Authenticatable
 
     public function role(){
         return $this->hasOne(Role::class, 'id', 'role_id');
+    }
+
+    public function isAdmin(){
+        return $this->hasOne(Role::class, 'id', 'role_id')->select('name')
+            ->withDefault(['name' => ''])
+            ->get()
+            ->map(function ($role) {
+                return strtolower($role->name) === 'admin';
+            })
+            ->first();
     }
 }

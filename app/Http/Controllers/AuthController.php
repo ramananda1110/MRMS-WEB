@@ -41,9 +41,12 @@ class AuthController extends Controller
 
                 // Return the user data and the token in the response
                 return response()->json([
-                    'token' => $token,
                     'status_code' => 200,
                     'user' => $user,
+                    'user' => array_merge($user->toArray(), [
+                        'is_admin' => $user->isAdmin(),
+                        'api_token' => $token,
+                    ]),
                     'message' => 'Success'
                     
                 ], 200);
@@ -51,7 +54,6 @@ class AuthController extends Controller
 
             // If authentication fails, return an error response
             return response()->json([
-                'token' => null,
                 'status_code' => 401,
                 'user' => null,
                 'message' => 'Unauthorized credentials'

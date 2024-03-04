@@ -56,6 +56,7 @@ Route::group(['middleware'=> ['auth', 'has.permission']], function(){
     Route::get('/import-employee', 'EmployeeController@index')->name('import.excel');
     Route::post('/import-employee', 'EmployeeController@import');
 
+    Route::post('/import-department', 'DepartmentController@import');
 
 });
 
