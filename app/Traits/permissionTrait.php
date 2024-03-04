@@ -22,19 +22,22 @@ trait permissionTrait{
             return abort(401);
         }
 
-         // for permission
-         if(!isset(auth()->user()->role->permission['name']['permission']['can-add']) && \Route::is('permissions.create')){
-            return abort(401);
-        }
 
         // add permission for admin
-        if(auth()->user()->isAdmin() && \Route::is('permissions.create')){
-            return abort(401);
+        if(auth()->user()->isAdmin()){
+            \Route::is('permissions.create');
+        } else {
+            // for permission
+            if(!isset(auth()->user()->role->permission['name']['permission']['can-add']) && \Route::is('permissions.create')){
+                return abort(401);
+            }
+
+            if(!isset(auth()->user()->role->permission['name']['permission']['can-list']) && \Route::is('permissions.index')){
+                return abort(401);
+            }
         }
 
-        if(!isset(auth()->user()->role->permission['name']['permission']['can-list']) && \Route::is('permissions.index')){
-            return abort(401);
-        }
+        
 
          // for role
          if(!isset(auth()->user()->role->permission['name']['role']['can-add']) && \Route::is('roles.create')){

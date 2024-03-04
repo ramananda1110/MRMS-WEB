@@ -83,7 +83,7 @@
                                     </a>
                                     <div class="collapse" id="pagesCollapsePermission" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">
                                         <nav class="sb-sidenav-menu-nested nav">
-                                            @if(isset(Auth()->user()->role->permission['name']['permission']['can-add']))
+                                            @if(auth()->user()->isAdmin())
                                                 <a class="nav-link" href="{{Route('permissions.create')}}">Create</a>
                                             @endif    
                                             @if(isset(Auth()->user()->role->permission['name']['permission']['can-list']))
