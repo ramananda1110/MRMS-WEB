@@ -20,12 +20,16 @@
                 <div class="card-header">Create a New Employee</div>
 
                 <div class="card-body">
-
-                
                     <div class="form-group">
                         <label>Employee ID</label>
                         <input type="text" name="employee_id" 
-                        class="form-control" required="">
+                         class="form-control @error('employee_id') is-invalid @enderror">
+
+                            @error('employee_id')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                            @enderror
                     </div>
 
                     <div class="form-group">

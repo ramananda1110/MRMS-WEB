@@ -110,7 +110,7 @@ class EmployeeController extends Controller
     public function store(Request $request)
     {
          $this->validate($request, [
-             'employee_id'=>'required',
+             'employee_id'=>'required|unique:employees',
              'name'=>'required',
              'division'=>'required',
              'mobile_number'=>'required',
@@ -136,4 +136,21 @@ class EmployeeController extends Controller
 
     }
 
+    public function edit($id)
+    {
+
+        $employee = Employee::find($id);
+
+        return view('admin.employee.edit', compact('employee'));
+
+    }
+
+    public function update(Request $request, $id)
+    {
+        $notice = Employee::find($id);
+        $data = $request->all();
+        $notice->update($data);
+        return redirect()->route("employee.index")->with('message', 'Employee Updated Successfully');
+
+    }
 }

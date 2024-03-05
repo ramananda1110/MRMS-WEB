@@ -89,7 +89,7 @@
                    
                      <td> 
                          @if(isset(Auth()->user()->role->permission['name']['department']['can-edit']))
-                                <a style="margin-right: 5px;" href="{{route('departments.edit',
+                                <a style="margin-right: 5px;" href="{{route('employee.edit',
                                     [$employee->id])}}">
                                  <i class="fas fa-edit"></i></a> 
                                 <!-- </td> -->
