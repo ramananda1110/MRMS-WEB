@@ -22,6 +22,26 @@ class EmployeeController extends Controller
 
     }
 
+    public function searchEmployee(Request $request){
+       
+        if($request->search){
+            $employees = Employee::where('name','like','%'.$request->search.'%')
+            ->orWhere('employee_id','like','%'.$request->search.'%')
+            ->orWhere('division','like','%'.$request->search.'%')
+            ->orWhere('mobile_number','like','%'.$request->search.'%')
+            ->orWhere('project_code','like','%'.$request->search.'%')
+            ->orWhere('email','like','%'.$request->search.'%')
+            ->orWhere('designation','like','%'.$request->search.'%')
+            ->paginate(30);
+            return view('admin.employee.index',compact('employees'));
+        }
+
+
+        $employees  =Employee::latest()->paginate(30);
+        return view('admin.employee.index', compact('employees'));
+       
+    }
+
     public function import(Request $request)
     {
         // Validate the uploaded file
@@ -78,5 +98,30 @@ class EmployeeController extends Controller
             'data' => $filteredEmployees,
             'message' => 'Success',
         ], 200);
+    }
+
+
+    public function create()
+    {
+        return view('admin.employee.create');
+    }
+
+
+    public function store(Request $request)
+    {
+         $this->validate($request, [
+             'employee_id'=>'required',
+             'name'=>'required',
+             'division'=>'required',
+             'mobile_number'=>'required',
+             'email'=>'required',
+             'designation'=>'required',
+             'project_code'=>'required',
+            
+         ]);
+       
+         $data = $request->all();
+         Employee::create($data);
+         return redirect()->back()->with('message', 'Employee Created Successfully');
     }
 }

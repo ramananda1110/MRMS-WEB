@@ -10,26 +10,42 @@
     
     <div class="row justify-content-center">
         <div class="col-md-11">
-        <div class="card-body">
-            <form action="{{route('import.excel')}}" method="POST", enctype="multipart/form-data">@csrf        
+            <div class="card-body">
+                <form action="{{route('import.excel')}}" method="POST", enctype="multipart/form-data">@csrf        
 
-            <div class="input-group"> 
-                <input type="file" name="file"  placeholder="attached xlsx" class="form-control">
+                <div class="input-group"> 
+                    <input type="file" name="file"  placeholder="attached xlsx" class="form-control">
 
-                <button class="btn btn-outline-primary">Import</button>
+                    <button class="btn btn-outline-primary">Import</button>
 
+                </div>
+                </form>
+
+                <div class="form-group mt-5">
+                </div>
             </div>
-            </form>
-
-            <div class="form-group mt-5">
-            </div>
-        </div>
-           
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb">
-            <li class="breadcrumb-item active" aria-current="page">List Of Employee</li>
-            </ol>
-        </nav>
+            
+ 	        <br>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                    <li class="breadcrumb-item active" aria-current="page">
+                        <div class="row align-items-center">
+              
+                        <div class="col-md-4">
+                            <span>List Of Employee</span>
+                        </div>
+                            <div class="col-md-8">
+                                <form action="{{route('search.employee')}}" method="GET" class="input-group">
+                                    <input type="text" name="search" class="form-control" placeholder="name, id, email, phone etc..">
+                                    <div class="input-group-append ms-1">
+                                        <button type="submit" class="btn btn-outline-primary">Search</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                     </li>
+                    </ol>
+                </nav>
 
         <div class="card-body">
             <table id="employeeTable" class="table table-striped table-bordered">
@@ -39,14 +55,14 @@
                     
                     <th scope="col">Employee ID</th>
                     <th scope="col">Name</th>
-                    <th scope="col">Project Name</th>
+                    <!-- <th scope="col">Project Name</th> -->
                     <th scope="col">Project Code</th>
                     
                     <th scope="col">Division</th>
                     <th scope="col">Designation</th>
                     <th scope="col">Mobile</th>
-                    <th scope="col">Email</th>
-                    <th scope="col">Status</th>
+                    <!-- <th scope="col">Email</th> -->
+                    <!-- <th scope="col">Status</th> -->
                     <th scope="col">Action</th>
                    
                     </tr>
@@ -59,27 +75,31 @@
                    
                     <tr>
                    
-                    <th scope="row">{{$employee->employee_id}}</th>
-                    <td>{{$employee->name}}</td>
-                    <td>{{$employee->project_name}}</td>
-                    <td>{{$employee->project_code}}</td>
+                        <th scope="row">{{$employee->employee_id}}</th>
+                        <td>{{$employee->name}}</td>
+                        <!-- <td>{{$employee->project_name}}</td> -->
+                        <td>{{$employee->project_code}}</td>
+                    
+                        <td>{{$employee->division}}</td>
+                        <td>{{$employee->designation}}</td>
+                        <td>{{$employee->mobile_number}}</td>
+                        <!-- <td>{{$employee->email}}</td> -->
+                        <!-- <td>{{$employee->status}}</td> -->
+                        
                    
-                    <td>{{$employee->division}}</td>
-                    <td>{{$employee->designation}}</td>
-                    <td>{{$employee->mobile_number}}</td>
-                    <td>{{$employee->email}}</td>
-                    <td>{{$employee->status}}</td>
-                   
-                    <td> 
+                     <td> 
                          @if(isset(Auth()->user()->role->permission['name']['department']['can-edit']))
                                 <a style="margin-right: 5px;" href="{{route('departments.edit',
                                     [$employee->id])}}">
                                  <i class="fas fa-edit"></i></a> 
                                 <!-- </td> -->
                             
+                                
                                  @endif
 
                             <!-- <td> -->
+
+                               
 
                                  @if(isset(Auth()->user()->role->permission['name']['department']['can-delete']))
                                   
@@ -88,6 +108,11 @@
                                   <i class="fas fa-trash"></i>
                                 </a>
                                 @endif
+
+                                <a style="margin-right: 5px;" href="{{route('departments.edit',
+                                    [$employee->id])}}"><i class="fa fa-circle-chevron-down"></i></a>
+                           
+                        
                                 <!-- Modal -->
                                 <div class="modal fade" id="exampleModal{{$employee->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                     <div class="modal-dialog">
@@ -125,7 +150,7 @@
                     
                     <p> No user found!</p>
                     
-                            @endif
+                    @endif
                 </tbody>
             </table>
             
