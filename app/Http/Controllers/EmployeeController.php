@@ -124,4 +124,14 @@ class EmployeeController extends Controller
          Employee::create($data);
          return redirect()->back()->with('message', 'Employee Created Successfully');
     }
+
+
+    public function destroy($id)
+    {
+        $department = Employee::find($id);
+        $department->delete();
+        return redirect()->route('employee.index')->with('message', 'Recored  Deleted');
+
+    }
+
 }

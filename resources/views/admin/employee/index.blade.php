@@ -129,7 +129,7 @@
                                         </div>
                                         <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                        <form action="{{route('departments.destroy',
+                                        <form action="{{route('employee.destroy',
                                                         [$employee->id])}}" method="post">@csrf
                                                     {{method_field('DELETE')}}
                                                     <button class="btn btn-outline-danger">
