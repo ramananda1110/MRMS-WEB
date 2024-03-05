@@ -121,6 +121,8 @@ class EmployeeController extends Controller
          ]);
        
          $data = $request->all();
+         $data['status'] = 'active';
+    
          Employee::create($data);
          return redirect()->back()->with('message', 'Employee Created Successfully');
     }

@@ -56,7 +56,17 @@
                     </div>
 
                   
-                  
+                    <div class="form-group">
+                        <label>Grade</label>
+                        <input type="text" name="grade" 
+                        class="form-control" required="">
+                    </div>
+                    <div class="form-group">
+                        <label>Project Name</label>
+                        <input type="text" name="project_name" 
+                        class="form-control" required="">
+                    </div>
+
                     <div class="form-group  mt-2">
                         <label>Department</label>
                         <select class="form-control" name="division"
