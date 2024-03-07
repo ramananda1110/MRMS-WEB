@@ -56,12 +56,12 @@
                     <th scope="col">Employee ID</th>
                     <th scope="col">Name</th>
                     <!-- <th scope="col">Project Name</th> -->
-                    <th scope="col">Project Code</th>
+                    <!-- <th scope="col">Project Code</th> -->
                     
                     <th scope="col">Division</th>
-                    <th scope="col">Designation</th>
+                    <!-- <th scope="col">Designation</th> -->
                     <th scope="col">Mobile</th>
-                    <!-- <th scope="col">Email</th> -->
+                    <th scope="col">Email</th>
                     <!-- <th scope="col">Status</th> -->
                     <th scope="col">Action</th>
                    
@@ -78,39 +78,36 @@
                         <th scope="row">{{$employee->employee_id}}</th>
                         <td>{{$employee->name}}</td>
                         <!-- <td>{{$employee->project_name}}</td> -->
-                        <td>{{$employee->project_code}}</td>
+                        <!-- <td>{{$employee->project_code}}</td> -->
                     
                         <td>{{$employee->division}}</td>
-                        <td>{{$employee->designation}}</td>
+                        <!-- <td>{{$employee->designation}}</td> -->
                         <td>{{$employee->mobile_number}}</td>
-                        <!-- <td>{{$employee->email}}</td> -->
+                        <td>{{$employee->email}}</td>
                         <!-- <td>{{$employee->status}}</td> -->
                         
                    
                      <td> 
-                         @if(isset(Auth()->user()->role->permission['name']['department']['can-edit']))
-                                <a style="margin-right: 5px;" href="{{route('employee.edit',
-                                    [$employee->id])}}">
-                                 <i class="fas fa-edit"></i></a> 
+                        
+                                <a  href="{{route('employee.edit',[$employee->id])}}">
+                                <i class="fas fa-edit"></i></a> 
                                 <!-- </td> -->
                             
                                 
-                                 @endif
+                            
 
-                            <!-- <td> -->
+                                <!-- <td> -->
 
-                               
-
-                                 @if(isset(Auth()->user()->role->permission['name']['department']['can-delete']))
+<!-- <i class="fas fa-trash"></i> -->
                                   
                                 <!-- Button trigger modal -->
-                                <a   data-bs-toggle="modal" data-bs-target="#exampleModal{{$employee->id}}", href="#">
-                                  <i class="fas fa-trash"></i>
-                                </a>
-                                @endif
-
-                                <a style="margin-right: 5px;" href="{{route('departments.edit',
-                                    [$employee->id])}}"><i class="fa fa-circle-chevron-down"></i></a>
+                                <a data-bs-toggle="modal" data-bs-target="#exampleModal{{$employee->id}}", href="#">
+                                <i class="fas fa-trash" style="margin-left: 10;"></i></a>
+                             
+                                <!-- </i> -->
+                                <a href="#" data-bs-toggle="modal" data-bs-target="#exampleModal2{{$employee->id}}">
+                                     <i class="fa-solid fa-user-plus" style="margin-left: 10;"></i></a>
+                                
                            
                         
                                 <!-- Modal -->
@@ -141,7 +138,43 @@
                                     </div>
                                 </div>
 
-                            </td>
+
+                                <div class="modal fade" id="exampleModal2{{$employee->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <form action="#" method="post">@csrf
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                <h1 class="modal-title fs-5" id="exampleModalLabel">Create a User</h1>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                
+                                                <div class="from-group"> 
+                                                        <lavel>User Info:  </lavel>
+
+                                                        <select class="from-control" name="status">
+                                                            <option value="0">{{$employee->name}}</option>
+                                                            <option value="1">{{$employee->division}}</option>
+                                                            
+                                                        </select>
+                                                    </div>
+ 
+                                                </div>
+                                                <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                <form action="#" method="post">@csrf
+                                                        
+                                                            <button class="btn btn-outline-danger">
+                                                                Submit
+                                                            </button>
+                                                </form>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+
+                        </td>
 
                     </tr>
                    

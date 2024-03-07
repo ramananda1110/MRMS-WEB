@@ -6,13 +6,6 @@
    
         <div class="col-md-12">
 
-        
-            <a  href="{{Route('import.excel')}}">
-                               
-                 <button type="button" class="btn btn-primary"> Emport Employee</button>
-            </a>
-                            
-
             <nav aria-label="breadcrumb" class="mt-3">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item active" aria-current="page">All Users</li>
@@ -57,7 +50,7 @@
                             <td>{{$user->address}}</td>
                             <td>{{$user->mobile_number}}</td>
                            
-                            <td>  @if(isset(Auth()->user()->role->permission['name']['user']['can-edit']))
+                            <td> @if(isset(Auth()->user()->role->permission['name']['user']['can-edit']))
 
                                 <a href="{{route('users.edit',
                                     [$user->id])}}">
