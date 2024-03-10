@@ -37,21 +37,24 @@ class AuthController extends Controller
                 $user = Auth::user();
                 
                 // Generate a token for the authenticated user
-                $token = $user->createToken('auth_token')->plainTextToken;
+                    $token = $user->createToken('auth_token')->plainTextToken;
 
-                // Return the user data and the token in the response
-                return response()->json([
-                    'status_code' => 200,
-                    'user' => $user,
-                    'user' => array_merge($user->toArray(), [
-                        'is_admin' => $user->isAdmin(),
-                        'api_token' => $token,
-                    ]),
-                    'message' => 'Success'
-                    
-                ], 200);
-            }
+                    // Make department_id and role_id hidden in the JSON response
+                    $user->makeHidden(['department_id', 'role_id']);
 
+                    // Return the user data and the token in the response
+                    return response()->json([
+                        'status_code' => 200,
+                        'user' => array_merge($user->toArray(), [
+                            'is_admin' => $user->isAdmin(),
+                            'api_token' => $token,
+                            'department_name' => $user->department->name,
+                            'role' => $user->role->name,
+                        ]),
+                        'message' => 'Success'
+                        
+                    ], 200);
+                }
             // If authentication fails, return an error response
             return response()->json([
                 'status_code' => 401,
