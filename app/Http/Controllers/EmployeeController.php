@@ -166,10 +166,18 @@ class EmployeeController extends Controller
     
         // Check if a user with the same employee ID already exists
         $existingUser = User::where('employee_id', $employee->employee_id)->first();
-    
+
+        // Check if a user with the same email address already exists
+        $existingEmail = User::where('email', $employee->email)->first();
+
         // If the user already exists, return a message indicating that the user exists
         if ($existingUser) {
             return redirect()->back()->with('error', 'User with the same employee ID already exists');
+        }
+
+        // If the email already exists, return a message indicating that the email exists
+        if ($existingEmail) {
+            return redirect()->back()->with('error', 'User with the same email address already exists');
         }
     
         // If the user doesn't exist, create a new user
