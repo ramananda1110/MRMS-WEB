@@ -62,7 +62,7 @@
                     </div>
 
                     <div class="form-group  mt-2">
-                        <label>Department</label>
+                        <label>Division</label>
                         <select class="form-control" name="department_id"
                         require="">
                             @foreach(App\Models\Department::all() as $department)

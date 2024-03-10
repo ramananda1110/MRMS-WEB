@@ -6,6 +6,12 @@
         <div class='alert alert-success'>
             {{Session::get('message')}}
         </div>
+       
+    @endif
+    @if(Session::has('error'))
+    <div class='alert alert-danger'>
+        {{ Session::get('error') }}
+    </div>
     @endif
     
     <div class="row justify-content-center">
@@ -141,7 +147,7 @@
 
                                 <div class="modal fade" id="exampleModal2{{$employee->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                     <div class="modal-dialog">
-                                        <form action="#" method="post">@csrf
+                                        <form action="{{route('create.user', [$employee->id])}}" method="post">@csrf
                                             <div class="modal-content">
                                                 <div class="modal-header">
                                                 <h1 class="modal-title fs-5" id="exampleModalLabel">Create a User</h1>
@@ -149,23 +155,55 @@
                                                 </div>
                                                 <div class="modal-body">
                                                 
-                                                <div class="from-group"> 
-                                                        <lavel>User Info:  </lavel>
+                                                <div class="card">
+                                               
+                                                <div class="card-body">
+                                                
 
-                                                        <select class="from-control" name="status">
-                                                            <option value="0">{{$employee->name}}</option>
-                                                            <option value="1">{{$employee->division}}</option>
-                                                            
-                                                        </select>
-                                                    </div>
- 
+                                                <div class="form-group">
+                                                    <label>Division</label>
+                                                    <select class="form-control" name="department_id"
+                                                    require="">
+                                                        @foreach(App\Models\Department::all() as $department)
+                                                        <option value="{{$department->id}}" @if($department->name==$employee->division)
+                                                            selected @endif>
+                                                            {{$department->name}}
+
+                                                        </option>
+                                                        @endforeach
+                                                    </select>
+
+
                                                 </div>
-                                                <div class="modal-footer">
+                                                            
+                                                    <div class="form-group  mt-2">
+                                                        <label>Role</label>
+                                                        <select class="form-control" name="role_id"
+                                                        require="">
+                                                            @foreach(App\Models\Role::all() as $role)
+                                                            <option value="{{$role->id}}">{{$role->name}}</option>
+                                                            @endforeach
+                                                        </select>
+
+                                                    </div>
+
+
+                                                    <div class="form-group  mt-2">
+                                                        <label for="name">Password</label>
+                                                        <input type="password" name="password" 
+                                                        class="form-control" required="">
+                                                    </div>
+
+
+                                                </div>
+                                                
+                                            </div>
+                                              <div class="modal-footer">
                                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                                                 <form action="#" method="post">@csrf
                                                         
-                                                            <button class="btn btn-outline-danger">
-                                                                Submit
+                                                            <button class="btn btn-outline-success">
+                                                                Create
                                                             </button>
                                                 </form>
                                                 </div>

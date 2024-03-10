@@ -8,6 +8,7 @@ use App\Imports\ExcelImpoter;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Models\Employee;
 use DataTables;
+use App\Models\User;
 
 
 
@@ -138,9 +139,7 @@ class EmployeeController extends Controller
 
     public function edit($id)
     {
-
         $employee = Employee::find($id);
-
         return view('admin.employee.edit', compact('employee'));
 
     }
@@ -153,4 +152,44 @@ class EmployeeController extends Controller
         return redirect()->route("employee.index")->with('message', 'Employee Updated Successfully');
 
     }
+
+
+    public function createUser(Request $request, $id)
+    {
+        $this->validate($request, [
+            'password'=>'required|string',
+            'department_id'=>'required',
+            'role_id'=>'required',
+        ]);
+    
+        $employee = Employee::find($id);
+    
+        // Check if a user with the same employee ID already exists
+        $existingUser = User::where('employee_id', $employee->employee_id)->first();
+    
+        // If the user already exists, return a message indicating that the user exists
+        if ($existingUser) {
+            return redirect()->back()->with('error', 'User with the same employee ID already exists');
+        }
+    
+        // If the user doesn't exist, create a new user
+        $data = $request->all();
+        $image = 'avatar2.png';
+        $data['name'] = $employee->name;
+        $data['employee_id'] = $employee->employee_id;
+        $data['project_code'] = $employee->project_code;
+        $data['email'] = $employee->email;
+        $data['mobile_number'] = $employee->mobile_number;
+        $data['designation'] = $employee->designation;
+        $data['start_from'] = date('Y-m-d');
+       
+        $data['image'] = $image;
+        $data['password'] = bcrypt($request->password);
+        $data['department_id'] = $request->department_id;
+        $data['role_id'] = $request->role_id;
+    
+        User::create($data);
+        return redirect()->back()->with('message', 'User Created Successfully');
+    }
+    
 }

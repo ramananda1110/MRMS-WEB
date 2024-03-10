@@ -60,9 +60,7 @@
                     <div class="form-group">
                         <label>Designation</label>
                         <input type="text" name="designation" 
-                        class="form-control", value="{{$user->designation}}" required="">
-
-                       
+                        class="form-control", value="{{$user->designation}}" required="">     
     
                     </div>
 

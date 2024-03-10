@@ -57,6 +57,8 @@ Route::group(['middleware'=> ['auth', 'has.permission']], function(){
     Route::post('/import-employee', 'EmployeeController@import');
 
     Route::resource('employee', 'EmployeeController');
+   
+    Route::post('create-user\{id}', 'EmployeeController@createUser')->name('create.user');
 
 
     Route::post('/import-department', 'DepartmentController@import');

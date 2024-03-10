@@ -115,4 +115,22 @@ class RoomController extends Controller
      }
 
      
+     public function getDashboardInfo(Request $request) {
+        //return Room::all();
+
+      
+            return response()->json([
+                'status_code' => 200,
+               
+                'data' =>  [
+                    'total_metting' => 120,
+                    'upcoming' => 23,
+                    'pending' => 140,
+                    'completed' => 45,
+                ],
+                'message' => 'Success'
+                
+            ], 200);
+     }
+
 }

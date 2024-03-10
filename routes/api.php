@@ -29,6 +29,7 @@ Route::post('/login', 'AuthController@login');
 Route::get('/room-list', 'RoomController@roomList');
 Route::get('/employee-list', 'EmployeeController@getEmployee');
 
+Route::get('/dashboard', 'RoomController@getDashboardInfo');
 
 // Route::group(['middleware' => ['auth:sanctum']], function () {
 //     Route::get('/employee-list', 'EmployeeController@employeeList');
