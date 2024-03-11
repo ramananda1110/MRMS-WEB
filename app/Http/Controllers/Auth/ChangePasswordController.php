@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User; 
-use Illuminate\Support\Facades\Log;
+use Illuminate\Http\Response;
 
 class ChangePasswordController extends Controller
 {
@@ -18,16 +18,24 @@ class ChangePasswordController extends Controller
         // Retrieve the API token from the query parameters
         $apiToken = $request->query('api_token');
 
-        // Log the API token for debugging
-        Log::info('API Token from Request:', ['api_token' => $apiToken]);
-
         // Attempt to find the user by the API token
+        
+        if($apiToken == null) {
+            return response()->json([
+                'status_code' => Response::HTTP_UNAUTHORIZED,
+                'message' => 'Required API Token!'
+                 ], Response::HTTP_OK);
+        }
+
         $user = User::where('api_token', $apiToken)->first();
 
-        Log::info('User retrieved using API Token:', ['user' => $user]);
 
         if (!$user) {
-            return response()->json(['error' => 'Unauthorized'], 401);
+             // If authentication fails, return an error response
+         return response()->json([
+            'status_code' => Response::HTTP_UNAUTHORIZED,
+            'message' => 'Unauthorized credentials'
+             ], Response::HTTP_OK);
         }
 
         // Validate the request data
@@ -39,14 +47,21 @@ class ChangePasswordController extends Controller
 
         // Check if the current password matches the user's password
         if (!Hash::check($request->current_password, $user->password)) {
-            return response()->json(['error' => 'Current password does not match'], 401);
+            return response()->json([
+                'status_code' => 422,
+                'message' => 'Current password does not match'
+                 ], Response::HTTP_OK);
         }
 
         // Update the user's password
         $user->password = bcrypt($request->new_password);
         $user->save();
 
-        return response()->json(['message' => 'Password changed successfully'], 200);
+        
+        return response()->json([
+            'status_code' => Response::HTTP_OK,
+            'message' => 'Password changed successfully'
+             ], Response::HTTP_OK);
     }
     
 }
