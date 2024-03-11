@@ -44,6 +44,14 @@ class Kernel extends HttpKernel
             'throttle:api',
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
         ],
+
+        'api.auth' => [
+            \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
+            'auth:sanctum',
+        ],
+        'api.unauth' => [
+            // Custom middleware for unauthenticated routes
+        ],
     ];
 
     /**

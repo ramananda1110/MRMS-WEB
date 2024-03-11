@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Auth\ChangePasswordController;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,7 +32,14 @@ Route::get('/employee-list', 'EmployeeController@getEmployee');
 
 Route::get('/dashboard', 'RoomController@getDashboardInfo');
 
-// Route::group(['middleware' => ['auth:sanctum']], function () {
-//     Route::get('/employee-list', 'EmployeeController@employeeList');
 
-// });
+Route::group(['middleware' => ['auth:sanctum']], function () {
+    //Route::get('/employee-list', 'EmployeeController@employeeList');
+
+});
+
+// Unauthenticated routes
+Route::group(['middleware' => ['api.unauth']], function () {
+    // Define unauthenticated routes here
+    Route::post('/profile/change-password', [ChangePasswordController::class, 'changePassword']);
+});

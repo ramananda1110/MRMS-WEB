@@ -13,54 +13,44 @@ use Illuminate\Http\Response;
 class AuthController extends Controller
 {
     
-    public function login2(Request $request)
-    {
-        if (!Auth::attempt($request->only('email', 'password'))) {
-            return response()->json([
-                'message' => 'Invalid credentials'
-            ], Response::HTTP_UNAUTHORIZED);
-        }
-
-        $user = Auth::user();
-
-        return response()->json([
-            'user' => $user
-        ], Response::HTTP_OK);
-    }
-    
     public function login(Request $request)
-        {
-            $credentials = $request->only('employee_id', 'password');
+    {
+        $credentials = $request->only('employee_id', 'password');
 
-            // Attempt to authenticate the user
-            if (Auth::attempt($credentials)) {
-                $user = Auth::user();
-                
-                // Generate a token for the authenticated user
-                    $token = $user->createToken('auth_token')->plainTextToken;
+        // Attempt to authenticate the user
+        if (Auth::attempt($credentials)) {
+            $user = Auth::user();
 
-                    // Make department_id and role_id hidden in the JSON response
-                    $user->makeHidden(['department_id', 'role_id']);
+            // Generate a token for the authenticated user
+            $token = $user->createToken('auth_token')->plainTextToken;
+            //dump($token);
 
-                    // Return the user data and the token in the response
-                    return response()->json([
-                        'status_code' => 200,
-                        'user' => array_merge($user->toArray(), [
-                            'is_admin' => $user->isAdmin(),
-                            'api_token' => $token,
-                            'department_name' => $user->department->name,
-                            'role' => $user->role->name,
-                        ]),
-                        'message' => 'Success'
-                        
-                    ], 200);
-                }
-            // If authentication fails, return an error response
+            //update the api_token field
+            $user->api_token = $token;
+            $user->save();
+
+            // Make department_id and role_id hidden in the JSON response
+            $user->makeHidden(['department_id', 'role_id']);
+
+            // Return the user data and the token in the response
             return response()->json([
-                'status_code' => 401,
-                'user' => null,
-                'message' => 'Unauthorized credentials'
-            ], 401);
+                'status_code' => Response::HTTP_OK,
+                'user' => array_merge($user->toArray(), [
+                    'is_admin' => $user->isAdmin(),
+                    'api_token' => $token,
+                    'department_name' => optional($user->department)->name,
+                    'role' => optional($user->role)->name,
+                ]),
+                'message' => 'Success'
+            ]);
         }
+
+        // If authentication fails, return an error response
+        return response()->json([
+            'status_code' => Response::HTTP_UNAUTHORIZED,
+            'user' => null,
+            'message' => 'Unauthorized credentials'
+        ], Response::HTTP_UNAUTHORIZED);
+    }
 
 }

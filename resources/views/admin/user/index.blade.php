@@ -4,7 +4,7 @@
 <div class="container mt-5">
     <div class="row justify-content-center">
    
-        <div class="col-md-12">
+        <div class="col-md-11">
 
             <nav aria-label="breadcrumb" class="mt-3">
                 <ol class="breadcrumb">
@@ -22,13 +22,15 @@
                         <th>SN</th>
                         <th>Photo</th>
                         <th>Name</th>
-                        <th>Email</th>
+                        <th>Employee ID</th>
                         <th>Role</th>
-                        <th>Department</th>
+                        
                         <th>Designation</th>
-                        <th>Start Date</th>
-                        <th>Address</th>
+                        <!-- <th>Start Date</th> -->
+                        <!-- <th>Address</th> -->
                         <th>Mobile</th>
+                        <th>Email</th>
+                        <th>Department</th>
                         <th>Action</th>
                     
                     </tr>
@@ -42,14 +44,15 @@
                             <td>{{$key+1}}</td>
                             <td><image src="{{asset('profile')}}//{{$user->image}}" width="50"></td>
                             <td>{{$user->name}}</td>
-                            <td>{{$user->email}}</td>
+                            <td>{{$user->employee_id}}</td>
                             <td><span class="badge bg-success">{{$user->role->name}}</span></td>
                             <td>{{$user->department->name}}</td>
-                            <td>{{$user->designation}}</td>
-                            <td>{{$user->start_from}}</td>
-                            <td>{{$user->address}}</td>
-                            <td>{{$user->mobile_number}}</td>
                            
+                            <!-- <td>{{$user->start_from}}</td> -->
+                            <!-- <td>{{$user->address}}</td> -->
+                            <td>{{$user->mobile_number}}</td>
+                            <td>{{$user->email}}</td>
+                            <td>{{$user->designation}}</td>
                             <td> @if(isset(Auth()->user()->role->permission['name']['user']['can-edit']))
 
                                 <a href="{{route('users.edit',
