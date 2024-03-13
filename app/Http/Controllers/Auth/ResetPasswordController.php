@@ -6,6 +6,11 @@ use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\ResetsPasswords;
 
+use App\Models\User;
+use App\Http\Requests\ResetPasswordRequest;
+use Ichtrojan\Otp\Otp;
+use Hash;
+
 class ResetPasswordController extends Controller
 {
     /*
@@ -19,12 +24,33 @@ class ResetPasswordController extends Controller
     |
     */
 
-    use ResetsPasswords;
+    // use ResetsPasswords;
 
-    /**
-     * Where to redirect users after resetting their password.
-     *
-     * @var string
-     */
-    protected $redirectTo = RouteServiceProvider::HOME;
+    // /**
+    //  * Where to redirect users after resetting their password.
+    //  *
+    //  * @var string
+    //  */
+    // protected $redirectTo = RouteServiceProvider::HOME;
+
+    private $otp;
+
+    public function _costruct()
+    {
+        $this->otp = new Otp;
+    }
+
+    public function passwordReset(ResetPasswordRequest $request)
+    {
+        $otp2 = $this->otp->validate($request->email, $request->otp);
+
+        if(!$otp2->status) {
+            return response()->json(['error' => $otp2], 401);
+        }
+        $user = User::where('email', $request->email)->first();
+        $user->update(['password' => Hash::make($request->password)]);
+        $user->tokens()->delete();
+        $sucess['success'] = true;
+        return response()->json($sucess, 200);
+    }
 }

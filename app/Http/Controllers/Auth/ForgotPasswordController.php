@@ -5,6 +5,10 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\SendsPasswordResetEmails;
 
+use App\Models\User;
+use App\Notifications\ResetPasswordVerificationNotification;
+use App\Http\Requests\ForgetPasswordRequest;
+
 class ForgotPasswordController extends Controller
 {
     /*
@@ -18,5 +22,14 @@ class ForgotPasswordController extends Controller
     |
     */
 
-    use SendsPasswordResetEmails;
+    //use SendsPasswordResetEmails;
+
+
+    public function forgotPassword(ForgetPasswordRequest $request){
+        $input = $request->only('email');
+        $user = User::where('email', $input)->first();
+        $user->notify(new ResetPasswordVerificationNotification());
+        $success['success'] = true;
+        return response()->json($success, 200);
+    }
 }

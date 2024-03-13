@@ -3,6 +3,9 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\ChangePasswordController;
+use App\Http\Controllers\Auth\ForgotPasswordController;
+use App\Http\Controllers\Auth\ResetPasswordController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -31,6 +34,10 @@ Route::get('/room-list', 'RoomController@roomList');
 Route::get('/employee-list', 'EmployeeController@getEmployee');
 
 Route::get('/dashboard', 'RoomController@getDashboardInfo');
+
+Route::post('/password/reset', [ResetPasswordController::class, 'passwordReset']);
+Route::post('/password/forgot-password', [ForgotPasswordController::class, 'forgotPassword']);
+
 
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
