@@ -41,5 +41,5 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 // Unauthenticated routes
 Route::group(['middleware' => ['api.unauth']], function () {
     // Define unauthenticated routes here
-    Route::post('/profile/change-password', [ChangePasswordController::class, 'changePassword']);
+    Route::post('/user/change-password', [ChangePasswordController::class, 'changePassword']);
 });
