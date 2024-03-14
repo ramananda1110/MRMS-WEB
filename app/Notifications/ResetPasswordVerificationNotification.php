@@ -25,12 +25,11 @@ class ResetPasswordVerificationNotification extends Notification
      */
     public function __construct()
     {
-        $this->message = 'Use the below code for verification process';
-        $this->subject = 'Password Resetting';
+        $this->message = 'Use the below code to reset your process.';
+        $this->subject = 'Password Reset';
         $this->fromEmail = 'admin@ddcl.bd';
         $this->mailer = 'smtp';
         $this->otp = new Otp;
-        
     }
 
     /**
@@ -54,9 +53,9 @@ class ResetPasswordVerificationNotification extends Notification
     {
         
         // $otpGenerator = new Otp();
-        $otp = (new Otp)->generate('admin@gmail.com', 'numeric', 6, 15);
+        // $otp = (new Otp)->generate('admin@gmail.com', 'numeric', 6, 15);
+        $otp = $this->otp->generate($notifiable->email, 'numeric', 6, 60);
         
-
         return (new MailMessage)
                     ->mailer('smtp')
                     ->subject($this->subject)

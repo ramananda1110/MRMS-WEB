@@ -40,17 +40,44 @@ class ResetPasswordController extends Controller
         $this->otp = new Otp;
     }
 
-    public function passwordReset(ResetPasswordRequest $request)
-    {
-        $otp2 = $this->otp->validate($request->email, $request->otp);
+    // public function passwordReset(ResetPasswordRequest $request)
+    // {
+    //     $otp2 = $this->otp->validate($request->email, $request->otp);
 
-        if(!$otp2->status) {
-            return response()->json(['error' => $otp2], 401);
+    //     if(!$otp2->status) {
+    //         return response()->json(['error' => $otp2], 401);
+    //     }
+    //     $user = User::where('email', $request->email)->first();
+    //     $user->update(['password' => Hash::make($request->password)]);
+    //     $user->tokens()->delete();
+    //     $sucess['success'] = true;
+    //     return response()->json($sucess, 200);
+    // }
+
+    public function passwordReset(ResetPasswordRequest $request)
+        {
+            $otp2 = $this->otp;
+
+            if (!$otp2) {
+                return response()->json(['error' => 'OTP object not found'], 500);
+            }
+
+            $validationResult = $otp2->validate($request->email, $request->otp);
+
+            if (!$validationResult->status) {
+                return response()->json(['error' => $validationResult], 401);
+            }
+
+            $user = User::where('email', $request->email)->first();
+
+            if (!$user) {
+                return response()->json(['error' => 'User not found'], 404);
+            }
+
+            $user->update(['password' => Hash::make($request->password)]);
+            $user->tokens()->delete();
+
+            $success['success'] = true;
+            return response()->json($success, 200);
         }
-        $user = User::where('email', $request->email)->first();
-        $user->update(['password' => Hash::make($request->password)]);
-        $user->tokens()->delete();
-        $sucess['success'] = true;
-        return response()->json($sucess, 200);
-    }
 }
