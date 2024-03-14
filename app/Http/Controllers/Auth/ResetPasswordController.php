@@ -45,13 +45,22 @@ class ResetPasswordController extends Controller
         $otp2 = $this->otp->validate($request->email, $request->otp);
 
         if(!$otp2->status) {
-            return response()->json(['error' => $otp2], 401);
+            //return response()->json(['error' => $otp2], 401);
+            return response()->json([
+                'status_code' => 422,
+                'message' => $otp2->message
+                 ], 200);
         }
+
         $user = User::where('email', $request->email)->first();
+
         $user->update(['password' => Hash::make($request->password)]);
         $user->tokens()->delete();
-        $success['success'] = true;
-        return response()->json($success, 200);
+
+        return response()->json([
+            'status_code' => 200,
+            'message' => 'Password has been successfully changed.'
+             ], 200);
     }
 
 }
