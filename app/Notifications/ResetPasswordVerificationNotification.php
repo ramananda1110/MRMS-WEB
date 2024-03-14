@@ -54,7 +54,7 @@ class ResetPasswordVerificationNotification extends Notification
         
         // $otpGenerator = new Otp();
         // $otp = (new Otp)->generate('admin@gmail.com', 'numeric', 6, 15);
-        $otp = $this->otp->generate($notifiable->email, 'numeric', 6, 60);
+        $otp = $this->otp->generate($notifiable->email, 'numeric', 4, 60);
         
         return (new MailMessage)
                     ->mailer('smtp')

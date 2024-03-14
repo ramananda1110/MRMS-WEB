@@ -49,8 +49,8 @@ class AuthController extends Controller
         return response()->json([
             'status_code' => Response::HTTP_UNAUTHORIZED,
             'user' => null,
-            'message' => 'Unauthorized credentials'
-        ], Response::HTTP_UNAUTHORIZED);
+            'message' => "Oops! It seems your credentials don't match. Please verify and retry."
+        ], Response::HTTP_OK);
     }
 
 }
