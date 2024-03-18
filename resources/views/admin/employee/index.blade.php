@@ -42,7 +42,7 @@
                         </div>
                             <div class="col-md-8">
                                 <form action="{{route('search.employee')}}" method="GET" class="input-group">
-                                    <input type="text" name="search" class="form-control" placeholder="name, id, email, phone etc..">
+                                    <input type="text" name="search" class="form-control" placeholder="name,phone,emp id...">
                                     <div class="input-group-append ms-1">
                                         <button type="submit" class="btn btn-outline-primary">Search</button>
                                     </div>

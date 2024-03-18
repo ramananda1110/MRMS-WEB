@@ -9,6 +9,7 @@ use Maatwebsite\Excel\Facades\Excel;
 use App\Models\Employee;
 use DataTables;
 use App\Models\User;
+use App\Notifications\CreateNewUserNotification;
 
 
 
@@ -172,7 +173,7 @@ class EmployeeController extends Controller
 
         // If the user already exists, return a message indicating that the user exists
         if ($existingUser) {
-            return redirect()->back()->with('error', 'User with the same employee ID already exists');
+            return redirect()->back()->with('error', 'User already exists');
         }
 
         // If the email already exists, return a message indicating that the email exists
@@ -196,7 +197,19 @@ class EmployeeController extends Controller
         $data['department_id'] = $request->department_id;
         $data['role_id'] = $request->role_id;
     
+
+        $user = Employee::where('email', $employee->email)->first();
+
+
+        if ($user) {
+                $user->notify(new CreateNewUserNotification($employee->employee_id, $request->password));
+        }
+        
+            
         User::create($data);
+
+
+
         return redirect()->back()->with('message', 'User Created Successfully');
     }
     
