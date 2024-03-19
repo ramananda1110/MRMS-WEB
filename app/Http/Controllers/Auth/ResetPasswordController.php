@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\ResetsPasswords;
+use Illuminate\Http\Request;
 
 use App\Models\User;
 use App\Http\Requests\ResetPasswordRequest;
@@ -40,7 +41,7 @@ class ResetPasswordController extends Controller
         $this->otp = $otp;
     }
 
-    public function passwordReset(ResetPasswordRequest $request)
+    public function verifyOTP(ResetPasswordRequest $request)
     {
         $otp2 = $this->otp->validate($request->email, $request->otp);
 
@@ -52,15 +53,48 @@ class ResetPasswordController extends Controller
                  ], 200);
         }
 
-        $user = User::where('email', $request->email)->first();
-
-        $user->update(['password' => Hash::make($request->password)]);
-        $user->tokens()->delete();
-
         return response()->json([
             'status_code' => 200,
-            'message' => 'Password has been successfully changed.'
+            'message' => 'OTP has been successfully verified.'
              ], 200);
+
+        // $user = User::where('email', $request->email)->first();
+
+        // $user->update(['password' => Hash::make($request->password)]);
+        // $user->tokens()->delete();
+
+        // return response()->json([
+        //     'status_code' => 200,
+        //     'message' => 'Password has been successfully changed.'
+        //      ], 200);
+    }
+
+    public function passwordReset(Request $request)
+    {
+        $email = $request->query('email');
+        $password = $request->query('password');
+
+       // dd($email . ' and password '. $password);
+
+        $user = User::where('email', $email)->first();
+
+        $user->update(['password' => Hash::make($password)]);
+        $user->tokens()->delete();
+
+
+        if ($user) {
+            return response()->json([
+                'status_code' => 200,
+                'message' => 'Password has been successfully changed.'
+                 ], 200);;
+        }
+
+        return response()->json([
+            'status_code' => 422,
+            'message' => "Password change failed. Email doesn't match."
+             ], 200);
+
+       
     }
 
 }

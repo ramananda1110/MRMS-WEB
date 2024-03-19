@@ -1,9 +1,10 @@
 <div id="layoutSidenav_content">
                 <main>
                     <div class="container-fluid px-4">
-                        <h1 class="mt-4">Dashboard</h1>
+                        <!-- <h1 class="mt-4">Dashboard</h1> -->
+
                         <ol class="breadcrumb mb-4">
-                            <li class="breadcrumb-item active">Dashboard</li>
+                            <li class="breadcrumb-item active"><p class="mt-2"></p></li>
                         </ol>
                         <div class="row">
                             <div class="col-xl-3 col-md-6">
@@ -19,7 +20,7 @@
 
                             <div class="col-xl-3 col-md-6">
                                 <div class="card bg-warning text-white mb-4">
-                                    <div class="card-body">Department
+                                    <div class="card-body">Division
                                         <p><i class="fas fa-home" style="font-size:18;"></i></p>
                                     </div>
                                     <div class="card-footer d-flex align-items-center justify-content-between">
@@ -33,12 +34,12 @@
 
                             <div class="col-xl-3 col-md-6">
                                 <div class="card bg-success text-white mb-4">
-                                    <div class="card-body">Notices
+                                    <div class="card-body">Employee
                                         <p><i class="fas fa-book" style="font-size:20px;"></i></p>
                                     </div>
                                     <div class="card-footer d-flex align-items-center justify-content-between">
                                         <a class="small text-white stretched-link" href="#">
-                                            {{App\Models\Notice::all()->count()}}
+                                            {{App\Models\Employee::all()->count()}}
                                         </a>
                                        
                                     </div>
@@ -46,11 +47,11 @@
                             </div>
                             <div class="col-xl-3 col-md-6">
                                 <div class="card bg-danger text-white mb-4">
-                                    <div class="card-body">Leave
+                                    <div class="card-body">Room
                                         <p><i class="fas fa-book" style="font-size:20px;"></i></p>
                                     </div>
                                     <div class="card-footer d-flex align-items-center justify-content-between">
-                                        <a class="small text-white stretched-link" href="#"> {{App\Models\Leave::all()->count()}}</a>
+                                        <a class="small text-white stretched-link" href="#"> {{App\Models\Room::all()->count()}}</a>
                                     </div>
                                 </div>
                             </div>

@@ -35,8 +35,9 @@ Route::get('/employee-list', 'EmployeeController@getEmployee');
 
 Route::get('/dashboard', 'RoomController@getDashboardInfo');
 
-Route::post('/password/reset', [ResetPasswordController::class, 'passwordReset']);
 Route::post('/password/forgot-password', [ForgotPasswordController::class, 'forgotPassword']);
+Route::post('/password/verify-otp', [ResetPasswordController::class, 'verifyOTP']);
+Route::post('/password/reset', [ResetPasswordController::class, 'passwordReset']);
 
 
 

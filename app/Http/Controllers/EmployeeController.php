@@ -202,7 +202,7 @@ class EmployeeController extends Controller
 
 
         if ($user) {
-                $user->notify(new CreateNewUserNotification($employee->employee_id, $request->password));
+            $user->notify(new CreateNewUserNotification($employee->employee_id, $request->password));
         }
         
             

@@ -60,7 +60,7 @@ class CreateNewUserNotification extends Notification
         ->line($this->message)
         ->line('User ID: ' . $this->userId) // Corrected access to $userId and $password
         ->line('Password: ' . $this->password)
-        ->line("To download the MRMS App from Google Play, please click [here]('https://play.google.com/store/apps/details?id=com.adora.mrm&hl=en&gl=US').");
+        ->line('To download the MRMS App from Google Play, please click [here](https://play.google.com/store/apps/details?id=com.adora.mrm&hl=en&gl=US).');
 
     }
 
