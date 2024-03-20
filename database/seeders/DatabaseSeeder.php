@@ -105,6 +105,22 @@ class DatabaseSeeder extends Seeder
             'designation'=> 'Software Engineer',
             'image' => ''
         ]);
+
+        User::create([
+            'employee_id'=>'14071',
+            'project_code'=>'PROJ000254',
+            'name'=>'TAHMID MAHTAB RATUL',
+            'email'=>'tahmid.ddclbd@gmail.com',
+            'password'=>bcrypt('password3'),
+            'email_verified_at'=>NOW(),
+            'address'=>'Mirpur, Dahka Bangladesh',
+            'mobile_number'=>'01628853526',
+            'department_id'=>7,
+            'role_id'=>3,
+            'start_from'=> '2023-12-03',
+            'designation'=> 'UI/UX EXPERT',
+            'image' => ''
+        ]);
     }
 
 

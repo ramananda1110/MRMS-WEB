@@ -20,9 +20,9 @@ class CreateMeetingsTable extends Migration
             $table->date('start_date');
             $table->time('start_time');
             $table->time('end_time');
-            $table->foreignId('host_id')->constrained('users');
-            $table->foreignId('co_host_id')->nullable()->constrained('users');
-            $table->string('status')->default('pending'); // Use string for status
+            $table->String('host_id')->nullable(); 
+            $table->String('co_host_id')->nullable(); 
+            $table->string('status')->default('pending');
             $table->timestamps();
         });
     }

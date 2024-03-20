@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\ChangePasswordController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\ResetPasswordController;
-
+use App\Http\Controllers\MeetingController;
 
 /*
 |--------------------------------------------------------------------------
@@ -50,4 +50,6 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 Route::group(['middleware' => ['api.unauth']], function () {
     // Define unauthenticated routes here
     Route::post('/user/change-password', [ChangePasswordController::class, 'changePassword']);
+    Route::post('/meetings', [MeetingController::class, 'store'])->name('meetings.store');
+
 });

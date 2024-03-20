@@ -28,6 +28,7 @@ class CreateUsersTable extends Migration
             $table->string('designation');
             $table->date('start_from');
             $table->string('image');
+            $table->string('api_token', 80)->unique()->nullable()->default(null);
             $table->rememberToken();
             $table->timestamps();
         });

@@ -3,6 +3,12 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Meeting;
+use App\Models\Participant;
+
+use App\Models\User;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Validator;
 
 class MeetingController extends Controller
 {
@@ -32,10 +38,110 @@ class MeetingController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+
+    
+    
     public function store(Request $request)
     {
-        //
+
+         // Retrieve the API token from the query parameters
+         $apiToken = $request->query('api_token');
+
+         // Attempt to find the user by the API token
+         
+         if($apiToken == null) {
+             return response()->json([
+                 'status_code' => Response::HTTP_UNAUTHORIZED,
+                 'message' => 'Required API Token!'
+                  ], Response::HTTP_OK);
+         }
+ 
+         $user = User::where('api_token', $apiToken)->first();
+ 
+ 
+         if (!$user) {
+              // If authentication fails, return an error response
+          return response()->json([
+             'status_code' => Response::HTTP_UNAUTHORIZED,
+             'message' => 'Unauthorized credentials'
+              ], Response::HTTP_OK);
+         }
+
+         $validator = Validator::make($request->all(), [
+            'room_id' => 'required|exists:rooms,id',
+            'meeting_title' => 'required|string|max:255',
+            'start_date' => 'required|date',
+            'start_time' => [
+                'required',
+                'date_format:H:i',
+                'after_or_equal:09:00', // Start time must be after or equal to 09:00 (9:00 AM)
+                'before_or_equal:17:00' // Start time must be before or equal to 17:00 (5:00 PM)
+            ],
+            'end_time' => [
+                'required',
+                'date_format:H:i',
+                'after:start_time', // End time must be after the start time
+                'after_or_equal:09:00', // End time must be after or equal to 09:00 (9:00 AM)
+                'before_or_equal:17:00' // End time must be before or equal to 17:00 (5:00 PM)
+            ],
+            'host_id' => 'required|exists:employees,employee_id',
+            'co_host_id' => 'nullable|exists:employees,employee_id',
+            'participants' => 'required|array', // Ensure participants is an array and required
+        ]);
+        
+        // Add custom validation rule to check for overlapping meetings
+        $validator->after(function ($validator) use ($request) {
+            // Retrieve input data
+            $room_id = $request->input('room_id');
+            $start_date = $request->input('start_date');
+            $start_time = $request->input('start_time');
+            $end_time = $request->input('end_time');
+        
+            // Check for overlapping meetings
+            $overlappingMeeting = Meeting::where('room_id', $room_id)
+                ->where('start_date', $start_date)
+                ->where(function ($query) use ($start_time, $end_time) {
+                    $query->whereBetween('start_time', [$start_time, $end_time])
+                        ->orWhereBetween('end_time', [$start_time, $end_time])
+                        ->orWhere(function ($query) use ($start_time, $end_time) {
+                            $query->where('start_time', '<', $start_time)
+                                    ->where('end_time', '>', $end_time);
+                        });
+                })
+                ->exists();
+        
+            // If overlapping meeting found, add error message
+            if ($overlappingMeeting) {
+                $validator->errors()->add('overlap', 'There is already a meeting scheduled at this time.');
+            }
+        });
+        
+
+
+            // If validation fails, return a custom response
+        if ($validator->fails()) {
+            return response()->json([
+                'message' => $validator->errors()->first(),
+                'status_code' => 422
+            ], 200);
+        }
+
+        // If validation passes, create the meeting using the validated data
+        $meeting = Meeting::create($validator->validated());
+
+
+        // Associate participants with the meeting
+        // $meeting->participants()->sync($validatedData['participants']);
+
+        // Return a success response with the created meeting
+            return response()->json([
+                'message' => 'Meeting created successfully',
+                'meeting' => $meeting,
+            ], 201);
     }
+
+
+
 
     /**
      * Display the specified resource.
@@ -82,3 +188,5 @@ class MeetingController extends Controller
         //
     }
 }
+
+
