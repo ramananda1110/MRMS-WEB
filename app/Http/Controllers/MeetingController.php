@@ -130,9 +130,21 @@ class MeetingController extends Controller
         $meeting = Meeting::create($validator->validated());
 
 
-        // Associate participants with the meeting
-        // $meeting->participants()->sync($validatedData['participants']);
+       //dd($participants);
+      
+        // Attach participants to the meeting
+        if ($request->has('participants')) {
+            foreach ($request->participants as $participantId) {
+                // Create a new participant record
+                Participant::create([
+                    'meeting_id' => $meeting->id,
+                    'participant_id' => $participantId
+                ]);
+            }
+        }
 
+
+       
         // Return a success response with the created meeting
             return response()->json([
                 'message' => 'Meeting created successfully',
