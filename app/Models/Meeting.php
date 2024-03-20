@@ -23,8 +23,10 @@ class Meeting extends Model
     ];
 
      // Define the participants relationship
+     
+
      public function participants()
-     {
-         return $this->belongsToMany(User::class, 'participants', 'meeting_id', 'participant_id');
-     }
+    {
+        return $this->hasMany(Participant::class);
+    }
 }

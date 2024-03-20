@@ -11,4 +11,9 @@ class Participant extends Model
 
     protected $fillable = ['meeting_id', 'participant_id'];
 
+
+    public function meeting()
+    {
+        return $this->belongsTo(Meeting::class);
+    }
 }

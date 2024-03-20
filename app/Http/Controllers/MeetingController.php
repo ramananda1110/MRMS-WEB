@@ -17,9 +17,16 @@ class MeetingController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+            // Retrieve all meetings with participants
+            $meetings = Meeting::with('participants')->get();
+
+            // Return the meetings as JSON response
+            return response()->json([
+                'meetings' => $meetings
+            ]);
+
     }
 
     /**
@@ -44,30 +51,7 @@ class MeetingController extends Controller
     public function store(Request $request)
     {
 
-         // Retrieve the API token from the query parameters
-         $apiToken = $request->query('api_token');
-
-         // Attempt to find the user by the API token
-         
-         if($apiToken == null) {
-             return response()->json([
-                 'status_code' => Response::HTTP_UNAUTHORIZED,
-                 'message' => 'Required API Token!'
-                  ], Response::HTTP_OK);
-         }
- 
-         $user = User::where('api_token', $apiToken)->first();
- 
- 
-         if (!$user) {
-              // If authentication fails, return an error response
-          return response()->json([
-             'status_code' => Response::HTTP_UNAUTHORIZED,
-             'message' => 'Unauthorized credentials'
-              ], Response::HTTP_OK);
-         }
-
-         $validator = Validator::make($request->all(), [
+      $validator = Validator::make($request->all(), [
             'room_id' => 'required|exists:rooms,id',
             'meeting_title' => 'required|string|max:255',
             'start_date' => 'required|date',

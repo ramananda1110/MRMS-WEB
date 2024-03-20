@@ -47,9 +47,11 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 });
 
 // Unauthenticated routes
-Route::group(['middleware' => ['api.unauth']], function () {
+Route::group(['middleware' => ['auth.api']], function () {
     // Define unauthenticated routes here
     Route::post('/user/change-password', [ChangePasswordController::class, 'changePassword']);
     Route::post('/meetings', [MeetingController::class, 'store'])->name('meetings.store');
+
+    Route::get('/meetings', [MeetingController::class, 'index'])->name('meetings.index');
 
 });
