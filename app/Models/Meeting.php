@@ -28,5 +28,16 @@ class Meeting extends Model
      public function participants()
     {
         return $this->hasMany(Participant::class);
+       
+    }
+
+    public function host()
+    {
+        return $this->belongsTo(Employee::class, 'host_id', 'employee_id');
+    }
+
+    public function coHost()
+    {
+        return $this->belongsTo(Employee::class, 'co_host_id', 'employee_id');
     }
 }

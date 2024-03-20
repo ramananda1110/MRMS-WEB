@@ -24,4 +24,18 @@ class Employee extends Model
         'mobile_number',
         'email',
     ];
+
+
+    public function meetings()
+    {
+        return $this->belongsToMany(Meeting::class, 'participants', 'participant_id', 'meeting_id');
+    }
+
+    /**
+     * Get the meetings where the employee is a host.
+     */
+    public function hostedMeetings()
+    {
+        return $this->hasMany(Meeting::class, 'host_id');
+    }
 }

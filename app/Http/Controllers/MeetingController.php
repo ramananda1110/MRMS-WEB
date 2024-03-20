@@ -20,13 +20,45 @@ class MeetingController extends Controller
     public function index(Request $request)
     {
             // Retrieve all meetings with participants
-            $meetings = Meeting::with('participants')->get();
+       $meetings = Meeting::with('participants')->get();
 
-            // Return the meetings as JSON response
-            return response()->json([
-                'meetings' => $meetings
-            ]);
+        //$meetings = Meeting::with(['participants.employee', 'host', 'coHost'])->get();
 
+        // Transform the meetings data to include participant names
+        $data = $meetings->map(function ($meeting) {
+            return [
+                'id' => $meeting->id,
+                'room_id' => $meeting->room_id,
+                'meeting_title' => $meeting->meeting_title,
+                'start_date' => $meeting->start_date,
+                'start_time' => $meeting->start_time,
+                'end_time' => $meeting->end_time,
+                'host_id' => $meeting->host_id,
+                'host_name' => $meeting->host ? $meeting->host->name : null,
+                'co_host_id' => $meeting->co_host_id,
+                'co_host_name' => $meeting->coHost ? $meeting->coHost->name : null,
+                'status' => $meeting->status,
+                'created_at' => $meeting->created_at,
+                'updated_at' => $meeting->updated_at,
+                'participants' => $meeting->participants->map(function ($participant) {
+                    return [
+                        'id' => $participant->id,
+                        'meeting_id' => $participant->meeting_id,
+                        'participant_id' => $participant->participant_id,
+                        'participant_name' => $participant->employee ? $participant->employee->name : null,
+                        'created_at' => $participant->created_at,
+                        'updated_at' => $participant->updated_at,
+                    ];
+                }),
+            ];
+        });
+        return response()->json([
+            'status_code' => Response::HTTP_OK,
+            'data' => $data,
+            'message' => 'Success'
+        ]);
+
+            
     }
 
     /**

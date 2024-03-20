@@ -20,8 +20,8 @@ class CreateMeetingsTable extends Migration
             $table->date('start_date');
             $table->time('start_time');
             $table->time('end_time');
-            $table->String('host_id')->nullable(); 
-            $table->String('co_host_id')->nullable(); 
+            $table->integer('host_id')->nullable(); 
+            $table->integer('co_host_id')->nullable(); 
             $table->string('status')->default('pending');
             $table->timestamps();
         });
