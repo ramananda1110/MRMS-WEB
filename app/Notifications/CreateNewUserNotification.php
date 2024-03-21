@@ -16,19 +16,21 @@ class CreateNewUserNotification extends Notification
     public $mailer;
     public $userId;
     public $password;
+    public $name;
    
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct($userId, $password)
+    public function __construct($userId, $name, $password)
     {
         $this->message = 'Below are your login credentials for accessing the MRMS App:';
         $this->subject = 'Welcome to MRMS';
         $this->fromEmail = 'admin@ddcl.bd';
         $this->mailer = 'smtp';
         $this->userId = $userId;
+        $this->name = $name;
         $this->password = $password;
 
     }
@@ -56,7 +58,7 @@ class CreateNewUserNotification extends Notification
         return (new MailMessage)
         ->mailer('smtp')
         ->subject($this->subject)
-        ->greeting('Hello and welcome to MRMS! ' . $notifiable->first_name)
+        ->greeting('Hello, ' . $this->name .' welcome to MRMS! ' . $notifiable->first_name)
         ->line($this->message)
         ->line('User ID: ' . $this->userId) // Corrected access to $userId and $password
         ->line('Password: ' . $this->password)

@@ -163,7 +163,6 @@ class MeetingController extends Controller
             }
         }
 
-
        
         // Return a success response with the created meeting
             return response()->json([
