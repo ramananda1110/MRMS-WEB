@@ -22,7 +22,10 @@ class CreateMeetingsTable extends Migration
             $table->time('end_time');
             $table->integer('host_id')->nullable(); 
             $table->integer('co_host_id')->nullable(); 
-            $table->string('status')->default('pending');
+            $table->string('booking_type')->default('book'); // book, rechedule
+            $table->string('booking_status')->default('pending'); // pending, cancel, completed, past, accept
+            $table->string('description')->nullable();
+
             $table->timestamps();
         });
     }

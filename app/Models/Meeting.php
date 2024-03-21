@@ -4,7 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-// use App\Models\Employee;
+use App\Models\Employee;
+use App\Models\Room;
 
 class Meeting extends Model
 {
@@ -29,6 +30,11 @@ class Meeting extends Model
     {
         return $this->hasMany(Participant::class);
        
+    }
+
+    public function room()
+    {
+        return $this->belongsTo(Room::class, 'room_id', 'id');
     }
 
     public function host()

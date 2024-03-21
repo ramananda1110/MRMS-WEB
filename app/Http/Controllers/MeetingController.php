@@ -29,6 +29,8 @@ class MeetingController extends Controller
             return [
                 'id' => $meeting->id,
                 'room_id' => $meeting->room_id,
+                'room_name' => $meeting->room->name,
+                'room_facilities' => $meeting->room->facilities,
                 'meeting_title' => $meeting->meeting_title,
                 'start_date' => $meeting->start_date,
                 'start_time' => $meeting->start_time,
@@ -37,7 +39,8 @@ class MeetingController extends Controller
                 'host_name' => $meeting->host ? $meeting->host->name : null,
                 'co_host_id' => $meeting->co_host_id,
                 'co_host_name' => $meeting->coHost ? $meeting->coHost->name : null,
-                'status' => $meeting->status,
+                'booking_type' => $meeting->booking_type,
+                'booking_status' => $meeting->booking_status,
                 'created_at' => $meeting->created_at,
                 'updated_at' => $meeting->updated_at,
                 'participants' => $meeting->participants->map(function ($participant) {
@@ -52,6 +55,7 @@ class MeetingController extends Controller
                 }),
             ];
         });
+       
         return response()->json([
             'status_code' => Response::HTTP_OK,
             'data' => $data,
