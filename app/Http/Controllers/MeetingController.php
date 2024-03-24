@@ -9,6 +9,7 @@ use App\Models\Participant;
 use App\Models\User;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Carbon;
 
 class MeetingController extends Controller
 {
@@ -25,7 +26,28 @@ class MeetingController extends Controller
         //$meetings = Meeting::with(['participants.employee', 'host', 'coHost'])->get();
 
         // Transform the meetings data to include participant names
+
+       
+
         $data = $meetings->map(function ($meeting) {
+
+                // Determine the status based on conditions
+            $status = $meeting->booking_status;
+            $today = now()->toDateString();
+            $startDate = $meeting->start_date;
+
+            if ($status === 'pending') {
+                if ($startDate < $today) {
+                    $status = 'canceled';
+                } 
+            } elseif ($status === 'accepted') {
+                if ($startDate < $today) {
+                    $status = 'completed';
+                } else {
+                    $status = 'upcoming';
+                }
+            }
+
             return [
                 'id' => $meeting->id,
                 'room_id' => $meeting->room_id,
@@ -40,7 +62,7 @@ class MeetingController extends Controller
                 'co_host_id' => $meeting->co_host_id,
                 'co_host_name' => $meeting->coHost ? $meeting->coHost->name : null,
                 'booking_type' => $meeting->booking_type,
-                'booking_status' => $meeting->booking_status,
+                'booking_status' => $status,
                 'created_at' => $meeting->created_at,
                 'updated_at' => $meeting->updated_at,
                 'participants' => $meeting->participants->map(function ($participant) {
@@ -90,7 +112,11 @@ class MeetingController extends Controller
       $validator = Validator::make($request->all(), [
             'room_id' => 'required|exists:rooms,id',
             'meeting_title' => 'required|string|max:255',
-            'start_date' => 'required|date',
+            'start_date' => [
+                'required',
+                'date',
+                'after_or_equal:today', // Ensure start date is after or equal to today
+            ],
             'start_time' => [
                 'required',
                 'date_format:H:i',
@@ -173,6 +199,47 @@ class MeetingController extends Controller
 
 
 
+    public function getMeetingsByDate(Request $request)
+    {
+        $date = $request->query('start_date');
+
+        // Parse the provided date string into a Carbon instance
+        $parsedDate = Carbon::parse($date);
+
+        // Retrieve meetings for the specified date
+        $meetings = Meeting::with(['participants.employee', 'host', 'coHost'])
+            ->whereDate('start_date', $parsedDate)
+            ->get();
+
+        // Transform the meetings data (similar to the previous API endpoint)
+        $data = $meetings->map(function ($meeting) {
+            return [
+                'id' => $meeting->id,
+                'room_id' => $meeting->room_id,
+                'room_name' => $meeting->room->name,
+                'meeting_title' => $meeting->meeting_title,
+                'start_date' => $meeting->start_date,
+                'start_time' => $meeting->start_time,
+                'end_time' => $meeting->end_time,
+                'host_id' => $meeting->host_id,
+                'host_name' => $meeting->host ? $meeting->host->name : null,
+                'co_host_id' => $meeting->co_host_id,
+                'co_host_name' => $meeting->coHost ? $meeting->coHost->name : null,
+                'booking_type' => $meeting->booking_type,
+                'booking_status' => $meeting->booking_status,
+                'created_at' => $meeting->created_at,
+                'updated_at' => $meeting->updated_at,
+                
+            ];
+        });
+
+        // Return the JSON response
+        return response()->json([
+            'status_code' => Response::HTTP_OK,
+            'data' => $data,
+            'message' => 'Success'
+        ]);
+    }
 
     /**
      * Display the specified resource.
@@ -218,6 +285,74 @@ class MeetingController extends Controller
     {
         //
     }
+
+
+        public function getSummary()
+        {
+                    // Get today's date
+                // Get today's date
+            $today = Carbon::today();
+
+            // Get count of meetings with different statuses
+            $upcomingCount = Meeting::where('booking_status', 'accepted')
+                ->whereDate('start_date', '>=', $today) // Start date on or after today
+                ->count();
+
+            $pendingCount = Meeting::where('booking_status', 'pending')->count();
+
+            $completedCount = Meeting::where('booking_status', 'accepted')
+                ->whereDate('start_date', '<', $today) // Start date before today
+                ->count();
+
+            // Total meeting count
+            $totalMeetingCount = Meeting::count();
+
+
+               // Calculate the date 7 days from today (upcoming 7 days)
+            $upcoming7Days = Carbon::today()->addDays(7);
+
+
+            // Get count of meetings in the upcoming 7 days
+             $meetings = Meeting::whereBetween('start_date', [$today, $upcoming7Days])->get();
+
+            // dd($meetings->count);
+
+            // Initialize the weekend data array
+            $weekendData = [
+                'Sunday' => 0,
+                'Monday' => 0,
+                'Tuesday' => 0,
+                'Wednesday' => 0,
+                'Thursday' => 0,
+                'Friday' => 0,
+                'Saturday' => 0,
+            ];
+
+            // Iterate through each meeting to update day-wise counts
+            foreach ($meetings as $meeting) {
+                // Extract the day of the week from the start date
+                $weekDay = Carbon::parse($meeting->start_date)->format('l');
+
+                // Increment the count for the respective day of the week
+                $weekendData[$weekDay]++;
+            }
+
+            // Return the summary data
+            $data = [
+                'total_meeting' => $totalMeetingCount,
+                'upcoming' => $upcomingCount,
+                'pending' => $pendingCount,
+                'completed' => $completedCount,
+                'weekend_data' => $weekendData,
+            ];
+
+            return response()->json([
+                'status_code' => Response::HTTP_OK,
+                'data' => $data,
+                'message' => 'Success'
+            ]);
+        }
+            
 }
 
 

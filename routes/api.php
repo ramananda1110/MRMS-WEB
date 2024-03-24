@@ -30,10 +30,7 @@ Route::post('/login', 'AuthController@login');
 // });
 
 
-Route::get('/room-list', 'RoomController@roomList');
-Route::get('/employee-list', 'EmployeeController@getEmployee');
 
-Route::get('/dashboard', 'RoomController@getDashboardInfo');
 
 Route::post('/password/forgot-password', [ForgotPasswordController::class, 'forgotPassword']);
 Route::post('/password/verify-otp', [ResetPasswordController::class, 'verifyOTP']);
@@ -53,5 +50,13 @@ Route::group(['middleware' => ['auth.api']], function () {
     Route::post('/meetings', [MeetingController::class, 'store'])->name('meetings.store');
 
     Route::get('/meetings', [MeetingController::class, 'index'])->name('meetings.index');
+
+    Route::get('/meetings/date', [MeetingController::class, 'getMeetingsByDate']);
+
+    Route::get('/room-list', 'RoomController@roomList');
+    Route::get('/employee-list', 'EmployeeController@getEmployee');
+
+
+    Route::get('/dashboard', 'MeetingController@getSummary');
 
 });
