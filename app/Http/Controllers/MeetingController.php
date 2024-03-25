@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Meeting;
 use App\Models\Participant;
+use DataTables;
 
 use App\Models\User;
 use Illuminate\Http\Response;
@@ -18,16 +19,75 @@ class MeetingController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+
+
+     public function index()
+     {
+             // Retrieve all meetings with participants
+        $meetings = Meeting::with('participants')->get();
+        return view('admin.meeting.index', compact('meetings'));
+             
+     }
+
+    public function upcoming()
+    {
+        // Retrieve all meetings with participants
+        $data = Meeting::with('participants')->get();
+
+        // Determine today's date
+        $today = now()->toDateString();
+
+        // Filter meetings and calculate statuses
+        $meetings = $data->filter(function ($meeting) use ($today) {
+            return $meeting->booking_status === 'accepted' && $meeting->start_date >= $today;
+        });
+
+    
+        return view('admin.meeting.index', compact('meetings'));
+    }
+
+    public function pending()
+    {
+        // Retrieve all meetings with participants
+        $data = Meeting::with('participants')->get();
+
+        // Determine today's date
+        $today = now()->toDateString();
+
+
+        $meetings = $data->filter(function ($meeting) use ($today) {
+            return $meeting->booking_status === 'pending';
+        });
+
+       
+
+        return view('admin.meeting.index', compact('meetings'));
+    }
+
+    public function completed()
+    {
+        // Retrieve all meetings with participants
+        $data = Meeting::with('participants')->get();
+
+        // Determine today's date
+        $today = now()->toDateString();
+
+        $meetings = $data->filter(function ($meeting) use ($today) {
+            return $meeting->booking_status === 'accepted' && $meeting->start_date < $today;
+        });
+
+        return view('admin.meeting.index', compact('meetings'));
+    }
+
+
+     // get all meeting for Mobile App
+    public function getAllMeetins(Request $request)
     {
             // Retrieve all meetings with participants
        $meetings = Meeting::with('participants')->get();
 
         //$meetings = Meeting::with(['participants.employee', 'host', 'coHost'])->get();
-
-        // Transform the meetings data to include participant names
-
-       
+   
 
         $data = $meetings->map(function ($meeting) {
 

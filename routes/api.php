@@ -49,7 +49,7 @@ Route::group(['middleware' => ['auth.api']], function () {
     Route::post('/user/change-password', [ChangePasswordController::class, 'changePassword']);
     Route::post('/meetings', [MeetingController::class, 'store'])->name('meetings.store');
 
-    Route::get('/meetings', [MeetingController::class, 'index'])->name('meetings.index');
+    Route::get('/meetings', [MeetingController::class, 'getAllMeetins'])->name('meetings.allmeetings');
 
     Route::get('/meetings/date', [MeetingController::class, 'getMeetingsByDate']);
 
