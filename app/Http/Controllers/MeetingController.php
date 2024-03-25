@@ -308,12 +308,16 @@ class MeetingController extends Controller
             $totalMeetingCount = Meeting::count();
 
 
-               // Calculate the date 7 days from today (upcoming 7 days)
-            $upcoming7Days = Carbon::today()->addDays(7);
+            
+            // Get the start date of the current week (Sunday)
+            $startOfWeek = Carbon::now()->startOfWeek()->subDay()->format('Y-m-d');
 
+            // Get the end date of the current week (Saturday)
+            $endOfWeek = Carbon::now()->endOfWeek()->format('Y-m-d');
 
-            // Get count of meetings in the upcoming 7 days
-             $meetings = Meeting::whereBetween('start_date', [$today, $upcoming7Days])->get();
+            // Get count of meetings for the current week
+            $meetings = Meeting::whereBetween('start_date', [$startOfWeek, $endOfWeek])->get();
+
 
             // dd($meetings->count);
 
@@ -328,22 +332,21 @@ class MeetingController extends Controller
                 'Saturday' => 0,
             ];
 
-            // Iterate through each meeting to update day-wise counts
             foreach ($meetings as $meeting) {
                 // Extract the day of the week from the start date
                 $weekDay = Carbon::parse($meeting->start_date)->format('l');
-
+        
                 // Increment the count for the respective day of the week
                 $weekendData[$weekDay]++;
             }
-
+        
             // Return the summary data
             $data = [
                 'total_meeting' => $totalMeetingCount,
                 'upcoming' => $upcomingCount,
                 'pending' => $pendingCount,
                 'completed' => $completedCount,
-                'weekend_data' => $weekendData,
+                'weekly_schedule' => $weekendData,
             ];
 
             return response()->json([
