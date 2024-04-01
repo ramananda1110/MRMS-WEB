@@ -18,14 +18,14 @@
             <ul class="nav nav-tabs">
                 <li class="nav-item" role="presentation">
                 
-                <a class="nav-link active" aria-current="page" href="{{ route('meetings.all') }}" id="all"  onclick="setActiveTab(event, this)">All</a>
+                <a class="nav-link" aria-current="page" href="{{ route('meetings.all') }}" id="all"  onclick="setActiveTab(event, this)">All</a>
 
                 </li>
                 <li class="nav-item" role="presentation">
                 <a class="nav-link" href="{{ route('meetings.upcoming')}}"  id="upcoming" onclick="setActiveTab(event, this)">Upcoming</a>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <a class="nav-link" href="{{ route('meetings.pending') }}" id="pending" onclick="setActiveTab(event, this)" >Pending</a>
+                    <a class="nav-link active" href="{{ route('meetings.pending') }}" id="pending" onclick="setActiveTab(event, this)" >Pending</a>
                 </li>
                     <!-- Add more tabs if needed -->
             </ul>

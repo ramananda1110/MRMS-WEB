@@ -43,7 +43,7 @@ class MeetingController extends Controller
         });
 
     
-        return view('admin.meeting.index', compact('meetings'));
+        return view('admin.meeting.upcoming', compact('meetings'));
     }
 
     public function pending()
@@ -61,7 +61,7 @@ class MeetingController extends Controller
 
        
 
-        return view('admin.meeting.index', compact('meetings'));
+        return view('admin.meeting.pending', compact('meetings'));
     }
 
     public function completed()
