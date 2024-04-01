@@ -277,6 +277,7 @@ class MeetingController extends Controller
                 'id' => $meeting->id,
                 'room_id' => $meeting->room_id,
                 'room_name' => $meeting->room->name,
+                'room_location' => $meeting->room->location,
                 'meeting_title' => $meeting->meeting_title,
                 'start_date' => $meeting->start_date,
                 'start_time' => $meeting->start_time,
