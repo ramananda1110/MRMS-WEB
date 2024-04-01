@@ -15,13 +15,16 @@ class ChangePasswordController extends Controller
    
     public function changePassword(Request $request)
     {
-       
+        $apiToken = $request->query('api_token');
+
         // Validate the request data
         $request->validate([
             'current_password' => 'required',
             'new_password' => 'required|string|min:6',
             'password_confirmation' => 'required|same:new_password',
         ]);
+
+        $user = User::where('api_token', $apiToken)->first();
 
         // Check if the current password matches the user's password
         if (!Hash::check($request->current_password, $user->password)) {

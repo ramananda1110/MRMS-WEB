@@ -35,7 +35,7 @@ class AuthenticateApi
             // If authentication fails, return an error response
             return response()->json([
                 'status_code' => Response::HTTP_UNAUTHORIZED,
-                'data' => null,
+                //'data' => null,
                 'message' => 'Unauthorized User!'
             ], Response::HTTP_OK);
         }
