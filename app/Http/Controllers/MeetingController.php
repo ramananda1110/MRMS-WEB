@@ -11,6 +11,7 @@ use App\Models\User;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 class MeetingController extends Controller
 {
@@ -83,15 +84,29 @@ class MeetingController extends Controller
      // get all meeting for Mobile App
     public function getAllMeetins(Request $request)
     {
-            // Retrieve all meetings with participants
-       $meetings = Meeting::with('participants')->get();
-
+       //$meetings = Meeting::with('participants')->get();
+       $meetings ;
         //$meetings = Meeting::with(['participants.employee', 'host', 'coHost'])->get();
    
+        $employeeId = $request->query('employee_id');
+
+        // Retrieve the user based on the employee ID
+        $user = User::where('employee_id', $employeeId)->first();
+
+        // Check if the user exists and is an admin (role_id = 1)
+        if ($user && $user->role_id === 1) {
+            $meetings = Meeting::with('participants')->get();
+        } else {
+        
+            $meetings = Meeting::whereHas('participants', function ($query) use ($employeeId) {
+                $query->where('participant_id', $employeeId);
+            })->with('participants')->get();
+        }
+
 
         $data = $meetings->map(function ($meeting) {
 
-                // Determine the status based on conditions
+            // Determine the status based on conditions
             $status = $meeting->booking_status;
             $today = now()->toDateString();
             $startDate = $meeting->start_date;
