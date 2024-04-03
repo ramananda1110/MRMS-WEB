@@ -262,14 +262,26 @@ class MeetingController extends Controller
     public function getMeetingsByDate(Request $request)
     {
         $date = $request->query('start_date');
+        $room_id = $request->input('room_id');
+
 
         // Parse the provided date string into a Carbon instance
         $parsedDate = Carbon::parse($date);
 
         // Retrieve meetings for the specified date
-        $meetings = Meeting::with(['participants.employee', 'host', 'coHost'])
+        $meetings;
+
+        if($room_id != null) {
+            $meetings = Meeting::with(['participants.employee', 'host', 'coHost'])
+            ->where('room_id', $room_id)
             ->whereDate('start_date', $parsedDate)
             ->get();
+        } else {
+            $meetings = Meeting::with(['participants.employee', 'host', 'coHost'])
+            ->whereDate('start_date', $parsedDate)
+            ->get();
+        }
+       
 
         // Transform the meetings data (similar to the previous API endpoint)
         $data = $meetings->map(function ($meeting) {
@@ -348,75 +360,75 @@ class MeetingController extends Controller
     }
 
 
-        public function getSummary()
-        {
-                    // Get today's date
+    public function getSummary()
+    {
                 // Get today's date
-            $today = Carbon::today();
+            // Get today's date
+        $today = Carbon::today();
 
-            // Get count of meetings with different statuses
-            $upcomingCount = Meeting::where('booking_status', 'accepted')
-                ->whereDate('start_date', '>=', $today) // Start date on or after today
-                ->count();
+        // Get count of meetings with different statuses
+        $upcomingCount = Meeting::where('booking_status', 'accepted')
+            ->whereDate('start_date', '>=', $today) // Start date on or after today
+            ->count();
 
-            $pendingCount = Meeting::where('booking_status', 'pending')->count();
+        $pendingCount = Meeting::where('booking_status', 'pending')->count();
 
-            $completedCount = Meeting::where('booking_status', 'accepted')
-                ->whereDate('start_date', '<', $today) // Start date before today
-                ->count();
+        $completedCount = Meeting::where('booking_status', 'accepted')
+            ->whereDate('start_date', '<', $today) // Start date before today
+            ->count();
 
-            // Total meeting count
-            $totalMeetingCount = Meeting::count();
-
-
-            
-            // Get the start date of the current week (Sunday)
-            $startOfWeek = Carbon::now()->startOfWeek()->subDay()->format('Y-m-d');
-
-            // Get the end date of the current week (Saturday)
-            $endOfWeek = Carbon::now()->endOfWeek()->format('Y-m-d');
-
-            // Get count of meetings for the current week
-            $meetings = Meeting::whereBetween('start_date', [$startOfWeek, $endOfWeek])->get();
+        // Total meeting count
+        $totalMeetingCount = Meeting::count();
 
 
-            // dd($meetings->count);
-
-            // Initialize the weekend data array
-            $weekendData = [
-                'Sunday' => 0,
-                'Monday' => 0,
-                'Tuesday' => 0,
-                'Wednesday' => 0,
-                'Thursday' => 0,
-                'Friday' => 0,
-                'Saturday' => 0,
-            ];
-
-            foreach ($meetings as $meeting) {
-                // Extract the day of the week from the start date
-                $weekDay = Carbon::parse($meeting->start_date)->format('l');
         
-                // Increment the count for the respective day of the week
-                $weekendData[$weekDay]++;
-            }
-        
-            // Return the summary data
-            $data = [
-                'total_meeting' => $totalMeetingCount,
-                'upcoming' => $upcomingCount,
-                'pending' => $pendingCount,
-                'completed' => $completedCount,
-                'weekly_schedule' => $weekendData,
-            ];
+        // Get the start date of the current week (Sunday)
+        $startOfWeek = Carbon::now()->startOfWeek()->subDay()->format('Y-m-d');
 
-            return response()->json([
-                'status_code' => Response::HTTP_OK,
-                'data' => $data,
-                'message' => 'Success'
-            ]);
+        // Get the end date of the current week (Saturday)
+        $endOfWeek = Carbon::now()->endOfWeek()->format('Y-m-d');
+
+        // Get count of meetings for the current week
+        $meetings = Meeting::whereBetween('start_date', [$startOfWeek, $endOfWeek])->get();
+
+
+        // dd($meetings->count);
+
+        // Initialize the weekend data array
+        $weekendData = [
+            'Sunday' => 0,
+            'Monday' => 0,
+            'Tuesday' => 0,
+            'Wednesday' => 0,
+            'Thursday' => 0,
+            'Friday' => 0,
+            'Saturday' => 0,
+        ];
+
+        foreach ($meetings as $meeting) {
+            // Extract the day of the week from the start date
+            $weekDay = Carbon::parse($meeting->start_date)->format('l');
+    
+            // Increment the count for the respective day of the week
+            $weekendData[$weekDay]++;
         }
-            
+    
+        // Return the summary data
+        $data = [
+            'total_meeting' => $totalMeetingCount,
+            'upcoming' => $upcomingCount,
+            'pending' => $pendingCount,
+            'completed' => $completedCount,
+            'weekly_schedule' => $weekendData,
+        ];
+
+        return response()->json([
+            'status_code' => Response::HTTP_OK,
+            'data' => $data,
+            'message' => 'Success'
+        ]);
+    }
+        
 }
 
 
