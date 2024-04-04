@@ -53,6 +53,10 @@ Route::group(['middleware' => ['auth.api']], function () {
 
     Route::get('/meetings/date', [MeetingController::class, 'getMeetingsByDate']);
 
+    Route::post('/meeting/update-status/{id}', [MeetingController::class, 'updateMeetingStatus'])->name('meetings.updateMeeting');
+
+
+
     Route::get('/room-list', 'RoomController@roomList');
     Route::get('/employee-list', 'EmployeeController@getEmployee');
 

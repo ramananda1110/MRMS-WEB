@@ -19,7 +19,9 @@ class Meeting extends Model
         'end_time',
         'host_id',
         'co_host_id',
-        'status',
+        'booking_type',
+        'booking_status',
+        'description'
         // Add more fields as needed
     ];
 

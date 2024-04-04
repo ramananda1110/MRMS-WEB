@@ -121,7 +121,9 @@ class MeetingController extends Controller
                 } else {
                     $status = 'upcoming';
                 }
-            }
+            } elseif ($status === 'rejected') {
+                    $status = 'canceled';
+            } 
 
             return [
                 'id' => $meeting->id,
@@ -377,7 +379,7 @@ class MeetingController extends Controller
 
     public function getSummary()
     {
-                // Get today's date
+    
             // Get today's date
         $today = Carbon::today();
 
@@ -443,7 +445,43 @@ class MeetingController extends Controller
             'message' => 'Success'
         ]);
     }
-        
+    
+    
+
+
+    public function updateMeetingStatus(Request $request, $id)
+    {
+       // Validate the incoming request data
+       $validator = Validator::make($request->all(), [
+        'booking_status' => 'required|in:accepted,completed,rejected',
+       // 'booking_type' => 'required|in:booked,rescheduled',
+        ]);
+
+        // Check if the validation fails
+        if ($validator->fails()) {
+            $errors = $validator->errors()->all();
+            $message = implode('. ', $errors);
+            return response()->json(['status_code' => 422, 'message' => $message], 200);
+        }
+
+         // Find the meeting record by ID
+        $meeting = Meeting::find($id);
+
+        // Check if the meeting exists
+        if (!$meeting) {
+            return response()->json(['status_code' => 404, 'message' => 'Meeting not found'], 200);
+        }
+
+        // Update the meeting record with the validated data
+        $meeting->update([
+            'booking_status' => $request->booking_status,
+        ]
+       );
+        // Return a success response
+        return response()->json(['status_code' => 200, 'message' => 'Meeting status updated successfully']);
+
+    }
+   
 }
 
 
