@@ -42,7 +42,7 @@
                                 <nav class="sb-sidenav-menu-nested nav">
                                     <a class="nav-link" href="{{Route('meeting.index')}}">View</a>
 
-                                    <!-- <a class="nav-link" href="{{Route('employee.create')}}">Create</a> -->
+                                    <a class="nav-link" href="{{Route('meeting.create')}}">Create</a>
                                     
                                 </nav>
                             </div>
