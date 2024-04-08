@@ -74,12 +74,20 @@ class EmployeeController extends Controller
      public function getEmployee(Request $request) {
         // Check if the search keyword is provided
         $keyword = $request->input('keyword');
+        $apiToken = $request->query('api_token');
+
+        $user = User::where('api_token', $apiToken)->first();
+
         if (!$keyword) {
-            return response()->json([
-                'status_code' => 400,
-                'message' => 'Bad Request: Keyword parameter is required for searching.',
-            ], 400);
+            // return response()->json([
+            //     'status_code' => 422,
+            //     'message' => 'Bad Request: Keyword parameter is required for searching.',
+            // ], 200);
+            // set default keyword department
+            $keyword = $user->department->name;
         }
+
+
     
         // Build the query
         $query = Employee::query();
