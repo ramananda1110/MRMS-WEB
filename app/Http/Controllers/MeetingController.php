@@ -97,9 +97,17 @@ class MeetingController extends Controller
         if ($user && $user->role_id === 1) {
             $meetings = Meeting::with('participants')->get();
         } else {
-        
-            $meetings = Meeting::whereHas('participants', function ($query) use ($employeeId) {
-                $query->where('participant_id', $employeeId);
+
+            
+            // $meetings = Meeting::whereHas('participants', function ($query) use ($employeeId) {
+            //     $query->where('participant_id', $employeeId);
+            // })->with('participants')->get();
+
+            $meetings = Meeting::where(function ($query) use ($employeeId) {
+                $query->where('host_id', $employeeId)
+                      ->orWhereHas('participants', function ($query) use ($employeeId) {
+                          $query->where('participant_id', $employeeId);
+                      });
             })->with('participants')->get();
         }
 
@@ -270,9 +278,10 @@ class MeetingController extends Controller
        
         // Return a success response with the created meeting
             return response()->json([
+                'status_code' => 200,
                 'message' => 'Meeting created successfully',
-                'meeting' => $meeting,
-            ], 201);
+                //'meeting' => $meeting,
+            ], 200);
     }
 
 
