@@ -103,9 +103,23 @@ class EmployeeController extends Controller
         // Retrieve the filtered data
         $filteredEmployees = $query->get();
     
+
+       
+        // Transform the meetings data (similar to the previous API endpoint)
+        $data = $filteredEmployees->map(function ($employee) {
+            return [
+                'id' => $employee->employee_id,
+                // 'employee_id' => $employee->emplyee_id,
+                'name' => $employee->name,
+               
+                'division' => $employee->division,
+                'designation' => $employee->designation,
+            ];
+        });
+
         return response()->json([
             'status_code' => 200,
-            'data' => $filteredEmployees,
+            'data' => $data,
             'message' => 'Success',
         ], 200);
     }
