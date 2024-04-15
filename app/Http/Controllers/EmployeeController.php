@@ -110,8 +110,8 @@ class EmployeeController extends Controller
             return [
                 'id' => $employee->employee_id,
                 // 'employee_id' => $employee->emplyee_id,
-                'name' => $employee->name,
-               
+                'name' => ucwords(strtolower($employee->name)),
+
                 'division' => $employee->division,
                 'designation' => $employee->designation,
             ];
