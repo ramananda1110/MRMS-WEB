@@ -194,7 +194,7 @@ class MeetingController extends Controller
     
     public function store(Request $request)
     {
-
+      
       $validator = Validator::make($request->all(), [
             'room_id' => 'required|exists:rooms,id',
             'meeting_title' => 'required|string|max:255',
@@ -221,6 +221,8 @@ class MeetingController extends Controller
             'participants' => 'required|array', // Ensure participants is an array and required
         ]);
         
+        
+
         // Add custom validation rule to check for overlapping meetings
         $validator->after(function ($validator) use ($request) {
             // Retrieve input data
@@ -241,6 +243,7 @@ class MeetingController extends Controller
                         });
                 })
                 ->exists();
+
         
             // If overlapping meeting found, add error message
             if ($overlappingMeeting) {
@@ -249,6 +252,7 @@ class MeetingController extends Controller
         });
         
 
+       
 
             // If validation fails, return a custom response
         if ($validator->fails()) {
