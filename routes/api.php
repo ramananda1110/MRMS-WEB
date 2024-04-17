@@ -51,7 +51,7 @@ Route::group(['middleware' => ['auth.api']], function () {
 
     Route::get('/meeting/all', [MeetingController::class, 'getAllMeetins'])->name('meetings.allmeetings');
 
-    Route::get('/meetings/date', [MeetingController::class, 'getMeetingsByDate']);
+    Route::get('/meeting/by-date', [MeetingController::class, 'getMeetingsByDate']);
 
     Route::post('/meeting/update-status/{id}', [MeetingController::class, 'updateMeetingStatus'])->name('meetings.updateMeeting');
 

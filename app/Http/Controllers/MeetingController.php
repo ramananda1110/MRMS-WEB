@@ -144,8 +144,8 @@ class MeetingController extends Controller
                 'end_time' => $meeting->end_time,
                 'host_id' => $meeting->host_id,
                 'host_name' => $meeting->host ? $meeting->host->name : null,
-                'co_host_id' => $meeting->co_host_id,
-                'co_host_name' => $meeting->coHost ? $meeting->coHost->name : null,
+                'co_host_id' => $meeting->co_host_id ? $meeting->co_host_id : 0,
+                'co_host_name' => $meeting->coHost ? $meeting->coHost->name : "",
                 'booking_type' => $meeting->booking_type,
                 'booking_status' => $status,
                 'created_at' => $meeting->created_at,
@@ -313,6 +313,7 @@ class MeetingController extends Controller
             ->get();
         }
        
+        //dd($meetings);
 
         // Transform the meetings data (similar to the previous API endpoint)
         $data = $meetings->map(function ($meeting) {
@@ -326,9 +327,9 @@ class MeetingController extends Controller
                 'start_time' => $meeting->start_time,
                 'end_time' => $meeting->end_time,
                 'host_id' => $meeting->host_id,
-                'host_name' => $meeting->host ? $meeting->host->name : null,
-                'co_host_id' => $meeting->co_host_id,
-                'co_host_name' => $meeting->coHost ? $meeting->coHost->name : null,
+                'host_name' => $meeting->host ? $meeting->host->name : "",
+                'co_host_id' => $meeting->co_host_id ?  $meeting->co_host_id : 0,
+                'co_host_name' => $meeting->coHost ? $meeting->coHost->name : "",
                 'booking_type' => $meeting->booking_type,
                 'booking_status' => $meeting->booking_status,
                 'created_at' => $meeting->created_at,
