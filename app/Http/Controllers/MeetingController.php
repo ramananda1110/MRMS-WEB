@@ -323,8 +323,6 @@ class MeetingController extends Controller
             ->get();
         }
        
-        //dd($meetings);
-
         // Transform the meetings data (similar to the previous API endpoint)
         $data = $meetings->map(function ($meeting) {
             return [
@@ -506,6 +504,120 @@ class MeetingController extends Controller
         return response()->json(['status_code' => 200, 'message' => 'Meeting status updated successfully']);
 
     }
+
+
+    public function reschedule(Request $request, $id)
+        {
+            $validator = Validator::make($request->all(), [
+                'room_id' => 'required|exists:rooms,id',
+                'meeting_title' => 'required|string|max:255',
+                'start_date' => [
+                    'required',
+                    'date',
+                    'after_or_equal:today', // Ensure start date is after or equal to today
+                ],
+                'start_time' => [
+                    'required',
+                    'date_format:H:i',
+                    'after_or_equal:09:00', // Start time must be after or equal to 09:00 (9:00 AM)
+                    'before_or_equal:17:00' // Start time must be before or equal to 17:00 (5:00 PM)
+                ],
+                'end_time' => [
+                    'required',
+                    'date_format:H:i',
+                    'after:start_time', // End time must be after the start time
+                    'after_or_equal:09:00', // End time must be after or equal to 09:00 (9:00 AM)
+                    'before_or_equal:17:00' // End time must be before or equal to 17:00 (5:00 PM)
+                ],
+                'host_id' => 'required|exists:employees,employee_id',
+                'co_host_id' => 'nullable|exists:employees,employee_id',
+                'participants' => 'required|array', // Ensure participants is an array and required
+            ]);
+            
+            // Add custom validation rule to check for overlapping meetings
+            $validator->after(function ($validator) use ($request, $id) {
+                // Retrieve input data
+                $room_id = $request->input('room_id');
+                $start_date = $request->input('start_date');
+                $start_time = $request->input('start_time');
+                $end_time = $request->input('end_time');
+
+                // Convert start_time to a DateTime object
+                $startDateTime = \DateTime::createFromFormat('H:i', $start_time);
+                // Add 1 minute
+                $startDateTime->add(new \DateInterval('PT1M'));
+                // Format the updated start time as a string
+                $updated_start_time = $startDateTime->format('H:i');
+
+                // Check for overlapping meetings excluding the current meeting
+                $overlappingMeeting = Meeting::where('room_id', $room_id)
+                    ->where('start_date', $start_date)
+                    ->where('id', '!=', $id)
+                    ->where(function ($query) use ($updated_start_time, $end_time) {
+                        $query->whereBetween('start_time', [$updated_start_time, $end_time])
+                            ->orWhereBetween('end_time', [$updated_start_time, $end_time])
+                            ->orWhere(function ($query) use ($updated_start_time, $end_time) {
+                                $query->where('start_time', '<', $updated_start_time)
+                                    ->where('end_time', '>', $end_time);
+                            });
+                    })
+                    ->exists();
+
+                // If overlapping meeting found, add error message
+                if ($overlappingMeeting) {
+                    $validator->errors()->add('overlap', 'There is already a meeting scheduled at this time.');
+                }
+            });
+
+            // If validation fails, return a custom response
+            if ($validator->fails()) {
+                return response()->json([
+                    'message' => $validator->errors()->first(),
+                    'status_code' => 422
+                ], 200);
+            }
+
+            // If validation passes, update the meeting using the validated data
+            $meeting = Meeting::find($id);
+
+            // Check if the meeting exists
+            if (!$meeting) {
+            return response()->json(['status_code' => 404, 'message' => 'Meeting not found'], 200);
+            }
+
+
+            $meeting->update($validator->validated());
+
+
+            $apiToken = $request->query('api_token');
+
+            // Retrieve the user based on the employee ID
+            $user = User::where('api_token', $apiToken)->first();
+    
+            // Check if the user exists and is an admin (role_id = 1)
+            if ($user && $user->role_id === 1) {
+                $meeting->update(['booking_status' => 'accepted']);
+            } else {
+                $meeting->update(['booking_status' => 'pending']);
+            }
+
+             // Update booking type to 'reschedule'
+             $meeting->update(['booking_type' => 'reschedule']);
+
+            // Update or attach participants to the meeting
+            // if ($request->has('participants')) {
+            //     $meeting->participants()->sync($request->participants);
+            // }
+
+            
+
+            // Return a successful response with the updated meeting
+            return response()->json([
+                'status_code' => 200,
+                'message' => 'Meeting updated successfully',
+                'meeting' => $meeting,
+            ], 200);
+        }
    
 }
 

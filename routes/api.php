@@ -56,6 +56,9 @@ Route::group(['middleware' => ['auth.api']], function () {
     Route::post('/meeting/update-status/{id}', [MeetingController::class, 'updateMeetingStatus'])->name('meetings.updateMeeting');
 
 
+    Route::post('/meeting/reschedule/{id}', [MeetingController::class, 'reschedule'])->name('meeting.reschedule');
+
+
 
     Route::get('/room-list', 'RoomController@roomList');
     Route::get('/employee-list', 'EmployeeController@getEmployee');

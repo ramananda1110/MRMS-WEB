@@ -21,4 +21,6 @@ class Participant extends Model
     {
         return $this->belongsTo(Employee::class, 'participant_id', 'employee_id');
     }
+
+   
 }
