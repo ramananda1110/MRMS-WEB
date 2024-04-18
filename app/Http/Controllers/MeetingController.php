@@ -231,20 +231,30 @@ class MeetingController extends Controller
             $start_time = $request->input('start_time');
             $end_time = $request->input('end_time');
         
+           // dd($start_time);
+
+           
+           // Convert start_time to a DateTime object
+           $startDateTime = \DateTime::createFromFormat('H:i', $start_time);
+           // Add 1 minute
+           $startDateTime->add(new \DateInterval('PT1M'));
+           // Format the updated start time as a string
+           $updated_start_time = $startDateTime->format('H:i');
+
             // Check for overlapping meetings
             $overlappingMeeting = Meeting::where('room_id', $room_id)
                 ->where('start_date', $start_date)
-                ->where(function ($query) use ($start_time, $end_time) {
-                    $query->whereBetween('start_time', [$start_time, $end_time])
-                        ->orWhereBetween('end_time', [$start_time, $end_time])
-                        ->orWhere(function ($query) use ($start_time, $end_time) {
-                            $query->where('start_time', '<', $start_time)
+                ->where(function ($query) use ($updated_start_time, $end_time) {
+                    $query->whereBetween('start_time', [$updated_start_time, $end_time])
+                        ->orWhereBetween('end_time', [$updated_start_time, $end_time])
+                        ->orWhere(function ($query) use ($updated_start_time, $end_time) {
+                            $query->where('start_time', '<', $updated_start_time)
                                     ->where('end_time', '>', $end_time);
                         });
                 })
                 ->exists();
 
-        
+            
             // If overlapping meeting found, add error message
             if ($overlappingMeeting) {
                 $validator->errors()->add('overlap', 'There is already a meeting scheduled at this time.');
