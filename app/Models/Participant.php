@@ -11,6 +11,7 @@ class Participant extends Model
 
     protected $fillable = ['meeting_id', 'participant_id'];
 
+    public $timestamps = true; // Add this line to enable timestamps
 
     public function meeting()
     {
