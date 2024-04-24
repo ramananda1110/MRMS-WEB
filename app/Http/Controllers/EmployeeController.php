@@ -12,7 +12,6 @@ use App\Models\User;
 use App\Notifications\CreateNewUserNotification;
 
 
-
 class EmployeeController extends Controller
 {
 
@@ -90,7 +89,8 @@ class EmployeeController extends Controller
 
     
         // Build the query
-        $query = Employee::query();
+        $query = Employee::query()->where('status', '=', 'Active');
+
     
         // Apply search filter across multiple columns
         $query->where(function ($query) use ($keyword) {
@@ -102,7 +102,7 @@ class EmployeeController extends Controller
     
         // Retrieve the filtered data
         $filteredEmployees = $query->get();
-    
+       
 
        
         // Transform the meetings data (similar to the previous API endpoint)

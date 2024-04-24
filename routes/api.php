@@ -66,4 +66,8 @@ Route::group(['middleware' => ['auth.api']], function () {
 
     Route::get('/dashboard', 'MeetingController@getSummary');
 
+
+    Route::post('/save-token', [FCMPushController::class, 'saveToken'])->name('save-token');
+    Route::post('/send-notification', [FCMPushController::class, 'sendNotification'])->name('send.notification');
+
 });

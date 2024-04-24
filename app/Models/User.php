@@ -32,7 +32,8 @@ class User extends Authenticatable
         'role_id',
         'image',
         'api_token',
-        'start_from'
+        'start_from',
+        'device_token'
     ];
 
     /**
