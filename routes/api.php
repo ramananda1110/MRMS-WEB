@@ -6,6 +6,7 @@ use App\Http\Controllers\Auth\ChangePasswordController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\MeetingController;
+use App\Http\Controllers\FCMPushController;
 
 /*
 |--------------------------------------------------------------------------
