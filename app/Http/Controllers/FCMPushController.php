@@ -15,7 +15,6 @@ class FCMPushController extends Controller
     {
         // Validate incoming request parameters
         $validator = Validator::make($request->all(), [
-            'employee_id' => 'required',
             'device_token' => 'required',
         ]);
 
@@ -28,11 +27,11 @@ class FCMPushController extends Controller
         }
 
         // Get employee ID and device token from the request
-        $employeeId = $request->input('employee_id');
+        $apiToken = $request->input('api_token');
         $deviceToken = $request->input('device_token');
 
         // Find the user with the given employee ID
-        $user = User::where('employee_id', $employeeId)->first();
+        $user = User::where('api_token', $apiToken)->first();
 
         // If user found, update device token
         if ($user) {
