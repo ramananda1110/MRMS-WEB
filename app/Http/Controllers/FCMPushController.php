@@ -5,15 +5,51 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Validator;
 
 class FCMPushController extends Controller
 {
     
-
     public function saveToken(Request $request)
     {
-        auth()->user()->update(['device_token'=>$request->token]);
-        return response()->json(['token saved successfully.']);
+        // Validate incoming request parameters
+        $validator = Validator::make($request->all(), [
+            'employee_id' => 'required',
+            'device_token' => 'required',
+        ]);
+
+        // Check if validation fails
+        if ($validator->fails()) {
+            return response()->json([
+                'status_code' => 422,
+                'message' => $validator->errors()->first()
+            ], Response::HTTP_OK);
+        }
+
+        // Get employee ID and device token from the request
+        $employeeId = $request->input('employee_id');
+        $deviceToken = $request->input('device_token');
+
+        // Find the user with the given employee ID
+        $user = User::where('employee_id', $employeeId)->first();
+
+        // If user found, update device token
+        if ($user) {
+            $user->update(['device_token' => $deviceToken]);
+            
+            return response()->json([
+                'status_code' => 200,
+                'message' => 'Token saved successfully!'
+            ], Response::HTTP_OK);
+        } 
+
+        // If user not found, return error message
+        return response()->json([
+            'status_code' => 422,
+            'message' => 'User not found!'
+        ], Response::HTTP_OK);
+        
     }
 
   

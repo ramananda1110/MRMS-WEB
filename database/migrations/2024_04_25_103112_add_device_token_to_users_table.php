@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddColumnDeviceToken extends Migration
+class AddDeviceTokenToUsersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,7 +14,8 @@ class AddColumnDeviceToken extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('device_token')->nullable();
+            $table->string('device_token')->nullable()->after('api_token'); // Add 'device_token' column after 'password'
+
         });
     }
 
@@ -25,6 +26,8 @@ class AddColumnDeviceToken extends Migration
      */
     public function down()
     {
-        //
+        Schema::table('users', function (Blueprint $table) {
+            //
+        });
     }
 }
