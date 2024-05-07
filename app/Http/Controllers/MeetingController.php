@@ -143,9 +143,9 @@ class MeetingController extends Controller
                 'start_time' => $meeting->start_time,
                 'end_time' => $meeting->end_time,
                 'host_id' => $meeting->host_id,
-                'host_name' => $meeting->host ? $meeting->host->name : null,
+                'host_name' => $meeting->host ? $meeting->host->name : '',
                 'co_host_id' => $meeting->co_host_id ? $meeting->co_host_id : 0,
-                'co_host_name' => $meeting->coHost ? $meeting->coHost->name : "",
+                'co_host_name' => $meeting->coHost ? $meeting->coHost->name : "New",
                 'booking_type' => $meeting->booking_type,
                 'booking_status' => $status,
                 'created_at' => $meeting->created_at,
@@ -155,7 +155,7 @@ class MeetingController extends Controller
                         'id' => $participant->id,
                         'meeting_id' => $participant->meeting_id,
                         'participant_id' => $participant->participant_id,
-                        'participant_name' => $participant->employee ? $participant->employee->name : null,
+                        'participant_name' => $participant->employee ? $participant->employee->name : '',
                         'created_at' => $participant->created_at,
                         'updated_at' => $participant->updated_at,
                     ];
@@ -221,6 +221,7 @@ class MeetingController extends Controller
             'participants' => 'required|array', // Ensure participants is an array and required
         ]);
         
+       // dd($request);
         
 
         // Add custom validation rule to check for overlapping meetings
@@ -231,8 +232,7 @@ class MeetingController extends Controller
             $start_time = $request->input('start_time');
             $end_time = $request->input('end_time');
         
-           // dd($start_time);
-
+          
            
            // Convert start_time to a DateTime object
            $startDateTime = \DateTime::createFromFormat('H:i', $start_time);
@@ -240,6 +240,7 @@ class MeetingController extends Controller
            $startDateTime->add(new \DateInterval('PT1M'));
            // Format the updated start time as a string
            $updated_start_time = $startDateTime->format('H:i');
+          
 
             // Check for overlapping meetings
             $overlappingMeeting = Meeting::where('room_id', $room_id)
@@ -262,7 +263,6 @@ class MeetingController extends Controller
         });
         
 
-       
 
             // If validation fails, return a custom response
         if ($validator->fails()) {
@@ -275,9 +275,7 @@ class MeetingController extends Controller
         // If validation passes, create the meeting using the validated data
         $meeting = Meeting::create($validator->validated());
 
-
-       //dd($participants);
-      
+       
         // Attach participants to the meeting
         if ($request->has('participants')) {
             foreach ($request->participants as $participantId) {
@@ -289,7 +287,7 @@ class MeetingController extends Controller
             }
         }
 
-       
+
         // Return a success response with the created meeting
             return response()->json([
                 'status_code' => 200,
@@ -297,6 +295,7 @@ class MeetingController extends Controller
                 //'meeting' => $meeting,
             ], 200);
     }
+
 
 
 

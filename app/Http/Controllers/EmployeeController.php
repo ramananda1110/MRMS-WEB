@@ -93,12 +93,13 @@ class EmployeeController extends Controller
 
     
         // Apply search filter across multiple columns
-        $query->where(function ($query) use ($keyword) {
-            $query->where('name', 'like', '%' . $keyword . '%')
-                  ->orWhere('project_name', 'like', '%' . $keyword . '%')
-                  ->orWhere('designation', 'like', '%' . $keyword . '%')
-                  ->orWhere('division', 'like', '%' . $keyword . '%');
-        });
+        // temporary off filter data 
+        // $query->where(function ($query) use ($keyword) {
+        //     $query->where('name', 'like', '%' . $keyword . '%')
+        //           ->orWhere('project_name', 'like', '%' . $keyword . '%')
+        //           ->orWhere('designation', 'like', '%' . $keyword . '%')
+        //           ->orWhere('division', 'like', '%' . $keyword . '%');
+        // });
     
         // Retrieve the filtered data
         $filteredEmployees = $query->get();

@@ -59,14 +59,14 @@
                         <td>{{ \Carbon\Carbon::parse($meeting->start_date)->format('F j, Y') }}</td>
                         <td>{{ DateTime::createFromFormat('H:i:s', $meeting->start_time)->format('h:i A') }} - {{ DateTime::createFromFormat('H:i:s', $meeting->end_time)->format('h:i A') }}</td>
                      
-                        <td> 
+                        <!-- <td> 
                         
                                 <a  href="#">
                                 <button type="button" class="btn btn-secondary">Re-schedule</button></a> 
                                
                         
 
-                        </td>
+                        </td> -->
 
                     </tr>
                    
