@@ -7,6 +7,7 @@ use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\MeetingController;
 use App\Http\Controllers\FCMPushController;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -59,6 +60,8 @@ Route::group(['middleware' => ['auth.api']], function () {
 
     Route::post('/meeting/reschedule/{id}', [MeetingController::class, 'reschedule'])->name('meeting.reschedule');
 
+
+    Route::get('/user-info', [UserController::class, 'userInfo'])->name('user-info');
 
 
     Route::get('/room-list', 'RoomController@roomList');
