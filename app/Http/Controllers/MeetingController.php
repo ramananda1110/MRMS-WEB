@@ -156,6 +156,8 @@ class MeetingController extends Controller
                         'meeting_id' => $participant->meeting_id,
                         'participant_id' => $participant->participant_id,
                         'participant_name' => $participant->employee ? $participant->employee->name : '',
+                        'division' => $participant->employee ? $participant->employee->division : '',
+                        'designation' => $participant->employee ? $participant->employee->designation : '',
                         'created_at' => $participant->created_at,
                         'updated_at' => $participant->updated_at,
                     ];
