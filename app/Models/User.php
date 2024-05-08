@@ -73,4 +73,9 @@ class User extends Authenticatable
             })
             ->first();
     }
+
+    public function meetings()
+    {
+        return $this->hasMany(Meeting::class, 'host_id', 'id');
+    }
 }

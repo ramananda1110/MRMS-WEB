@@ -58,12 +58,11 @@ class FCMPushController extends Controller
     public function attemtNotification($deviceToken, $title, $body)
     {
 
-        //dd($deviceToken);
        
         $SERVER_API_KEY = 'AAAA0h17rvo:APA91bH2AJvxddfaxr4Hme_q5WmeDroWdM7CJnQBd_wnjRtEo2-yRogwXeIOA_JdTktjMBWwdU8u6LQzNvLGsaDOPVi3xOmX54mV6agLMs_yfHFOL-NJYUha_uzoWOy64SF3hrt8zrtI';
   
         $data = [
-            "registration_ids" => [$deviceToken],
+            "registration_ids" => $deviceToken,
             "notification" => [
                 "title" => $title,
                 "body" => $body,  

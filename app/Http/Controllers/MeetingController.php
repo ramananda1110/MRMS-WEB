@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Meeting;
 use App\Models\Participant;
 use DataTables;
-
+use App\Http\Controllers\NotificationController;
 use App\Models\User;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Validator;
@@ -20,6 +20,13 @@ class MeetingController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+     protected $notificationController;
+
+     public function __construct(NotificationController $notificationController)
+     {
+         $this->notificationController = $notificationController;
+     }
 
 
      public function index()
@@ -98,7 +105,6 @@ class MeetingController extends Controller
             $meetings = Meeting::with('participants')->get();
         } else {
 
-            
             // $meetings = Meeting::whereHas('participants', function ($query) use ($employeeId) {
             //     $query->where('participant_id', $employeeId);
             // })->with('participants')->get();
@@ -197,6 +203,7 @@ class MeetingController extends Controller
     public function store(Request $request)
     {
       
+
       $validator = Validator::make($request->all(), [
             'room_id' => 'required|exists:rooms,id',
             'meeting_title' => 'required|string|max:255',
@@ -288,6 +295,14 @@ class MeetingController extends Controller
                 ]);
             }
         }
+
+
+
+        // sent the notification to user admin
+        $devicesToken = User::where('role_id', 1)->pluck('device_token')->toArray();
+
+        $this->notificationController->attemtNotification($devicesToken, "Created a Meeting", "Requested to you a meeting schedule.");
+
 
 
         // Return a success response with the created meeting
@@ -471,10 +486,10 @@ class MeetingController extends Controller
     }
     
     
-
-
     public function updateMeetingStatus(Request $request, $id)
     {
+
+      
        // Validate the incoming request data
        $validator = Validator::make($request->all(), [
         'booking_status' => 'required|in:accepted,completed,rejected',
@@ -501,6 +516,22 @@ class MeetingController extends Controller
             'booking_status' => $request->booking_status,
         ]
        );
+
+
+        // sent the notification to user host and co-host
+      
+       $hostId = $meeting->host_id;
+       $coHostId = $meeting->co_host_id;
+
+       $users = User::whereIn('employee_id', [$hostId, $coHostId])->get();
+
+       // Extract api_tokens from the user records
+       $devicesToken = $users->pluck('device_token')->toArray();
+    
+       $this->notificationController->attemtNotification($devicesToken, "Meeting Updated", "Your meeting has been " . $request->booking_status);
+ 
+
+
         // Return a success response
         return response()->json(['status_code' => 200, 'message' => 'Meeting status updated successfully']);
 
