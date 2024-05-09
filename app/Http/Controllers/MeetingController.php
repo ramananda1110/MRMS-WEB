@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Meeting;
 use App\Models\Participant;
 use DataTables;
-use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\FCMPushController;
 use App\Models\User;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Validator;
@@ -23,7 +23,7 @@ class MeetingController extends Controller
 
      protected $notificationController;
 
-     public function __construct(NotificationController $notificationController)
+     public function __construct(FCMPushController $notificationController)
      {
          $this->notificationController = $notificationController;
      }
@@ -216,14 +216,14 @@ class MeetingController extends Controller
                 'required',
                 'date_format:H:i',
                 'after_or_equal:09:00', // Start time must be after or equal to 09:00 (9:00 AM)
-                'before_or_equal:17:00' // Start time must be before or equal to 17:00 (5:00 PM)
+                'before_or_equal:17:30' // Start time must be before or equal to 17:00 (5:00 PM)
             ],
             'end_time' => [
                 'required',
                 'date_format:H:i',
                 'after:start_time', // End time must be after the start time
                 'after_or_equal:09:00', // End time must be after or equal to 09:00 (9:00 AM)
-                'before_or_equal:17:00' // End time must be before or equal to 17:00 (5:00 PM)
+                'before_or_equal:17:30' // End time must be before or equal to 17:00 (5:00 PM)
             ],
             'host_id' => 'required|exists:employees,employee_id',
             'co_host_id' => 'nullable|exists:employees,employee_id',
@@ -254,6 +254,7 @@ class MeetingController extends Controller
             // Check for overlapping meetings
             $overlappingMeeting = Meeting::where('room_id', $room_id)
                 ->where('start_date', $start_date)
+                ->where('book_status', '!=', 'rejected') // New condition
                 ->where(function ($query) use ($updated_start_time, $end_time) {
                     $query->whereBetween('start_time', [$updated_start_time, $end_time])
                         ->orWhereBetween('end_time', [$updated_start_time, $end_time])
