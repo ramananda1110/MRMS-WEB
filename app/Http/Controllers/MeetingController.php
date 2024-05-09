@@ -171,6 +171,9 @@ class MeetingController extends Controller
             ];
         });
        
+         // Order meetings by latest start_date
+        $data = $data->sortByDesc('start_date')->values()->all();
+   
         return response()->json([
             'status_code' => Response::HTTP_OK,
             'data' => $data,
@@ -203,7 +206,7 @@ class MeetingController extends Controller
     public function store(Request $request)
     {
       
-
+   
       $validator = Validator::make($request->all(), [
             'room_id' => 'required|exists:rooms,id',
             'meeting_title' => 'required|string|max:255',
@@ -212,18 +215,53 @@ class MeetingController extends Controller
                 'date',
                 'after_or_equal:today', // Ensure start date is after or equal to today
             ],
+            // 'start_time' => [
+            //     'required',
+            //     'date_format:H:i',
+            //     'after_or_equal:09:00', // Start time must be after or equal to 09:00 (9:00 AM)
+            //     'before_or_equal:17:30' // Start time must be before or equal to 17:30 (5:00 PM)
+            // ],
+
+
             'start_time' => [
                 'required',
                 'date_format:H:i',
                 'after_or_equal:09:00', // Start time must be after or equal to 09:00 (9:00 AM)
-                'before_or_equal:17:30' // Start time must be before or equal to 17:00 (5:00 PM)
+                'before_or_equal:17:30', // Start time must be before or equal to 17:00 (5:00 PM)
+                function ($attribute, $value, $fail) use ($request) {
+                   
+                   // Get the current date and time in Bangladesh Standard Time (Asia/Dhaka)
+                    $currentTime = Carbon::now('Asia/Dhaka');
+                    info('Current Time:', ['current_time' => $currentTime]);
+
+                    // Parse the provided start_date
+                    $startDate = Carbon::parse($request->input('start_date'));
+
+                    // Check if the user-provided start date is today
+                    if ($startDate->format('Y-m-d') === $currentTime->format('Y-m-d')) {
+                        // Today's date: Perform time validation
+
+                        // Add 30 minutes to the current time
+                        $validStartTime = $currentTime->copy()->addMinutes(30);
+                        //info('Valid Start Time:', ['valid_start_time' => $validStartTime]);
+
+                        // Convert start_time to a DateTime object in UTC
+                        $startTime = Carbon::parse($value, 'Asia/Dhaka')->setTimezone('UTC');
+                        //info('Start Time:', ['start_time' => $startTime]);
+
+                        if ($startTime < $validStartTime) {
+                            $fail('The start time must be at least 30 minutes after the current time.');
+                        }
+                    }
+                }
             ],
+
             'end_time' => [
                 'required',
                 'date_format:H:i',
                 'after:start_time', // End time must be after the start time
                 'after_or_equal:09:00', // End time must be after or equal to 09:00 (9:00 AM)
-                'before_or_equal:17:30' // End time must be before or equal to 17:00 (5:00 PM)
+                'before_or_equal:17:30' // End time must be before or equal to 17:30 (5:00 PM)
             ],
             'host_id' => 'required|exists:employees,employee_id',
             'co_host_id' => 'nullable|exists:employees,employee_id',
