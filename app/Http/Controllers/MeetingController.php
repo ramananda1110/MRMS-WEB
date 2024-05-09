@@ -230,7 +230,6 @@ class MeetingController extends Controller
             'participants' => 'required|array', // Ensure participants is an array and required
         ]);
         
-       // dd($request);
         
 
         // Add custom validation rule to check for overlapping meetings
@@ -254,7 +253,7 @@ class MeetingController extends Controller
             // Check for overlapping meetings
             $overlappingMeeting = Meeting::where('room_id', $room_id)
                 ->where('start_date', $start_date)
-                ->where('book_status', '!=', 'rejected') // New condition
+                ->where('booking_status', '!=', 'rejected') // New condition
                 ->where(function ($query) use ($updated_start_time, $end_time) {
                     $query->whereBetween('start_time', [$updated_start_time, $end_time])
                         ->orWhereBetween('end_time', [$updated_start_time, $end_time])
