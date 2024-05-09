@@ -331,10 +331,12 @@ class MeetingController extends Controller
         if($room_id != null) {
             $meetings = Meeting::with(['participants.employee', 'host', 'coHost'])
             ->where('room_id', $room_id)
+            ->where('booking_status', '!=', 'rejected') // New condition
             ->whereDate('start_date', $parsedDate)
             ->get();
         } else {
             $meetings = Meeting::with(['participants.employee', 'host', 'coHost'])
+            ->where('booking_status', '!=', 'rejected') // New condition
             ->whereDate('start_date', $parsedDate)
             ->get();
         }
