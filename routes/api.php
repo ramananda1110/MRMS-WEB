@@ -8,6 +8,7 @@ use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\MeetingController;
 use App\Http\Controllers\FCMPushController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\AuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -63,6 +64,7 @@ Route::group(['middleware' => ['auth.api']], function () {
 
     Route::get('/user-info', [UserController::class, 'userInfo'])->name('user-info');
 
+    Route::post('/user-logout', [AuthController::class, 'logout'])->name('user-logout');
 
     Route::get('/room-list', 'RoomController@roomList');
     Route::get('/employee-list', 'EmployeeController@getEmployee');

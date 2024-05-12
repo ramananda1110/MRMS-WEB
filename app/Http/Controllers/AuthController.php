@@ -53,4 +53,26 @@ class AuthController extends Controller
         ], Response::HTTP_OK);
     }
 
+
+
+    public function logout(Request $request)
+    {
+
+        $apiToken = $request->query('api_token');
+
+        // Retrieve the user based on the employee ID
+        $user = User::where('api_token', $apiToken)->first();
+
+
+         // Update booking type to 'reschedule'
+        $user->update(['api_token' => null]);
+        $user->update(['device_token' => null]);
+
+       
+        // If authentication fails, return an error response
+        return response()->json([
+            'status_code' => Response::HTTP_UNAUTHORIZED,
+            'message' => "You have successfully logout"
+        ], Response::HTTP_OK);
+    }
 }
