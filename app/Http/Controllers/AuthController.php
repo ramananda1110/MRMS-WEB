@@ -71,7 +71,7 @@ class AuthController extends Controller
        
         // If authentication fails, return an error response
         return response()->json([
-            'status_code' => Response::HTTP_UNAUTHORIZED,
+            'status_code' => Response::HTTP_OK,
             'message' => "You have successfully logout"
         ], Response::HTTP_OK);
     }
