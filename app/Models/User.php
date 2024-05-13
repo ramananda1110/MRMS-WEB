@@ -24,6 +24,7 @@ class User extends Authenticatable
         'project_code',
         'name',
         'email',
+        'is_active',
         'password',
         'address',
         'mobile_number',
