@@ -21,6 +21,15 @@ class AuthController extends Controller
         if (Auth::attempt($credentials)) {
             $user = Auth::user();
 
+            if (!$user->is_active) { // Check if user is not active
+                // If authentication fails, return an error response
+                return response()->json([
+                    'status_code' => 422,
+                    'user' => null,
+                    'message' => "Oops! You are not an active user."
+                ], Response::HTTP_OK);
+            }
+
             // Generate a token for the authenticated user
             $token = $user->createToken('auth_token')->plainTextToken;
             //dump($token);
