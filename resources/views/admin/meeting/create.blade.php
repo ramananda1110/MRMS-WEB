@@ -90,6 +90,16 @@
 
 
                     <div class="form-group mt-2">
+                        <label>Host</label>
+                        <select  name="host_id" class="form-select" id="select_box">
+                            @foreach(App\Models\Employee::all() as $employee)
+                            <option value="{{$employee->employee_id}}">{{$employee->name}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+
+
+                    <div class="form-group mt-2">
                         <label>Co-Host</label>
                         <select  name="co_host_id" class="form-select" id="select_box">
                             @foreach(App\Models\Employee::all() as $employee)
