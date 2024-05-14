@@ -206,7 +206,6 @@ class MeetingController extends Controller
     public function store(Request $request)
     {
       
-   
       $validator = Validator::make($request->all(), [
             'room_id' => 'required|exists:rooms,id',
             'meeting_title' => 'required|string|max:255',
@@ -310,14 +309,13 @@ class MeetingController extends Controller
         });
         
 
-
             // If validation fails, return a custom response
         if ($validator->fails()) {
-            return response()->json([
-                'message' => $validator->errors()->first(),
-                'status_code' => 422
-            ], 200);
+
+            return redirect()->back()->with('message', $validator->errors()->first());
         }
+
+        
 
         // If validation passes, create the meeting using the validated data
         $meeting = Meeting::create($validator->validated());
@@ -343,12 +341,9 @@ class MeetingController extends Controller
 
 
 
-        // Return a success response with the created meeting
-            return response()->json([
-                'status_code' => 200,
-                'message' => 'Meeting created successfully',
-                //'meeting' => $meeting,
-            ], 200);
+        return redirect()->back()->with('message', 'Meeting created successfully');
+
+    
     }
 
 
@@ -727,6 +722,157 @@ class MeetingController extends Controller
             ], 200);
         }
    
+
+
+
+        public function createMeeting(Request $request)
+        {
+          
+       
+          $validator = Validator::make($request->all(), [
+                'room_id' => 'required|exists:rooms,id',
+                'meeting_title' => 'required|string|max:255',
+                'start_date' => [
+                    'required',
+                    'date',
+                    'after_or_equal:today', // Ensure start date is after or equal to today
+                ],
+                // 'start_time' => [
+                //     'required',
+                //     'date_format:H:i',
+                //     'after_or_equal:09:00', // Start time must be after or equal to 09:00 (9:00 AM)
+                //     'before_or_equal:17:30' // Start time must be before or equal to 17:30 (5:00 PM)
+                // ],
+    
+    
+                'start_time' => [
+                    'required',
+                    'date_format:H:i',
+                    'after_or_equal:09:00', // Start time must be after or equal to 09:00 (9:00 AM)
+                    'before_or_equal:17:15', // Start time must be before or equal to 17:00 (5:00 PM)
+                    function ($attribute, $value, $fail) use ($request) {
+                       
+                       // Get the current date and time in Bangladesh Standard Time (Asia/Dhaka)
+                        $currentTime = Carbon::now('Asia/Dhaka');
+                        // info('Current Time:', ['current_time' => $currentTime]);
+    
+                        // Parse the provided start_date
+                        $startDate = Carbon::parse($request->input('start_date'));
+    
+                        // Check if the user-provided start date is today
+                        if ($startDate->format('Y-m-d') === $currentTime->format('Y-m-d')) {
+                            // Today's date: Perform time validation
+    
+                            // Add 30 minutes to the current time
+                            $validStartTime = $currentTime->copy()->addMinutes(30);
+                            //info('Valid Start Time:', ['valid_start_time' => $validStartTime]);
+    
+                            // Convert start_time to a DateTime object in UTC
+                            $startTime = Carbon::parse($value, 'Asia/Dhaka')->setTimezone('UTC');
+                            //info('Start Time:', ['start_time' => $startTime]);
+    
+                            if ($startTime < $validStartTime) {
+                                $fail('The start time must be at least 30 minutes after the current time.');
+                            }
+                        }
+                    }
+                ],
+    
+                'end_time' => [
+                    'required',
+                    'date_format:H:i',
+                    'after:start_time', // End time must be after the start time
+                    'after_or_equal:09:00', // End time must be after or equal to 09:00 (9:00 AM)
+                    'before_or_equal:17:30' // End time must be before or equal to 17:30 (5:00 PM)
+                ],
+                'host_id' => 'required|exists:employees,employee_id',
+                'co_host_id' => 'nullable|exists:employees,employee_id',
+                'participants' => 'required|array', // Ensure participants is an array and required
+            ]);
+            
+            
+    
+            // Add custom validation rule to check for overlapping meetings
+            $validator->after(function ($validator) use ($request) {
+                // Retrieve input data
+                $room_id = $request->input('room_id');
+                $start_date = $request->input('start_date');
+                $start_time = $request->input('start_time');
+                $end_time = $request->input('end_time');
+            
+              
+               
+               // Convert start_time to a DateTime object
+               $startDateTime = \DateTime::createFromFormat('H:i', $start_time);
+               // Add 1 minute
+               $startDateTime->add(new \DateInterval('PT1M'));
+               // Format the updated start time as a string
+               $updated_start_time = $startDateTime->format('H:i');
+              
+    
+                // Check for overlapping meetings
+                $overlappingMeeting = Meeting::where('room_id', $room_id)
+                    ->where('start_date', $start_date)
+                    ->where('booking_status', '!=', 'rejected') // New condition
+                    ->where(function ($query) use ($updated_start_time, $end_time) {
+                        $query->whereBetween('start_time', [$updated_start_time, $end_time])
+                            ->orWhereBetween('end_time', [$updated_start_time, $end_time])
+                            ->orWhere(function ($query) use ($updated_start_time, $end_time) {
+                                $query->where('start_time', '<', $updated_start_time)
+                                        ->where('end_time', '>', $end_time);
+                            });
+                    })
+                    ->exists();
+    
+                
+                // If overlapping meeting found, add error message
+                if ($overlappingMeeting) {
+                    $validator->errors()->add('overlap', 'There is already a meeting scheduled at this time.');
+                }
+            });
+            
+    
+    
+                // If validation fails, return a custom response
+            if ($validator->fails()) {
+                return response()->json([
+                    'message' => $validator->errors()->first(),
+                    'status_code' => 422
+                ], 200);
+            }
+    
+            // If validation passes, create the meeting using the validated data
+            $meeting = Meeting::create($validator->validated());
+    
+           
+            // Attach participants to the meeting
+            if ($request->has('participants')) {
+                foreach ($request->participants as $participantId) {
+                    // Create a new participant record
+                    Participant::create([
+                        'meeting_id' => $meeting->id,
+                        'participant_id' => $participantId
+                    ]);
+                }
+            }
+    
+    
+    
+            // sent the notification to user admin
+            $devicesToken = User::where('role_id', 1)->pluck('device_token')->toArray();
+    
+            $this->notificationController->attemtNotification($devicesToken, "Created a Meeting", "Requested to you a meeting schedule.");
+    
+    
+    
+            // Return a success response with the created meeting
+                return response()->json([
+                    'status_code' => 200,
+                    'message' => 'Meeting created successfully',
+                    //'meeting' => $meeting,
+                ], 200);
+        }
+    
 }
 
 
