@@ -21,10 +21,23 @@
 
                 <div class="card-body">
 
-                   
+
+                    <div class="form-group">
+                        <label>Meeting Title</label>
+                        <input  name="meeting_title" 
+                        class="form-control @error('meeting_title') is-invalid @enderror">
+
+                        @error('meeting_title')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+    
+                    </div>
+
                     <div class="form-group  mt-2">
                         <label>Room</label>
-                        <select class="form-control mt-1" name="department_id"
+                        <select class="form-control mt-1" name="room_id"
                         require="">
                             @foreach(App\Models\Room::all() as $room)
                             <option value="{{$room->id}}">{{$room->name}}</option>
@@ -36,7 +49,7 @@
 
                     <div class="form-group  mt-2">
                         <label>Start Date</label>
-                        <input  name="start_from" 
+                        <input  name="start_date"
                         class="form-control" required="" placeholder="yy-mm-dd" id="datepicker">
 
                         @error('start_from')
@@ -44,12 +57,12 @@
                                 <strong>{{ $message }}</strong>
                             </span>
                         @enderror
-    
+
                     </div>
 
                     <div class="form-group  mt-2">
                         <label>From</label>
-                        <input  name="start_from" 
+                        <input  name="start_time"
                         class="form-control" required="" placeholder="10:00" id="datepicker2">
 
                         @error('start_from')
@@ -57,13 +70,13 @@
                                 <strong>{{ $message }}</strong>
                             </span>
                         @enderror
-    
+
                     </div>
 
-                    
+
                     <div class="form-group  mt-2">
                         <label>To</label>
-                        <input  name="start_from" 
+                        <input  name="end_time"
                         class="form-control" required="" placeholder="11:00" id="datepicker">
 
                         @error('start_from')
@@ -71,54 +84,53 @@
                                 <strong>{{ $message }}</strong>
                             </span>
                         @enderror
-    
-                    </div>
-                    
 
-                   
+                    </div>
+
+
+
                     <div class="form-group mt-2">
                         <label>Co-Host</label>
-                        <select  name="department_id" class="form-select" id="select_box">
+                        <select  name="co_host_id" class="form-select" id="select_box">
                             @foreach(App\Models\Employee::all() as $employee)
                             <option value="{{$employee->employee_id}}">{{$employee->name}}</option>
                             @endforeach
                         </select>
                     </div>
-                   
+
 
                     <div class="form-group  mt-2">
-                        <label>Participant</label>
-                        <select class="form-control mt-1" name="department_id"
-                        require="">
+                    <label>Participant</label>
+
+                            <select name="participants[]" id="choices-multiple-remove-button" placeholder="Select up to 25 Participants" multiple>
                             @foreach(App\Models\Employee::all() as $employee)
                             <option value="{{$employee->employee_id}}">{{$employee->name}}</option>
                             @endforeach
-                        </select>
-
-
-                    </div>
-    
+                            </select>
                     </div>
 
-                   
-                
+                    
+
+
                     <div class="form-group mt-3">
                         <button class="btn btn-outline-primary">Submit</button>
                     </div>
-                
 
-               
+
+
             </div>
 
-                
-        
+
+
         </div>
-        
-       
+
+
       </div>
     </form>
 </div>
 @endsection
+
+
 
 <script>
 
@@ -129,3 +141,19 @@
     });
 
 </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var selectElement = document.getElementById('choices-multiple-remove-button');
+         
+
+            var choices = new Choices(selectElement, {
+                removeItemButton: true,
+                maxItemCount: 25,
+                renderChoiceLimit: 10
+            });
+        });
+    </script>
+
+   
+
