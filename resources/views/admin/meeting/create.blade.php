@@ -6,7 +6,14 @@
         <div class='alert alert-success'>
             {{Session::get('message')}}
         </div>
+        
      @endif
+     @if(Session::has('error'))
+     <div class='alert alert-warning'>
+            {{Session::get('error')}}
+        </div>
+     @endif
+     
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item active" aria-current="page">Create Meeting</li>
@@ -87,6 +94,16 @@
 
                     </div>
 
+
+
+                    <div class="form-group mt-2">
+                        <label>Host</label>
+                        <select  name="host_id" class="form-select" id="select_box">
+                            @foreach(App\Models\Employee::all() as $employee)
+                            <option value="{{$employee->employee_id}}">{{$employee->name}}</option>
+                            @endforeach
+                        </select>
+                    </div>
 
 
                     <div class="form-group mt-2">
