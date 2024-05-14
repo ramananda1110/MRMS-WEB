@@ -13,7 +13,7 @@
         </ol>
      </nav>
     
- <form action="{{route('users.store')}}" method="post", enctype="multipart/form-data">@csrf        
+ <form action="{{ route('meetings.store') }}" method="post", enctype="multipart/form-data">@csrf        
     <div class="row justify-content-center">
         <div class="col-md-11">
             <div class="card">
