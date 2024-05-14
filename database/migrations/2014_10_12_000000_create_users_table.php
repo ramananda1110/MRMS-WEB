@@ -31,7 +31,6 @@ class CreateUsersTable extends Migration
             $table->string('image');
             $table->string('api_token', 80)->unique()->nullable()->default(null);
             $table->string('device_token')->nullable()->defult(null);
-
             $table->rememberToken();
             $table->timestamps();
         });
