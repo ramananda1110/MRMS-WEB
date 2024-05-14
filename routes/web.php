@@ -68,6 +68,8 @@ Route::group(['middleware'=> ['auth', 'has.permission']], function(){
 
     Route::resource('meeting', 'MeetingController');
 
+    Route::post('/meeting/create', [MeetingController::class, 'store'])->name('meetings.store');
+
 
     Route::get('/meetings/all', [MeetingController::class, 'index'])->name('meetings.all');
     Route::get('/meetings/upcoming', [MeetingController::class, 'upcoming'])->name('meetings.upcoming');

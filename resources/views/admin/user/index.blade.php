@@ -20,7 +20,7 @@
                 <thead>
                     <tr>
                         <th>SN</th>
-                        <th>Photo</th>
+                        <!-- <th>Photo</th> -->
                         <th>Name</th>
                         <th>Employee ID</th>
                         <th>Role</th>
@@ -42,7 +42,7 @@
                           $key=>$user)
                         <tr>
                             <td>{{$key+1}}</td>
-                            <td><image src="{{asset('profile')}}//{{$user->image}}" width="50"></td>
+                            <!-- <td><image src="{{asset('profile')}}//{{$user->image}}" width="50"></td> -->
                             <td>{{$user->name}}</td>
                             <td>{{$user->employee_id}}</td>
                             <td><span class="badge bg-success">{{$user->role->name}}</span></td>
