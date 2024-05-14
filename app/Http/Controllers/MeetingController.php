@@ -333,17 +333,13 @@ class MeetingController extends Controller
         }
 
 
-
         // sent the notification to user admin
         $devicesToken = User::where('role_id', 1)->pluck('device_token')->toArray();
 
         $this->notificationController->attemtNotification($devicesToken, "Created a Meeting", "Requested to you a meeting schedule.");
 
-
-
         return redirect()->back()->with('message', 'Meeting created successfully');
 
-    
     }
 
 
