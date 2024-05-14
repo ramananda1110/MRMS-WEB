@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Department;
+use Illuminate\Http\Response;
 
 class UserController extends Controller
 {
@@ -169,5 +170,39 @@ class UserController extends Controller
        //return $department = Department::with('user')->get();
 
        return User::all();
+    }
+
+    public function userInfo(Request $request)
+    {
+       
+        $apiToken = $request->query('api_token');
+
+        $user = User::where('api_token', $apiToken)->first();
+
+        // Attempt to authenticate the user
+        if ($user) {
+           
+            // Make department_id and role_id hidden in the JSON response
+            $user->makeHidden(['department_id', 'role_id']);
+
+            // Return the user data and the token in the response
+            return response()->json([
+                'status_code' => Response::HTTP_OK,
+                'user' => array_merge($user->toArray(), [
+                    'is_admin' => $user->isAdmin(),
+                    'api_token' => $apiToken,
+                    'department_name' => optional($user->department)->name,
+                    'role' => optional($user->role)->name,
+                ]),
+                'message' => 'Success'
+            ]);
+        }
+
+        // If authentication fails, return an error response
+        return response()->json([
+            'status_code' => Response::HTTP_UNAUTHORIZED,
+            'user' => $user,
+            'message' => "Oops! It seems your credentials don't match. Please verify and retry."
+        ], Response::HTTP_OK);
     }
 }

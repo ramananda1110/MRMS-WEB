@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\MeetingController;
 
 /*
 |--------------------------------------------------------------------------
@@ -64,6 +65,13 @@ Route::group(['middleware'=> ['auth', 'has.permission']], function(){
     Route::post('/import-department', 'DepartmentController@import');
 
     Route::get('search-employee','EmployeeController@searchEmployee')->name('search.employee');
+
+    Route::resource('meeting', 'MeetingController');
+
+
+    Route::get('/meetings/all', [MeetingController::class, 'index'])->name('meetings.all');
+    Route::get('/meetings/upcoming', [MeetingController::class, 'upcoming'])->name('meetings.upcoming');
+    Route::get('/meetings/pending', [MeetingController::class, 'pending'])->name('meetings.pending');
 
 
 });

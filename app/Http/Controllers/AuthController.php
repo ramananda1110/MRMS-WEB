@@ -49,8 +49,30 @@ class AuthController extends Controller
         return response()->json([
             'status_code' => Response::HTTP_UNAUTHORIZED,
             'user' => null,
-            'message' => 'Unauthorized credentials'
-        ], Response::HTTP_UNAUTHORIZED);
+            'message' => "Oops! It seems your credentials don't match. Please verify and retry."
+        ], Response::HTTP_OK);
     }
 
+
+
+    public function logout(Request $request)
+    {
+
+        $apiToken = $request->query('api_token');
+
+        // Retrieve the user based on the employee ID
+        $user = User::where('api_token', $apiToken)->first();
+
+
+         // Update booking type to 'reschedule'
+        $user->update(['api_token' => null]);
+        $user->update(['device_token' => null]);
+
+       
+        // If authentication fails, return an error response
+        return response()->json([
+            'status_code' => Response::HTTP_OK,
+            'message' => "You have successfully logout"
+        ], Response::HTTP_OK);
+    }
 }

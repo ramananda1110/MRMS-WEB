@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddApiTokenToUsersTable extends Migration
+class CreateParticipantsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,11 @@ class AddApiTokenToUsersTable extends Migration
      */
     public function up()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->string('api_token', 80)->unique()->nullable()->default(null);
+        Schema::create('participants', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('meeting_id')->constrained()->onDelete('cascade');
+            $table->integer('participant_id');
+            $table->timestamps();
         });
     }
 
@@ -25,8 +28,6 @@ class AddApiTokenToUsersTable extends Migration
      */
     public function down()
     {
-        Schema::table('users', function (Blueprint $table) {
-            //
-        });
+        Schema::dropIfExists('participants');
     }
 }

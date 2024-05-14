@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Room;
-class RoomController extends Controller
+
+class ParticipantController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -13,8 +13,7 @@ class RoomController extends Controller
      */
     public function index()
     {
-        $rooms = Room::latest()->get();
-        return view('admin.room.index', compact('rooms'));
+        //
     }
 
     /**
@@ -24,8 +23,7 @@ class RoomController extends Controller
      */
     public function create()
     {
-        return view('admin.room.create');
-
+        //
     }
 
     /**
@@ -36,16 +34,7 @@ class RoomController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request, [
-            'name'=>'required|unique:rooms',
-            'location'=>'required',
-            'capacity'=>'required',
-            'facilities'=>'required'
-        ]);
-      
-        $data = $request->all();
-        Room::create($data);
-        return redirect()->back()->with('message', 'Room Created Successfully');
+        //
     }
 
     /**
@@ -67,9 +56,7 @@ class RoomController extends Controller
      */
     public function edit($id)
     {
-        $room = Room::find($id);
-        return view('admin.room.edit', compact('room'));
-
+        //
     }
 
     /**
@@ -81,11 +68,7 @@ class RoomController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $room = Room::find($id);
-        $data = $request->all();
-        $room->update($data);
-        return redirect()->route("rooms.index")->with('message', 'Record Updated Successfully');
-
+        //
     }
 
     /**
@@ -96,23 +79,6 @@ class RoomController extends Controller
      */
     public function destroy($id)
     {
-        $room = Room::find($id);
-        $room->delete();
-        return redirect()->route('rooms.index')->with('message', 'Room has been  Deleted');
-
+        //
     }
-
-
-    public function roomList(Request $request) {
-        //return Room::all();
-
-        return response()->json([
-            'status_code' => 200,
-            'data' => Room::all(),
-            'message' => 'Successes'
-            
-        ], 200);
-     }
-
-
 }

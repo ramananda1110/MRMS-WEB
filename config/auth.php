@@ -63,7 +63,8 @@ return [
         'users' => [
             'driver' => 'eloquent',
             'model' => App\Models\User::class,
-           
+            //'column' => 'employee_id', // Change this to 'user_id'
+
         ],
 
         // 'users' => [

@@ -24,6 +24,7 @@ class User extends Authenticatable
         'project_code',
         'name',
         'email',
+        'is_active',
         'password',
         'address',
         'mobile_number',
@@ -31,7 +32,9 @@ class User extends Authenticatable
         'designation',
         'role_id',
         'image',
-        'start_from'
+        'api_token',
+        'start_from',
+        'device_token'
     ];
 
     /**
@@ -70,5 +73,10 @@ class User extends Authenticatable
                 return strtolower($role->name) === 'admin';
             })
             ->first();
+    }
+
+    public function meetings()
+    {
+        return $this->hasMany(Meeting::class, 'host_id', 'id');
     }
 }

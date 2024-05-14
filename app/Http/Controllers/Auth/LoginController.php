@@ -6,6 +6,10 @@ use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
+
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+
 class LoginController extends Controller
 {
     /*
@@ -36,5 +40,17 @@ class LoginController extends Controller
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
+    }
+
+
+    protected function credentials(Request $request)
+    {
+        // Override the credentials method to use 'employee_id' instead of 'email'
+        return $request->only('employee_id', 'password');
+    }
+
+    public function username()
+    {
+        return 'employee_id';
     }
 }

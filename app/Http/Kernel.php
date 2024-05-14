@@ -49,8 +49,10 @@ class Kernel extends HttpKernel
             \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
             'auth:sanctum',
         ],
-        'api.unauth' => [
+        'auth.api' => [
             // Custom middleware for unauthenticated routes
+             \App\Http\Middleware\AuthenticateApi::class,
+
         ],
     ];
 

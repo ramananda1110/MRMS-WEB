@@ -9,7 +9,7 @@ use Maatwebsite\Excel\Facades\Excel;
 use App\Models\Employee;
 use DataTables;
 use App\Models\User;
-
+use App\Notifications\CreateNewUserNotification;
 
 
 class EmployeeController extends Controller
@@ -73,30 +73,54 @@ class EmployeeController extends Controller
      public function getEmployee(Request $request) {
         // Check if the search keyword is provided
         $keyword = $request->input('keyword');
+        $apiToken = $request->query('api_token');
+
+        $user = User::where('api_token', $apiToken)->first();
+
         if (!$keyword) {
-            return response()->json([
-                'status_code' => 400,
-                'message' => 'Bad Request: Keyword parameter is required for searching.',
-            ], 400);
+            // return response()->json([
+            //     'status_code' => 422,
+            //     'message' => 'Bad Request: Keyword parameter is required for searching.',
+            // ], 200);
+            // set default keyword department
+            $keyword = $user->department->name;
         }
+
+
     
         // Build the query
-        $query = Employee::query();
+        $query = Employee::query()->where('status', '=', 'Active');
+
     
         // Apply search filter across multiple columns
-        $query->where(function ($query) use ($keyword) {
-            $query->where('name', 'like', '%' . $keyword . '%')
-                  ->orWhere('project_name', 'like', '%' . $keyword . '%')
-                  ->orWhere('designation', 'like', '%' . $keyword . '%')
-                  ->orWhere('division', 'like', '%' . $keyword . '%');
-        });
+        // temporary off filter data 
+        // $query->where(function ($query) use ($keyword) {
+        //     $query->where('name', 'like', '%' . $keyword . '%')
+        //           ->orWhere('project_name', 'like', '%' . $keyword . '%')
+        //           ->orWhere('designation', 'like', '%' . $keyword . '%')
+        //           ->orWhere('division', 'like', '%' . $keyword . '%');
+        // });
     
         // Retrieve the filtered data
         $filteredEmployees = $query->get();
-    
+       
+
+       
+        // Transform the meetings data (similar to the previous API endpoint)
+        $data = $filteredEmployees->map(function ($employee) {
+            return [
+                'id' => $employee->employee_id,
+                // 'employee_id' => $employee->emplyee_id,
+                'name' => ucwords(strtolower($employee->name)),
+
+                'division' => $employee->division,
+                'designation' => $employee->designation,
+            ];
+        });
+
         return response()->json([
             'status_code' => 200,
-            'data' => $filteredEmployees,
+            'data' => $data,
             'message' => 'Success',
         ], 200);
     }
@@ -172,7 +196,7 @@ class EmployeeController extends Controller
 
         // If the user already exists, return a message indicating that the user exists
         if ($existingUser) {
-            return redirect()->back()->with('error', 'User with the same employee ID already exists');
+            return redirect()->back()->with('error', 'User already exists');
         }
 
         // If the email already exists, return a message indicating that the email exists
@@ -196,7 +220,19 @@ class EmployeeController extends Controller
         $data['department_id'] = $request->department_id;
         $data['role_id'] = $request->role_id;
     
+
+        $user = Employee::where('email', $employee->email)->first();
+
+
+        if ($user) {
+            $user->notify(new CreateNewUserNotification($employee->employee_id, $employee->name, $request->password));
+        }
+        
+            
         User::create($data);
+
+
+
         return redirect()->back()->with('message', 'User Created Successfully');
     }
     

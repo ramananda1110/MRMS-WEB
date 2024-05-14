@@ -6,30 +6,33 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
-use Ichtrojan\Otp\Otp;
 
-class ResetPasswordVerificationNotification extends Notification
+class CreateNewUserNotification extends Notification
 {
     use Queueable;
     public $message;
     public $subject;
     public $fromEmail;
     public $mailer;
-    public $otp;
-
-
+    public $userId;
+    public $password;
+    public $name;
+   
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($userId, $name, $password)
     {
-        $this->message = 'Use the below code to reset your process.';
-        $this->subject = 'Password Reset';
+        $this->message = 'Below are your login credentials for accessing the MRMS App:';
+        $this->subject = 'Welcome to MRMS';
         $this->fromEmail = 'admin@ddcl.bd';
         $this->mailer = 'smtp';
-        $this->otp = new Otp;
+        $this->userId = $userId;
+        $this->name = $name;
+        $this->password = $password;
+
     }
 
     /**
@@ -51,17 +54,16 @@ class ResetPasswordVerificationNotification extends Notification
      */
     public function toMail($notifiable)
     {
-        
-        // $otpGenerator = new Otp();
-        // $otp = (new Otp)->generate('admin@gmail.com', 'numeric', 6, 15);
-        $otp = $this->otp->generate($notifiable->email, 'numeric', 4, 60);
-        
+       
         return (new MailMessage)
-                    ->mailer('smtp')
-                    ->subject($this->subject)
-                    ->greeting('Hello, '.$notifiable->first_name)
-                    ->line($this->message)
-                    ->line('code: '. $otp->token);
+        ->mailer('smtp')
+        ->subject($this->subject)
+        ->greeting('Hello, ' . $this->name .' welcome to MRMS! ' . $notifiable->first_name)
+        ->line($this->message)
+        ->line('User ID: ' . $this->userId) // Corrected access to $userId and $password
+        ->line('Password: ' . $this->password)
+        ->line('To download the MRMS App from Google Play, please click [here](https://play.google.com/store/apps/details?id=com.adora.mrm&hl=en&gl=US).');
+
     }
 
     /**

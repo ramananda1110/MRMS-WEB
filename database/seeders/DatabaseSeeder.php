@@ -7,6 +7,7 @@ use App\Models\Department;
 use App\Models\User;
 use App\Models\Role;
 use App\Models\Room;
+use App\Models\Permission;
 
 
 class DatabaseSeeder extends Seeder
@@ -78,7 +79,7 @@ class DatabaseSeeder extends Seeder
             'employee_id'=>'10001',
             'project_code'=>'PROJ000077',
             'name'=>'DDCL Private Ltd.',
-            'email'=>'admin@gmail.com',
+            'email'=>'admin@ddclbd.com',
             'password'=>bcrypt('password'),
             'email_verified_at'=>NOW(),
             'address'=>'Bangladesh',
@@ -104,6 +105,36 @@ class DatabaseSeeder extends Seeder
             'start_from'=> '2023-12-11',
             'designation'=> 'Software Engineer',
             'image' => ''
+        ]);
+
+        User::create([
+            'employee_id'=>'14071',
+            'project_code'=>'PROJ000254',
+            'name'=>'TAHMID MAHTAB RATUL',
+            'email'=>'tahmid.ddclbd@gmail.com',
+            'password'=>bcrypt('password3'),
+            'email_verified_at'=>NOW(),
+            'address'=>'Mirpur, Dahka Bangladesh',
+            'mobile_number'=>'01628853526',
+            'department_id'=>7,
+            'role_id'=>3,
+            'start_from'=> '2023-12-03',
+            'designation'=> 'UI/UX EXPERT',
+            'image' => ''
+        ]);
+
+
+        // create a default permission
+
+        // JSON string with your data
+        $jsonData = '{"department":{"can-add":"1","can-edit":"1","can-view":"1","can-delete":"1","can-list":"1"},"role":{"can-add":"1","can-edit":"1","can-view":"1","can-delete":"1","can-list":"1"},"permission":{"can-add":"1","can-edit":"1","can-view":"1","can-delete":"1","can-list":"1"},"user":{"can-add":"1","can-edit":"1","can-view":"1","can-delete":"1","can-list":"1"},"notice":{"can-add":"1","can-edit":"1","can-view":"1","can-delete":"1","can-list":"1"},"leave":{"can-list":"1"}}';
+
+        // Decode the JSON string into a PHP associative array
+        $data = json_decode($jsonData, true);
+
+        Permission::create([
+            'role_id'=>1,
+            'name'=> $data
         ]);
     }
 
