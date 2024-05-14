@@ -311,10 +311,7 @@ class MeetingController extends Controller
         
             // If validation fails, return a custom response
         if ($validator->fails()) {
-            return response()->json([
-                'message' => $validator->errors()->first(),
-                'status_code' => 422
-            ], 200);
+            redirect()->back()->with('error', $validator->errors()->first()); 
         }
         
 
