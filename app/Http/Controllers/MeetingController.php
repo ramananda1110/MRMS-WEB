@@ -309,8 +309,6 @@ class MeetingController extends Controller
             }
         });
         
-
-
             // If validation fails, return a custom response
         if ($validator->fails()) {
             return response()->json([
@@ -318,6 +316,7 @@ class MeetingController extends Controller
                 'status_code' => 422
             ], 200);
         }
+        
 
         // If validation passes, create the meeting using the validated data
         $meeting = Meeting::create($validator->validated());
