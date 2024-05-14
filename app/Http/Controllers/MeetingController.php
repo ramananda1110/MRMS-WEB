@@ -308,13 +308,11 @@ class MeetingController extends Controller
             }
         });
         
-
             // If validation fails, return a custom response
         if ($validator->fails()) {
 
             return redirect()->back()->with('message', $validator->errors()->first());
         }
-
         
 
         // If validation passes, create the meeting using the validated data
