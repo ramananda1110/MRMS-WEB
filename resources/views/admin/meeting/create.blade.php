@@ -70,7 +70,7 @@
                     <div class="form-group  mt-2">
                         <label>From</label>
                         <input  name="start_time"
-                        class="form-control" required="" placeholder="10:00" id="datepicker2">
+                        class="form-control" required="" placeholder="10:00" id="datetimefrom">
 
                         @error('start_from')
                             <span class="invalid-feedback" role="alert">
@@ -84,7 +84,7 @@
                     <div class="form-group  mt-2">
                         <label>To</label>
                         <input  name="end_time"
-                        class="form-control" required="" placeholder="11:00" id="datepicker">
+                        class="form-control" required="" placeholder="11:00" id="datetimeto">
 
                         @error('start_from')
                             <span class="invalid-feedback" role="alert">
