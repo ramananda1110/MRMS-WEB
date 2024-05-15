@@ -399,25 +399,36 @@ class MeetingController extends Controller
         ]);
     }
 
-    public function showDashboard()
-    {
-        $upcomingCount = $this->upcomingCount();
-        dd($upcomingCount);
-        return view('admin.meeting.pending', compact('upcomingCount'));
-    }
+   
 
-
-    public function upcomingCount() {
+    public function dashboardMeetingCount() {
         $today = Carbon::today();
+
+        $totalMeeting = Meeting::all()->count();
+
         $upcomingCount = Meeting::where('booking_status', 'accepted')
         ->whereDate('start_date', '>=', $today) // Start date on or after today
         ->count();
 
-        $pendingCount = 100;
+        //$upcomingCount = 100;
+       
 
-        return $pendingCount;
+        $pendingCount = Meeting::where('booking_status', 'pending')->count();
+
+       // $pendingCount = 90;
+
+        $completedCount = Meeting::where('booking_status', 'accepted')
+        ->whereDate('start_date', '<', $today) // Start date before today
+        ->count();
+    
+       // $completedCount = 244;
+
+
+        return view('welcome', compact('totalMeeting', 'upcomingCount', 'pendingCount', 'completedCount'));
 
     }
+
+   
 
     public function getSummary()
     {

@@ -13,19 +13,19 @@
                                         <p><i class="fas fa-user fa-fw" style="font-size:20px;"></i></p>
                                     </div>
                                     <div class="card-footer d-flex align-items-center justify-content-between">
-                                        <a class="small text-white stretched-link" style="font-size:18;" href="#">{{App\Models\Meeting::all()->count()}}</a>
+                                        <a class="small text-white stretched-link" style="font-size:18;" href="#">  {{$totalMeeting ?? '0'}}</a>
                                     </div>
                                 </div>
                             </div>
 
                             <div class="col-xl-3 col-md-6">
                                 <div class="card bg-warning text-white mb-4">
-                                    <div class="card-body">Division
+                                    <div class="card-body">Completed Meeting
                                         <p><i class="fas fa-home" style="font-size:18;"></i></p>
                                     </div>
                                     <div class="card-footer d-flex align-items-center justify-content-between">
                                         <a class="small text-white stretched-link" href="#">
-                                            {{App\Models\Department::all()->count()}}
+                                            {{$completedCount ?? '0'}}
                                         </a>
 
                                     </div>
@@ -40,8 +40,7 @@
                                     <div class="card-footer d-flex align-items-center justify-content-between">
                                         <a class="small text-white stretched-link" href="#">
                                           
-                                        {{ $upcomingCount ?? '0' }}
-
+                                        {{$upcomingCount ?? '0'}}
 
                                         </a>
                                        
@@ -50,11 +49,11 @@
                             </div>
                             <div class="col-xl-3 col-md-6">
                                 <div class="card bg-danger text-white mb-4">
-                                    <div class="card-body">Room
+                                    <div class="card-body">Pending Meeting
                                         <p><i class="fas fa-book" style="font-size:20px;"></i></p>
                                     </div>
                                     <div class="card-footer d-flex align-items-center justify-content-between">
-                                        <a class="small text-white stretched-link" href="#"> {{App\Models\Room::all()->count()}}</a>
+                                        <a class="small text-white stretched-link" href="#">  {{ $pendingCount ?? '0' }}</a>
                                     </div>
                                 </div>
                             </div>

@@ -26,9 +26,16 @@ Route::view('employee', 'admin.create');
 Route::group(['middleware'=> ['auth', 'has.permission']], function(){
 
     Route::get('/', function () {
+
         return view('welcome');
     });
     
+
+
+    Route::get('/', [MeetingController::class, 'dashboardMeetingCount'])->name('meeting.count');
+    
+
+
     Route::resource('departments', 'DepartmentController');
     Route::get('/department-list', 'DepartmentController@getDepartment');
 
@@ -73,11 +80,9 @@ Route::group(['middleware'=> ['auth', 'has.permission']], function(){
 
     Route::get('/meetings/all', [MeetingController::class, 'index'])->name('meetings.all');
     Route::get('/meetings/upcoming', [MeetingController::class, 'upcoming'])->name('meetings.upcoming');
-    //Route::get('/meetings/pending', [MeetingController::class, 'pending'])->name('meetings.pending');
-    Route::get('/meetings/pending', [MeetingController::class, 'showDashboard'])->name('meetings.pending');
+    Route::get('/meetings/pending', [MeetingController::class, 'pending'])->name('meetings.pending');
 
 
-    Route::get('/dashboard', [MeetingController::class, 'showDashboard'])->name('dashboard');
 
 
 });
