@@ -399,51 +399,25 @@ class MeetingController extends Controller
         ]);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+    public function showDashboard()
     {
-        //
+        $upcomingCount = $this->upcomingCount();
+        dd($upcomingCount);
+        return view('admin.meeting.pending', compact('upcomingCount'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
+    public function upcomingCount() {
+        $today = Carbon::today();
+        $upcomingCount = Meeting::where('booking_status', 'accepted')
+        ->whereDate('start_date', '>=', $today) // Start date on or after today
+        ->count();
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
+        $pendingCount = 100;
 
+        return $pendingCount;
+
+    }
 
     public function getSummary()
     {
