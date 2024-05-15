@@ -72,9 +72,9 @@
                                 <div class="card mb-4">
                                     <div class="card-header">
                                         <i class="fas fa-chart-bar me-1"></i>
-                                        Bar Chart Example
+                                        Daily Meetings
                                     </div>
-                                    <div class="card-body"><canvas id="myBarChart" width="100%" height="40"></canvas></div>
+                                    <div class="card-body"><canvas id="weeklyChart" width="100%" height="40"></canvas></div>
                                 </div>
                             </div>
                         </div>
@@ -108,3 +108,37 @@
                         
                     </div>
                 </main>
+
+
+                 <!-- JavaScript code -->
+   <!-- JavaScript code -->
+<script>
+    // PHP data passed to JavaScript
+    
+    var weekData = <?php echo json_encode($weekendData); ?>;
+    
+    console.log(weekData); // Debugging statement
+
+    // Convert PHP data to arrays for Chart.js
+    var labels = Object.keys(weekData);
+    var data = Object.values(weekData);
+
+    // Get the canvas element
+    var weeklyChart = document.getElementById('weeklyChart').getContext('2d');
+
+    // Create the chart
+    var myWeeklyChart = new Chart(weeklyChart, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Weekly Data',
+                data: data,
+                backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                borderColor: 'rgba(255, 99, 132, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {}
+    });
+</script>
