@@ -10,7 +10,7 @@
     @endif
   
     
-    <div class="row justify-content-center">
+    <div class="row justify-content-center rounded shadow p-3 mb-5 bg-white" style="background-color: white">
         <div class="col-md-11">
         
         <div class="card-body">
