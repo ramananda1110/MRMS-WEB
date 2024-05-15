@@ -1,7 +1,7 @@
 @extends('admin.layouts.master')
 
 @section('content')
-<div class="container mt-5">
+<div class="container mt-5 rounded shadow p-3 mb-5 bg-white" style="background-color: white">
     @if(Session::has('message'))
         <div class='alert alert-success'>
             {{Session::get('message')}}

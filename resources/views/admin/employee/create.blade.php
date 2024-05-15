@@ -15,8 +15,8 @@
     
  <form action="{{route('employee.store')}}" method="post", enctype="multipart/form-data">@csrf        
     <div class="row justify-content-center">
-        <div class="col-md-11">
-            <div class="card">
+        <div class="col-md-11" >
+            <div class="card" >
                 <div class="card-header">Create a New Employee</div>
 
                 <div class="card-body">
