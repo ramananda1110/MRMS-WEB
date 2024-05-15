@@ -14,33 +14,32 @@
     </div>
     @endif
     
-    <div class="row justify-content-center">
-        <div class="col-md-11">
-            <div class="card-body">
-                <form action="{{route('import.excel')}}" method="POST", enctype="multipart/form-data">@csrf        
-
-                <div class="input-group"> 
-                    <input type="file" name="file"  placeholder="attached xlsx" class="form-control">
-
-                    <button class="btn btn-outline-primary">Import</button>
-
-                </div>
-                </form>
-
-                <div class="form-group mt-5">
-                </div>
-            </div>
+    <div class="row justify-content-center px-2 py-2 rounded shadow p-3 mb-5 bg-white" style="background-color: white">
+    
             
- 	        <br>
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb">
                     <li class="breadcrumb-item active" aria-current="page">
                         <div class="row align-items-center">
+                            <div class="card-body">
+                                <form action="{{route('import.excel')}}" method="POST", enctype="multipart/form-data">@csrf        
+                
+                                <div class="input-group mt-2"> 
+                                    <input type="file" name="file"  placeholder="attached xlsx" class="form-control">
+                
+                                    <button class="btn btn-outline-primary">Import</button>
+                
+                                </div>
+                                </form>
+                
+                                <div class="form-group mt-5">
+                                </div>
+                            </div>
               
-                        <div class="col-md-4">
-                            <span>List Of Employee</span>
+                        <div class="col-md-3">
+                            <span>List Of Employee:</span>
                         </div>
-                            <div class="col-md-8">
+                            <div class="col-md-9">
                                 <form action="{{route('search.employee')}}" method="GET" class="input-group">
                                     <input type="text" name="search" class="form-control" placeholder="name,phone,emp id...">
                                     <div class="input-group-append ms-1">
@@ -53,7 +52,7 @@
                     </ol>
                 </nav>
 
-        <div class="card-body">
+        <div class="card-body" >
             <table id="employeeTable" class="table table-striped table-bordered">
             
                 <thead>
@@ -228,7 +227,6 @@
             {{$employees->links('pagination::bootstrap-4')}}
         </div>
        
-        </div>
         
      </div>
        
