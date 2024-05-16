@@ -17,26 +17,76 @@
     <div class="row justify-content-center px-2 py-2 rounded shadow p-3 mb-5 bg-white" style="background-color: white">
     
             
-                <nav aria-label="breadcrumb">
+                {{-- <nav aria-label="breadcrumb">
                     <ol class="breadcrumb">
-                    <li class="breadcrumb-item active" aria-current="page">
-                        <div class="row align-items-center">
-                            <div class="card-body">
-                                <form action="{{route('import.excel')}}" method="POST", enctype="multipart/form-data">@csrf        
-                
-                                <div class="input-group mt-2"> 
-                                    <input type="file" name="file"  placeholder="attached xlsx" class="form-control">
-                
-                                    <button class="btn btn-outline-primary">Import</button>
-                
-                                </div>
-                                </form>
-                
-                                <div class="form-group mt-5">
+                    <li class="breadcrumb-item active" aria-current="page"> --}}
+                        {{-- <div > --}}
+                            <div class="card ms-4 mt-3 me-4" style="border-bottom: 1px solid silver;">
+                                <div class="panel-heading no-print mt-2 mb-2">
+                                    <div class="btn-group">
+                                        <a href="{{Route('employee.create')}}" class="btn btn-primary">
+                                            <i class="fa fa-plus"></i> Add Employee
+                                        </a>                           
+                                    </div>  
                                 </div>
                             </div>
+                            
+
+                            <div class="row mb-3 mt-3">
+
+                                <div class="col-sm-4">
+                                    <form action="{{route('import.excel')}}" method="POST", enctype="multipart/form-data">@csrf        
+                    
+                                    <div class="input-group mt-2"> 
+                                        <input type="file" name="file"  placeholder="attached xlsx" class="form-control">
+                    
+                                        <button class="btn btn-outline-primary">Import</button>
+                    
+                                    </div>
+                                    </form>
+                    
+                                    
+                                </div>
+                              
+
+                                <div class="col-sm-4 text-center mt-2">
+                                    <div class="dt-buttons btn-group border">
+                                        <a class="btn btn-default buttons-copy border buttons-html5 btn-sm" tabindex="0" aria-controls="DataTables_Table_0">
+                                            <span>Copy</span>
+                                        </a>
+
+                                        <a class="btn btn-default buttons-csv border buttons-html5 btn-sm" tabindex="0" aria-controls="DataTables_Table_0">
+                                            <span>Csv</span>
+                                        </a>
+
+                                        <a class="btn btn-default buttons-excel border buttons-html5 btn-sm" tabindex="0" aria-controls="DataTables_Table_0">
+                                            <span>Excel</span>
+                                        </a>
+
+                                        <a class="btn btn-default buttons-pdf border buttons-html5 btn-sm" tabindex="0" aria-controls="DataTables_Table_0">
+                                            <span>PDF</span>
+                                        </a>
+
+                                        <a class="btn btn-default buttons-print border buttons-html5 btn-sm" tabindex="0" aria-controls="DataTables_Table_0">
+                                            <span>Print</span>
+                                        </a>
+
+                                    </div>
+
+                                </div>
+
+                                <div class="col-sm-4 mt-2">
+                                    <form action="{{route('search.employee')}}" method="GET" class="input-group">
+                                        <input type="text" name="search" class="form-control" placeholder="name,phone,emp id...">
+                                        <div class="input-group-append ms-1">
+                                            <button type="submit" class="btn btn-outline-primary">Search</button>
+                                        </div>
+                                    </form>
+                                </div>
+
+                            </div>
               
-                        <div class="col-md-3">
+                        {{-- <div class="col-md-3">
                             <span>List Of Employee:</span>
                         </div>
                             <div class="col-md-9">
@@ -47,10 +97,10 @@
                                     </div>
                                 </form>
                             </div>
-                        </div>
-                     </li>
+                        </div> --}}
+                     {{-- </li>
                     </ol>
-                </nav>
+                </nav> --}}
 
         <div class="card-body" >
             <table id="employeeTable" class="table table-striped table-bordered">
