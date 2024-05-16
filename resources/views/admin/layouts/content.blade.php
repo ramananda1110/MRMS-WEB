@@ -7,63 +7,82 @@
                             <li class="breadcrumb-item active"><p class="mt-2"></p></li>
                         </ol>
                         <div class="row">
+
+                        
                         <div class="col-xl-3 col-md-6">
-                            <div class="card text-white mb-4" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
-                                <div class="card-body d-flex align-items-center justify-content-between">
-                                    <div>
+                            <div class="card shadow mb-4">
+                                <div class="card-body d-flex align-items-center ">
+                                   
+                                    <div class="icon">
+                                            <image src="{{asset('/images/Group.svg')}}" height="80" width="80" />
+                                                                          
+                                   </div>
+                                    <div class="ps-4">
                                         <div class="card-title">Total Meetings</div>
                                         <div class="card-text">
                                             <span style="font-size: 2rem;">{{$totalMeeting ?? '0'}}</span>
                                         </div>
-                                    </div>
-                                    <div class="icon">
-                                        <i class="fas fa-users fa-3x"></i>
                                     </div>
                                 </div>
                                 
                             </div>
                         </div>
 
-                            <div class="col-xl-3 col-md-6">
-                                <div class="card bg-warning text-white mb-4">
-                                    <div class="card-body">Completed Meeting
-                                        <p><i class="fas fa-home" style="font-size:18;"></i></p>
+                        <div class="col-xl-3 col-md-6">
+                            <div class="card shadow mb-4">
+                                <div class="card-body d-flex align-items-center ">
+                                   
+                                    <div class="icon">
+                                        <image src="{{asset('/images/Group-1.svg')}}" height="80" width="80" />
                                     </div>
-                                    <div class="card-footer d-flex align-items-center justify-content-between">
-                                        <a class="small text-white stretched-link" href="#">
-                                            {{$completedCount ?? '0'}}
-                                        </a>
-
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-xl-3 col-md-6">
-                                <div class="card bg-success text-white mb-4">
-                                    <div class="card-body">Upcoming Meeting
-                                        <p><i class="fas fa-book" style="font-size:20px;"></i></p>
-                                    </div>
-                                    <div class="card-footer d-flex align-items-center justify-content-between">
-                                        <a class="small text-white stretched-link" href="#">
-                                          
-                                        {{$upcomingCount ?? '0'}}
-
-                                        </a>
-                                       
+                                    <div class="ps-4">
+                                        <div class="card-title">Completed Meetings</div>
+                                        <div class="card-text">
+                                            <span style="font-size: 2rem;">{{$completedCount ?? '0'}}</span>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="col-xl-3 col-md-6">
-                                <div class="card bg-danger text-white mb-4">
-                                    <div class="card-body">Pending Meeting
-                                        <p><i class="fas fa-book" style="font-size:20px;"></i></p>
-                                    </div>
-                                    <div class="card-footer d-flex align-items-center justify-content-between">
-                                        <a class="small text-white stretched-link" href="#">  {{ $pendingCount ?? '0' }}</a>
-                                    </div>
-                                </div>
+                                
                             </div>
                         </div>
+
+                        <div class="col-xl-3 col-md-6">
+                            <div class="card shadow mb-4">
+                                <div class="card-body d-flex align-items-center ">
+                                   
+                                    <div class="icon">
+                                        <image src="{{ asset('/images/Group-3.svg') }}" height="80" width="80" />
+                                    </div>
+                                    <div class="ps-4">
+                                        <div class="card-title">Upcoming Meetings</div>
+                                        <div class="card-text">
+                                            <span style="font-size: 2rem;">{{$upcomingCount ?? '0'}}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-md-6">
+                            <div class="card shadow mb-4">
+                                <div class="card-body d-flex align-items-center ">
+                                   
+                                    <div class="icon">
+                                        <image src="{{asset('/images/Group-4.svg')}}" height="80" width="80" />
+                                    </div>
+                                    <div class="ps-4">
+                                        <div class="card-title">Pending Meetings</div>
+                                        <div class="card-text">
+                                            <span style="font-size: 2rem;">{{$pendingCount ?? '0'}}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                        </div>
+                        </div>
+
+                        
                         <div class="row">
                             
                             
