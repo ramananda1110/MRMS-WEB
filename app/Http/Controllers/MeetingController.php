@@ -425,13 +425,15 @@ class MeetingController extends Controller
 
        $weekendData = [
         'Sunday' => 10,
-        'Monday' => 0,
-        'Tuesday' => 10,
-        'Wednesday' => 0,
-        'Thursday' => 10,
-        'Friday' => 0,
-        'Saturday' => 0,
-    ];
+        'Monday' => 12,
+        'Tuesday' => 9,
+        'Wednesday' => 30,
+        'Thursday' => 25,
+        'Friday' => 10,
+        'Saturday' => 7,
+        ];
+
+       // dd($weekendData);
 
         return view('welcome', compact('totalMeeting', 'upcomingCount', 'pendingCount', 'completedCount', 'weekendData'));
 
