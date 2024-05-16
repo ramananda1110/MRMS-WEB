@@ -21,8 +21,9 @@
         </ol>
      </nav>
     
-<form action="{{ route('meetings.store') }}" method="post" enctype="multipart/form-data">
+     <form id="meetingForm" action="{{ route('meetings.store') }}" method="post" enctype="multipart/form-data">
         @csrf
+
         <div class="row">
             <div class="col-sm-12">
                 <div class="card">
@@ -53,130 +54,115 @@
 
 
                         <div class="form-group row mt-2">
-                        <label class="col-sm-3 col-form-label">Start Date</label>
+                            <label class="col-sm-3 col-form-label">Start Date</label>
                             <div class="col-sm-9">
-                        <input  name="start_date"
-                        class="form-control" required="" placeholder="yy-mm-dd" id="datepicker">
+                                <input  name="start_date"
+                                class="form-control" required="" placeholder="yy-mm-dd" id="datepicker">
 
-                        @error('start_from')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                        @enderror
+                                @error('start_from')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
                             </div>
                         </div>
 
 
-
-                    <div class="form-group row mt-2">
-                        <label  class="col-sm-3 col-form-label">From</label>
-                        <div class="col-sm-9">
-                        <input class="form-control" type="time" id="appt" name="start_time" step="3600">  
-                        @error('start_from')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                        @enderror
+                        <!-- id="appt -->
+                        <div class="form-group row mt-2">
+                            <label  class="col-sm-3 col-form-label">Start Time</label>
+                            <div class="col-sm-9">
+                                <input class="form-control"  name="start_time" >  
+                                @error('start_time')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
                         </div>
-                    </div>
 
 
-                    <div class="form-group row mt-2">
-                    <label  class="col-sm-3 col-form-label">To</label>
-                    <div class="col-sm-9">
+                        <div class="form-group row mt-2">
+                            <label  class="col-sm-3 col-form-label">End Time</label>
+                            <div class="col-sm-9">
 
-                        <input class="form-control" type="time" id="appt2" name="end_time" step="3600">  
-                        @error('start_from')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                        @enderror
-                    </div>
-                    </div>
-
-
-
-                    <div class="form-group row mt-2">
-                        <label class="col-sm-3 col-form-label">Host</label>
-                        <div class="col-sm-9">
-
-                        <select  name="host_id" class="form-select" id="select_box">
-                            @foreach(App\Models\Employee::all() as $employee)
-                            <option value="{{$employee->employee_id}}">{{$employee->name}}</option>
-                            @endforeach
-                        </select>
+                                <input class="form-control"  name="end_time">  
+                                @error('end_time')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
                         </div>
-                    </div>
 
+                        <div class="form-group row mt-2">
+                            <label class="col-sm-3 col-form-label">Host</label>
+                            <div class="col-sm-9">
 
-                    <div class="form-group row mt-2">
-                        <label  class="col-sm-3 col-form-label">Co-Host</label>
-                        <div class="col-sm-9">
-
-                        <select  name="co_host_id" class="form-select" id="select_box">
-                            @foreach(App\Models\Employee::all() as $employee)
-                            <option value="{{$employee->employee_id}}">{{$employee->name}}</option>
-                            @endforeach
-                        </select>
+                                <select  name="host_id" class="form-select" id="select_box">
+                                    @foreach(App\Models\Employee::all() as $employee)
+                                    <option value="{{$employee->employee_id}}">{{$employee->name}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
                         </div>
-                    </div>
 
 
-                    <div class="form-group row  mt-2">
-                    <label class="col-sm-3 col-form-label">Participant</label>
-                    <div class="col-sm-9">
+                        <div class="form-group row mt-2">
+                            <label  class="col-sm-3 col-form-label">Co-Host</label>
+                            <div class="col-sm-9">
+
+                                <select  name="co_host_id" class="form-select" id="select_box">
+                                    @foreach(App\Models\Employee::all() as $employee)
+                                    <option value="{{$employee->employee_id}}">{{$employee->name}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
 
 
-                            <select name="participants[]" id="choices-multiple-remove-button" placeholder="Select up to 25 Participants" multiple>
-                            @foreach(App\Models\Employee::all() as $employee)
-                            <option value="{{ $employee->employee_id }}">{{ $employee->name . ' - ' . $employee->division }}</option>
-                            @endforeach
-                            </select>
-                    </div>
-                    </div>
+                        <div class="form-group row  mt-2">
+                            <label class="col-sm-3 col-form-label">Participant</label>
+                            <div class="col-sm-9">
+
+                                <select name="participants[]" id="choices-multiple-remove-button" placeholder="Select up to 25 Participants" multiple>
+                                    @foreach(App\Models\Employee::all() as $employee)
+                                    <option value="{{ $employee->employee_id }}">{{ $employee->name . ' - ' . $employee->division }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
 
                     
+                        <div class="form-group row   ms-1 mt-4"  >
+                            <label class="col-sm-3 col-form-label"></label>
+                            <button type="button" class="btn btn-outline-primary col-sm-3" data-bs-toggle="modal" data-bs-target="#submitModal">Submit</button>
 
-                    <div data-bs-toggle="modal" data-bs-target="#submitModal", href="#" class="form-group mt-3">
-                        <button class="btn btn-outline-primary">Submit</button>
-                    </div>
+                        </div>
 
-                    <!-- <a  data-bs-toggle="modal"  data-bs-target="#exampleModal{{$room->id}}", href="#">
-                                  <i style="color:gray" class="fas fa-trash"></i>
-                                </a> -->
-
-                    <div class="modal fade" id="submitModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Submit!</h1>
+                   
+                      <!-- Modal for Confirmation -->
+                        <div class="modal fade" id="submitModal" tabindex="-1" aria-labelledby="submitModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="submitModalLabel">Submit Confirmation</h5>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                        </div>
-                                        <div class="modal-body">
-                                      
-                                        Are you sure? do you want to Create Meeting?
-
-
-                                        </div>
-                                        <div class="modal-footer">
+                                    </div>
+                                    <div class="modal-body">
+                                        Are you sure you want to create this meeting?
+                                    </div>
+                                    <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                            <form action="{{ route('meetings.store') }}" method="post">@csrf                                              
-                                                        {{Session::get('message')}}
-                                                        <button class="btn btn-outline-primary">
-                                                            Submit
-                                                        </button>
-                                            </form>
-                                        </div>
+                                        <button type="submit" class="btn btn-outline-primary" form="meetingForm">Submit</button>
                                     </div>
-                                    </div>
-                   </div>
+                                </div>
+                            </div>
+                        </div>
 
             </div>
 
-
-
         </div>
-
 
       </div>
     </form>
