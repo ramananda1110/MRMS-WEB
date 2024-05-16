@@ -14,7 +14,7 @@
                                 <div class="card-body d-flex align-items-center ">
                                    
                                     <div class="icon">
-                                            <image src="{{asset('/images/Group.svg')}}" height="80" width="80" />
+                                            <image src="{{asset('/images/Group.svg')}}" height="60" width="60" />
                                                                           
                                    </div>
                                     <div class="ps-4">
@@ -33,7 +33,7 @@
                                 <div class="card-body d-flex align-items-center ">
                                    
                                     <div class="icon">
-                                        <image src="{{asset('/images/Group-1.svg')}}" height="80" width="80" />
+                                        <image src="{{asset('/images/Group-1.svg')}}" height="60" width="60" />
                                     </div>
                                     <div class="ps-4">
                                         <div class="card-title">Completed Meetings</div>
@@ -51,7 +51,7 @@
                                 <div class="card-body d-flex align-items-center ">
                                    
                                     <div class="icon">
-                                        <image src="{{ asset('/images/Group-3.svg') }}" height="80" width="80" />
+                                        <image src="{{ asset('/images/Group-3.svg') }}" height="60" width="60" />
                                     </div>
                                     <div class="ps-4">
                                         <div class="card-title">Upcoming Meetings</div>
@@ -68,7 +68,7 @@
                                 <div class="card-body d-flex align-items-center ">
                                    
                                     <div class="icon">
-                                        <image src="{{asset('/images/Group-4.svg')}}" height="80" width="80" />
+                                        <image src="{{asset('/images/Group-4.svg')}}" height="60" width="60" />
                                     </div>
                                     <div class="ps-4">
                                         <div class="card-title">Pending Meetings</div>

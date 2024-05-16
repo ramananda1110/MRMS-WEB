@@ -311,7 +311,8 @@ class MeetingController extends Controller
         
             // If validation fails, return a custom response
         if ($validator->fails()) {
-            redirect()->back()->with('error', $validator->errors()->first()); 
+          return  redirect()->back()->with('error', $validator->errors()->first()); 
+        
         }
         
 
@@ -441,11 +442,11 @@ class MeetingController extends Controller
             'May' => 70,
             'Jun' => 80,
             'Jul' => 7,
-            'Aug' => 67,
-            'Sep' => 80,
-            'Oct' => 83,
-            'Nov' => 57,
-            'Dec' => 37
+            'Aug' => 6,
+            'Sep' => 3,
+            'Oct' => 7,
+            'Nov' => 43,
+            'Dec' => 10
             ];
 
        // dd($weekendData);
