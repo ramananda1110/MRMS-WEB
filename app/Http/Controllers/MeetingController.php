@@ -433,9 +433,24 @@ class MeetingController extends Controller
         'Saturday' => 7,
         ];
 
+        $yearlyData = [
+            'Jan' => 90,
+            'Feb' => 122,
+            'Mar' => 90,
+            'Apr' => 30,
+            'May' => 70,
+            'Jun' => 80,
+            'Jul' => 7,
+            'Aug' => 67,
+            'Sep' => 80,
+            'Oct' => 83,
+            'Nov' => 57,
+            'Dec' => 37
+            ];
+
        // dd($weekendData);
 
-        return view('welcome', compact('totalMeeting', 'upcomingCount', 'pendingCount', 'completedCount', 'weekendData'));
+        return view('welcome', compact('totalMeeting', 'upcomingCount', 'pendingCount', 'completedCount', 'weekendData', 'yearlyData'));
 
     }
 
