@@ -67,7 +67,6 @@
                         </div>
 
 
-                    
 
                     <div class="form-group row mt-2">
                         <label  class="col-sm-3 col-form-label">From</label>
@@ -86,7 +85,7 @@
                     <label  class="col-sm-3 col-form-label">To</label>
                     <div class="col-sm-9">
 
-                        <input class="form-control" type="time" id="appt" name="end_time" step="3600">  
+                        <input class="form-control" type="time" id="appt2" name="end_time" step="3600">  
                         @error('start_from')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
@@ -94,7 +93,6 @@
                         @enderror
                     </div>
                     </div>
-
 
 
 
@@ -131,14 +129,13 @@
 
                             <select name="participants[]" id="choices-multiple-remove-button" placeholder="Select up to 25 Participants" multiple>
                             @foreach(App\Models\Employee::all() as $employee)
-                            <option value="{{$employee->employee_id}}">{{$employee->name}}</option>
+                            <option value="{{ $employee->employee_id }}">{{ $employee->name . ' - ' . $employee->division }}</option>
                             @endforeach
                             </select>
                     </div>
                     </div>
 
                     
-
 
                     <div data-bs-toggle="modal" data-bs-target="#submitModal", href="#" class="form-group mt-3">
                         <button class="btn btn-outline-primary">Submit</button>
@@ -157,24 +154,22 @@
                                         </div>
                                         <div class="modal-body">
                                       
-                                        Are you sure? do you want to submit?
+                                        Are you sure? do you want to Create Meeting?
 
 
                                         </div>
                                         <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                        <form action="{{Route('rooms.destroy', [$room->id])}}" method="post">@csrf                                              
-                                                    {{Session::get('message')}}
-                                                    <button class="btn btn-outline-primary">
-                                                        Submit
-                                                    </button>
-                                        </form>
+                                            <form action="{{ route('meetings.store') }}" method="post">@csrf                                              
+                                                        {{Session::get('message')}}
+                                                        <button class="btn btn-outline-primary">
+                                                            Submit
+                                                        </button>
+                                            </form>
                                         </div>
                                     </div>
                                     </div>
-                                </div>
-
-
+                   </div>
 
             </div>
 
