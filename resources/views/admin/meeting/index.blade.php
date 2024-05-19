@@ -8,7 +8,12 @@
         </div>
        
     @endif
-  
+    @if(Session::has('error'))
+    <div class='alert alert-danger'>
+        {{Session::get('error')}}
+    </div>
+   
+    @endif
     
     <div class="row justify-content-center rounded shadow p-3 mb-5 bg-white" style="background-color: white">
 
@@ -79,17 +84,16 @@
 
                                 @if($meeting->booking_status == 'pending')
                               
-                                <a data-bs-toggle="modal" data-bs-target="#exampleModal{{$meeting->id}}", href="#">
+                                <a data-bs-toggle="modal" data-bs-target="#acceptModal{{$meeting->id}}", href="#">
                                     <button type="button" class="btn btn-success">Accept</button>
                                 </a> 
 
 
-
-                                <div class="modal fade" id="exampleModal{{$meeting->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                {{-- <div class="modal fade" id="acceptModal{{$meeting->id}}" tabindex="-1" aria-labelledby="acceptModalLabel" aria-hidden="true">
                                     <div class="modal-dialog">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Confirm!</h1>
+                                        <h1 class="modal-title fs-5" id="acceptModalLabel">Confirm!</h1>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
@@ -100,17 +104,17 @@
                                         </div>
                                         <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                        <form action="{{route('meeting.destroy',
+                                        <form id="updateMeetingForm" action="{{route('meetings.updateMeeting',
                                                         [$meeting->id])}}" method="post">@csrf
-                                                    {{method_field('ACCEPT')}}
-                                                    <button class="btn btn-outline-success">
+                                                  <input type="hidden" name="booking_status" id="booking_status">
+                                                    <button class="btn btn-outline-success" onclick="submitForm('accepted')">
                                                         ACCEPT
                                                     </button>
                                         </form>
                                         </div>
                                     </div>
                                     </div>
-                                </div>
+                                </div> --}}
 
                                 
 {{-- -------------------------------------------------------------------------------------------------- --}}
@@ -118,9 +122,37 @@
                                 <a href="#">
                                     <button type="button" class="btn btn-warning">Re-schedule</button>
                                 </a> 
-                                <a href="#">
+                                <a data-bs-toggle="modal" data-bs-target="#rejectModal{{$meeting->id}}", href="#">
                                     <button type="button" class="btn btn-danger">Reject</button>
                                 </a> 
+
+
+                                <div class="modal fade" id="rejectModal{{$meeting->id}}" tabindex="-1" aria-labelledby="rejectModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                        <h1 class="modal-title fs-5" id="rejectModalLabel">Confirm!</h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                       
+                                        Are you sure? do you want to reject meeting?
+
+
+                                        </div>
+                                        <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                        <form id="updateMeetingForm" action="{{route('meetings.updateMeeting',
+                                                        [$meeting->id])}}" method="post">@csrf
+                                                  <input type="hidden" name="booking_status" id="booking_status">
+                                                    <button class="btn btn-outline-danger" onclick="submitForm('rejected')">
+                                                        REJECT
+                                                    </button>
+                                        </form>
+                                        </div>
+                                    </div>
+                                    </div>
+                                </div>
                             @endif
                                     
                                         <div class="modal fade" id="viewModal{{$meeting->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -231,4 +263,14 @@ function setActiveTab(event, element) {
     // Redirect to the link's href
     window.location.href = element.getAttribute('href');
 }
+function submitForm(status) {
+    document.getElementById('booking_status').value = status;
+    document.getElementById('updateMeetingForm').submit();
+}
+function rejectForm(status) {
+    document.getElementById('booking_status').value = status;
+    document.getElementById('updateMeetingForm').submit();
+}
+
 </script>
+
