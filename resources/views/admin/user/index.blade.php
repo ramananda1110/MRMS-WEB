@@ -5,6 +5,15 @@
     <div class="row justify-content-center">
    
         <div class="col-md-11">
+            <div class="card  mt-3 mb-3" style="border-bottom: 1px solid silver;">
+                <div class="panel-heading no-print mt-2 mb-2">
+                    <div class="btn-group ms-1 ">
+                        <a href="{{Route('users.create')}}" class="btn btn-primary">
+                            <i class="fa fa-plus"></i> Add Users
+                        </a>                           
+                    </div>  
+                </div>
+            </div>
 
             <nav aria-label="breadcrumb" class="mt-3">
                 <ol class="breadcrumb">
