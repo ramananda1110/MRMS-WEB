@@ -1,12 +1,12 @@
 <div id="layoutSidenav">
-            <div id="layoutSidenav_nav">
+            <div id="layoutSidenav_nav" >
                 <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
                     <div class="sb-sidenav-menu">
                         <div class="nav">
                             <div class="sb-sidenav-menu-heading">Core</div>
                             <a class="nav-link" href="{{url('/')}}">
-                                <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-                                Dashboard
+                                <i class="fas fa-tachometer-alt"></i>
+                                <div class="ms-2">  Dashboard</div>
                             </a>
                             <div class="sb-sidenav-menu-heading">Interface</div>
 
@@ -17,8 +17,8 @@
 
 
                             <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayoutsEmp" aria-expanded="false" aria-controls="collapseLayouts">
-                                <div class="sb-nav-link-icon"><i class="fas fa-user-alt"></i></div>
-                                Emplopyee
+                               <i class="fa-solid fa-users"></i>
+                               <div class="ms-2">Emplopyee</div>
                                 <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                             </a>
 
@@ -33,8 +33,8 @@
 
 
                             <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayoutsMeeting" aria-expanded="false" aria-controls="collapseLayouts">
-                                <div class="sb-nav-link-icon"><i class="fas fa-user-alt"></i></div>
-                                Meeting
+                               <i class="fa-solid fa-couch"></i>
+                               <div class="ms-2"> Meeting</div>
                                 <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                             </a>
 
@@ -50,8 +50,8 @@
 
 
                             <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
-                                <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
-                                Department
+                               <i class="fa-solid fa-building"></i>
+                               <div class="ms-2"> Department</div>
                                 <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                             </a>
 
@@ -68,8 +68,8 @@
                                 </nav>
                             </div>
                             <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages">
-                                <div class="sb-nav-link-icon"><i class="fas fa-user"></i></div>
-                                User
+                                <i class="fas fa-user"></i>
+                                <div class="ms-2">User</div>
                                 <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                             </a>
                             <div class="collapse" id="collapsePages" aria-labelledby="headingTwo" data-bs-parent="#sidenavAccordion">
@@ -131,8 +131,8 @@
 
 
                             <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayoutsRoom" aria-expanded="false" aria-controls="collapseLayoutsRoom">
-                                <div class="sb-nav-link-icon"><i class="fas fa-laptop-house"></i></div>
-                                Room
+                                <i class="fa-solid fa-door-open"></i>
+                                <div class="ms-2"> Room</div>
                                 <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                             </a>
                             <div class="collapse" id="collapseLayoutsRoom" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
@@ -150,12 +150,13 @@
                             </div>
 
 
-                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayoutsLeave" aria-expanded="false" aria-controls="collapseLayoutsLeave">
-                                <div class="sb-nav-link-icon"><i class="fas fa-pencil-alt"></i></div>
-                                Staf Leaves
+                            {{-- <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayoutsLeave" aria-expanded="false" aria-controls="collapseLayoutsLeave">
+                                <div class="sb-nav-link-icon"></div>
+                                <i class="fas fa-pencil-alt"></i>
+                                 <div class="ms-2"> Staf Leaves </div>
                                 <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                            </a>
-                            <div class="collapse" id="collapseLayoutsLeave" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                            </a> --}}
+                            {{-- <div class="collapse" id="collapseLayoutsLeave" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
                                 <nav class="sb-sidenav-menu-nested nav">
                                 <a class="nav-link" href="{{Route('leaves.create')}}">Create</a>
                                 <!-- @if(isset(Auth()->user()->role->permission['name']['leave']['can-add'])) -->
@@ -168,12 +169,12 @@
                                     @endif
 
                                 </nav>
-                            </div>
+                            </div> --}}
 
 
                             <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayoutsNotice" aria-expanded="false" aria-controls="collapseLayoutsNotice">
-                                <div class="sb-nav-link-icon"><i class="fas fa-book"></i></div>
-                                Staf Notice
+                                <i class="fa-solid fa-circle-exclamation"></i>
+                               <div class="ms-2"> Staf Notice</div>
                                 <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                             </a>
                             <div class="collapse" id="collapseLayoutsNotice" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
