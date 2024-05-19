@@ -14,8 +14,17 @@
         <div class="col-md-11">
         
         <div class="card-body">
+            <div class="card  mt-3 " style="border-bottom: 1px solid silver;">
+                <div class="panel-heading no-print mt-2 mb-2">
+                    <div class="btn-group ms-1">
+                        <a href="{{Route('meeting.create')}}" class="btn btn-primary">
+                            <i class="fa fa-plus"></i> Add Meeting
+                        </a>                           
+                    </div>  
+                </div>
+            </div>
 
-            <ul class="nav nav-tabs">
+            <ul class="nav nav-tabs mt-3">
                 <li class="nav-item" role="presentation">
                 
                 <a class="nav-link" aria-current="page" href="{{ route('meetings.all') }}" id="all"  onclick="setActiveTab(event, this)">All</a>
@@ -67,6 +76,82 @@
                         
 
                         </td> -->
+
+                        <td class="text-center"> 
+                        
+                            <a  href="#" data-bs-toggle="modal" data-bs-target="#viewModal{{$meeting->id}}">
+                            <button type="button" class="btn btn-primary">View</button></a> 
+
+                            
+                                
+                                    <div class="modal fade" id="viewModal{{$meeting->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <form>@csrf
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Meeting Details</h1>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <div class="card">
+                                                            <div class="card-body">
+                                                                <table class="table">
+                                                                    <tbody>
+                                                                       
+                                                                        <tr>
+                                                                            <th>Meeting Title</th>
+                                                                            <td>{{$meeting->meeting_title}}</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <th>Room Name</th>
+                                                                            <td>{{$meeting->room->name}}</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <th>Room Location</th>
+                                                                            <td>{{$meeting->room->location}}</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <th>Start Date</th>
+                                                                            <td>{{ \Carbon\Carbon::parse($meeting->start_date)->format('F j, Y') }}</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <th>Start Time</th>
+                                                                            <td>{{ DateTime::createFromFormat('H:i:s', $meeting->start_time)->format('h:i A') }}</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <th>End Time</th>
+                                                                            <td>{{ DateTime::createFromFormat('H:i:s', $meeting->end_time)->format('h:i A') }}</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <th>Host Name</th>
+                                                                            <td>{{$meeting->host->name}}</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <th>Co-Host Name</th>
+                                                                            <td>{{$meeting->coHost->name}}</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <th>Status</th>
+                                                                            <td>{{$meeting->booking_status}}</td>
+                                                                        </tr>
+                                                                        <!-- Add more rows for other meeting details -->
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                        <!-- Add your form elements if needed -->
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                    
+                    
+
+                    </td>
 
                     </tr>
                    

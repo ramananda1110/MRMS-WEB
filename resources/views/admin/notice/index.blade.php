@@ -8,6 +8,15 @@
     
    
         <div class="col-md-11">
+            <div class="card  mt-3 mb-3" style="border-bottom: 1px solid silver;">
+                <div class="panel-heading no-print mt-2 mb-2">
+                    <div class="btn-group ms-1 ">
+                        <a href="{{Route('notices.create')}}" class="btn btn-primary">
+                            <i class="fa fa-plus"></i> Add Notices
+                        </a>                           
+                    </div>  
+                </div>
+            </div>
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item active" aria-current="page">All Notice</li>
