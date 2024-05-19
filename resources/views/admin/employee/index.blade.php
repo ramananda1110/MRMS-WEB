@@ -49,31 +49,28 @@
                                 </div>
                               
 
+                            
+
                                 <div class="col-sm-4 text-center mt-2">
                                     <div class="dt-buttons btn-group border">
-                                        <a class="btn btn-default buttons-copy border buttons-html5 btn-sm" tabindex="0" aria-controls="DataTables_Table_0">
-                                            <span>Copy</span>
+                                        <a class="btn btn-default buttons-copy border buttons-html5 btn-sm" tabindex="0" aria-controls="employees">
+                                            <span>copy</span>
                                         </a>
-
-                                        <a class="btn btn-default buttons-csv border buttons-html5 btn-sm" tabindex="0" aria-controls="DataTables_Table_0">
-                                            <span>Csv</span>
+                                        <a class="btn btn-default buttons-csv border buttons-html5 btn-sm" tabindex="0" aria-controls="employees">
+                                            <span>csv</span>
                                         </a>
-
-                                        <a class="btn btn-default buttons-excel border buttons-html5 btn-sm" tabindex="0" aria-controls="DataTables_Table_0">
+                                        <a class="btn btn-default buttons-excel border buttons-html5 btn-sm" tabindex="0" aria-controls="employees">
                                             <span>Excel</span>
                                         </a>
-
-                                        <a class="btn btn-default buttons-pdf border buttons-html5 btn-sm" tabindex="0" aria-controls="DataTables_Table_0">
+                                        <a class="btn btn-default buttons-pdf border buttons-html5 btn-sm" tabindex="0" aria-controls="employees">
                                             <span>PDF</span>
                                         </a>
-
-                                        <a class="btn btn-default buttons-print border buttons-html5 btn-sm" tabindex="0" aria-controls="DataTables_Table_0">
+                                        <a class="btn btn-default buttons-print border buttons-html5 btn-sm" tabindex="0" aria-controls="employees">
                                             <span>Print</span>
                                         </a>
-
                                     </div>
-
                                 </div>
+
 
                                 <div class="col-sm-4 mt-2">
                                     <form action="{{route('search.employee')}}" method="GET" class="input-group">
@@ -103,7 +100,7 @@
                 </nav> --}}
 
         <div class="card-body" >
-            <table id="employeeTable" class="table table-striped table-bordered">
+            <table  id="employeeTable"  class="table table-striped table-bordered datatable" >
             
                 <thead>
                     <tr>
@@ -283,3 +280,5 @@
   
 </div>
 @endsection
+
+

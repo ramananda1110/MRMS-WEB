@@ -15,23 +15,6 @@
                                 Employee
                             </a> -->
 
-
-                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayoutsEmp" aria-expanded="false" aria-controls="collapseLayouts">
-                               <i class="fa-solid fa-users"></i>
-                               <div class="ms-2">Emplopyee</div>
-                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                            </a>
-
-                            <div class="collapse" id="collapseLayoutsEmp" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
-                                <nav class="sb-sidenav-menu-nested nav">
-                                    <a class="nav-link" href="{{Route('employee.index')}}">View</a>
-
-                                    <a class="nav-link" href="{{Route('employee.create')}}">Create</a>
-                                    
-                                </nav>
-                            </div>
-
-
                             <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayoutsMeeting" aria-expanded="false" aria-controls="collapseLayouts">
                                <i class="fa-solid fa-couch"></i>
                                <div class="ms-2"> Meeting</div>
@@ -48,25 +31,21 @@
                             </div>
 
 
-
-                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
-                               <i class="fa-solid fa-building"></i>
-                               <div class="ms-2"> Department</div>
+                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayoutsEmp" aria-expanded="false" aria-controls="collapseLayouts">
+                               <i class="fa-solid fa-users"></i>
+                               <div class="ms-2">Emplopyee</div>
                                 <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                             </a>
 
-                            <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                            <div class="collapse" id="collapseLayoutsEmp" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
                                 <nav class="sb-sidenav-menu-nested nav">
-                                    @if(isset(Auth()->user()->role->permission['name']['department']['can-add']))
-                                           
-                                    <a class="nav-link" href="{{Route('departments.create')}}">Create</a>
-                                    @endif
-                                    @if(isset(Auth()->user()->role->permission['name']['department']['can-list']))
-                                    <a class="nav-link" href="{{Route('departments.index')}}">View</a>
-                                    @endif
+                                    <a class="nav-link" href="{{Route('employee.index')}}">View</a>
 
+                                    <a class="nav-link" href="{{Route('employee.create')}}">Create</a>
+                                    
                                 </nav>
                             </div>
+
                             <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages">
                                 <i class="fas fa-user"></i>
                                 <div class="ms-2">User</div>
@@ -125,6 +104,27 @@
                                             @endif
                                         </nav>
                                     </div>
+
+                                </nav>
+                            </div>
+
+
+
+                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
+                               <i class="fa-solid fa-building"></i>
+                               <div class="ms-2"> Department</div>
+                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                            </a>
+
+                            <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                                <nav class="sb-sidenav-menu-nested nav">
+                                    @if(isset(Auth()->user()->role->permission['name']['department']['can-add']))
+                                           
+                                    <a class="nav-link" href="{{Route('departments.create')}}">Create</a>
+                                    @endif
+                                    @if(isset(Auth()->user()->role->permission['name']['department']['can-list']))
+                                    <a class="nav-link" href="{{Route('departments.index')}}">View</a>
+                                    @endif
 
                                 </nav>
                             </div>
