@@ -173,7 +173,10 @@
   if (!meetingForm.checkValidity()) {
     // If the form is not valid, add Bootstrap's validation class
     meetingForm.classList.add('was-validated');
-  } else {
+    
+  }
+   
+  else {
     // Show confirmation modal if form is valid
     $('#submitModal').modal('show');
   }
@@ -184,6 +187,8 @@ document.getElementById('confirmSubmitBtn').addEventListener('click', function()
   // Manually submit the form if the user confirms in the modal
   meetingForm.submit();
 });
+
+
 
 
     var selectElement = document.getElementById('choices-multiple-remove-button');
