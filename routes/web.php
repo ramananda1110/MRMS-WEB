@@ -77,6 +77,8 @@ Route::group(['middleware'=> ['auth', 'has.permission']], function(){
 
     Route::post('/meeting/create', [MeetingController::class, 'store'])->name('meetings.store');
 
+    Route::post('/meeting/update-status/{id}', [MeetingController::class, 'updateMeetingByWeb'])->name('meetings.updateMeeting');
+
 
     Route::get('/meetings/all', [MeetingController::class, 'index'])->name('meetings.all');
     Route::get('/meetings/upcoming', [MeetingController::class, 'upcoming'])->name('meetings.upcoming');

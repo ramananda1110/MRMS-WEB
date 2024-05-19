@@ -530,7 +530,6 @@ class MeetingController extends Controller
     public function updateMeetingStatus(Request $request, $id)
     {
 
-      
        // Validate the incoming request data
        $validator = Validator::make($request->all(), [
         'booking_status' => 'required|in:accepted,completed,rejected',
@@ -577,6 +576,61 @@ class MeetingController extends Controller
         return response()->json(['status_code' => 200, 'message' => 'Meeting status updated successfully']);
 
     }
+
+
+    public function updateMeetingByWeb(Request $request, $id)
+    {
+
+       // Validate the incoming request data
+       $validator = Validator::make($request->all(), [
+        'booking_status' => 'required|in:accepted,completed,rejected',
+       // 'booking_type' => 'required|in:booked,rescheduled',
+        ]);
+
+        // Check if the validation fails
+        if ($validator->fails()) {
+            $errors = $validator->errors()->all();
+            $message = implode('. ', $errors);
+
+            return  redirect()->back()->with('error', $message); 
+
+        }
+
+         // Find the meeting record by ID
+        $meeting = Meeting::find($id);
+
+        // Check if the meeting exists
+        if (!$meeting) {
+            return  redirect()->back()->with('error', 'Meeting not found'); 
+
+        }
+
+        // Update the meeting record with the validated data
+        $meeting->update([
+            'booking_status' => $request->booking_status,
+        ]
+       );
+
+
+        // sent the notification to user host and co-host
+      
+       $hostId = $meeting->host_id;
+       $coHostId = $meeting->co_host_id;
+
+       $users = User::whereIn('employee_id', [$hostId, $coHostId])->get();
+
+       // Extract api_tokens from the user records
+       $devicesToken = $users->pluck('device_token')->toArray();
+    
+       $this->notificationController->attemtNotification($devicesToken, "Meeting Updated", "Your meeting has been " . $request->booking_status);
+ 
+
+
+        // Return a success response
+        return redirect()->back()->with('message', 'Meeting status updated successfully');
+
+    }
+
 
 
     public function reschedule(Request $request, $id)
