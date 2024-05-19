@@ -73,7 +73,9 @@
                         <div class="form-group row mt-2">
                             <label  class="col-sm-3 col-form-label">Start Time</label>
                             <div class="col-sm-9">
-                                <input class="form-control"  name="start_time" required>  
+                                <input  name="start_time"
+                                class="form-control"  data-placeholder="hh:mm" id="appt" type="time">
+
                                 @error('start_time')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -82,12 +84,11 @@
                             </div>
                         </div>
 
-
                         <div class="form-group row mt-2">
                             <label  class="col-sm-3 col-form-label">End Time</label>
                             <div class="col-sm-9">
 
-                                <input class="form-control"  name="end_time" required>  
+                                <input class="form-control" data-placeholder="hh:mm" id="appt" type="time" name="end_time" required>  
                                 @error('end_time')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -142,15 +143,16 @@
                           <!-- Submit Button with Modal -->
                           <div class="form-group row  ms-1 mt-4">
                             <label class="col-sm-3 col-form-label"></label>
-                            <button type="button" class="btn btn-outline-primary col-sm-3" id="openModalButton">Submit</button>
+                            <button type="button" class="btn btn-outline-primary col-sm-3" data-bs-toggle="modal" data-bs-target="#submitModal">Submit</button>
+
                         </div>
 
 
                    
                 <!-- Modal for Confirmation -->
-                       
                 <div class="modal fade" id="submitModal" tabindex="-1" aria-labelledby="submitModalLabel" aria-hidden="true">
-                    <div class="modal-dialog">
+
+                   <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h5 class="modal-title" id="submitModalLabel">Submit Confirmation</h5>
@@ -182,6 +184,10 @@
 
 
 <script>
+
+
+
+
     document.addEventListener('DOMContentLoaded', function () {
         var selectElement = document.getElementById('choices-multiple-remove-button');
         
@@ -195,31 +201,30 @@
 
   
 
-    document.getElementById('openModalButton').addEventListener('click', function() {
-        // Perform validation before showing the modal
-        var form = document.getElementById('meetingForm');
-        if (form.checkValidity()) {
-            // If the form is valid, show the modal
-            var modal = new bootstrap.Modal(document.getElementById('submitModal'));
-            modal.show();
-        } else {
-            // If the form is not valid, show validation errors
-            form.reportValidity();
-        }
-    });
+    // document.getElementById('openModalButton').addEventListener('click', function() {
+    //     // Perform validation before showing the modal
+    //     var form = document.getElementById('meetingForm');
+    //     if (form.checkValidity()) {
+    //         // If the form is valid, show the modal
+    //         var modal = new bootstrap.Modal(document.getElementById('submitModal'));
+    //         modal.show();
+    //     } else {
+    //         // If the form is not valid, show validation errors
+    //         form.reportValidity();
+    //     }
+    // });
 
-    var select_box_element = document.querySelector('#select_box');
+    // var select_box_element = document.querySelector('#select_box');
 
-    dselect(select_box_element, {
-        search: true
-    });
+    // dselect(select_box_element, {
+    //     search: true
+    // });
 
-    // Handle the confirm button inside the modal
-    document.getElementById('confirmSubmitButton').addEventListener('click', function() {
-            document.getElementById('meetingForm').submit();
-        });
+    // // Handle the confirm button inside the modal
+    // document.getElementById('confirmSubmitButton').addEventListener('click', function() {
+    //         document.getElementById('meetingForm').submit();
+    //     });
 
 
 </script>
-
 
