@@ -31,13 +31,12 @@ class MeetingController extends Controller
 
      public function index()
      {
-             // Retrieve all meetings with participants
+        // Retrieve all meetings with participants
         $meetings = Meeting::with('participants')->get();
         return view('admin.meeting.index', compact('meetings'));
-             
      }
 
-    public function upcoming()
+    public function upcoming(Request $request)
     {
         // Retrieve all meetings with participants
         $data = Meeting::with('participants')->get();
@@ -67,10 +66,22 @@ class MeetingController extends Controller
             return $meeting->booking_status === 'pending';
         });
 
-       
-
         return view('admin.meeting.pending', compact('meetings'));
     }
+
+
+    public function cenceled()
+    {
+        // Retrieve all meetings with participants
+        $data = Meeting::with('participants')->get();
+
+        $meetings = $data->filter(function ($meeting) {
+            return $meeting->booking_status === 'rejected';
+        });
+
+        return view('admin.meeting.canceled', compact('meetings'));
+    }
+
 
     public function completed()
     {
@@ -205,8 +216,6 @@ class MeetingController extends Controller
     
     public function store(Request $request)
     {
-      
-   
       $validator = Validator::make($request->all(), [
             'room_id' => 'required|exists:rooms,id',
             'meeting_title' => 'required|string|max:255',
@@ -278,8 +287,6 @@ class MeetingController extends Controller
             $start_time = $request->input('start_time');
             $end_time = $request->input('end_time');
         
-          
-           
            // Convert start_time to a DateTime object
            $startDateTime = \DateTime::createFromFormat('H:i', $start_time);
            // Add 1 minute
@@ -570,7 +577,6 @@ class MeetingController extends Controller
     
        $this->notificationController->attemtNotification($devicesToken, "Meeting Updated", "Your meeting has been " . $request->booking_status);
  
-
 
         // Return a success response
         return response()->json(['status_code' => 200, 'message' => 'Meeting status updated successfully']);
@@ -926,6 +932,148 @@ class MeetingController extends Controller
                 //'meeting' => $meeting,
             ], 200);
     }
+
+
+    public function edit($id)
+    {
+        $employee = Meeting::find($id);
+        return view('admin.meeting.edit', compact('meeting'));
+
+    }
+
+    public function update(Request $request, $id)
+    
+    {
+        $validator = Validator::make($request->all(), [
+            'room_id' => 'required|exists:rooms,id',
+            'meeting_title' => 'required|string|max:255',
+            'start_date' => [
+                'required',
+                'date',
+                'after_or_equal:today', // Ensure start date is after or equal to today
+            ],
+            'start_time' => [
+                'required',
+                'date_format:H:i',
+                'after_or_equal:09:00', // Start time must be after or equal to 09:00 (9:00 AM)
+                'before_or_equal:17:15', // Start time must be before or equal to 17:00 (5:00 PM)
+                function ($attribute, $value, $fail) use ($request) {
+                    
+                    // Get the current date and time in Bangladesh Standard Time (Asia/Dhaka)
+                    $currentTime = Carbon::now('Asia/Dhaka');
+                    // info('Current Time:', ['current_time' => $currentTime]);
+
+                    // Parse the provided start_date
+                    $startDate = Carbon::parse($request->input('start_date'));
+
+                    // Check if the user-provided start date is today
+                    if ($startDate->format('Y-m-d') === $currentTime->format('Y-m-d')) {
+                        // Today's date: Perform time validation
+
+                        // Add 30 minutes to the current time
+                        $validStartTime = $currentTime->copy()->addMinutes(5);
+                        //info('Valid Start Time:', ['valid_start_time' => $validStartTime]);
+
+                        // Convert start_time to a DateTime object in UTC
+                        $startTime = Carbon::parse($value, 'Asia/Dhaka')->setTimezone('UTC');
+                        //info('Start Time:', ['start_time' => $startTime]);
+
+                        if ($startTime < $validStartTime) {
+                            $fail('The start time must be at least 30 minutes after the current time.');
+                        }
+                    }
+                }
+            ],
+
+            'end_time' => [
+                'required',
+                'date_format:H:i',
+                'after:start_time', // End time must be after the start time
+                'after_or_equal:09:00', // End time must be after or equal to 09:00 (9:00 AM)
+                'before_or_equal:17:30' // End time must be before or equal to 17:00 (5:00 PM)
+            ],
+            'host_id' => 'required|exists:employees,employee_id',
+            'co_host_id' => 'nullable|exists:employees,employee_id',
+            'participants' => 'required|array', // Ensure participants is an array and required
+        ]);
+        
+        // Add custom validation rule to check for overlapping meetings
+        $validator->after(function ($validator) use ($request, $id) {
+            // Retrieve input data
+            $room_id = $request->input('room_id');
+            $start_date = $request->input('start_date');
+            $start_time = $request->input('start_time');
+            $end_time = $request->input('end_time');
+
+            // Convert start_time to a DateTime object
+            $startDateTime = \DateTime::createFromFormat('H:i', $start_time);
+            // Add 1 minute
+            $startDateTime->add(new \DateInterval('PT1M'));
+            // Format the updated start time as a string
+            $updated_start_time = $startDateTime->format('H:i');
+
+            // Check for overlapping meetings excluding the current meeting
+            $overlappingMeeting = Meeting::where('room_id', $room_id)
+                ->where('start_date', $start_date)
+                ->where('id', '!=', $id)
+                ->where(function ($query) use ($updated_start_time, $end_time) {
+                    $query->whereBetween('start_time', [$updated_start_time, $end_time])
+                        ->orWhereBetween('end_time', [$updated_start_time, $end_time])
+                        ->orWhere(function ($query) use ($updated_start_time, $end_time) {
+                            $query->where('start_time', '<', $updated_start_time)
+                                ->where('end_time', '>', $end_time);
+                        });
+                })
+                ->exists();
+
+            // If overlapping meeting found, add error message
+            if ($overlappingMeeting) {
+                $validator->errors()->add('overlap', 'There is already a meeting scheduled at this time.');
+            }
+        });
+
+        // If validation fails, return a custom response
+        if ($validator->fails()) {
+            return  redirect()->back()->with('error', $validator->errors()->first()); 
+        }
+
+        // If validation passes, update the meeting using the validated data
+        $meeting = Meeting::find($id);
+
+        // Check if the meeting exists
+        if (!$meeting) {
+        return  redirect()->back()->with('error', 'Meeting not found'); 
+
+        }
+
+        $meeting->update($validator->validated());
+
+
+        $apiToken = $request->query('api_token');
+
+        
+        // Check if the user exists and is an admin (role_id = 1)
+        if (Auth()->user()->role_id === 1) {
+            $meeting->update(['booking_status' => 'accepted']);
+        } else {
+            $meeting->update(['booking_status' => 'pending']);
+        }
+            // Update booking type to 'reschedule'
+            $meeting->update(['booking_type' => 'reschedule']);
+        
+
+        // Update or attach participants to the meeting
+        if ($request->has('participants')) {
+            $meeting->updateParticipants()->sync($request->participants);
+            $meeting->participants()->get()->each->touch();
+
+        }
+        
+        return redirect()->route("admin.meeting.index")->with('message', 'Meeting updated successfully');
+
+    }
+
+    
 }
 
 

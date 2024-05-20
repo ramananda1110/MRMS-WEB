@@ -39,7 +39,7 @@ Route::group(['middleware'=> ['auth', 'has.permission']], function(){
     Route::resource('departments', 'DepartmentController');
     Route::get('/department-list', 'DepartmentController@getDepartment');
 
-    
+
 
     Route::resource('roles', 'RoleController');
 
@@ -83,8 +83,7 @@ Route::group(['middleware'=> ['auth', 'has.permission']], function(){
     Route::get('/meetings/all', [MeetingController::class, 'index'])->name('meetings.all');
     Route::get('/meetings/upcoming', [MeetingController::class, 'upcoming'])->name('meetings.upcoming');
     Route::get('/meetings/pending', [MeetingController::class, 'pending'])->name('meetings.pending');
-
-
+    Route::get('/meetings/cenceled', [MeetingController::class, 'cenceled'])->name('meetings.cenceled');
 
 
 });
