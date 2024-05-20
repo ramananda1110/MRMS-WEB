@@ -80,7 +80,7 @@
                         <td class="text-center"> 
                         
                             <a  href="#" data-bs-toggle="modal" data-bs-target="#viewModal{{$meeting->id}}">
-                            <button type="button" class="btn btn-primary">View</button></a> 
+                            <button type="button" class="btn btn-primary"><i class="fa-solid fa-eye"></i></button></a> 
 
                             
                                 
