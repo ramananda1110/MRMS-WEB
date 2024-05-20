@@ -210,10 +210,21 @@
                                                                                 <td>{{$meeting->coHost->name}}</td>
                                                                             </tr>
                                                                             <tr>
+                                                                                <th>Participants Name</th>
+                                                                                <td>
+                                                                                    @foreach($meeting->participants as $index => $participant)
+                                                                                        {{ $participant->employee->name }}
+                                                                                        @if($index < count($meeting->participants) - 1)
+                                                                                        ,
+                                                                                        @endif
+                                                                                    @endforeach
+                                                                                    {{-- {{ $meeting->participants }} --}}
+                                                                                </td>  
+                                                                            </tr>
+                                                                            <tr>
                                                                                 <th>Status</th>
                                                                                 <td>{{$meeting->booking_status}}</td>
                                                                             </tr>
-                                                                            <!-- Add more rows for other meeting details -->
                                                                         </tbody>
                                                                     </table>
                                                                 </div>
