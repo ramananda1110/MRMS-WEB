@@ -22,7 +22,7 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-Route::view('employee', 'admin.create');
+// Route::view('employee', 'admin.create');
 
 
 Route::group(['middleware'=> ['auth', 'has.permission']], function(){
@@ -42,10 +42,10 @@ Route::group(['middleware'=> ['auth', 'has.permission']], function(){
     Route::get('/department-list', 'DepartmentController@getDepartment');
 
 
-
     Route::resource('roles', 'RoleController');
 
     Route::resource('users', 'UserController');
+
     Route::get('/user-list', 'UserController@listOfUser');
 
     Route::resource('permissions', 'PermissionController');
@@ -66,12 +66,9 @@ Route::group(['middleware'=> ['auth', 'has.permission']], function(){
     Route::get('/import-employee', 'EmployeeController@index')->name('import.excel');
     Route::post('/import-employee', 'EmployeeController@import');
 
-    Route::resource('employee', 'EmployeeController');
    
     Route::post('create-user\{id}', 'EmployeeController@createUser')->name('create.user');
 
-
-    Route::post('/import-department', 'DepartmentController@import');
 
     Route::get('search-employee','EmployeeController@searchEmployee')->name('search.employee');
 
@@ -87,8 +84,15 @@ Route::group(['middleware'=> ['auth', 'has.permission']], function(){
     Route::get('/meetings/pending', [MeetingController::class, 'pending'])->name('meetings.pending');
     Route::get('/meetings/cenceled', [MeetingController::class, 'cenceled'])->name('meetings.cenceled');
 
-    Route::post('employee/export-excel', [EmployeeController::class, 'exportExcel'])->name('employee.download-excel');
-    Route::post('employee/download-pdf', [EmployeeController::class, 'downloadFDF'])->name('employee.download-pdf');
+    Route::post('employees/export-excel', [EmployeeController::class, 'exportExcel'])->name('employee.download-excel');
+
+
+    Route::resource('employee', 'EmployeeController');
+
+    // Define resource routes for other CRUD operations
+    //  Route::resource('employee', EmployeeController::class);
+
+    Route::get('employees/download-pdf', [EmployeeController::class, 'exportPdf'])->name('employee.exportPdf');
 
 
 });

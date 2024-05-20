@@ -53,7 +53,7 @@
 
                                 <div class="col-sm-4 text-center mt-2">
 
-                                    <form action="{{route('employee.download-pdf')}}" method="post", target="_blank">@csrf        
+                                    <form action="{{route('employee.exportPdf')}}" method="get", target="_blank">      
 
                                     <div class="form-group mt-3">
                                             <button class="btn btn-outline-primary">pdf</button>

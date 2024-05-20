@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+
 use Illuminate\Http\Request;
 
 use App\Imports\ExcelImpoter;
@@ -10,12 +11,15 @@ use App\Models\Employee;
 use DataTables;
 use App\Models\User;
 use App\Notifications\CreateNewUserNotification;
+// use Barryvdh\DomPDF\Facade\Pdf;
 use PDF;
+
 use App\Exports\EmployeeDataExport;
 
 class EmployeeController extends Controller
 {
 
+   
     public function index() {
 
         // $employees = Employee::latest()->get();
@@ -238,15 +242,31 @@ class EmployeeController extends Controller
     }
     
 
-    public function downloadFDF(){
-        $employees = User::all();
+   
 
-        $pdf = PDF::loadView('pdf.employee', array('employees' => $employees))
-        ->setPaper('a4', 'portrait');
+    public function exportPdf()
+    {
+        $employees = Employee::select('employee_id', 'name', 'division')->get();
 
-        return $pdf->download('employees-details.pdf');
+        $html = '<h1>Employees List</h1>';
+        $html .= '<table border="1" cellspacing="0" cellpadding="5">';
+        $html .= '<thead><tr><th>ID</th><th>Name</th><th>Division</th></tr></thead><tbody>';
+
+        foreach ($employees as $employee) {
+            $html .= '<tr>';
+            $html .= '<td>' . $employee->employee_id . '</td>';
+            $html .= '<td>' . $employee->name . '</td>';
+            $html .= '<td>' . $employee->division . '</td>';
+            $html .= '</tr>';
+        }
+
+        $html .= '</tbody></table>';
+
+        $pdf = Pdf::loadHTML($html);
+
+        return $pdf->download('employees.pdf'); // to download the PDF
+        //return $pdf->stream('employees.pdf'); // to preview the PDF in the browser
     }
-
    
 
     public function exportExcel()
