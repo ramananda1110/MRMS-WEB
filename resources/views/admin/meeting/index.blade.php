@@ -8,7 +8,12 @@
         </div>
        
     @endif
-  
+    @if(Session::has('error'))
+    <div class='alert alert-danger'>
+        {{Session::get('error')}}
+    </div>
+   
+    @endif
     
     <div class="row justify-content-center rounded shadow p-3 mb-5 bg-white" style="background-color: white">
 
@@ -72,24 +77,23 @@
                         <td>{{ DateTime::createFromFormat('H:i:s', $meeting->start_time)->format('h:i A') }} - {{ DateTime::createFromFormat('H:i:s', $meeting->end_time)->format('h:i A') }}</td>
 
 
-                       <td class="text-center"> 
+                       <td > 
                         
-                                <a  href="#" data-bs-toggle="modal" data-bs-target="#viewModal{{$meeting->id}}">
-                                <button type="button" class="btn btn-primary">View</button></a> 
+                                <a  href="#" data-bs-toggle="modal" data-bs-target="#viewModal{{$meeting->id}}" title="View">
+                                <button type="button" class="btn btn-primary"><i class="fa-solid fa-eye"></i></button></a> 
 
                                 @if($meeting->booking_status == 'pending')
                               
-                                <a data-bs-toggle="modal" data-bs-target="#exampleModal{{$meeting->id}}", href="#">
-                                    <button type="button" class="btn btn-success">Accept</button>
-                                </a> 
+                                <a data-bs-toggle="modal" data-bs-target="#acceptModal{{$meeting->id}}", href="#" title="Accept">
+                                    <button type="button" class="btn btn-success"><i class="fa-regular fa-square-check"></i></button></a> 
+                               
 
 
-
-                                <div class="modal fade" id="exampleModal{{$meeting->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal fade" id="acceptModal{{$meeting->id}}" tabindex="-1" aria-labelledby="acceptModalLabel" aria-hidden="true">
                                     <div class="modal-dialog">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Confirm!</h1>
+                                        <h1 class="modal-title fs-5" id="acceptModalLabel">Confirm!</h1>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
@@ -100,12 +104,11 @@
                                         </div>
                                         <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                        <form action="{{route('meeting.destroy',
-                                                        [$meeting->id])}}" method="post">@csrf
-                                                    {{method_field('ACCEPT')}}
-                                                    <button class="btn btn-outline-success">
-                                                        ACCEPT
-                                                    </button>
+                                        <form id="acceptMeetingForm{{$meeting->id}}" action="{{route('meetings.updateMeeting', [$meeting->id])}}" method="post">@csrf
+                                            <input type="hidden" name="booking_status" id="accept_booking_status">
+                                            <button class="btn btn-outline-success" onclick="submitForm('accepted', 'acceptMeetingForm{{$meeting->id}}')">
+                                                ACCEPT
+                                            </button>
                                         </form>
                                         </div>
                                     </div>
@@ -115,12 +118,39 @@
                                 
 {{-- -------------------------------------------------------------------------------------------------- --}}
 
-                                <a href="#">
-                                    <button type="button" class="btn btn-warning">Re-schedule</button>
-                                </a> 
-                                <a href="#">
-                                    <button type="button" class="btn btn-danger">Reject</button>
-                                </a> 
+                                <a href="#" title="Re-schedule">
+                                    <button type="button" class="btn btn-warning"><i class="fa-solid fa-calendar-days"></i></button></a> 
+                              
+                                <a data-bs-toggle="modal" data-bs-target="#rejectModal{{$meeting->id}}", href="#" title="Reject">
+                                    <button type="button" class="btn btn-danger"><i class="fa-solid fa-ban"></i></button> </a> 
+                               
+
+
+                                <div class="modal fade" id="rejectModal{{$meeting->id}}" tabindex="-1" aria-labelledby="rejectModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                        <h1 class="modal-title fs-5" id="rejectModalLabel">Confirm!</h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                       
+                                        Are you sure? do you want to reject meeting?
+
+
+                                        </div>
+                                        <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                        <form id="rejectMeetingForm{{$meeting->id}}" action="{{route('meetings.updateMeeting', [$meeting->id])}}" method="post">@csrf
+                                            <input type="hidden" name="booking_status" id="reject_booking_status">
+                                            <button class="btn btn-outline-danger" onclick="submitForm('rejected', 'rejectMeetingForm{{$meeting->id}}')">
+                                                REJECT
+                                            </button>
+                                        </form>
+                                        </div>
+                                    </div>
+                                    </div>
+                                </div>
                             @endif
                                     
                                         <div class="modal fade" id="viewModal{{$meeting->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -231,4 +261,11 @@ function setActiveTab(event, element) {
     // Redirect to the link's href
     window.location.href = element.getAttribute('href');
 }
+function submitForm(status, formId) {
+    document.getElementById(formId).querySelector('[name="booking_status"]').value = status;
+    document.getElementById(formId).submit();
+}
+
+
 </script>
+

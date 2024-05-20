@@ -80,20 +80,18 @@
                         
                        <td class="text-center"> 
                         
-                        <a  href="#" data-bs-toggle="modal" data-bs-target="#viewModal{{$meeting->id}}">
-                        <button type="button" class="btn btn-primary">View</button></a> 
+                        <a href="#" data-bs-toggle="modal" data-bs-target="#viewModal{{$meeting->id}}" title="View">
+                        <button type="button" class="btn btn-primary"><i class="fa-solid fa-eye"></i></button></a> 
 
                         
                       
-                        <a href="#">
-                            <button type="button" class="btn btn-success">Accept</button>
-                        </a> 
-                        <a href="#">
-                            <button type="button" class="btn btn-warning">Re-schedule</button>
-                        </a> 
-                        <a href="#">
-                            <button type="button" class="btn btn-danger">Reject</button>
-                        </a> 
+                        <a href="#" title="Accept">
+                            <button type="button" class="btn btn-success"><i class="fa-regular fa-square-check"></i></button></a> 
+                       
+                        <a href="#" title="Re-schedule">
+                            <button type="button" class="btn btn-warning"><i class="fa-solid fa-calendar-days"></i></button></a> 
+                        <a href="#" title="Reject">
+                            <button type="button" class="btn btn-danger"><i class="fa-solid fa-ban"></i></button></a> 
                             
                                 <div class="modal fade" id="viewModal{{$meeting->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                     <div class="modal-dialog">
@@ -160,7 +158,6 @@
                                     </div>
                                 </div>
                                 
-                
 
                 </td>
 
