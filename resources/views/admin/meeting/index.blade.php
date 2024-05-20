@@ -44,11 +44,14 @@
                 <li class="nav-item" role="presentation">
                     <a class="nav-link" href="{{ route('meetings.pending') }}" id="pending" onclick="setActiveTab(event, this)" >Pending</a>
                 </li>
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link" href="{{ route('meetings.cenceled') }}" id="canceled" onclick="setActiveTab(event, this)" >Canceled</a>
+                </li>
                     <!-- Add more tabs if needed -->
             </ul>
         
             
-
+            
             <table id="employeeTable" class="table table-striped table-bordered mt-5">
             
                 <thead>
@@ -118,7 +121,7 @@
                                 
 {{-- -------------------------------------------------------------------------------------------------- --}}
 
-                                <a href="#" title="Re-schedule">
+                                <a href="{{route('meeting.edit',[$meeting->id])}}" title="Re-schedule">
                                     <button type="button" class="btn btn-warning"><i class="fa-solid fa-calendar-days"></i></button></a> 
                               
                                 <a data-bs-toggle="modal" data-bs-target="#rejectModal{{$meeting->id}}", href="#" title="Reject">
