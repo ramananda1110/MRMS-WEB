@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MeetingController;
+use App\Http\Controllers\EmployeeController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -84,6 +86,9 @@ Route::group(['middleware'=> ['auth', 'has.permission']], function(){
     Route::get('/meetings/upcoming', [MeetingController::class, 'upcoming'])->name('meetings.upcoming');
     Route::get('/meetings/pending', [MeetingController::class, 'pending'])->name('meetings.pending');
     Route::get('/meetings/cenceled', [MeetingController::class, 'cenceled'])->name('meetings.cenceled');
+
+    Route::post('employee/export-excel', [EmployeeController::class, 'exportExcel'])->name('employee.download-excel');
+    Route::post('employee/download-pdf', [EmployeeController::class, 'downloadFDF'])->name('employee.download-pdf');
 
 
 });

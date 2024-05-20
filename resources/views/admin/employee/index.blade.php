@@ -52,10 +52,28 @@
                             
 
                                 <div class="col-sm-4 text-center mt-2">
+
+                                    <form action="{{route('employee.download-pdf')}}" method="post", target="_blank">@csrf        
+
+                                    <div class="form-group mt-3">
+                                            <button class="btn btn-outline-primary">pdf</button>
+                                         </div>
+                
+
+                                    </form>
+
+                                    <form action="{{route('employee.download-excel')}}" method="post", target="_blank">@csrf        
+
+                                    <div class="form-group mt-3">
+                                            <button class="btn btn-outline-primary">Excel</button>
+                                        </div>
+
+
+                                    </form>
+
+
                                     <div class="dt-buttons btn-group border">
-                                        <a class="btn btn-default buttons-copy border buttons-html5 btn-sm" tabindex="0" aria-controls="employees">
-                                            <span>copy</span>
-                                        </a>
+                                    
                                         <a class="btn btn-default buttons-csv border buttons-html5 btn-sm" tabindex="0" aria-controls="employees">
                                             <span>csv</span>
                                         </a>

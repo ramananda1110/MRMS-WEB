@@ -10,7 +10,8 @@ use App\Models\Employee;
 use DataTables;
 use App\Models\User;
 use App\Notifications\CreateNewUserNotification;
-
+use PDF;
+use App\Exports\EmployeeDataExport;
 
 class EmployeeController extends Controller
 {
@@ -236,4 +237,20 @@ class EmployeeController extends Controller
         return redirect()->back()->with('message', 'User Created Successfully');
     }
     
+
+    public function downloadFDF(){
+        $employees = User::all();
+
+        $pdf = PDF::loadView('pdf.employee', array('employees' => $employees))
+        ->setPaper('a4', 'portrait');
+
+        return $pdf->download('employees-details.pdf');
+    }
+
+   
+
+    public function exportExcel()
+    {
+        return Excel::download(new EmployeeDataExport, 'employees-data.xlsx');
+    }
 }
