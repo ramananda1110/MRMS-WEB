@@ -36,6 +36,9 @@
                 <li class="nav-item" role="presentation">
                     <a class="nav-link" href="{{ route('meetings.pending') }}" id="pending" onclick="setActiveTab(event, this)" >Pending</a>
                 </li>
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link" href="{{ route('meetings.cenceled') }}" id="canceled" onclick="setActiveTab(event, this)" >Canceled</a>
+                </li>
                     <!-- Add more tabs if needed -->
             </ul>
         
@@ -50,6 +53,7 @@
                     <th scope="col">Meeting Title</th>
                     <th scope="col">Date</th>
                     <th scope="col">Duration</th>
+                    <th scope="col">Status</th>
                     
                     <th scope="col">Action</th>
                    
@@ -67,7 +71,13 @@
                         <td>{{$meeting->meeting_title}}</td>
                         <td>{{ \Carbon\Carbon::parse($meeting->start_date)->format('F j, Y') }}</td>
                         <td>{{ DateTime::createFromFormat('H:i:s', $meeting->start_time)->format('h:i A') }} - {{ DateTime::createFromFormat('H:i:s', $meeting->end_time)->format('h:i A') }}</td>
-                     
+                        @if($meeting->booking_status == 'accepted')
+                        <td class="text-center"><span class="badge rounded-pill badge-primary bg-success">{{$meeting->booking_status}}</span></td>
+                        @elseif($meeting->booking_status == 'rejected')
+                            <td class="text-center"><span class="badge rounded-pill badge-primary bg-danger">{{$meeting->booking_status}}</span></td>
+                        @else
+                            <td class="text-center"><span class="badge rounded-pill badge-primary bg-primary">{{$meeting->booking_status}}</span></td>
+                        @endif
                         <!-- <td> 
                         
                                 <a  href="#">

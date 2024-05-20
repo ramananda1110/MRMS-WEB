@@ -34,10 +34,10 @@
                 <a class="nav-link" href="{{ route('meetings.upcoming')}}"  id="upcoming" onclick="setActiveTab(event, this)">Upcoming</a>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <a class="nav-link active" href="{{ route('meetings.pending') }}" id="pending" onclick="setActiveTab(event, this)" >Pending</a>
+                    <a class="nav-link" href="{{ route('meetings.pending') }}" id="pending" onclick="setActiveTab(event, this)" >Pending</a>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <a class="nav-link" href="{{ route('meetings.cenceled') }}" id="canceled" onclick="setActiveTab(event, this)" >Canceled</a>
+                    <a class="nav-link active" href="{{ route('meetings.cenceled') }}" id="canceled" onclick="setActiveTab(event, this)" >Canceled</a>
                 </li>
                     <!-- Add more tabs if needed -->
             </ul>
@@ -54,7 +54,7 @@
                     <th scope="col">Date</th>
                     <th scope="col">Duration</th>
                     <th scope="col">Status</th>
-                    
+
                     <th scope="col">Action</th>
                    
                     </tr>
@@ -95,13 +95,7 @@
 
                         
                       
-                        <a href="#" title="Accept">
-                            <button type="button" class="btn btn-success"><i class="fa-regular fa-square-check"></i></button></a> 
-                       
-                        <a href="#" title="Re-schedule">
-                            <button type="button" class="btn btn-warning"><i class="fa-solid fa-calendar-days"></i></button></a> 
-                        <a href="#" title="Reject">
-                            <button type="button" class="btn btn-danger"><i class="fa-solid fa-ban"></i></button></a> 
+                      
                             
                                 <div class="modal fade" id="viewModal{{$meeting->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                     <div class="modal-dialog">
