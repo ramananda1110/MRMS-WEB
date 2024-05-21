@@ -22,15 +22,47 @@
             
         
         <div class="card-body">
-            <div class="card  mt-3 " style="border-bottom: 1px solid silver;">
+            <div class="card mt-3" style="border-bottom: 1px solid silver;">
                 <div class="panel-heading no-print mt-2 mb-2">
-                    <div class="btn-group ms-1">
-                        <a href="{{Route('meeting.create')}}" class="btn btn-primary">
-                            <i class="fa fa-plus"></i> Add Meeting
-                        </a>                           
-                    </div>  
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="ms-3">
+                            <a href="{{ Route('meeting.create') }}"><button type="button" class="btn btn-primary"><i class="fa fa-plus"></i> Add Meeting</button></a>
+                        </div>
+                        <div class="btn-group d-flex justify-content-center align-items-center mt-3 me-3">
+                            <div class="row gx-0">
+                                <div class="col-md">
+                                    <form action="#" method="post" target="_blank">
+                                        @csrf        
+                                        <button type="submit" class="btn btn-default buttons-csv border buttons-html5 btn-sm btn-block" tabindex="0" aria-controls="employees">
+                                            <span>csv</span>
+                                        </button>
+                                    </form>
+                                </div>
+                                <div class="col-md">
+                                    <form action="#" method="post" target="_blank">
+                                        @csrf        
+                                        <button class="btn btn-default buttons-csv border buttons-html5 btn-sm btn-block">Excel</button>
+                                    </form>
+                                </div>
+                                <div class="col-md">
+                                    <form action="#" method="get" target="_blank">
+                                        @csrf        
+                                        <button class="btn btn-default buttons-csv border buttons-html5 btn-sm btn-block">Pdf</button>
+                                    </form>
+                                </div>
+                                <div class="col-md">
+                                    <a class="btn btn-default buttons-print border buttons-html5 btn-sm btn-block" tabindex="0" aria-controls="employees">
+                                        <span>Print</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>  
+                    </div>
                 </div>
             </div>
+            
+            
+            
 
             <ul class="nav nav-tabs mt-3">
                 <li class="nav-item" role="presentation">
