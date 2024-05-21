@@ -57,7 +57,7 @@
                                     <div class="dt-buttons btn-group border">
                                     
                                         <form action="{{ route('employee.exportCsv') }}" method="get" target="_blank">
-                                            <button class="btn btn-default buttons-csv border buttons-html5 btn-sm">CSV</button>
+                                            <button class="btn btn-default buttons-csv border buttons-html5 btn-sm">Csv</button>
                                         </form>
                                         
                                        

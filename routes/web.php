@@ -87,7 +87,11 @@ Route::group(['middleware'=> ['auth', 'has.permission']], function(){
     Route::get('/meetings/pending', [MeetingController::class, 'pending'])->name('meetings.pending');
     Route::get('/meetings/cenceled', [MeetingController::class, 'cenceled'])->name('meetings.cenceled');
 
+    Route::post('meetings/export-excel', [MeetingController::class, 'exportExcel'])->name('meetings.download-excel');
+
     
+
+    // Employee Data
 
     Route::resource('employee', 'EmployeeController');
 

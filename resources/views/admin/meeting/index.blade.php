@@ -39,9 +39,11 @@
                                     </form>
                                 </div>
                                 <div class="col-md">
-                                    <form action="#" method="post" target="_blank">
-                                        @csrf        
-                                        <button class="btn btn-default buttons-csv border buttons-html5 btn-sm btn-block">Excel</button>
+                                   
+                                    <form action="{{route('meetings.download-excel')}}" method="post" target="_blank">@csrf        
+
+                                    <button class="btn btn-default buttons-csv border buttons-html5 btn-sm">Excel</button>
+
                                     </form>
                                 </div>
                                 <div class="col-md">

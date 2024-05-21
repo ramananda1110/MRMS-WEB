@@ -12,6 +12,10 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
+use App\Exports\MeetingDataExport;
+use Maatwebsite\Excel\Facades\Excel;
+use Barryvdh\DomPDF\Facade\Pdf;
+
 
 class MeetingController extends Controller
 {
@@ -1072,8 +1076,12 @@ class MeetingController extends Controller
 
     }
 
-    
-   
+
+
+    public function exportExcel()
+    {
+        return Excel::download(new MeetingDataExport, 'meetings-data.xlsx');
+    }
 
 }
 
