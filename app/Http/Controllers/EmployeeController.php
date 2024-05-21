@@ -246,7 +246,11 @@ class EmployeeController extends Controller
 
     public function exportPdf()
     {
-        $employees = Employee::select('employee_id', 'name', 'division')->get();
+
+        $employees = Employee::select('employee_id', 'name', 'division')->limit(10)->get();
+
+        \Log::info('PDF generated -- started');
+
 
         $html = '<h1>Employees List</h1>';
         $html .= '<table border="1" cellspacing="0" cellpadding="5">';
@@ -261,11 +265,12 @@ class EmployeeController extends Controller
         }
 
         $html .= '</tbody></table>';
-
+       
         $pdf = Pdf::loadHTML($html);
+       
+        \Log::info('PDF generated');
 
-        return $pdf->download('employees.pdf'); // to download the PDF
-        // return $pdf->stream('employees.pdf'); // to preview the PDF in the browser
+        return $pdf->download('employees.pdf');
     }
    
 
