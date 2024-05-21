@@ -22,6 +22,13 @@
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/gh/bbbootstrap/libraries@main/choices.min.js"></script>
         
+
+        <style>
+        .btn:hover {
+            background-color: #B54D3D; /* Change this to your preferred hover color */
+            color: white; 
+        }
+        </style>
     
        
   

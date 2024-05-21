@@ -936,7 +936,7 @@ class MeetingController extends Controller
 
     public function edit($id)
     {
-        $employee = Meeting::find($id);
+        $meeting = Meeting::find($id);
         return view('admin.meeting.edit', compact('meeting'));
 
     }
@@ -1074,6 +1074,8 @@ class MeetingController extends Controller
     }
 
     
+   
+
 }
 
 
