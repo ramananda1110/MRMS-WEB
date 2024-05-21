@@ -92,10 +92,11 @@
                             <td>{{$user->email}}</td>
                             <td>{{$user->designation}}</td>
                             <td> @if(isset(Auth()->user()->role->permission['name']['user']['can-edit']))
+                                <div class="d-flex align-items-center">
 
                                 <a href="{{route('users.edit',
                                     [$user->id])}}">
-                                <button type="button" class="btn btn-primary"> <i style="margin-right: 5px;" class="fas fa-edit"></i></button></a> 
+                                <button type="button" class="btn btn-primary"> <i class="fas fa-edit"></i></button></a> 
                                 <!-- </td> -->
                             
                                 @endif
@@ -105,9 +106,15 @@
                                 @if(isset(Auth()->user()->role->permission['name']['user']['can-delete']))
 
                                 <a   data-bs-toggle="modal" data-bs-target="#exampleModal{{$user->id}}", href="#">
-                                    <button type="button" class="btn btn-danger"><i class="fas fa-trash"></i></button>
+                                    <button type="button" class="btn btn-danger ms-2"><i class="fas fa-trash"></i></button>
                                 </a>
                                 @endif
+                                <a class="form-check form-switch ms-2">
+                                    <input class="form-check form-switch form-check-input" type="checkbox" id="flexSwitchCheckChecked" role="switch" {{ $user->is_active ? 'checked' : '' }} onclick="toggleUserActivation(this)">
+                                </a>
+
+                            </div>
+
                                 <!-- Modal -->
                                 <div class="modal fade" id="exampleModal{{$user->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                     <div class="modal-dialog">
@@ -150,3 +157,21 @@
     </div>
 </div>
 @endsection
+
+<script>
+    function toggleUserActivation(checkbox) {
+        if (checkbox.checked) {
+            if (confirm("Do you want to activate this user?")) {
+                
+            } else {
+                checkbox.checked = false;
+            }
+        } else {
+            if (confirm("Do you want to deactivate this user?")) {
+             
+            } else {
+                checkbox.checked = true;
+            }
+        }
+    }
+</script>
