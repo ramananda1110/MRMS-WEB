@@ -154,7 +154,7 @@
                      <td> 
                         
                                 <a  href="{{route('employee.edit',[$employee->id])}}">
-                                <i class="fas fa-edit"></i></a> 
+                                    <button type="button" class="btn btn-warning"><i class="fas fa-edit"></i></button></a> 
                                 <!-- </td> -->
                             
                                 
@@ -166,11 +166,11 @@
                                   
                                 <!-- Button trigger modal -->
                                 <a data-bs-toggle="modal" data-bs-target="#exampleModal{{$employee->id}}", href="#">
-                                <i class="fas fa-trash" style="margin-left: 10;"></i></a>
+                                    <button type="button" class="btn btn-danger"><i class="fas fa-trash" ></i></button></a>
                              
                                 <!-- </i> -->
                                 <a href="#" data-bs-toggle="modal" data-bs-target="#exampleModal2{{$employee->id}}">
-                                     <i class="fa-solid fa-user-plus" style="margin-left: 10;"></i></a>
+                                    <button type="button" class="btn btn-primary"><i class="fa-solid fa-user-plus" ></i></button></a>
                                 
                            
                         

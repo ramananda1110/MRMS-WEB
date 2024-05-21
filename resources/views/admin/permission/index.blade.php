@@ -72,7 +72,7 @@
                            
                             <td>   @if(isset(Auth()->user()->role->permission['name']['permission']['can-edit']))
                                 <a href="{{route('permissions.edit',
-                                    [$permission->id])}}"><i class="fas fa-edit"></i></a> 
+                                    [$permission->id])}}"><button type="button" class="btn btn-primary"><i class="fas fa-edit"></i></button></a> 
                                 @endif
                             </td>
                             
@@ -81,7 +81,7 @@
                             <!-- Button trigger modal -->
                             @if(isset(Auth()->user()->role->permission['name']['permission']['can-delete']))
                                 <a   data-bs-toggle="modal" data-bs-target="#exampleModal{{$permission->id}}", href="#">
-                                <i class="fas fa-trash"></i>
+                                    <button type="button" class="btn btn-danger"><i class="fas fa-trash"></i></button>
                                 </a>
                             @endif
                             <!-- Modal -->

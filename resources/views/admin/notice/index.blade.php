@@ -70,7 +70,7 @@
                      @if(isset(Auth()->user()->role->permission['name']['notice']['can-edit']))
                        
                     <a href="{{route('notices.edit', [$notice->id])}}">
-                                 <i class="fas fa-edit"></i>
+                        <button type="button" class="btn btn-primary"> <i class="fas fa-edit"></i></button>
                     </a>
                     @endif
                     <span class="float-end">
@@ -78,7 +78,7 @@
                         @if(isset(Auth()->user()->role->permission['name']['notice']['can-delete']))
                     
                         <a   data-bs-toggle="modal" data-bs-target="#exampleModal{{$notice->id}}", href="#">
-                                  <i class="fas fa-trash"></i>
+                            <button type="button" class="btn btn-danger"><i class="fas fa-trash"></i></button>
                                 </a>
 
                          @endif       

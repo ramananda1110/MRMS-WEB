@@ -94,7 +94,7 @@
                                 @if(isset(Auth()->user()->role->permission['name']['department']['can-edit']))
                                 <a style="margin-right: 5px;" href="{{route('departments.edit',
                                     [$department->id])}}">
-                                 <i class="fas fa-edit"></i></a> 
+                                 <button type="button" class="btn btn-primary"><i class="fas fa-edit"></i></button></a> 
                                 <!-- </td> -->
                             
                                  @endif
@@ -105,7 +105,7 @@
                                   
                                 <!-- Button trigger modal -->
                                 <a   data-bs-toggle="modal" data-bs-target="#exampleModal{{$department->id}}", href="#">
-                                  <i class="fas fa-trash"></i>
+                                    <button type="button" class="btn btn-danger"><i class="fas fa-trash"></i></button>
                                 </a>
                                 @endif
                                 <!-- Modal -->

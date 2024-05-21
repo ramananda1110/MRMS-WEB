@@ -95,7 +95,7 @@
 
                                 <a href="{{route('users.edit',
                                     [$user->id])}}">
-                                 <i style="margin-right: 5px;" class="fas fa-edit"></i></a> 
+                                <button type="button" class="btn btn-primary"> <i style="margin-right: 5px;" class="fas fa-edit"></i></button></a> 
                                 <!-- </td> -->
                             
                                 @endif
@@ -105,7 +105,7 @@
                                 @if(isset(Auth()->user()->role->permission['name']['user']['can-delete']))
 
                                 <a   data-bs-toggle="modal" data-bs-target="#exampleModal{{$user->id}}", href="#">
-                                  <i class="fas fa-trash"></i>
+                                    <button type="button" class="btn btn-danger"><i class="fas fa-trash"></i></button>
                                 </a>
                                 @endif
                                 <!-- Modal -->
