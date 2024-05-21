@@ -246,33 +246,91 @@ class EmployeeController extends Controller
 
     public function exportPdf()
     {
-
-        $employees = Employee::select('employee_id', 'name', 'division')->limit(10)->get();
-
-        \Log::info('PDF generated -- started');
-
-
-        $html = '<h1>Employees List</h1>';
-        $html .= '<table border="1" cellspacing="0" cellpadding="5">';
-        $html .= '<thead><tr><th>ID</th><th>Name</th><th>Division</th></tr></thead><tbody>';
-
+        ini_set('memory_limit', '1024M');
+        ini_set('max_execution_time', 300);
+    
+        $employees = Employee::select(
+            'employee_id', 
+            'grade', 
+            'name', 
+            'division', 
+            'project_name', 
+            'designation', 
+            'mobile_number', 
+            'email'
+        )->where('status', 'Active')->limit(500)->get();
+    
+        \Log::info('PDF generation started');
+    
+        $html = '
+        <html>
+        <head>
+            <style>
+                body { font-family: sans-serif; margin: 20px; }
+                table { border-collapse: collapse; width: 100%; }
+                th, td { border: 1px solid black; padding: 8px; text-align: left; }
+                th { background-color: #f2f2f2; }
+                .page-break { page-break-after: always; }
+            </style>
+        </head>
+        <body>
+            <h1>Employees List</h1>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Emp_ID</th>
+                        <th>Grade</th>
+                        <th>Name</th>
+                       
+                        <th>Division</th>
+                        <th>Project Name</th>
+                        <th>Designation</th>
+                        <th>Email</th>
+                        
+                    </tr>
+                </thead>
+                <tbody>';
+        
         foreach ($employees as $employee) {
             $html .= '<tr>';
             $html .= '<td>' . $employee->employee_id . '</td>';
+            $html .= '<td>' . $employee->grade . '</td>';
             $html .= '<td>' . $employee->name . '</td>';
+            // $html .= '<td>' . $employee->status . '</td>';
             $html .= '<td>' . $employee->division . '</td>';
+            $html .= '<td>' . $employee->project_name . '</td>';
+            $html .= '<td>' . $employee->designation . '</td>';
+          
+            $html .= '<td>' . $employee->email . '</td>';
             $html .= '</tr>';
         }
+    
+        $html .= '</tbody></table></body></html>';
+    
+        \Log::info('PDF HTML content generated');
+    
+        // Set paper size and margins
+        $pdf = Pdf::loadHTML($html)
+            ->setPaper('a4', 'landscape')  // or 'landscape'
+            //->setOptions(['defaultFont' => 'sans-serif']);
 
-        $html .= '</tbody></table>';
-       
-        $pdf = Pdf::loadHTML($html);
-       
+            ->setOptions([
+                'isHtml5ParserEnabled' => true,
+                'isRemoteEnabled' => true,
+                'dpi' => 96,
+                'defaultFont' => 'sans-serif',
+                'margin_left' => 10,
+                'margin_right' => 10,
+                'margin_top' => 10,
+                'margin_bottom' => 10,
+            ]);
+    
         \Log::info('PDF generated');
-
-        return $pdf->download('employees.pdf');
+    
+        return $pdf->download('employees-pdf-export.pdf');
     }
-   
+    
+
 
     public function exportExcel()
     {
