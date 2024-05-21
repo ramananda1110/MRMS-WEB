@@ -332,8 +332,66 @@ class EmployeeController extends Controller
     
 
 
+    public function exportCsv()
+    {
+        $employees = Employee::select(
+            'employee_id', 
+            'grade', 
+            'name', 
+            'status', 
+            'division', 
+            'project_name', 
+            'designation', 
+            'mobile_number', 
+            'email'
+        )->where('status', 'Active')->get();
+
+        $csvHeader = ['Emp_ID', 'Grade', 'Name', 'Status', 'Division', 'Project Name', 'Designation', 'Mobile', 'Email'];
+        $csvData = [];
+
+        foreach ($employees as $employee) {
+            $csvData[] = [
+                $employee->employee_id,
+                $employee->grade,
+                $employee->name,
+                $employee->status,
+                $employee->division,
+                $employee->project_name,
+                $employee->designation,
+                $employee->mobile_number,
+                $employee->email
+            ];
+        }
+
+        $filename = 'employees-csv-export.csv';
+        $handle = fopen($filename, 'w+');
+        fputcsv($handle, $csvHeader);
+
+        foreach ($csvData as $row) {
+            fputcsv($handle, $row);
+        }
+
+        fclose($handle);
+
+        $headers = [
+            'Content-Type' => 'text/csv',
+        ];
+
+        return response()->download($filename, $filename, $headers)->deleteFileAfterSend(true);
+    }
+
     public function exportExcel()
     {
         return Excel::download(new EmployeeDataExport, 'employees-data.xlsx');
+    }
+
+    public function printView()
+    {
+        $employees = Employee::select('employee_id', 'grade', 'name', 'status', 'division', 'project_name', 'designation', 'mobile_number', 'email')
+            ->where('status', 'Active')
+            ->limit(1000)
+            ->get();
+
+        return view('admin.employee.print', compact('employees'));
     }
 }

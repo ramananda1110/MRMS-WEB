@@ -84,8 +84,7 @@ Route::group(['middleware'=> ['auth', 'has.permission']], function(){
     Route::get('/meetings/pending', [MeetingController::class, 'pending'])->name('meetings.pending');
     Route::get('/meetings/cenceled', [MeetingController::class, 'cenceled'])->name('meetings.cenceled');
 
-    Route::post('employees/export-excel', [EmployeeController::class, 'exportExcel'])->name('employee.download-excel');
-
+    
 
     Route::resource('employee', 'EmployeeController');
 
@@ -94,6 +93,11 @@ Route::group(['middleware'=> ['auth', 'has.permission']], function(){
 
     Route::get('employees/download-pdf', [EmployeeController::class, 'exportPdf'])->name('employee.exportPdf');
 
+    // Route for CSV export
+    Route::get('employees/download-csv', [EmployeeController::class, 'exportCsv'])->name('employee.exportCsv');
+    Route::post('employees/export-excel', [EmployeeController::class, 'exportExcel'])->name('employee.download-excel');
+
+    Route::get('employees/print', [EmployeeController::class, 'printView'])->name('employee.printView');
 
 });
 
