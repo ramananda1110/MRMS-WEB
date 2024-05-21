@@ -53,36 +53,30 @@
 
                                 <div class="col-sm-4 text-center mt-2">
 
-                                    <form action="{{route('employee.exportPdf')}}" method="get", target="_blank">      
-
-                                    <div class="form-group mt-3">
-                                            <button class="btn btn-outline-primary">pdf</button>
-                                         </div>
-                
-
-                                    </form>
-
-                                    <form action="{{route('employee.download-excel')}}" method="post", target="_blank">@csrf        
-
-                                    <div class="form-group mt-3">
-                                            <button class="btn btn-outline-primary">Excel</button>
-                                        </div>
-
-
-                                    </form>
-
-
+                            
                                     <div class="dt-buttons btn-group border">
                                     
-                                        <a class="btn btn-default buttons-csv border buttons-html5 btn-sm" tabindex="0" aria-controls="employees">
+                                    <form action="#" method="post", target="_blank">@csrf        
+
+                                        <button type="submit" class="btn btn-default buttons-csv border buttons-html5 btn-sm"  tabindex="0" aria-controls="employees">
                                             <span>csv</span>
-                                        </a>
-                                        <a class="btn btn-default buttons-excel border buttons-html5 btn-sm" tabindex="0" aria-controls="employees">
-                                            <span>Excel</span>
-                                        </a>
-                                        <a class="btn btn-default buttons-pdf border buttons-html5 btn-sm" tabindex="0" aria-controls="employees">
-                                            <span>PDF</span>
-                                        </a>
+                                        </button>
+
+                                    </form>
+                                      
+                                       
+                                        <form action="{{route('employee.download-excel')}}" method="post", target="_blank">@csrf        
+
+                                            <button class="btn btn-default buttons-csv border buttons-html5 btn-sm">Excel</button>
+                                         
+                                        </form>
+                                        
+                                        <form action="{{route('employee.exportPdf')}}" method="get", target="_blank">@csrf        
+
+                                             <button class="btn btn-default buttons-csv border buttons-html5 btn-sm">Pdf</button>
+
+                                        </form>
+
                                         <a class="btn btn-default buttons-print border buttons-html5 btn-sm" tabindex="0" aria-controls="employees">
                                             <span>Print</span>
                                         </a>
