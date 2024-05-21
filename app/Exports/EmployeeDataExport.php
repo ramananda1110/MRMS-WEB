@@ -20,7 +20,9 @@ class EmployeeDataExport implements FromCollection, WithHeadings
     {
         // return Employee::all();
 
-        return Employee::select('employee_id', 'grade', 'name', 'status', 'division', 'project_name', 'designation', 'mobile_number', 'email')->get();
+        return Employee::select('employee_id', 'grade', 'name', 'status', 'division', 'project_name', 'designation', 'mobile_number', 'email')
+        ->where('status', 'Active')
+        ->get();
 
     }
 
