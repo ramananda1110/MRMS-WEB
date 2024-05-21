@@ -205,4 +205,42 @@ class UserController extends Controller
             'message' => "Oops! It seems your credentials don't match. Please verify and retry."
         ], Response::HTTP_OK);
     }
+
+
+    
+
+    public function updateUserStatus(Request $request, $id)
+    {
+
+       // Validate the incoming request data
+       $validator = Validator::make($request->all(), [
+        'is_active' => 'required|in:0,1',
+        ]);
+
+        // Check if the validation fails
+        if ($validator->fails()) {
+            $errors = $validator->errors()->all();
+            $message = implode('. ', $errors);
+
+            return  redirect()->back()->with('error', $message); 
+
+        }
+
+        $user = User::find($id);
+
+        // Check if the meeting exists
+        if (!$user) {
+            return  redirect()->back()->with('error', 'User not found'); 
+
+        }
+
+        // Update the meeting record with the validated data
+        $user->update([
+            'is_active' => $request->is_active,
+        ]
+       );
+        // Return a success response
+        return redirect()->back()->with('message', 'User status updated successfully');
+
+    }
 }

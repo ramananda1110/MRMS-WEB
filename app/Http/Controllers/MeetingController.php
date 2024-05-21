@@ -1049,8 +1049,7 @@ class MeetingController extends Controller
         $meeting->update($validator->validated());
 
 
-        $apiToken = $request->query('api_token');
-
+    
         
         // Check if the user exists and is an admin (role_id = 1)
         if (Auth()->user()->role_id === 1) {

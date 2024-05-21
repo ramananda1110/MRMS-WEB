@@ -56,16 +56,12 @@
                             
                                     <div class="dt-buttons btn-group border">
                                     
-                                    <form action="#" method="post", target="_blank">@csrf        
-
-                                        <button type="submit" class="btn btn-default buttons-csv border buttons-html5 btn-sm"  tabindex="0" aria-controls="employees">
-                                            <span>Csv</span>
-                                        </button>
-
-                                    </form>
-                                      
+                                        <form action="{{ route('employee.exportCsv') }}" method="get" target="_blank">
+                                            <button class="btn btn-default buttons-csv border buttons-html5 btn-sm">CSV</button>
+                                        </form>
+                                        
                                        
-                                        <form action="{{route('employee.download-excel')}}" method="post", target="_blank">@csrf        
+                                        <form action="{{route('employee.download-excel')}}" method="post" target="_blank">@csrf        
 
                                             <button class="btn btn-default buttons-csv border buttons-html5 btn-sm">Excel</button>
                                          
@@ -77,9 +73,12 @@
 
                                         </form>
 
-                                        <a class="btn btn-default buttons-print border buttons-html5 btn-sm" tabindex="0" aria-controls="employees">
-                                            <span>Print</span>
-                                        </a>
+                                        <form action="{{ route('employee.printView') }}" method="get" target="_blank">      
+
+                                             <button class="btn btn-default buttons-csv border buttons-html5 btn-sm">Print</button>
+
+                                        </form>
+
                                     </div>
                                 </div>
 
