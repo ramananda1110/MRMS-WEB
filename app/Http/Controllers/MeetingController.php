@@ -290,6 +290,7 @@ class MeetingController extends Controller
             $start_date = $request->input('start_date');
             $start_time = $request->input('start_time');
             $end_time = $request->input('end_time');
+
         
            // Convert start_time to a DateTime object
            $startDateTime = \DateTime::createFromFormat('H:i', $start_time);
@@ -713,6 +714,7 @@ class MeetingController extends Controller
                 $start_time = $request->input('start_time');
                 $end_time = $request->input('end_time');
 
+
                 // Convert start_time to a DateTime object
                 $startDateTime = \DateTime::createFromFormat('H:i', $start_time);
                 // Add 1 minute
@@ -1008,6 +1010,8 @@ class MeetingController extends Controller
             $start_date = $request->input('start_date');
             $start_time = $request->input('start_time');
             $end_time = $request->input('end_time');
+
+            // dd($request);
 
             // Convert start_time to a DateTime object
             $startDateTime = \DateTime::createFromFormat('H:i', $start_time);

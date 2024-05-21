@@ -48,7 +48,7 @@
                 <select class="form-control" name="room_id"
                         require="">
                             @foreach(App\Models\Room::all() as $room)
-                            <option value="{{$room->name}}" @if($room->name==$meeting->room->name)
+                            <option value="{{$room->id}}" @if($room->name==$meeting->room->name)
                                 selected @endif>
                                 {{$room->name}}
 
@@ -73,7 +73,7 @@
             <div class="form-group row mt-3">
               <label class="col-sm-3 col-form-label">Start Time</label>
               <div class="col-sm-9">
-                <input name="start_time" class="form-control" value="{{ $meeting->start_time }}" id="appt" type="time" required>
+                <input name="start_time" class="form-control" value="{{ $meeting->start_time }}" data-placeholder="hh:mm"  id="appt" type="time" required>
                 @error('start_time')
                   <span class="invalid-feedback" role="alert">
                     <strong>{{ $message }}</strong>
@@ -85,7 +85,7 @@
             <div class="form-group row mt-3">
               <label class="col-sm-3 col-form-label">End Time</label>
               <div class="col-sm-9">
-                <input class="form-control" value="{{ $meeting->end_time }}" id="appt" type="time" name="end_time" required>
+                <input class="form-control" value="{{ $meeting->end_time }}" data-placeholder="hh:mm" id="appt" type="time" name="end_time" required>
                 @error('end_time')
                   <span class="invalid-feedback" role="alert">
                     <strong>{{ $message }}</strong>

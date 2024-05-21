@@ -132,7 +132,7 @@
                                     <div class="modal-dialog">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                        <h1 class="modal-title fs-5" id="acceptModalLabel">Confirm!</h1>
+                                        <h1 class="modal-title fs-5" id="acceptModalLabel">Accept Meeting!</h1>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
@@ -143,10 +143,10 @@
                                         </div>
                                         <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                        <form id="acceptMeetingForm{{$meeting->id}}" action="{{route('meetings.updateMeeting', [$meeting->id])}}" method="post">@csrf
+                                        <form id="acceptMeetingForm{{$meeting->id}}" action="{{route('meeting.update.web', [$meeting->id])}}" method="post">@csrf
                                             <input type="hidden" name="booking_status" id="accept_booking_status">
                                             <button class="btn btn-outline-success" onclick="submitForm('accepted', 'acceptMeetingForm{{$meeting->id}}')">
-                                                ACCEPT
+                                                Accept
                                             </button>
                                         </form>
                                         </div>
@@ -180,10 +180,10 @@
                                         </div>
                                         <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                        <form id="rejectMeetingForm{{$meeting->id}}" action="{{route('meetings.updateMeeting', [$meeting->id])}}" method="post">@csrf
+                                        <form id="rejectMeetingForm{{$meeting->id}}" action="{{route('meeting.update.web', [$meeting->id])}}" method="post">@csrf
                                             <input type="hidden" name="booking_status" id="reject_booking_status">
                                             <button class="btn btn-outline-danger" onclick="submitForm('rejected', 'rejectMeetingForm{{$meeting->id}}')">
-                                                REJECT
+                                                Reject
                                             </button>
                                         </form>
                                         </div>
