@@ -59,7 +59,7 @@
                                     <form action="#" method="post", target="_blank">@csrf        
 
                                         <button type="submit" class="btn btn-default buttons-csv border buttons-html5 btn-sm"  tabindex="0" aria-controls="employees">
-                                            <span>csv</span>
+                                            <span>Csv</span>
                                         </button>
 
                                     </form>
@@ -71,7 +71,7 @@
                                          
                                         </form>
                                         
-                                        <form action="{{route('employee.exportPdf')}}" method="get", target="_blank">@csrf        
+                                        <form action="{{route('employee.exportPdf')}}" method="get" target="_blank">      
 
                                              <button class="btn btn-default buttons-csv border buttons-html5 btn-sm">Pdf</button>
 

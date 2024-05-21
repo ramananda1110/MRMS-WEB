@@ -11,8 +11,7 @@ use App\Models\Employee;
 use DataTables;
 use App\Models\User;
 use App\Notifications\CreateNewUserNotification;
-// use Barryvdh\DomPDF\Facade\Pdf;
-use PDF;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 use App\Exports\EmployeeDataExport;
 
@@ -23,7 +22,10 @@ class EmployeeController extends Controller
     public function index() {
 
         // $employees = Employee::latest()->get();
-        $employees = Employee::latest()->paginate(30);
+       
+        $employees = Employee::query()->where('status', '=', 'Active')->paginate(30);
+
+        //$employees = Employee::latest()->paginate(30);
         return view('admin.employee.index', compact('employees'));
 
     }
@@ -242,8 +244,6 @@ class EmployeeController extends Controller
     }
     
 
-   
-
     public function exportPdf()
     {
         $employees = Employee::select('employee_id', 'name', 'division')->get();
@@ -265,7 +265,7 @@ class EmployeeController extends Controller
         $pdf = Pdf::loadHTML($html);
 
         return $pdf->download('employees.pdf'); // to download the PDF
-        //return $pdf->stream('employees.pdf'); // to preview the PDF in the browser
+        // return $pdf->stream('employees.pdf'); // to preview the PDF in the browser
     }
    
 

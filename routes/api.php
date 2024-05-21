@@ -56,7 +56,7 @@ Route::group(['middleware' => ['auth.api']], function () {
 
     Route::get('/meeting/by-date', [MeetingController::class, 'getMeetingsByDate']);
 
-    Route::post('/meeting/update-status/{id}', [MeetingController::class, 'updateMeetingStatus'])->name('meetings.updateMeeting');
+    Route::post('/meeting/update-status/{id}', [MeetingController::class, 'updateMeetingStatus'])->name('meeting.update.app');
 
 
     Route::post('/meeting/reschedule/{id}', [MeetingController::class, 'reschedule'])->name('meeting.reschedule');
