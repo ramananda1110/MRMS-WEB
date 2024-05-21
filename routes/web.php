@@ -89,7 +89,11 @@ Route::group(['middleware'=> ['auth', 'has.permission']], function(){
 
     Route::post('meetings/export-excel', [MeetingController::class, 'exportExcel'])->name('meetings.download-excel');
 
-    
+    Route::get('meetings/download-pdf', [MeetingController::class, 'exportMeetingPdf'])->name('meetings.exportPdf');
+
+    Route::get('meetings/download-csv', [MeetingController::class, 'exportMeetingCsv'])->name('meetings.exportCsv');
+    Route::get('meetings/print', [MeetingController::class, 'printView'])->name('meetings.printView');
+
 
     // Employee Data
 

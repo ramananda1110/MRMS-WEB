@@ -1083,6 +1083,207 @@ class MeetingController extends Controller
         return Excel::download(new MeetingDataExport, 'meetings-data.xlsx');
     }
 
+
+
+    public function exportMeetingPdf()
+    {
+        ini_set('memory_limit', '1024M');
+        ini_set('max_execution_time', 300);
+
+        $meetings = Meeting::with(['room', 'host', 'coHost', 'participants.employee'])
+            ->select(
+                'id', 
+                'room_id', 
+                'meeting_title', 
+                'start_date', 
+                'start_time', 
+                'end_time', 
+                'host_id', 
+                'co_host_id', 
+                'booking_type', 
+                'booking_status', 
+                'description'
+            )
+            ->limit(500)
+            ->get();
+
+
+        $html = '
+        <html>
+        <head>
+            <style>
+                body { font-family: sans-serif; margin: 20px; }
+                table { border-collapse: collapse; width: 100%; }
+                th, td { border: 1px solid black; padding: 8px; text-align: left; }
+                th { background-color: #f2f2f2; }
+                .page-break { page-break-after: always; }
+            </style>
+        </head>
+        <body>
+            <h1>Meetings List</h1>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Meeting ID</th>
+                        <th>Room Name</th>
+                        <th>Title</th>
+                        <th>Date</th>
+                        <th>Start Time</th>
+                        <th>End Time</th>
+                        <th>Host</th>
+                        <th>Co-Host</th>
+                        <th>Type</th>
+                        <th>Status</th>
+                        <th>Description</th>
+                        <th>Participants</th>
+                    </tr>
+                </thead>
+                <tbody>';
+
+        foreach ($meetings as $meeting) {
+            $participants = $meeting->participants->map(function ($participant) {
+                return $participant->employee ? 
+                    "{$participant->employee->name} ({$participant->employee->division})" 
+                    : '';
+            })->implode(', ');
+
+            $html .= '<tr>';
+            $html .= '<td>' . $meeting->id . '</td>';
+            $html .= '<td>' . ($meeting->room ? $meeting->room->name : 'N/A') . '</td>';
+            $html .= '<td>' . $meeting->meeting_title . '</td>';
+            $html .= '<td>' . $meeting->start_date . '</td>';
+            $html .= '<td>' . $meeting->start_time . '</td>';
+            $html .= '<td>' . $meeting->end_time . '</td>';
+            $html .= '<td>' . ($meeting->host ? $meeting->host->name : '') . '</td>';
+            $html .= '<td>' . ($meeting->coHost ? $meeting->coHost->name : 'New') . '</td>';
+            $html .= '<td>' . $meeting->booking_type . '</td>';
+            $html .= '<td>' . $meeting->booking_status . '</td>';
+            $html .= '<td>' . $meeting->description . '</td>';
+            $html .= '<td>' . $participants . '</td>';
+            $html .= '</tr>';
+        }
+
+        $html .= '</tbody></table></body></html>';
+
+
+         // Set paper size and margins
+        $pdf = Pdf::loadHTML($html)
+        ->setPaper('a4', 'landscape')
+        ->setOptions([
+            'isHtml5ParserEnabled' => true,
+            'isRemoteEnabled' => true,
+            'dpi' => 96,
+            'defaultFont' => 'sans-serif',
+            'margin_left' => 10,
+            'margin_right' => 10,
+            'margin_top' => 10,
+            'margin_bottom' => 10,
+        ]);
+        return $pdf->download('employees-pdf-export.pdf');
+
+    }  
+
+
+    public function exportMeetingCsv()
+    {
+        $meetings = Meeting::with(['room', 'host', 'coHost', 'participants.employee'])
+            ->select(
+                'id', 
+                'room_id', 
+                'meeting_title', 
+                'start_date', 
+                'start_time', 
+                'end_time', 
+                'host_id', 
+                'co_host_id', 
+                'booking_type', 
+                'booking_status', 
+                'description'
+            )
+            ->get();
+
+        $csvHeader = [
+            'Meeting ID', 
+            'Room Name', 
+            'Title', 
+            'Date', 
+            'Start Time', 
+            'End Time', 
+            'Host', 
+            'Co-Host', 
+            'Type', 
+            'Status', 
+            'Description', 
+            'Participants'
+        ];
+        
+        $csvData = [];
+
+        foreach ($meetings as $meeting) {
+            $participants = $meeting->participants->map(function ($participant) {
+                return $participant->employee ? 
+                    "{$participant->employee->name} (Division: {$participant->employee->division}, Designation: {$participant->employee->designation})" 
+                    : '';
+            })->implode(', ');
+
+            $csvData[] = [
+                $meeting->id,
+                $meeting->room ? $meeting->room->name : 'N/A',
+                $meeting->meeting_title,
+                $meeting->start_date,
+                $meeting->start_time,
+                $meeting->end_time,
+                $meeting->host ? $meeting->host->name : '',
+                $meeting->coHost ? $meeting->coHost->name : 'New',
+                $meeting->booking_type,
+                $meeting->booking_status,
+                $meeting->description,
+                $participants
+            ];
+        }
+
+        $filename = 'meetings-csv-export.csv';
+        $handle = fopen($filename, 'w+');
+        fputcsv($handle, $csvHeader);
+
+        foreach ($csvData as $row) {
+            fputcsv($handle, $row);
+        }
+
+        fclose($handle);
+
+        $headers = [
+            'Content-Type' => 'text/csv',
+        ];
+
+        return response()->download($filename, $filename, $headers)->deleteFileAfterSend(true);
+    }
+
+
+
+    public function printView()
+    {
+        $meetings = Meeting::with(['room', 'host', 'coHost', 'participants.employee'])
+            ->select(
+                'id', 
+                'room_id', 
+                'meeting_title', 
+                'start_date', 
+                'start_time', 
+                'end_time', 
+                'host_id', 
+                'co_host_id', 
+                'booking_type', 
+                'booking_status', 
+                'description'
+            )
+            ->get();
+
+        return view('admin.meeting.print', compact('meetings'));
+    }
+
+
 }
+
 
 
