@@ -46,6 +46,9 @@ Route::group(['middleware'=> ['auth', 'has.permission']], function(){
 
     Route::resource('users', 'UserController');
 
+    Route::post('/user/update-status/{id}', [UserController::class, 'updateUserStatus'])->name('user.updateStatus');
+
+
     Route::get('/user-list', 'UserController@listOfUser');
 
     Route::resource('permissions', 'PermissionController');
