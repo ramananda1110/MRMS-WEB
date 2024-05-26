@@ -35,83 +35,60 @@ class MeetingController extends Controller
 
      public function index()
      {
-        // Retrieve all meetings with participants
-        // $meetings = Meeting::with('participants')->get();
-        // dd($meetings);
-
-        // return view('admin.meeting.index', compact('meetings'));
-
-
-        $meetings ;
-   
+        
+        // Retrieve the authenticated user's employee ID and role ID
         $employeeId = Auth()->user()->employee_id;
+        $roleId = Auth()->user()->role_id;
 
-        // Check if the user exists and is an admin (role_id = 1)
-        if (Auth()->user()->role_id === 1) {
-            $meetings = Meeting::with('participants')->get();
-        } else {
-
-            // $meetings = Meeting::whereHas('participants', function ($query) use ($employeeId) {
-            //     $query->where('participant_id', $employeeId);
-            // })->with('participants')->get();
-
-            $meetings = Meeting::where(function ($query) use ($employeeId) {
+        // Fetch meetings based on user role
+        $meetingsQuery = Meeting::with('participants');
+        if ($roleId !== 1) {
+            $meetingsQuery->where(function ($query) use ($employeeId) {
                 $query->where('host_id', $employeeId)
-                      ->orWhereHas('participants', function ($query) use ($employeeId) {
-                          $query->where('participant_id', $employeeId);
-                      });
-            })->with('participants')->get();
+                    ->orWhereHas('participants', function ($query) use ($employeeId) {
+                        $query->where('participant_id', $employeeId);
+                    });
+            });
         }
 
+        $meetings = $meetingsQuery->get();
 
-        $data = $meetings->map(function ($meeting) {
-
-            // Determine the status based on conditions
+        // Update booking status based on conditions
+        $today = now()->toDateString();
+        foreach ($meetings as $meeting) {
             $status = $meeting->booking_status;
-            $today = now()->toDateString();
             $startDate = $meeting->start_date;
 
-            if ($status === 'pending') {
-                if ($startDate < $today) {
+            switch ($status) {
+                case 'pending':
+                    if ($startDate < $today) {
+                        $status = 'canceled';
+                    }
+                    break;
+                case 'accepted':
+                    if ($startDate < $today) {
+                        $status = 'completed';
+                    } else {
+                        $status = 'upcoming';
+                    }
+                    break;
+                case 'rejected':
                     $status = 'canceled';
-                } 
-            } elseif ($status === 'accepted') {
-                if ($startDate < $today) {
-                    $status = 'completed';
-                } else {
-                    $status = 'upcoming';
-                }
-            } elseif ($status === 'rejected') {
-                    $status = 'canceled';
-            } 
+                    break;
+            }
 
-            return [
-                'id' => $meeting->id,
-                'room_id' => $meeting->room_id,
-                'meeting_title' => $meeting->meeting_title,
-                'start_date' => $meeting->start_date,
-                'start_time' => $meeting->start_time,
-                'end_time' => $meeting->end_time,
-                'host_id' => $meeting->host_id,
-                'co_host_id' => $meeting->co_host_id ? $meeting->co_host_id : 0,
-                'booking_type' => $meeting->booking_type,
-                'booking_status' => $status,
-                'created_at' => $meeting->created_at,
-                'updated_at' => $meeting->updated_at,
-            ];
-        });
-       
-        
+            // Update the meeting status
+            $meeting->booking_status = $status;
+        }
 
          // Order meetings by latest start_date
-        $meetings = $data->sortByDesc('start_date')->values()->all();
+        $meetings = $meetings->sortByDesc('start_date')->values()->all();
    
         
         //dd($meetings);
 
         return view('admin.meeting.index', compact('meetings'));
 
-        
      }
 
     public function upcoming(Request $request)
@@ -133,7 +110,6 @@ class MeetingController extends Controller
 
     public function pending()
     {
-        // Retrieve all meetings with participants
         $data = Meeting::with('participants')->get();
 
         // Determine today's date
@@ -141,7 +117,7 @@ class MeetingController extends Controller
 
 
         $meetings = $data->filter(function ($meeting) use ($today) {
-            return $meeting->booking_status === 'pending';
+            return $meeting->booking_status === 'pending' && $meeting->start_date >= $today;
         });
 
         return view('admin.meeting.pending', compact('meetings'));
@@ -150,12 +126,15 @@ class MeetingController extends Controller
 
     public function cenceled()
     {
-        // Retrieve all meetings with participants
         $data = Meeting::with('participants')->get();
 
-        $meetings = $data->filter(function ($meeting) {
-            return $meeting->booking_status === 'rejected';
+        $today = now()->toDateString();
+
+
+        $meetings = $data->filter(function ($meeting) use ($today) {
+            return $meeting->booking_status === 'rejected' || $meeting->booking_status === 'pending' && $meeting->start_date < $today;
         });
+
 
         return view('admin.meeting.canceled', compact('meetings'));
     }
@@ -180,32 +159,28 @@ class MeetingController extends Controller
      // get all meeting for Mobile App
     public function getAllMeetins(Request $request)
     {
-       //$meetings = Meeting::with('participants')->get();
-       $meetings ;
-        //$meetings = Meeting::with(['participants.employee', 'host', 'coHost'])->get();
-   
+       // Retrieve the employee ID from the request query
         $employeeId = $request->query('employee_id');
 
         // Retrieve the user based on the employee ID
         $user = User::where('employee_id', $employeeId)->first();
 
+        // Initialize the meetings query
+        $meetingsQuery = Meeting::with('participants');
+
         // Check if the user exists and is an admin (role_id = 1)
-        if ($user && $user->role_id === 1) {
-            $meetings = Meeting::with('participants')->get();
-        } else {
-
-            // $meetings = Meeting::whereHas('participants', function ($query) use ($employeeId) {
-            //     $query->where('participant_id', $employeeId);
-            // })->with('participants')->get();
-
-            $meetings = Meeting::where(function ($query) use ($employeeId) {
+        if ($user && $user->role_id !== 1) {
+            // For non-admin users, add additional conditions to the query
+            $meetingsQuery->where(function ($query) use ($employeeId) {
                 $query->where('host_id', $employeeId)
-                      ->orWhereHas('participants', function ($query) use ($employeeId) {
-                          $query->where('participant_id', $employeeId);
-                      });
-            })->with('participants')->get();
+                    ->orWhereHas('participants', function ($query) use ($employeeId) {
+                        $query->where('participant_id', $employeeId);
+                    });
+            });
         }
 
+        // Execute the query to get the meetings
+         $meetings = $meetingsQuery->get();
 
         $data = $meetings->map(function ($meeting) {
 
