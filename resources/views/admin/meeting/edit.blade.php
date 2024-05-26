@@ -73,7 +73,7 @@
             <div class="form-group row mt-3">
               <label class="col-sm-3 col-form-label">Start Time</label>
               <div class="col-sm-9">
-                <input name="start_time" class="form-control" value="{{ $meeting->start_time }}" data-placeholder="hh:mm"  id="appt" type="time" required>
+                <input name="start_time" class="form-control" value="{{ \Carbon\Carbon::parse($meeting->start_time)->format('H:i') }}" data-placeholder="hh:mm"  id="appt" type="time" required>
                 @error('start_time')
                   <span class="invalid-feedback" role="alert">
                     <strong>{{ $message }}</strong>
@@ -85,7 +85,7 @@
             <div class="form-group row mt-3">
               <label class="col-sm-3 col-form-label">End Time</label>
               <div class="col-sm-9">
-                <input class="form-control" value="{{ $meeting->end_time }}" data-placeholder="hh:mm" id="appt" type="time" name="end_time" required>
+                <input class="form-control" value="{{ \Carbon\Carbon::parse($meeting->end_time)->format('H:i') }}" data-placeholder="hh:mm" id="appt" type="time" name="end_time" required>
                 @error('end_time')
                   <span class="invalid-feedback" role="alert">
                     <strong>{{ $message }}</strong>

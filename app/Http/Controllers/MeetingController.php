@@ -1061,8 +1061,7 @@ class MeetingController extends Controller
             $start_time = $request->input('start_time');
             $end_time = $request->input('end_time');
 
-            //dd($request);
-
+           
             // Convert start_time to a DateTime object
             $startDateTime = \DateTime::createFromFormat('H:i', $start_time);
             // Add 1 minute
@@ -1126,7 +1125,7 @@ class MeetingController extends Controller
 
         }
         
-        return redirect()->route("admin.meeting.index")->with('message', 'Meeting updated successfully');
+        return redirect()->route("meeting.index")->with('message', 'Meeting updated successfully');
 
     }
 
