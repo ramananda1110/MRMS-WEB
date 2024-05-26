@@ -36,8 +36,82 @@ class MeetingController extends Controller
      public function index()
      {
         // Retrieve all meetings with participants
-        $meetings = Meeting::with('participants')->get();
+        // $meetings = Meeting::with('participants')->get();
+        // dd($meetings);
+
+        // return view('admin.meeting.index', compact('meetings'));
+
+
+        $meetings ;
+   
+        $employeeId = Auth()->user()->employee_id;
+
+        // Check if the user exists and is an admin (role_id = 1)
+        if (Auth()->user()->role_id === 1) {
+            $meetings = Meeting::with('participants')->get();
+        } else {
+
+            // $meetings = Meeting::whereHas('participants', function ($query) use ($employeeId) {
+            //     $query->where('participant_id', $employeeId);
+            // })->with('participants')->get();
+
+            $meetings = Meeting::where(function ($query) use ($employeeId) {
+                $query->where('host_id', $employeeId)
+                      ->orWhereHas('participants', function ($query) use ($employeeId) {
+                          $query->where('participant_id', $employeeId);
+                      });
+            })->with('participants')->get();
+        }
+
+
+        $data = $meetings->map(function ($meeting) {
+
+            // Determine the status based on conditions
+            $status = $meeting->booking_status;
+            $today = now()->toDateString();
+            $startDate = $meeting->start_date;
+
+            if ($status === 'pending') {
+                if ($startDate < $today) {
+                    $status = 'canceled';
+                } 
+            } elseif ($status === 'accepted') {
+                if ($startDate < $today) {
+                    $status = 'completed';
+                } else {
+                    $status = 'upcoming';
+                }
+            } elseif ($status === 'rejected') {
+                    $status = 'canceled';
+            } 
+
+            return [
+                'id' => $meeting->id,
+                'room_id' => $meeting->room_id,
+                'meeting_title' => $meeting->meeting_title,
+                'start_date' => $meeting->start_date,
+                'start_time' => $meeting->start_time,
+                'end_time' => $meeting->end_time,
+                'host_id' => $meeting->host_id,
+                'co_host_id' => $meeting->co_host_id ? $meeting->co_host_id : 0,
+                'booking_type' => $meeting->booking_type,
+                'booking_status' => $status,
+                'created_at' => $meeting->created_at,
+                'updated_at' => $meeting->updated_at,
+            ];
+        });
+       
+        
+
+         // Order meetings by latest start_date
+        $meetings = $data->sortByDesc('start_date')->values()->all();
+   
+        
+        //dd($meetings);
+
         return view('admin.meeting.index', compact('meetings'));
+
+        
      }
 
     public function upcoming(Request $request)
@@ -943,6 +1017,7 @@ class MeetingController extends Controller
     public function edit($id)
     {
         $meeting = Meeting::find($id);
+        //dd($meeting);
         return view('admin.meeting.edit', compact('meeting'));
 
     }
@@ -1011,7 +1086,7 @@ class MeetingController extends Controller
             $start_time = $request->input('start_time');
             $end_time = $request->input('end_time');
 
-            // dd($request);
+            //dd($request);
 
             // Convert start_time to a DateTime object
             $startDateTime = \DateTime::createFromFormat('H:i', $start_time);
