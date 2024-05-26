@@ -684,8 +684,6 @@ class MeetingController extends Controller
     
        $this->notificationController->attemtNotification($devicesToken, "Meeting Updated", "Your meeting has been " . $request->booking_status);
  
-
-
         // Return a success response
         return redirect()->back()->with('message', 'Meeting status updated successfully');
 
@@ -992,7 +990,6 @@ class MeetingController extends Controller
     public function edit($id)
     {
         $meeting = Meeting::find($id);
-        //dd($meeting);
         return view('admin.meeting.edit', compact('meeting'));
 
     }
@@ -1105,8 +1102,6 @@ class MeetingController extends Controller
 
         $meeting->update($validator->validated());
 
-
-    
         
         // Check if the user exists and is an admin (role_id = 1)
         if (Auth()->user()->role_id === 1) {

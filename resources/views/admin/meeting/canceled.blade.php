@@ -104,6 +104,9 @@
                         <td class="text-center"><span class="badge rounded-pill badge-primary bg-success">{{$meeting->booking_status}}</span></td>
                         @elseif($meeting->booking_status == 'rejected')
                             <td class="text-center"><span class="badge rounded-pill badge-primary bg-danger">{{$meeting->booking_status}}</span></td>
+                        @elseif($meeting->booking_status == 'pending')
+                        <td class="text-center"><span class="badge rounded-pill badge-primary bg-danger">rejected</span></td>
+                    
                         @else
                             <td class="text-center"><span class="badge rounded-pill badge-primary bg-primary">{{$meeting->booking_status}}</span></td>
                         @endif
@@ -123,9 +126,6 @@
                         <button type="button" class="btn btn-primary"><i class="fa-solid fa-eye"></i></button></a> 
 
                         
-                      
-                      
-                            
                                 <div class="modal fade" id="viewModal{{$meeting->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                     <div class="modal-dialog">
                                         <form>@csrf

@@ -21,8 +21,9 @@
     </ol>
   </nav>
 
-  <form action="{{route('meeting.update', [$meeting->id])}}" method="post">@csrf
-    {{method_field('PATCH')}}
+  <form id="meetingForm" action="{{ route('meeting.update', [$meeting->id]) }}" method="post">
+    @csrf
+    {{ method_field('PATCH') }}
 
     <div class="row">
       <div class="col-sm-12">
@@ -33,7 +34,7 @@
             <div class="form-group row">
               <label class="col-sm-3 col-form-label">Meeting Title</label>
               <div class="col-sm-9">
-                <input type="text" name="meeting_title" value = "{{$meeting->meeting_title}}" class="form-control @error('meeting_title') is-invalid @enderror" required>
+                <input type="text" name="meeting_title" value="{{ $meeting->meeting_title }}" class="form-control @error('meeting_title') is-invalid @enderror" required>
                 @error('meeting_title')
                   <span class="invalid-feedback" role="alert">
                     <strong>{{ $message }}</strong>
@@ -45,16 +46,13 @@
             <div class="form-group row mt-3">
               <label class="col-sm-3 col-form-label">Room</label>
               <div class="col-sm-9">
-                <select class="form-control" name="room_id"
-                        require="">
-                            @foreach(App\Models\Room::all() as $room)
-                            <option value="{{$room->id}}" @if($room->name==$meeting->room->name)
-                                selected @endif>
-                                {{$room->name}}
-
-                            </option>
-                            @endforeach
-                  </select>
+                <select class="form-control" name="room_id" required>
+                  @foreach(App\Models\Room::all() as $room)
+                    <option value="{{ $room->id }}" @if($room->id == $meeting->room_id) selected @endif>
+                      {{ $room->name }}
+                    </option>
+                  @endforeach
+                </select>
               </div>
             </div>
 
@@ -73,7 +71,7 @@
             <div class="form-group row mt-3">
               <label class="col-sm-3 col-form-label">Start Time</label>
               <div class="col-sm-9">
-                <input name="start_time" class="form-control" value="{{ \Carbon\Carbon::parse($meeting->start_time)->format('H:i') }}" data-placeholder="hh:mm"  id="appt" type="time" required>
+                <input name="start_time" class="form-control" value="{{ \Carbon\Carbon::parse($meeting->start_time)->format('H:i') }}" data-placeholder="hh:mm" id="appt" type="time" required>
                 @error('start_time')
                   <span class="invalid-feedback" role="alert">
                     <strong>{{ $message }}</strong>
@@ -97,32 +95,26 @@
             <div class="form-group row mt-3">
               <label class="col-sm-3 col-form-label">Host</label>
               <div class="col-sm-9">
-                <select class="form-control" name="host_id"
-                        require="">
-                            @foreach(App\Models\Employee::all() as $host)
-                            <option value="{{$host->employee_id}}" @if($host->employee_id==$meeting->host->employee_id)
-                                selected @endif>
-                                {{$host->name}}
-
-                            </option>
-                            @endforeach
-                  </select>
+                <select class="form-control" name="host_id" required>
+                  @foreach(App\Models\Employee::all() as $host)
+                    <option value="{{ $host->employee_id }}" @if($host->employee_id == $meeting->host_id) selected @endif>
+                      {{ $host->name }}
+                    </option>
+                  @endforeach
+                </select>
               </div>
             </div>
 
             <div class="form-group row mt-3">
               <label class="col-sm-3 col-form-label">Co-Host</label>
               <div class="col-sm-9">
-                <select class="form-control" name="co_host_id"
-                require="">
-                    @foreach(App\Models\Employee::all() as $coHost)
-                    <option value="{{$coHost->employee_id}}" @if($coHost->employee_id==$meeting->coHost->employee_id)
-                        selected @endif>
-                        {{$coHost->name}}
-
+                <select class="form-control" name="co_host_id" required>
+                  @foreach(App\Models\Employee::all() as $coHost)
+                    <option value="{{ $coHost->employee_id }}" @if($coHost->employee_id == $meeting->co_host_id) selected @endif>
+                      {{ $coHost->name }}
                     </option>
-                    @endforeach
-          </select>
+                  @endforeach
+                </select>
               </div>
             </div>
 
@@ -131,7 +123,12 @@
               <div class="col-sm-9">
                 <select name="participants[]" id="choices-multiple-remove-button" placeholder="Select up to 25 Participants" multiple required>
                   @foreach(App\Models\Employee::all() as $employee)
-                    <option value="{{ $employee->employee_id }}">{{ $employee->name . ' - ' . $employee->division }}</option>
+                    <option value="{{ $employee->employee_id }}" 
+                      @if(in_array($employee->employee_id, $meeting->participants->pluck('employee_id')->toArray())) 
+                        selected 
+                      @endif>
+                      {{ $employee->name}}
+                    </option>
                   @endforeach
                 </select>
               </div>
@@ -140,7 +137,7 @@
             <div class="form-group row ms-1 mt-4">
               <label class="col-sm-3 col-form-label"></label>
               <div class="col-sm-9">
-                <button type="submit" class="btn btn-primary" @click="handleSubmit">Submit</button>
+                <button type="submit" class="btn btn-primary">Submit</button>
               </div>
             </div>
 
@@ -172,44 +169,33 @@
 </div>
 @endsection
 
+@push('scripts')
 <script>
   document.addEventListener('DOMContentLoaded', function () {
     const meetingForm = document.getElementById('meetingForm');
-    const submitModal = document.getElementById('submitModal');
+    const submitModal = new bootstrap.Modal(document.getElementById('submitModal'));
 
     meetingForm.addEventListener('submit', function(event) {
-  // Prevent the default form submission behavior
-  event.preventDefault();
-  event.stopPropagation();
+      event.preventDefault();
+      event.stopPropagation();
 
-  if (!meetingForm.checkValidity()) {
-    // If the form is not valid, add Bootstrap's validation class
-    meetingForm.classList.add('was-validated');
-    
-  }
-   
-  else {
-    // Show confirmation modal if form is valid
-    $('#submitModal').modal('show');
-  }
-});
+      if (!meetingForm.checkValidity()) {
+        meetingForm.classList.add('was-validated');
+      } else {
+        submitModal.show();
+      }
+    });
 
-// Add a click event listener to the confirmation button in the modal
-document.getElementById('confirmSubmitBtn').addEventListener('click', function() {
-  // Manually submit the form if the user confirms in the modal
-  meetingForm.submit();
-});
-
-
-
+    document.getElementById('confirmSubmitBtn').addEventListener('click', function() {
+      meetingForm.submit();
+    });
 
     var selectElement = document.getElementById('choices-multiple-remove-button');
-    var choices = new Choices(selectElement, {
+    new Choices(selectElement, {
       removeItemButton: true,
       maxItemCount: 25,
       renderChoiceLimit: 10
     });
   });
 </script>
-
-
+@endpush

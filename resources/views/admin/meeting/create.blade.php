@@ -166,29 +166,27 @@
     const submitModal = document.getElementById('submitModal');
 
     meetingForm.addEventListener('submit', function(event) {
-  // Prevent the default form submission behavior
-  event.preventDefault();
-  event.stopPropagation();
+    // Prevent the default form submission behavior
+    event.preventDefault();
+    event.stopPropagation();
 
-  if (!meetingForm.checkValidity()) {
-    // If the form is not valid, add Bootstrap's validation class
-    meetingForm.classList.add('was-validated');
-    
-  }
-   
-  else {
-    // Show confirmation modal if form is valid
-    $('#submitModal').modal('show');
-  }
-});
+      if (!meetingForm.checkValidity()) {
+        // If the form is not valid, add Bootstrap's validation class
+        meetingForm.classList.add('was-validated');
+        
+      }
+      
+      else {
+        // Show confirmation modal if form is valid
+        $('#submitModal').modal('show');
+      }
+    });
 
-// Add a click event listener to the confirmation button in the modal
-document.getElementById('confirmSubmitBtn').addEventListener('click', function() {
-  // Manually submit the form if the user confirms in the modal
-  meetingForm.submit();
-});
-
-
+    // Add a click event listener to the confirmation button in the modal
+    document.getElementById('confirmSubmitBtn').addEventListener('click', function() {
+      // Manually submit the form if the user confirms in the modal
+      meetingForm.submit();
+    });
 
 
     var selectElement = document.getElementById('choices-multiple-remove-button');
