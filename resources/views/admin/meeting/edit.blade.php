@@ -17,12 +17,12 @@
 
   <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
-      <li class="breadcrumb-item active" aria-current="page">Edit Meeting</li>
+      <li class="breadcrumb-item active" aria-current="page">Rechedule Meeting</li>
     </ol>
   </nav>
 
-  <form id="meetingForm" action="{{ route('meeting.update', [$meeting->id]) }}" method="post">
-    @csrf
+  <form id="meetingForm" action="{{ route('meeting.update', [$meeting->id]) }}" method="post" >
+  @csrf
     {{ method_field('PATCH') }}
 
     <div class="row">
@@ -134,6 +134,7 @@
               </div>
             </div>
 
+
             <div class="form-group row ms-1 mt-4">
               <label class="col-sm-3 col-form-label"></label>
               <div class="col-sm-9">
@@ -169,33 +170,42 @@
 </div>
 @endsection
 
-@push('scripts')
 <script>
   document.addEventListener('DOMContentLoaded', function () {
     const meetingForm = document.getElementById('meetingForm');
-    const submitModal = new bootstrap.Modal(document.getElementById('submitModal'));
+    const submitModal = document.getElementById('submitModal');
 
     meetingForm.addEventListener('submit', function(event) {
-      event.preventDefault();
-      event.stopPropagation();
+    // Prevent the default form submission behavior
+    event.preventDefault();
+    event.stopPropagation();
 
       if (!meetingForm.checkValidity()) {
+        // If the form is not valid, add Bootstrap's validation class
         meetingForm.classList.add('was-validated');
-      } else {
-        submitModal.show();
+        
+      }
+      
+      else {
+        // Show confirmation modal if form is valid
+        $('#submitModal').modal('show');
       }
     });
 
+    // Add a click event listener to the confirmation button in the modal
     document.getElementById('confirmSubmitBtn').addEventListener('click', function() {
+      // Manually submit the form if the user confirms in the modal
       meetingForm.submit();
     });
 
+
     var selectElement = document.getElementById('choices-multiple-remove-button');
-    new Choices(selectElement, {
+    var choices = new Choices(selectElement, {
       removeItemButton: true,
       maxItemCount: 25,
       renderChoiceLimit: 10
     });
   });
 </script>
-@endpush
+
+
