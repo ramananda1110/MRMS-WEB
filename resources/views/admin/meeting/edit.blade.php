@@ -96,8 +96,9 @@
               <label class="col-sm-3 col-form-label">Host</label>
               <div class="col-sm-9">
                 <select class="form-control" name="host_id" required>
-                  @foreach(App\Models\Employee::all() as $host)
-                    <option value="{{ $host->employee_id }}" @if($host->employee_id == $meeting->host_id) selected @endif>
+                @foreach($activeEmployees as $host)
+               
+                   <option value="{{ $host->employee_id }}" @if($host->employee_id == $meeting->host_id) selected @endif>
                       {{ $host->name }}
                     </option>
                   @endforeach
@@ -109,8 +110,9 @@
               <label class="col-sm-3 col-form-label">Co-Host</label>
               <div class="col-sm-9">
                 <select class="form-control" name="co_host_id" required>
-                  @foreach(App\Models\Employee::all() as $coHost)
-                    <option value="{{ $coHost->employee_id }}" @if($coHost->employee_id == $meeting->co_host_id) selected @endif>
+                @foreach($activeEmployees as $coHost)
+                      
+                  <option value="{{ $coHost->employee_id }}" @if($coHost->employee_id == $meeting->co_host_id) selected @endif>
                       {{ $coHost->name }}
                     </option>
                   @endforeach
@@ -120,20 +122,19 @@
 
             <div class="form-group row mt-3">
               <label class="col-sm-3 col-form-label">Participant</label>
-              <div class="col-sm-9">
-                <select name="participants[]" id="choices-multiple-remove-button" placeholder="Select up to 25 Participants" multiple required>
-                  @foreach(App\Models\Employee::all() as $employee)
-                    <option value="{{ $employee->employee_id }}" 
-                      @if(in_array($employee->employee_id, $meeting->participants->pluck('employee_id')->toArray())) 
-                        selected 
-                      @endif>
-                      {{ $employee->name}}
-                    </option>
-                  @endforeach
-                </select>
-              </div>
-            </div>
-
+                <div class="col-sm-9">
+                    <select name="participants[]" id="choices-multiple-remove-button" placeholder="Select up to 25 Participants" multiple required>
+                        @foreach($activeEmployees as $employee)
+                          <option value="{{ $employee->employee_id }}" 
+                                @if(in_array($employee->employee_id, $meeting->updateParticipants()->pluck('employee_id')->toArray())) 
+                                    selected 
+                                @endif>
+                                {{ $employee->name }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+           </div>
 
             <div class="form-group row ms-1 mt-4">
               <label class="col-sm-3 col-form-label"></label>

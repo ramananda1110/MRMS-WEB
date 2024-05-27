@@ -8,6 +8,7 @@ use App\Models\Participant;
 use DataTables;
 use App\Http\Controllers\FCMPushController;
 use App\Models\User;
+use App\Models\Employee;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Carbon;
@@ -398,7 +399,9 @@ class MeetingController extends Controller
 
         $this->notificationController->attemtNotification($devicesToken, "Created a Meeting", "Requested to you a meeting schedule.");
 
-        return redirect()->back()->with('message', 'Meeting created successfully');
+        
+        return redirect()->route("meeting.index")->with('message', 'Meeting created successfully');
+
 
     }
 
@@ -989,8 +992,17 @@ class MeetingController extends Controller
 
     public function edit($id)
     {
-        $meeting = Meeting::find($id);
-        return view('admin.meeting.edit', compact('meeting'));
+        // $meeting = Meeting::find($id);
+        // return view('admin.meeting.edit', compact('meeting'));
+
+        // In your controller method
+        $meeting = Meeting::with('updateParticipants')->find($id);
+        $activeEmployees = Employee::where('status', 'active')->get();
+
+        // Debugging
+        // dd($meeting->updateParticipants->pluck('employee_id')->toArray(), $activeEmployees->pluck('employee_id')->toArray());
+
+        return view('admin.meeting.edit', compact('meeting', 'activeEmployees'));
 
     }
 
@@ -1120,7 +1132,7 @@ class MeetingController extends Controller
 
         }
         
-        return redirect()->route("meeting.index")->with('message', 'Meeting updated successfully');
+        return redirect()->route("meeting.index")->with('message', 'Meeting rescheduled successfully');
 
     }
 

@@ -34,11 +34,15 @@ class Meeting extends Model
        
     }
 
+    
+    
     public function updateParticipants()
     {
         return $this->belongsToMany(Employee::class, 'participants', 'meeting_id', 'participant_id');
     }
-    
+
+
+
 
     public function room()
     {
