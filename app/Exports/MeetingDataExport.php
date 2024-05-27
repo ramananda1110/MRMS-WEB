@@ -9,7 +9,9 @@ use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use App\Models\Meeting;
 use Illuminate\Contracts\View\View;
 use Maatwebsite\Excel\Concerns\WithHeadings;
+use Illuminate\Support\Facades\Auth;
 
+use App\Models\User;
 
 class MeetingDataExport implements FromCollection, WithHeadings
 {
@@ -18,7 +20,25 @@ class MeetingDataExport implements FromCollection, WithHeadings
      */
     public function collection()
     {
-        $meetings = Meeting::with(['room', 'host', 'coHost', 'participants.employee'])->get();
+         // Retrieve the authenticated user's employee ID and role ID
+         $employeeId = Auth()->user()->employee_id;
+         $roleId = Auth()->user()->role_id;
+ 
+        
+        $meetingsQuery = Meeting::with(['room', 'host', 'coHost', 'participants.employee']);
+
+
+        if ($roleId !== 1) {
+            $meetingsQuery->where(function ($query) use ($employeeId) {
+                $query->where('host_id', $employeeId)
+                    ->orWhereHas('participants', function ($query) use ($employeeId) {
+                        $query->where('participant_id', $employeeId);
+                    });
+            });
+        }
+
+        $meetings = $meetingsQuery->get();
+
 
         $data = $meetings->map(function ($meeting) {
             // Concatenate participants' details into a single string
