@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+
 use Illuminate\Http\Request;
 
 use App\Imports\ExcelImpoter;
@@ -10,20 +11,25 @@ use App\Models\Employee;
 use DataTables;
 use App\Models\User;
 use App\Notifications\CreateNewUserNotification;
+use Barryvdh\DomPDF\Facade\Pdf;
 
+use App\Exports\EmployeeDataExport;
 
 class EmployeeController extends Controller
 {
 
+   
     public function index() {
 
-        // $employees = Employee::latest()->get();
-        $employees = Employee::latest()->paginate(30);
+        $employees = Employee::query()->where('status', '=', 'Active')->paginate(30);
+
+        //$employees = Employee::latest()->paginate(30);
+        
         return view('admin.employee.index', compact('employees'));
 
     }
 
-    public function searchEmployee(Request $request){
+    public function searchEmployee2(Request $request){
        
         if($request->search){
             $employees = Employee::where('name','like','%'.$request->search.'%')
@@ -39,9 +45,31 @@ class EmployeeController extends Controller
 
 
         $employees  =Employee::latest()->paginate(30);
+
         return view('admin.employee.index', compact('employees'));
        
     }
+
+    public function searchEmployee(Request $request)
+    {
+        if ($request->ajax()) {
+            $employees = Employee::where('name', 'like', '%' . $request->search . '%')
+                ->orWhere('employee_id', 'like', '%' . $request->search . '%')
+                ->orWhere('division', 'like', '%' . $request->search . '%')
+                ->orWhere('mobile_number', 'like', '%' . $request->search . '%')
+                ->orWhere('project_code', 'like', '%' . $request->search . '%')
+                ->orWhere('email', 'like', '%' . $request->search . '%')
+                ->orWhere('designation', 'like', '%' . $request->search . '%')
+                ->paginate(30);
+    
+            return view('admin.employee.employee_table', compact('employees'))->render();
+        }
+    
+        $employees = Employee::latest()->paginate(30);
+        return view('admin.employee.index', compact('employees'));
+    }
+    
+
 
     public function import(Request $request)
     {
@@ -91,15 +119,6 @@ class EmployeeController extends Controller
         // Build the query
         $query = Employee::query()->where('status', '=', 'Active');
 
-    
-        // Apply search filter across multiple columns
-        // temporary off filter data 
-        // $query->where(function ($query) use ($keyword) {
-        //     $query->where('name', 'like', '%' . $keyword . '%')
-        //           ->orWhere('project_name', 'like', '%' . $keyword . '%')
-        //           ->orWhere('designation', 'like', '%' . $keyword . '%')
-        //           ->orWhere('division', 'like', '%' . $keyword . '%');
-        // });
     
         // Retrieve the filtered data
         $filteredEmployees = $query->get();
@@ -236,4 +255,155 @@ class EmployeeController extends Controller
         return redirect()->back()->with('message', 'User Created Successfully');
     }
     
+
+    public function exportPdf()
+    {
+        ini_set('memory_limit', '1024M');
+        ini_set('max_execution_time', 300);
+    
+        $employees = Employee::select(
+            'employee_id', 
+            'grade', 
+            'name', 
+            'division', 
+            'project_name', 
+            'designation', 
+            'mobile_number', 
+            'email'
+        )->where('status', 'Active')->limit(500)->get();
+    
+        \Log::info('PDF generation started');
+    
+        $html = '
+        <html>
+        <head>
+            <style>
+                body { font-family: sans-serif; margin: 20px; }
+                table { border-collapse: collapse; width: 100%; }
+                th, td { border: 1px solid black; padding: 8px; text-align: left; }
+                th { background-color: #f2f2f2; }
+                .page-break { page-break-after: always; }
+            </style>
+        </head>
+        <body>
+            <h1>Employees List</h1>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Emp_ID</th>
+                        <th>Grade</th>
+                        <th>Name</th>
+                       
+                        <th>Division</th>
+                        <th>Project Name</th>
+                        <th>Designation</th>
+                        <th>Email</th>
+                        
+                    </tr>
+                </thead>
+                <tbody>';
+        
+        foreach ($employees as $employee) {
+            $html .= '<tr>';
+            $html .= '<td>' . $employee->employee_id . '</td>';
+            $html .= '<td>' . $employee->grade . '</td>';
+            $html .= '<td>' . $employee->name . '</td>';
+            // $html .= '<td>' . $employee->status . '</td>';
+            $html .= '<td>' . $employee->division . '</td>';
+            $html .= '<td>' . $employee->project_name . '</td>';
+            $html .= '<td>' . $employee->designation . '</td>';
+          
+            $html .= '<td>' . $employee->email . '</td>';
+            $html .= '</tr>';
+        }
+    
+        $html .= '</tbody></table></body></html>';
+    
+        \Log::info('PDF HTML content generated');
+    
+        // Set paper size and margins
+        $pdf = Pdf::loadHTML($html)
+            ->setPaper('a4', 'landscape')  // or 'landscape'
+            //->setOptions(['defaultFont' => 'sans-serif']);
+
+            ->setOptions([
+                'isHtml5ParserEnabled' => true,
+                'isRemoteEnabled' => true,
+                'dpi' => 96,
+                'defaultFont' => 'sans-serif',
+                'margin_left' => 10,
+                'margin_right' => 10,
+                'margin_top' => 10,
+                'margin_bottom' => 10,
+            ]);
+    
+        \Log::info('PDF generated');
+    
+        return $pdf->download('employees-pdf-export.pdf');
+    }
+    
+
+
+    public function exportCsv()
+    {
+        $employees = Employee::select(
+            'employee_id', 
+            'grade', 
+            'name', 
+            'status', 
+            'division', 
+            'project_name', 
+            'designation', 
+            'mobile_number', 
+            'email'
+        )->where('status', 'Active')->get();
+
+        $csvHeader = ['Emp_ID', 'Grade', 'Name', 'Status', 'Division', 'Project Name', 'Designation', 'Mobile', 'Email'];
+        $csvData = [];
+
+        foreach ($employees as $employee) {
+            $csvData[] = [
+                $employee->employee_id,
+                $employee->grade,
+                $employee->name,
+                $employee->status,
+                $employee->division,
+                $employee->project_name,
+                $employee->designation,
+                $employee->mobile_number,
+                $employee->email
+            ];
+        }
+
+        $filename = 'employees-csv-export.csv';
+        $handle = fopen($filename, 'w+');
+        fputcsv($handle, $csvHeader);
+
+        foreach ($csvData as $row) {
+            fputcsv($handle, $row);
+        }
+
+        fclose($handle);
+
+        $headers = [
+            'Content-Type' => 'text/csv',
+        ];
+
+        return response()->download($filename, $filename, $headers)->deleteFileAfterSend(true);
+    }
+
+    public function exportExcel()
+    {
+        return Excel::download(new EmployeeDataExport, 'employees-data.xlsx');
+    }
+
+    public function printView()
+    {
+        $employees = Employee::select('employee_id', 'grade', 'name', 'status', 'division', 'project_name', 'designation', 'mobile_number', 'email')
+            ->where('status', 'Active')
+            ->limit(1000)
+            ->get();
+
+        return view('admin.employee.print', compact('employees'));
+    }
 }

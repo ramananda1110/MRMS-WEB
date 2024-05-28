@@ -9,6 +9,7 @@ use App\Http\Controllers\MeetingController;
 use App\Http\Controllers\FCMPushController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\EmployeeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -50,13 +51,13 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 Route::group(['middleware' => ['auth.api']], function () {
     // Define unauthenticated routes here
     Route::post('/user/change-password', [ChangePasswordController::class, 'changePassword']);
-    Route::post('/meeting/create', [MeetingController::class, 'store'])->name('meetings.store');
+    Route::post('/meeting/create', [MeetingController::class, 'createMeeting'])->name('meetings.createMeeting');
 
     Route::get('/meeting/all', [MeetingController::class, 'getAllMeetins'])->name('meetings.allmeetings');
 
     Route::get('/meeting/by-date', [MeetingController::class, 'getMeetingsByDate']);
 
-    Route::post('/meeting/update-status/{id}', [MeetingController::class, 'updateMeetingStatus'])->name('meetings.updateMeeting');
+    Route::post('/meeting/update-status/{id}', [MeetingController::class, 'updateMeetingStatus'])->name('meeting.update.app');
 
 
     Route::post('/meeting/reschedule/{id}', [MeetingController::class, 'reschedule'])->name('meeting.reschedule');

@@ -2,6 +2,8 @@
 
 @section('content')
 <div class="container">
+
+
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
@@ -15,7 +17,7 @@
                             <label  class="col-md-4 col-form-label text-md-end">{{ __('Employee ID') }}</label>
 
                             <div class="col-md-6">
-                                <input  type="number" class="form-control @error('employee_id') is-invalid @enderror" name="employee_id" value="{{ old('employee_id') }}" >
+                                <input  type="number" class="form-control @error('employee_id') is-invalid @enderror" name="employee_id">
 
                                 @error('employee_id')
                                     <span class="invalid-feedback" role="alert">
@@ -38,6 +40,8 @@
                                 @enderror
                             </div>
                         </div>
+
+                        
 
                         <div class="row mb-3">
                             <div class="col-md-6 offset-md-4">

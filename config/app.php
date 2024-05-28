@@ -179,6 +179,7 @@ return [
         App\Providers\RouteServiceProvider::class,
         Ichtrojan\Otp\OtpServiceProvider::class,
 
+        Barryvdh\DomPDF\ServiceProvider::class,
 
     ],
 
@@ -238,6 +239,8 @@ return [
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
 
         'Otp' => Ichtrojan\Otp\Otp::class,
+        
+        'Pdf' => Barryvdh\DomPDF\Facade::class,
 
 
     ],

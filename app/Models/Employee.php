@@ -11,6 +11,8 @@ class Employee extends Model
     use Notifiable;
 
     protected $table = 'employees';
+    protected $primaryKey = 'employee_id'; // Ensure this matches your primary key
+
     protected $fillable = [
         'employee_id',
         'grade',

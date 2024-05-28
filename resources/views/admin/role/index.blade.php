@@ -1,12 +1,51 @@
 @extends('admin.layouts.master')
 
 @section('content')
-<div class="container mt-5">
+<div class="container mt-5 rounded shadow p-3 mb-5 bg-white" style="background-color: white">
     <div class="row">
    
         <div class="col-md-12">
+            <div class="card mt-3" style="border-bottom: 1px solid silver;">
+                <div class="panel-heading no-print mt-2 mb-2">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="ms-3">
+                            <a href="{{ Route('roles.create') }}"><button type="button" class="btn btn-primary"><i class="fa fa-plus"></i> Add Roles</button></a>
+                        </div>
+                        <div class="btn-group d-flex justify-content-center align-items-center  me-3">
+                            <div class="row gx-0">
+                                <div class="col-md">
+                                    <form action="#" method="post" target="_blank">
+                                        @csrf        
+                                        <button type="submit" class="btn btn-default buttons-csv border buttons-html5 btn-sm btn-block" tabindex="0" aria-controls="employees">
+                                            <span>csv</span>
+                                        </button>
+                                    </form>
+                                </div>
+                                <div class="col-md">
+                                    <form action="#" method="post" target="_blank">
+                                        @csrf        
+                                        <button class="btn btn-default buttons-csv border buttons-html5 btn-sm btn-block">Excel</button>
+                                    </form>
+                                </div>
+                                <div class="col-md">
+                                    <form action="#" method="get" target="_blank">
+                                        @csrf        
+                                        <button class="btn btn-default buttons-csv border buttons-html5 btn-sm btn-block">Pdf</button>
+                                    </form>
+                                </div>
+                                <div class="col-md">
+                                    <a class="btn btn-default buttons-print border buttons-html5 btn-sm btn-block" tabindex="0" aria-controls="employees">
+                                        <span>Print</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>  
+                    </div>
+                </div>
+            </div>
+
             <nav aria-label="breadcrumb">
-                <ol class="breadcrumb">
+                <ol class="breadcrumb mt-2">
                     <li class="breadcrumb-item active" aria-current="page">All Roles</li>
                 </ol>
             </nav>
@@ -38,7 +77,7 @@
                             <td>
                             @if(isset(Auth()->user()->role->permission['name']['role']['can-edit']))
                              <a href="{{Route('roles.edit', [$role->id])}}">
-                                 <i class="fas fa-edit"></i></a> 
+                                <button type="button" class="btn btn-primary"><i class="fas fa-edit"></i></button></a> 
                              @endif   
                             </td>
                             
@@ -49,7 +88,7 @@
                                 @if(isset(Auth()->user()->role->permission['name']['role']['can-delete']))
 
                                 <a   data-bs-toggle="modal" data-bs-target="#exampleModal{{$role->id}}", href="#">
-                                  <i class="fas fa-trash"></i>
+                                    <button type="button" class="btn btn-danger"><i class="fas fa-trash"></i></button>
                                 </a>
                                 @endif
 

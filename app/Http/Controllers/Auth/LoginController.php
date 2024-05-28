@@ -46,11 +46,28 @@ class LoginController extends Controller
     protected function credentials(Request $request)
     {
         // Override the credentials method to use 'employee_id' instead of 'email'
+     
+
         return $request->only('employee_id', 'password');
     }
 
     public function username()
     {
         return 'employee_id';
+    }
+
+
+    protected function authenticated(Request $request, $user)
+    {
+        // Check if the user is active
+        if (!$user->is_active) {
+            // Log the user out if they are not active
+            Auth::logout();
+
+            // Redirect to login page with an error message
+            return redirect()->route('login')->withErrors([
+                'password' => 'Your account is not active.',
+            ]);
+        }
     }
 }
