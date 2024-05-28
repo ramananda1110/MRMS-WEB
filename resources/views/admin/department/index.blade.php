@@ -6,20 +6,7 @@
    
         <div class="col-md-10">
 
-            <!-- <div class="card-body">
-                <form action="{{route('import.excel')}}" method="POST", enctype="multipart/form-data">@csrf        
-
-                <div class="input-group"> 
-                    <input type="file" name="file"  placeholder="attached xlsx" class="form-control">
-
-                    <button class="btn btn-outline-primary">Import</button>
-
-                </div>
-                </form>
-
-                <div class="form-group mt-5">
-                </div>
-            </div> -->
+           
 
             <div class="card mt-3" style="border-bottom: 1px solid silver;">
                 <div class="panel-heading no-print mt-2 mb-2">

@@ -21,16 +21,15 @@ class EmployeeController extends Controller
    
     public function index() {
 
-        // $employees = Employee::latest()->get();
-       
         $employees = Employee::query()->where('status', '=', 'Active')->paginate(30);
 
         //$employees = Employee::latest()->paginate(30);
+        
         return view('admin.employee.index', compact('employees'));
 
     }
 
-    public function searchEmployee(Request $request){
+    public function searchEmployee2(Request $request){
        
         if($request->search){
             $employees = Employee::where('name','like','%'.$request->search.'%')
@@ -46,9 +45,31 @@ class EmployeeController extends Controller
 
 
         $employees  =Employee::latest()->paginate(30);
+
         return view('admin.employee.index', compact('employees'));
        
     }
+
+    public function searchEmployee(Request $request)
+    {
+        if ($request->ajax()) {
+            $employees = Employee::where('name', 'like', '%' . $request->search . '%')
+                ->orWhere('employee_id', 'like', '%' . $request->search . '%')
+                ->orWhere('division', 'like', '%' . $request->search . '%')
+                ->orWhere('mobile_number', 'like', '%' . $request->search . '%')
+                ->orWhere('project_code', 'like', '%' . $request->search . '%')
+                ->orWhere('email', 'like', '%' . $request->search . '%')
+                ->orWhere('designation', 'like', '%' . $request->search . '%')
+                ->paginate(30);
+    
+            return view('admin.employee.employee_table', compact('employees'))->render();
+        }
+    
+        $employees = Employee::latest()->paginate(30);
+        return view('admin.employee.index', compact('employees'));
+    }
+    
+
 
     public function import(Request $request)
     {
@@ -98,15 +119,6 @@ class EmployeeController extends Controller
         // Build the query
         $query = Employee::query()->where('status', '=', 'Active');
 
-    
-        // Apply search filter across multiple columns
-        // temporary off filter data 
-        // $query->where(function ($query) use ($keyword) {
-        //     $query->where('name', 'like', '%' . $keyword . '%')
-        //           ->orWhere('project_name', 'like', '%' . $keyword . '%')
-        //           ->orWhere('designation', 'like', '%' . $keyword . '%')
-        //           ->orWhere('division', 'like', '%' . $keyword . '%');
-        // });
     
         // Retrieve the filtered data
         $filteredEmployees = $query->get();
