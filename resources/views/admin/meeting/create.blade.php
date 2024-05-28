@@ -95,8 +95,8 @@
               <div class="col-sm-9">
                 <select name="host_id" class="form-select" required>
                   <option value="">Select Host</option>
-                  @foreach(App\Models\Employee::all() as $employee)
-                    <option value="{{$employee->employee_id}}">{{$employee->name}}</option>
+                  @foreach(App\Models\Employee::where('status', 'active')->get() as $host)
+                    <option value="{{$host->employee_id}}">{{$host->name}}</option>
                   @endforeach
                 </select>
               </div>
@@ -107,8 +107,8 @@
               <div class="col-sm-9">
                 <select name="co_host_id" class="form-select" required>
                   <option value="">Select Co-Host</option>
-                  @foreach(App\Models\Employee::all() as $employee)
-                    <option value="{{$employee->employee_id}}">{{$employee->name}}</option>
+                  @foreach(App\Models\Employee::where('status', 'active')->get() as $co_host)
+                    <option value="{{$co_host->employee_id}}">{{$co_host->name}}</option>
                   @endforeach
                 </select>
               </div>
@@ -118,7 +118,8 @@
               <label class="col-sm-3 col-form-label">Participant</label>
               <div class="col-sm-9">
                 <select name="participants[]" id="choices-multiple-remove-button" placeholder="Select up to 25 Participants" multiple required>
-                  @foreach(App\Models\Employee::all() as $employee)
+                  @foreach(App\Models\Employee::where('status', 'active')->get() as $employee)
+
                     <option value="{{ $employee->employee_id }}">{{ $employee->name . ' - ' . $employee->division }}</option>
                   @endforeach
                 </select>
@@ -166,29 +167,27 @@
     const submitModal = document.getElementById('submitModal');
 
     meetingForm.addEventListener('submit', function(event) {
-  // Prevent the default form submission behavior
-  event.preventDefault();
-  event.stopPropagation();
+    // Prevent the default form submission behavior
+    event.preventDefault();
+    event.stopPropagation();
 
-  if (!meetingForm.checkValidity()) {
-    // If the form is not valid, add Bootstrap's validation class
-    meetingForm.classList.add('was-validated');
-    
-  }
-   
-  else {
-    // Show confirmation modal if form is valid
-    $('#submitModal').modal('show');
-  }
-});
+      if (!meetingForm.checkValidity()) {
+        // If the form is not valid, add Bootstrap's validation class
+        meetingForm.classList.add('was-validated');
+        
+      }
+      
+      else {
+        // Show confirmation modal if form is valid
+        $('#submitModal').modal('show');
+      }
+    });
 
-// Add a click event listener to the confirmation button in the modal
-document.getElementById('confirmSubmitBtn').addEventListener('click', function() {
-  // Manually submit the form if the user confirms in the modal
-  meetingForm.submit();
-});
-
-
+    // Add a click event listener to the confirmation button in the modal
+    document.getElementById('confirmSubmitBtn').addEventListener('click', function() {
+      // Manually submit the form if the user confirms in the modal
+      meetingForm.submit();
+    });
 
 
     var selectElement = document.getElementById('choices-multiple-remove-button');

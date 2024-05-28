@@ -31,37 +31,36 @@
                         <div class="btn-group d-flex justify-content-center align-items-center mt-3 me-3">
                             <div class="row gx-0">
                                 <div class="col-md">
-                                    <form action="#" method="post" target="_blank">
+                                    <form action="{{route('meetings.exportCsv')}}" method="get" target="_blank">
                                         @csrf        
                                         <button type="submit" class="btn btn-default buttons-csv border buttons-html5 btn-sm btn-block" tabindex="0" aria-controls="employees">
-                                            <span>csv</span>
+                                            <span>Csv</span>
                                         </button>
                                     </form>
                                 </div>
                                 <div class="col-md">
-                                    <form action="#" method="post" target="_blank">
-                                        @csrf        
-                                        <button class="btn btn-default buttons-csv border buttons-html5 btn-sm btn-block">Excel</button>
+                                   
+                                    <form action="{{route('meetings.download-excel')}}" method="post" target="_blank">@csrf        
+
+                                    <button class="btn btn-default buttons-csv border buttons-html5 btn-sm">Excel</button>
+
                                     </form>
                                 </div>
                                 <div class="col-md">
-                                    <form action="#" method="get" target="_blank">
-                                        @csrf        
+                                    <form action="{{route('meetings.exportPdf')}}" method="get" target="_blank">
                                         <button class="btn btn-default buttons-csv border buttons-html5 btn-sm btn-block">Pdf</button>
                                     </form>
                                 </div>
                                 <div class="col-md">
-                                    <a class="btn btn-default buttons-print border buttons-html5 btn-sm btn-block" tabindex="0" aria-controls="employees">
-                                        <span>Print</span>
-                                    </a>
+                                     <form action="{{route('meetings.printView')}}" method="get" target="_blank">
+                                        <button class="btn btn-default buttons-csv border buttons-html5 btn-sm btn-block">Print</button>
+                                    </form>
                                 </div>
                             </div>
                         </div>  
                     </div>
                 </div>
             </div>
-            
-            
             
 
             <ul class="nav nav-tabs mt-3">
@@ -85,7 +84,8 @@
             
             
             <table id="employeeTable" class="table table-striped table-bordered mt-5">
-            
+            <!-- <table id="datatablesSimple" class="table table-striped table-bordered"> -->
+           
                 <thead>
                     <tr>
                     

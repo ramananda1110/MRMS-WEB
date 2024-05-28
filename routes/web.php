@@ -66,14 +66,20 @@ Route::group(['middleware'=> ['auth', 'has.permission']], function(){
 
     Route::get('/room-list', 'RoomController@getRooms');
 
-    Route::get('/import-employee', 'EmployeeController@index')->name('import.excel');
-    Route::post('/import-employee', 'EmployeeController@import');
+
+    // Employee Data
+
+    Route::resource('employee', 'EmployeeController');
+
+    // Define resource routes for other CRUD operations
+    //  Route::resource('employee', EmployeeController::class);
+
+    Route::post('/import-employee', [EmployeeController::class, 'import'])->name('import.excel');
 
    
     Route::post('create-user\{id}', 'EmployeeController@createUser')->name('create.user');
 
-
-    Route::get('search-employee','EmployeeController@searchEmployee')->name('search.employee');
+    Route::get('/search-employee', [EmployeeController::class, 'searchEmployee'])->name('search.employee');
 
     Route::resource('meeting', 'MeetingController');
 
@@ -87,13 +93,15 @@ Route::group(['middleware'=> ['auth', 'has.permission']], function(){
     Route::get('/meetings/pending', [MeetingController::class, 'pending'])->name('meetings.pending');
     Route::get('/meetings/cenceled', [MeetingController::class, 'cenceled'])->name('meetings.cenceled');
 
+    Route::post('meetings/export-excel', [MeetingController::class, 'exportExcel'])->name('meetings.download-excel');
+
+    Route::get('meetings/download-pdf', [MeetingController::class, 'exportMeetingPdf'])->name('meetings.exportPdf');
+
+    Route::get('meetings/download-csv', [MeetingController::class, 'exportMeetingCsv'])->name('meetings.exportCsv');
+    Route::get('meetings/print', [MeetingController::class, 'printView'])->name('meetings.printView');
+
+
     
-
-    Route::resource('employee', 'EmployeeController');
-
-    // Define resource routes for other CRUD operations
-    //  Route::resource('employee', EmployeeController::class);
-
     Route::get('employees/download-pdf', [EmployeeController::class, 'exportPdf'])->name('employee.exportPdf');
 
     // Route for CSV export

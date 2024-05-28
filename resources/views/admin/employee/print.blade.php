@@ -21,15 +21,14 @@
         th {
             background-color: #f2f2f2;
         }
-        @media print {
-            .no-print {
-                display: none;
-            }
+        
+        .no-print {
+            display: none;
         }
     </style>
 </head>
-<body>
-    <h1>Employees List</h1>
+<body onload="window.print()">
+    <h1>Meetings List</h1>
     <button onclick="window.print()" class="no-print">Print</button>
     <table>
         <thead>

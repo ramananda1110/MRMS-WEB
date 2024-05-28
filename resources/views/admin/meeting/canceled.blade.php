@@ -20,35 +20,7 @@
                         <div class="ms-3">
                             <a href="{{ Route('meeting.create') }}"><button type="button" class="btn btn-primary"><i class="fa fa-plus"></i> Add Meeting</button></a>
                         </div>
-                        <div class="btn-group d-flex justify-content-center align-items-center mt-3 me-3">
-                            <div class="row gx-0">
-                                <div class="col-md">
-                                    <form action="#" method="post" target="_blank">
-                                        @csrf        
-                                        <button type="submit" class="btn btn-default buttons-csv border buttons-html5 btn-sm btn-block" tabindex="0" aria-controls="employees">
-                                            <span>csv</span>
-                                        </button>
-                                    </form>
-                                </div>
-                                <div class="col-md">
-                                    <form action="#" method="post" target="_blank">
-                                        @csrf        
-                                        <button class="btn btn-default buttons-csv border buttons-html5 btn-sm btn-block">Excel</button>
-                                    </form>
-                                </div>
-                                <div class="col-md">
-                                    <form action="#" method="get" target="_blank">
-                                        @csrf        
-                                        <button class="btn btn-default buttons-csv border buttons-html5 btn-sm btn-block">Pdf</button>
-                                    </form>
-                                </div>
-                                <div class="col-md">
-                                    <a class="btn btn-default buttons-print border buttons-html5 btn-sm btn-block" tabindex="0" aria-controls="employees">
-                                        <span>Print</span>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>  
+                          
                     </div>
                 </div>
             </div>
@@ -104,6 +76,9 @@
                         <td class="text-center"><span class="badge rounded-pill badge-primary bg-success">{{$meeting->booking_status}}</span></td>
                         @elseif($meeting->booking_status == 'rejected')
                             <td class="text-center"><span class="badge rounded-pill badge-primary bg-danger">{{$meeting->booking_status}}</span></td>
+                        @elseif($meeting->booking_status == 'pending')
+                        <td class="text-center"><span class="badge rounded-pill badge-primary bg-danger">rejected</span></td>
+                    
                         @else
                             <td class="text-center"><span class="badge rounded-pill badge-primary bg-primary">{{$meeting->booking_status}}</span></td>
                         @endif
@@ -123,9 +98,6 @@
                         <button type="button" class="btn btn-primary"><i class="fa-solid fa-eye"></i></button></a> 
 
                         
-                      
-                      
-                            
                                 <div class="modal fade" id="viewModal{{$meeting->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                     <div class="modal-dialog">
                                         <form>@csrf
