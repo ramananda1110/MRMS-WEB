@@ -62,8 +62,6 @@
                 </div>
             </div>
             
-            
-            
 
             <ul class="nav nav-tabs mt-3">
                 <li class="nav-item" role="presentation">
@@ -86,7 +84,8 @@
             
             
             <table id="employeeTable" class="table table-striped table-bordered mt-5">
-            
+            <!-- <table id="datatablesSimple" class="table table-striped table-bordered"> -->
+           
                 <thead>
                     <tr>
                     
