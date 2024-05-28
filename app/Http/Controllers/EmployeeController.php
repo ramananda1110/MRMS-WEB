@@ -174,8 +174,8 @@ class EmployeeController extends Controller
 
     public function destroy($id)
     {
-        $department = Employee::find($id);
-        $department->delete();
+        $employee = Employee::find($id);
+        $employee->delete();
         return redirect()->route('employee.index')->with('message', 'Recored  Deleted');
 
     }
@@ -183,6 +183,8 @@ class EmployeeController extends Controller
     public function edit($id)
     {
         $employee = Employee::find($id);
+       
+        dd($employee);
         return view('admin.employee.edit', compact('employee'));
 
     }

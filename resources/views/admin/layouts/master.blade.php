@@ -9,3 +9,10 @@
         @include('admin.layouts.fotter')
         </div>
 </div>
+
+<!-- Include JavaScript libraries here -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!-- Add other necessary JS libraries here -->
+
+<!-- Yield for custom scripts -->
+@yield('scripts')
