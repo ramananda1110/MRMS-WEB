@@ -73,6 +73,7 @@
         });
 
         function fetchEmployees(query) {
+            console.log('Fetching employees with query:', query); // Add this line
             fetch(`{{ route('search.employee') }}?search=${query}`, {
                 headers: {
                     'X-Requested-With': 'XMLHttpRequest'

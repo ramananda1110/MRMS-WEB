@@ -71,6 +71,7 @@ Route::group(['middleware'=> ['auth', 'has.permission']], function(){
 
     Route::resource('employee', 'EmployeeController');
 
+
     // Define resource routes for other CRUD operations
     //  Route::resource('employee', EmployeeController::class);
 
