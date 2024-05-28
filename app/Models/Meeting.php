@@ -41,6 +41,11 @@ class Meeting extends Model
         return $this->belongsToMany(Employee::class, 'participants', 'meeting_id', 'participant_id');
     }
 
+    
+     public function updateParticipantsWeb($meetingId)
+        {
+            return $this->hasMany(Participant::class)->where('meeting_id', $meetingId);
+        }
 
 
 
