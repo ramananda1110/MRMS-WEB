@@ -51,8 +51,8 @@
                 </div>
             </div>
 
-            <div class="col-sm-4 mt-2">
-                <input id="searchInput" type="text" name="search" class="form-control" placeholder="name,phone,emp id...">
+            <div class="col-sm-4 mt-1 d-flex justify-content-end">
+                <input id="searchInput" type="text" name="search" class="form-control" placeholder="Search..."  style="width: 200px;">
             </div>
         </div>
 
@@ -73,7 +73,6 @@
         });
 
         function fetchEmployees(query) {
-            console.log('Fetching employees with query:', query); // Add this line
             fetch(`{{ route('search.employee') }}?search=${query}`, {
                 headers: {
                     'X-Requested-With': 'XMLHttpRequest'
@@ -81,7 +80,6 @@
             })
             .then(response => response.text())
             .then(data => {
-                console.log('Response received:', data); // Add this line
                 document.getElementById('employeeTableContainer').innerHTML = data;
             })
             .catch(error => {

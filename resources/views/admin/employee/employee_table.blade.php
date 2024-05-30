@@ -204,7 +204,7 @@
             @endforeach
         @else
             <tr>
-                <td colspan="6">No user found!</td>
+                <td colspan="6" class="text-center">Opps! No matching record found!</td>
             </tr>
         @endif
     </tbody>
