@@ -1183,10 +1183,13 @@ class MeetingController extends Controller
             $meeting->update(['booking_type' => 'reschedule']);
         
 
-        // Update participants in the meeting
+       
+
+        // Update or attach participants to the meeting
         if ($request->has('participants')) {
-            $meeting->participants()->detach(); // Detach existing participants
-            $meeting->participants()->attach($request->participants); // Attach new participants
+            $meeting->updateParticipants()->sync($request->participants);
+            $meeting->participants()->get()->each->touch();
+
         }
                 
         return redirect()->route("meeting.index")->with('message', 'Meeting rescheduled successfully');
