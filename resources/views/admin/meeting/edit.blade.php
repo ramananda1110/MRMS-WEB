@@ -123,17 +123,25 @@
             <div class="form-group row mt-3">
               <label class="col-sm-3 col-form-label">Participant</label>
                 <div class="col-sm-9">
-                    <select name="participants[]" id="choices-multiple-remove-button" placeholder="Select up to 25 Participants" multiple required>
-                        @foreach($activeEmployees as $employee)
-                          <option value="{{ $employee->employee_id }}" 
-                                @if(in_array($employee->employee_id, $meeting->updateParticipants()->pluck('employee_id')->toArray())) 
-                                    selected 
-                                @endif>
-                                {{ $employee->name }}
-                            </option>
-                        @endforeach
-                    </select>
-                </div>
+                
+                <label class="col-form-label">Participant</label>
+                <select name="participants[]" id="choices-multiple-remove-button" placeholder="Select up to 25 Participants" multiple required>
+                    @foreach($activeEmployees as $employee)
+                        <option value="{{ $employee->employee_id }}"
+                            @if($meeting->participants->contains('participant_id', $employee->employee_id))
+                                selected
+                            @endif>
+                            {{ $employee->name }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+
+
+
+
+               
+              </div>
            </div>
 
             <div class="form-group row ms-1 mt-4">

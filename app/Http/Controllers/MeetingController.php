@@ -1053,19 +1053,16 @@ class MeetingController extends Controller
     }
 
 
+   
     public function edit($id)
     {
-    
-        // In your controller method
-        $meeting = Meeting::with('updateParticipants')->find($id);
+        $meeting = Meeting::with('participants')->find($id);
         $activeEmployees = Employee::where('status', 'active')->get();
-
-        // Debugging
-        // dd($meeting->updateParticipants->pluck('employee_id')->toArray(), $activeEmployees->pluck('employee_id')->toArray());
-
+    
         return view('admin.meeting.edit', compact('meeting', 'activeEmployees'));
-
     }
+    
+
 
     public function update(Request $request, $id)
     
@@ -1186,13 +1183,12 @@ class MeetingController extends Controller
             $meeting->update(['booking_type' => 'reschedule']);
         
 
-        // Update or attach participants to the meeting
+        // Update participants in the meeting
         if ($request->has('participants')) {
-            $meeting->updateParticipants()->sync($request->participants);
-            $meeting->participants()->get()->each->touch();
-
+            $meeting->participants()->detach(); // Detach existing participants
+            $meeting->participants()->attach($request->participants); // Attach new participants
         }
-        
+                
         return redirect()->route("meeting.index")->with('message', 'Meeting rescheduled successfully');
 
     }

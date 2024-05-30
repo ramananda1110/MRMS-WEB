@@ -174,21 +174,24 @@ class EmployeeController extends Controller
 
     public function destroy($id)
     {
-        $department = Employee::find($id);
-        $department->delete();
+
+        $employee = Employee::find($id);
+        $employee->delete();
         return redirect()->route('employee.index')->with('message', 'Recored  Deleted');
 
     }
 
     public function edit($id)
     {
-        $employee = Employee::find($id);
+       $employee = Employee::find($id);
+       
         return view('admin.employee.edit', compact('employee'));
 
     }
 
     public function update(Request $request, $id)
     {
+        
         $notice = Employee::find($id);
         $data = $request->all();
         $notice->update($data);
