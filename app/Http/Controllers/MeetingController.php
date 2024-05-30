@@ -521,6 +521,35 @@ class MeetingController extends Controller
         // Get paginated results
         $meetings = $meetingsQuery->orderBy('start_date')->paginate(30);
 
+        // Update booking status based on conditions
+        $today = now()->toDateString();
+        foreach ($meetings as $meeting) {
+            $status = $meeting->booking_status;
+            $startDate = $meeting->start_date;
+
+            switch ($status) {
+                case 'pending':
+                    if ($startDate < $today) {
+                        $status = 'expired';
+                    }
+                    break;
+                case 'accepted':
+                    if ($startDate < $today) {
+                        $status = 'completed';
+                    } else {
+                        $status = 'upcoming';
+                    }
+                    break;
+                // case 'rejected':
+                //     $status = 'canceled';
+                //     break;
+            }
+
+            // Update the meeting status
+            $meeting->booking_status = $status;
+        }
+
+
         if ($request->ajax()) {
             return view('admin.meeting.meeting_table', compact('meetings'))->render();
         }
@@ -595,43 +624,53 @@ class MeetingController extends Controller
         $upcomingCount = Meeting::where('booking_status', 'accepted')
         ->whereDate('start_date', '>=', $today) // Start date on or after today
         ->count();
-
-        //$upcomingCount = 100;
        
 
         $pendingCount = Meeting::whereIn('booking_status', ['pending', 'rejected'])->count();
 
-       // $pendingCount = 90;
 
         $completedCount = Meeting::where('booking_status', 'accepted')
         ->whereDate('start_date', '<', $today) // Start date before today
         ->count();
-    
-       // $completedCount = 244;
+       
+       // Get the start date of the current week (Sunday)
+       $startOfWeek = Carbon::now()->startOfWeek()->subDay()->format('Y-m-d');
 
-       $weekendData = [
-        'Sunday' => 10,
-        'Monday' => 12,
-        'Tuesday' => 9,
-        'Wednesday' => 30,
-        'Thursday' => 25,
-        'Friday' => 10,
-        'Saturday' => 7,
+       // Get the end date of the current week (Saturday)
+        $endOfWeek = Carbon::now()->endOfWeek()->format('Y-m-d');
+        $meetings = Meeting::whereBetween('start_date', [$startOfWeek, $endOfWeek])->get();
+
+        // Initialize the weekend data array
+        $weekendData = [
+            'Sunday' => 0,
+            'Monday' => 0,
+            'Tuesday' => 0,
+            'Wednesday' => 0,
+            'Thursday' => 0,
+            'Friday' => 0,
+            'Saturday' => 0,
         ];
 
+        foreach ($meetings as $meeting) {
+            // Extract the day of the week from the start date
+            $weekDay = Carbon::parse($meeting->start_date)->format('l');
+    
+            $weekendData[$weekDay]++;
+        }
+
         $yearlyData = [
-            'Jan' => 90,
-            'Feb' => 122,
-            'Mar' => 90,
-            'Apr' => 30,
-            'May' => 70,
-            'Jun' => 80,
-            'Jul' => 7,
-            'Aug' => 6,
-            'Sep' => 3,
-            'Oct' => 7,
-            'Nov' => 43,
-            'Dec' => 10
+            'Jan' => 0,
+            'Feb' => 0,
+            'Mar' => 0,
+            'Apr' => 0,
+            'May' => 0,
+            'Jun' => 0,
+            'Jul' => 0,
+            'Aug' => 0,
+            'Sep' => 0,
+            'Oct' => 0,
+            'Nov' => 0,
+            'Dec' => 0
             ];
 
        // dd($weekendData);
@@ -662,7 +701,6 @@ class MeetingController extends Controller
         // Total meeting count
         $totalMeetingCount = Meeting::count();
 
-
         
         // Get the start date of the current week (Sunday)
         $startOfWeek = Carbon::now()->startOfWeek()->subDay()->format('Y-m-d');
@@ -674,7 +712,6 @@ class MeetingController extends Controller
         $meetings = Meeting::whereBetween('start_date', [$startOfWeek, $endOfWeek])->get();
 
 
-        // dd($meetings->count);
 
         // Initialize the weekend data array
         $weekendData = [
