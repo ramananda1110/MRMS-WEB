@@ -73,7 +73,6 @@
         });
 
         function fetchEmployees(query) {
-            console.log('Fetching employees with query:', query); // Add this line
             fetch(`{{ route('search.employee') }}?search=${query}`, {
                 headers: {
                     'X-Requested-With': 'XMLHttpRequest'
@@ -81,7 +80,6 @@
             })
             .then(response => response.text())
             .then(data => {
-                console.log('Response received:', data); // Add this line
                 document.getElementById('employeeTableContainer').innerHTML = data;
             })
             .catch(error => {

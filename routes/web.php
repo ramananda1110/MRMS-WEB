@@ -89,6 +89,8 @@ Route::group(['middleware'=> ['auth', 'has.permission']], function(){
     Route::post('/meeting/update-status/{id}', [MeetingController::class, 'updateMeetingByWeb'])->name('meeting.update.web');
 
 
+    Route::get('/search-meeting', [MeetingController::class, 'searchMeeting'])->name('search.meeting');
+
     Route::get('/meetings/all', [MeetingController::class, 'index'])->name('meetings.all');
     Route::get('/meetings/upcoming', [MeetingController::class, 'upcoming'])->name('meetings.upcoming');
     Route::get('/meetings/pending', [MeetingController::class, 'pending'])->name('meetings.pending');

@@ -59,7 +59,13 @@
                             </div>
                         </div>  
                     </div>
+
+                    <div class="col-sm-4 mt-1 d-flex justify-content-end">
+                    <input id="searchInput" type="text" name="search" class="form-control" placeholder="Search..."  style="width: 200px;">
+                    </div>
                 </div>
+
+                
             </div>
             
 
@@ -81,7 +87,7 @@
                     <!-- Add more tabs if needed -->
             </ul>
         
-            <div class="card-body" id="employeeTableContainer">
+            <div class="card-body" id="meetingTableContainer">
                     @include('admin.meeting.meeting_table', ['meeting' => $meetings])
             </div>
             
@@ -94,31 +100,60 @@
        
   
 </div>
+
+
+@section('scripts')
+<script>
+
+    function setActiveTab(event, element) {
+    // Prevent the default link behavior
+    event.preventDefault();
+        
+        // Remove the 'active' class from all nav links
+        var navLinks = document.querySelectorAll('.nav-link');
+        navLinks.forEach(function(link) {
+            link.classList.remove('active');
+        });
+        
+        // Add the 'active' class to the clicked nav link
+        element.classList.add('active');
+        
+        // Redirect to the link's href
+        window.location.href = element.getAttribute('href');
+    }
+    function submitForm(status, formId) {
+        document.getElementById(formId).querySelector('[name="booking_status"]').value = status;
+        document.getElementById(formId).submit();
+    }
+
+
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const searchInput = document.getElementById('searchInput');
+
+        searchInput.addEventListener('input', function () {
+            const query = searchInput.value;
+            fetchEmployees(query);
+        });
+
+        function fetchEmployees(query) {
+            fetch(`{{ route('search.meeting') }}?search=${query}`, {
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('meetingTableContainer').innerHTML = data;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error fetching employee data'); // Add this line
+            });
+        }
+    });
+</script>
 @endsection
 
-
-<script>
-function setActiveTab(event, element) {
-   // Prevent the default link behavior
-   event.preventDefault();
-    
-    // Remove the 'active' class from all nav links
-    var navLinks = document.querySelectorAll('.nav-link');
-    navLinks.forEach(function(link) {
-        link.classList.remove('active');
-    });
-    
-    // Add the 'active' class to the clicked nav link
-    element.classList.add('active');
-    
-    // Redirect to the link's href
-    window.location.href = element.getAttribute('href');
-}
-function submitForm(status, formId) {
-    document.getElementById(formId).querySelector('[name="booking_status"]').value = status;
-    document.getElementById(formId).submit();
-}
-
-
-</script>
+@endsection
 

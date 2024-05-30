@@ -33,6 +33,7 @@ class MeetingController extends Controller
          $this->notificationController = $notificationController;
      }
 
+     
 
      public function index()
      {
@@ -484,6 +485,48 @@ class MeetingController extends Controller
     }
 
 
+
+    // filter meeting for web
+
+    public function searchMeeting(Request $request)
+    {
+        $employeeId = auth()->user()->employee_id;
+        $roleId = auth()->user()->role_id;
+
+        // Fetch meetings based on user role
+        $meetingsQuery = Meeting::with('participants');
+        if ($roleId !== 1) {
+            $meetingsQuery->where(function ($query) use ($employeeId) {
+                $query->where('host_id', $employeeId)
+                    ->orWhereHas('participants', function ($query) use ($employeeId) {
+                        $query->where('participant_id', $employeeId);
+                    });
+            });
+        }
+
+        // Apply search filters
+        if ($request->has('search')) {
+            $search = $request->search;
+            $meetingsQuery->where(function ($query) use ($search) {
+                $query->where('meeting_title', 'like', '%' . $search . '%')
+                   
+                    ->orWhere('start_date', 'like', '%' . $search . '%')
+                    ->orWhere('start_time', 'like', '%' . $search . '%')
+                    ->orWhere('end_time', 'like', '%' . $search . '%')
+                    ->orWhere('booking_status', 'like', '%' . $search . '%')
+                    ->orWhere('booking_type', 'like', '%' . $search . '%');
+            });
+        }
+
+        // Get paginated results
+        $meetings = $meetingsQuery->orderBy('start_date')->paginate(30);
+
+        if ($request->ajax()) {
+            return view('admin.meeting.meeting_table', compact('meetings'))->render();
+        }
+
+        return view('admin.meeting.index', compact('meetings'));
+    }
 
 
     public function getMeetingsByDate(Request $request)
