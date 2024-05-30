@@ -19,17 +19,18 @@
                     <td>{{ $employee->mobile_number }}</td>
                     <td>{{ $employee->email }}</td>
                     <td>
+                        <a href="#" data-bs-toggle="modal" data-bs-target="#viewModal{{ $employee->id }}"
+                            title="View">
+                            <button type="button" class="btn btn-primary"><i class="fa-solid fa-eye"></i></button></a>
                         <a href="{{ route('employee.edit', [$employee->id]) }}">
                             <button type="button" class="btn btn-warning"><i class="fas fa-edit"></i></button></a>
 
                         <a data-bs-toggle="modal" data-bs-target="#exampleModal{{ $employee->id }}" href="#">
                             <button type="button" class="btn btn-danger"><i class="fas fa-trash"></i></button></a>
                         <a href="#" data-bs-toggle="modal" data-bs-target="#exampleModal2{{ $employee->id }}">
-                            <button type="button" class="btn btn-primary"><i
+                            <button type="button" class="btn btn-success"><i
                                     class="fa-solid fa-user-plus"></i></button></a>
-                        <a href="#" data-bs-toggle="modal" data-bs-target="#viewModal{{ $employee->id }}"
-                            title="View">
-                            <button type="button" class="btn btn-primary"><i class="fa-solid fa-eye"></i></button></a>
+
 
 
 
@@ -114,8 +115,8 @@
                                                                 <th>Email</th>
                                                                 <td>{{ $employee->email }}</td>
                                                             </tr>
-                                                           
-                                                            
+
+
                                                         </tbody>
                                                     </table>
                                                 </div>

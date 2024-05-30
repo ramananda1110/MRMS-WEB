@@ -31,6 +31,8 @@
             <td class="text-center"><span class="badge rounded-pill badge-primary bg-success">{{$meeting->booking_status}}</span></td>
             @elseif($meeting->booking_status == 'rejected')
                 <td class="text-center"><span class="badge rounded-pill badge-primary bg-danger">{{$meeting->booking_status}}</span></td>
+            @elseif($meeting->booking_status == 'expired')
+                <td class="text-center"><span class="badge rounded-pill badge-primary bg-warning text-dark">{{$meeting->booking_status}}</span></td>
             @else
                 <td class="text-center"><span class="badge rounded-pill badge-primary bg-primary">{{$meeting->booking_status}}</span></td>
             @endif
