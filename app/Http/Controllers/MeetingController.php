@@ -633,13 +633,20 @@ class MeetingController extends Controller
         ->whereDate('start_date', '<', $today) // Start date before today
         ->count();
        
-       // Get the start date of the current week (Sunday)
-       $startOfWeek = Carbon::now()->startOfWeek()->subDay()->format('Y-m-d');
+        // Get the start date of the current week (Sunday)
+        $startOfWeek = Carbon::now()->startOfWeek()->subDay()->format('Y-m-d');
 
-       // Get the end date of the current week (Saturday)
+        // Get the end date of the current week (Saturday)
         $endOfWeek = Carbon::now()->endOfWeek()->format('Y-m-d');
-        $meetings = Meeting::whereBetween('start_date', [$startOfWeek, $endOfWeek])->get();
-
+        
+        // Get the start and end dates of the current year
+        $startOfYear = Carbon::now()->startOfYear()->format('Y-m-d');
+        $endOfYear = Carbon::now()->endOfYear()->format('Y-m-d');
+        
+        // Get meetings for the current week and current year
+        $weeklyMeetings = Meeting::whereBetween('start_date', [$startOfWeek, $endOfWeek])->get();
+        $yearlyMeetings = Meeting::whereBetween('start_date', [$startOfYear, $endOfYear])->get();
+        
         // Initialize the weekend data array
         $weekendData = [
             'Sunday' => 0,
@@ -651,13 +658,7 @@ class MeetingController extends Controller
             'Saturday' => 0,
         ];
 
-        foreach ($meetings as $meeting) {
-            // Extract the day of the week from the start date
-            $weekDay = Carbon::parse($meeting->start_date)->format('l');
-    
-            $weekendData[$weekDay]++;
-        }
-
+        // Initialize the yearly data array
         $yearlyData = [
             'Jan' => 0,
             'Feb' => 0,
@@ -671,10 +672,21 @@ class MeetingController extends Controller
             'Oct' => 0,
             'Nov' => 0,
             'Dec' => 0
-            ];
+        ];
 
-       // dd($weekendData);
+        // Populate the weekendData array
+        foreach ($weeklyMeetings as $meeting) {
+            // Extract the day of the week from the start date
+            $weekDay = Carbon::parse($meeting->start_date)->format('l');
+            $weekendData[$weekDay]++;
+        }
 
+        // Populate the yearlyData array
+        foreach ($yearlyMeetings as $meeting) {
+            // Extract the month from the start date
+            $month = Carbon::parse($meeting->start_date)->format('M');
+            $yearlyData[$month]++;
+        }
         return view('welcome', compact('totalMeeting', 'upcomingCount', 'pendingCount', 'completedCount', 'weekendData', 'yearlyData'));
 
     }
