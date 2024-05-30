@@ -42,10 +42,10 @@ class Meeting extends Model
     }
 
     
-     public function updateParticipantsWeb($meetingId)
-        {
-            return $this->hasMany(Participant::class)->where('meeting_id', $meetingId);
-        }
+    //  public function updateParticipantsWeb($meetingId)
+    //     {
+    //         return $this->hasMany(Participant::class)->where('meeting_id', $meetingId);
+    //     }
 
 
 
