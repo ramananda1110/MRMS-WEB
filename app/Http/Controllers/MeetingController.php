@@ -63,7 +63,7 @@ class MeetingController extends Controller
             switch ($status) {
                 case 'pending':
                     if ($startDate < $today) {
-                        $status = 'canceled';
+                        $status = 'expired';
                     }
                     break;
                 case 'accepted':
@@ -73,9 +73,9 @@ class MeetingController extends Controller
                         $status = 'upcoming';
                     }
                     break;
-                case 'rejected':
-                    $status = 'canceled';
-                    break;
+                // case 'rejected':
+                //     $status = 'canceled';
+                //     break;
             }
 
             // Update the meeting status
@@ -85,16 +85,12 @@ class MeetingController extends Controller
          // Order meetings by latest start_date
         $meetings = $meetings->sortByDesc('start_date')->values()->all();
    
-        
-        //dd($meetings);
-
         return view('admin.meeting.index', compact('meetings'));
 
      }
 
     public function upcoming(Request $request)
     {
-        
          // Retrieve the authenticated user's employee ID and role ID
          $employeeId = Auth()->user()->employee_id;
          $roleId = Auth()->user()->role_id;
@@ -112,7 +108,6 @@ class MeetingController extends Controller
  
          $meetings = $meetingsQuery->get();
  
-
         // Determine today's date
         $today = now()->toDateString();
 
@@ -121,7 +116,8 @@ class MeetingController extends Controller
             return $meeting->booking_status === 'accepted' && $meeting->start_date >= $today;
         });
 
-    
+        $meetings = $meetings->sortBy('start_date')->values()->all();
+
         return view('admin.meeting.upcoming', compact('meetings'));
     }
 
@@ -185,6 +181,28 @@ class MeetingController extends Controller
         });
 
 
+        // update booking status base on condition
+        foreach ($meetings as $meeting) {
+            $status = $meeting->booking_status;
+            $startDate = $meeting->start_date;
+
+            switch ($status) {
+                case 'pending':
+                    if ($startDate < $today) {
+                        $status = 'expired';
+                    }
+                    break;
+                
+            }
+
+            // Update the meeting status
+            $meeting->booking_status = $status;
+        }
+
+         // Order meetings by latest start_date
+        $meetings = $meetings->sortByDesc('start_date')->values()->all();
+   
+
         return view('admin.meeting.canceled', compact('meetings'));
     }
 
@@ -208,7 +226,6 @@ class MeetingController extends Controller
 
        $meetings = $meetingsQuery->get();
 
-
         // Determine today's date
         $today = now()->toDateString();
 
@@ -229,7 +246,6 @@ class MeetingController extends Controller
         // Retrieve the user based on the employee ID
         $user = User::where('employee_id', $employeeId)->first();
 
-        // Initialize the meetings query
         $meetingsQuery = Meeting::with('participants');
 
         // Check if the user exists and is an admin (role_id = 1)
@@ -255,7 +271,7 @@ class MeetingController extends Controller
 
             if ($status === 'pending') {
                 if ($startDate < $today) {
-                    $status = 'canceled';
+                    $status = 'expired';
                 } 
             } elseif ($status === 'accepted') {
                 if ($startDate < $today) {
@@ -263,9 +279,10 @@ class MeetingController extends Controller
                 } else {
                     $status = 'upcoming';
                 }
-            } elseif ($status === 'rejected') {
-                    $status = 'canceled';
             } 
+            // elseif ($status === 'rejected') {
+            //         $status = 'canceled';
+            // } 
 
             return [
                 'id' => $meeting->id,
@@ -307,8 +324,6 @@ class MeetingController extends Controller
             'data' => $data,
             'message' => 'Success'
         ]);
-
-            
     }
 
     /**
@@ -541,7 +556,7 @@ class MeetingController extends Controller
         //$upcomingCount = 100;
        
 
-        $pendingCount = Meeting::where('booking_status', 'pending')->count();
+        $pendingCount = Meeting::whereIn('booking_status', ['pending', 'rejected'])->count();
 
        // $pendingCount = 90;
 
