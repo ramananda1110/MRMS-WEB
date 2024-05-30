@@ -1183,7 +1183,7 @@ class MeetingController extends Controller
             $meeting->update(['booking_type' => 'reschedule']);
         
 
-       
+    
 
         // Update or attach participants to the meeting
         if ($request->has('participants')) {

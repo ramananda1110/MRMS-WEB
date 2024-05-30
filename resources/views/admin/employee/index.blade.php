@@ -51,8 +51,8 @@
                 </div>
             </div>
 
-            <div class="col-sm-4 mt-2">
-                <input id="searchInput" type="text" name="search" class="form-control" placeholder="name,phone,emp id...">
+            <div class="col-sm-4 mt-1 d-flex justify-content-end">
+                <input id="searchInput" type="text" name="search" class="form-control" placeholder="Search..."  style="width: 200px;">
             </div>
         </div>
 
