@@ -3,7 +3,7 @@
 @section('content')
 <div class="container mt-5">
     <div class="row justify-content-center">
-        <div class="col-md-10">
+        <div class="col-md-11">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item active" aria-current="page">Permision From</li>
@@ -46,6 +46,27 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+
+                                    <tr>
+                                        <td>Meeting</td>
+                                        <td><input type="checkbox" name="name[meeting][can-add]" value="1"></td>
+                                        <td><input type="checkbox" name="name[meeting][can-edit]" value="1"></td>
+                                        <td><input type="checkbox" name="name[meeting][can-view]" value="1"></td>
+                                        <td><input type="checkbox" name="name[meeting][can-delete]" value="1"></td>
+                                        <td><input type="checkbox" name="name[meeting][can-list]" value="1"></td>
+                                    
+                                    </tr>
+
+                                    <tr>
+                                        <td>Employee</td>
+                                        <td><input type="checkbox" name="name[employee][can-add]" value="1"></td>
+                                        <td><input type="checkbox" name="name[employee][can-edit]" value="1"></td>
+                                        <td><input type="checkbox" name="name[employee][can-view]" value="1"></td>
+                                        <td><input type="checkbox" name="name[employee][can-delete]" value="1"></td>
+                                        <td><input type="checkbox" name="name[employee][can-list]" value="1"></td>
+                                    
+                                    </tr>
+
                                     <tr>
                                         <td>Department</td>
                                         <td><input type="checkbox" name="name[department][can-add]" value="1"></td>
@@ -97,7 +118,7 @@
                                     
                                     </tr>
 
-                                    <tr>
+                                    <!-- <tr>
                                         <td>Leave</td>
                                         <td></td>
                                         <td></td>
@@ -105,7 +126,9 @@
                                         <td></td>
                                         <td><input type="checkbox" name="name[leave][can-list]" value="1"></td>
                                     
-                                    </tr>
+                                    </tr> -->
+
+
                                     
                                 </tbody>
                             </table>

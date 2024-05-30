@@ -2,57 +2,31 @@
 
 @section('content')
 <div class="container mt-5 rounded shadow p-3 mb-5 bg-white" style="background-color: white">
+
+    @if(Session::has('message'))
+        <div class='alert alert-success'>
+            {{Session::get('message')}}
+        </div>
+     @endif
     <div class="row justify-content-center">
-        <div class="col-md-10">
+        <div class="col-md-11">
             <div class="card mt-3" style="border-bottom: 1px solid silver;">
                 <div class="panel-heading no-print mt-2 mb-2">
                     <div class="d-flex justify-content-between align-items-center">
                         <div class="ms-3">
                             <a href="{{ Route('permissions.create') }}"><button type="button" class="btn btn-primary"><i class="fa fa-plus"></i> Add Permissions</button></a>
                         </div>
-                        <div class="btn-group d-flex justify-content-center align-items-center me-3">
-                            <div class="row gx-0">
-                                <div class="col-md">
-                                    <form action="#" method="post" target="_blank">
-                                        @csrf        
-                                        <button type="submit" class="btn btn-default buttons-csv border buttons-html5 btn-sm btn-block" tabindex="0" aria-controls="employees">
-                                            <span>csv</span>
-                                        </button>
-                                    </form>
-                                </div>
-                                <div class="col-md">
-                                    <form action="#" method="post" target="_blank">
-                                        @csrf        
-                                        <button class="btn btn-default buttons-csv border buttons-html5 btn-sm btn-block">Excel</button>
-                                    </form>
-                                </div>
-                                <div class="col-md">
-                                    <form action="#" method="get" target="_blank">
-                                        @csrf        
-                                        <button class="btn btn-default buttons-csv border buttons-html5 btn-sm btn-block">Pdf</button>
-                                    </form>
-                                </div>
-                                <div class="col-md">
-                                    <a class="btn btn-default buttons-print border buttons-html5 btn-sm btn-block" tabindex="0" aria-controls="employees">
-                                        <span>Print</span>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>  
                     </div>
                 </div>
             </div>
             <nav aria-label="breadcrumb">
-                <ol class="breadcrumb mt-2">
+                <ol class="breadcrumb mt-3">
                     <li class="breadcrumb-item active" aria-current="page">All Permissions</li>
                 </ol>
             </nav>
-            @if(Session::has('message'))
-                     <div class='alert alert-success'>
-                          {{Session::get('message')}}
-                      </div>
-            @endif
-            <table id="datatablesSimple">
+           
+            
+            <table id="permissionTable" class="table table-striped table-bordered mt-2">
                 <thead>
                     <tr>
                         <th>SN</th>
