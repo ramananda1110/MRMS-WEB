@@ -22,12 +22,12 @@
                         <a href="#" data-bs-toggle="modal" data-bs-target="#viewModal{{ $employee->id }}"
                             title="View">
                             <button type="button" class="btn btn-primary"><i class="fa-solid fa-eye"></i></button></a>
-                        <a href="{{ route('employee.edit', [$employee->id]) }}">
+                        <a href="{{ route('employee.edit', [$employee->id]) }}" title="Edit">
                             <button type="button" class="btn btn-warning"><i class="fas fa-edit"></i></button></a>
 
-                        <a data-bs-toggle="modal" data-bs-target="#exampleModal{{ $employee->id }}" href="#">
+                        <a data-bs-toggle="modal" data-bs-target="#exampleModal{{ $employee->id }}" href="#" title="Delete">
                             <button type="button" class="btn btn-danger"><i class="fas fa-trash"></i></button></a>
-                        <a href="#" data-bs-toggle="modal" data-bs-target="#exampleModal2{{ $employee->id }}">
+                        <a href="#" data-bs-toggle="modal" data-bs-target="#exampleModal2{{ $employee->id }}" title="Add">
                             <button type="button" class="btn btn-success"><i
                                     class="fa-solid fa-user-plus"></i></button></a>
 
