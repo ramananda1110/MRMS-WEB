@@ -2,13 +2,13 @@
 
 @section('content')
 <div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-10">
-            <nav aria-label="breadcrumb">
+<div class="row justify-content-center rounded shadow p-3 mb-5 bg-white" style="background-color: white">
+    <div class="col-md-11 mt-3 mb-3">
+            <!-- <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item active" aria-current="page">Update Permission From</li>
                 </ol>
-            </nav>
+            </nav> -->
             @if(Session::has('message'))
                      <div class='alert alert-success'>
                           {{Session::get('message')}}
@@ -17,7 +17,7 @@
             <form action="{{route('permissions.update', [$permission->id])}}" method="post">@csrf
             {{method_field('PATCH')}}
                 <div class="card">
-                    <div class="card-header">Permission</div>
+                    <div class="card-header">Update Permission</div>
 
                     <div class="card-body">
                         <div class="form-group mt-2">
@@ -36,6 +36,39 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+
+                                    <tr>
+                                        <td>Meeting</td>
+                                        <td><input type="checkbox" name="name[meeting][can-add]" 
+                                            @if(isset($permission['name']['meeting']['can-add'])) checked @endif value="1"></td>
+                                        <td><input type="checkbox" name="name[meeting][can-edit]"
+                                            @if(isset($permission['name']['meeting']['can-edit'])) checked @endif  value="1">
+                                        </td>
+                                        <td><input type="checkbox" name="name[meeting][can-view]" 
+                                            @if(isset($permission['name']['meeting']['can-view'])) checked @endif  value="1"></td>
+                                        <td><input type="checkbox" name="name[meeting][can-delete]" 
+                                            @if(isset($permission['name']['meeting']['can-delete'])) checked @endif value="1"></td>
+                                        <td><input type="checkbox" name="name[meeting][can-list]" 
+                                            @if(isset($permission['name']['meeting']['can-list'])) checked @endif value="1"></td>
+                                    
+                                    </tr>
+
+                                    <tr>
+                                        <td>Employee</td>
+                                        <td><input type="checkbox" name="name[employee][can-add]" 
+                                            @if(isset($permission['name']['employee']['can-add'])) checked @endif value="1"></td>
+                                        <td><input type="checkbox" name="name[employee][can-edit]"
+                                            @if(isset($permission['name']['employee']['can-edit'])) checked @endif  value="1">
+                                        </td>
+                                        <td><input type="checkbox" name="name[employee][can-view]" 
+                                            @if(isset($permission['name']['employee']['can-view'])) checked @endif  value="1"></td>
+                                        <td><input type="checkbox" name="name[employee][can-delete]" 
+                                            @if(isset($permission['name']['employee']['can-delete'])) checked @endif value="1"></td>
+                                        <td><input type="checkbox" name="name[employee][can-list]" 
+                                            @if(isset($permission['name']['employee']['can-list'])) checked @endif value="1"></td>
+                                    
+                                    </tr>
+
                                     <tr>
                                         <td>Department</td>
                                         <td><input type="checkbox" name="name[department][can-add]" 
@@ -112,7 +145,7 @@
                                     
                                     </tr>
 
-                                    <tr>
+                                    <!-- <tr>
                                         <td>Leave</td>
                                         <td></td>
                                         <td></td>
@@ -121,7 +154,7 @@
                                         <td><input type="checkbox" name="name[leave][can-list]"
                                             @if(isset($permission['name']['leave']['can-list'])) checked @endif value="1"></td>
                                     
-                                    </tr>
+                                    </tr> -->
 
                                 </tbody>
                             </table>

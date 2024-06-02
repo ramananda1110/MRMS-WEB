@@ -485,7 +485,6 @@ class MeetingController extends Controller
     }
 
 
-
     // filter meeting for web
 
     public function searchMeeting(Request $request)

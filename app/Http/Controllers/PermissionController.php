@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Permission;
+use Illuminate\Support\Facades\Validator;
+
 
 class PermissionController extends Controller
 {
@@ -14,7 +16,8 @@ class PermissionController extends Controller
      */
     public function index()
     {
-        $permissions = Permission::all();
+    
+        $permissions = Permission::latest()->get();
         return view('admin.permission.index', compact('permissions'));
     }
 
@@ -36,12 +39,20 @@ class PermissionController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request, [
-            'role_id'=>'required|unique:permissions'
+        $validator = Validator::make($request->all(), [
+            'role_id' => 'required|unique:permissions',
+        ], [
+            'role_id.required' => 'Please select a role.',
+            'role_id.unique' => 'This role is already added.',
         ]);
+    
+        if ($validator->fails()) {
+            $errorMessage = $validator->errors()->first();
+            return redirect()->back()->withErrors($validator)->withInput()->with('error', $errorMessage);
+        }
 
         Permission::create($request->all());
-        return redirect()->back()->with('message', 'Permission Updated!');
+        return redirect()->back()->with('message', 'New permission has been added successfully!');
     }
 
     /**

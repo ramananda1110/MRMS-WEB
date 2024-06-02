@@ -70,7 +70,6 @@
                                     <!-- {{$permission->id}} -->
                                     Are you sure? do you want to delete item?
 
-
                                     </div>
                                     <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -89,12 +88,14 @@
                             </td>
 
                         </tr>
-                    @endforeach
-                     @else
-                     
-                        <td> No Permissions to display</td>
-                       
-                      @endif
+
+                      @endforeach
+                        @else
+                                <tr>
+                                <td colspan="6" class="text-center">No Permissions to display</td>
+                            </tr>
+                        
+                        @endif
                 </tbody>
             </table>
         </div>
