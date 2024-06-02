@@ -2,21 +2,29 @@
 
 @section('content')
 <div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-11">
-            <nav aria-label="breadcrumb">
+    <div class="row justify-content-center rounded shadow p-3 mb-5 bg-white" style="background-color: white">
+
+        <div class="col-md-11 mt-3 mb-3">
+            <!-- <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item active" aria-current="page">Permision From</li>
                 </ol>
-            </nav>
+            </nav> -->
             @if(Session::has('message'))
                      <div class='alert alert-success'>
                           {{Session::get('message')}}
                       </div>
-                @endif
+            @endif
+
+            @if (Session::has('error'))
+                <div class='alert alert-warning'>
+                {{Session::get('error') }}
+                </div>
+            @endif
+
             <form action="{{route('permissions.store')}}" method="post">@csrf
                 <div class="card">
-                    <div class="card-header">Permission</div>
+                    <div class="card-header">Create Permission</div>
 
                     <div class="card-body">
                         <div class="form-group mt-2">
@@ -27,6 +35,7 @@
                                 @foreach(App\Models\Role::all() as $role)
                                 <option value="{{$role->id}}">{{$role->name}}</option>
                                 @endforeach
+                               
                                 @error('role_id')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
