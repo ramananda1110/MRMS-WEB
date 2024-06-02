@@ -5,6 +5,8 @@
     <div class="row justify-content-center">
    
         <div class="col-md-10">
+            @if (isset(Auth()->user()->role->permission['name']['room']['can-add']))
+
             <div class="card mt-3" style="border-bottom: 1px solid silver;">
                 <div class="panel-heading no-print mt-2 mb-2">
                     <div class="d-flex justify-content-between align-items-center">
@@ -15,6 +17,7 @@
                     </div>
                 </div>
             </div>
+            @endif
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb mt-2">
                     <li class="breadcrumb-item active" aria-current="page">All Rooms</li>

@@ -44,7 +44,7 @@
 
                     @if($meeting->booking_status == 'pending')
                     
-                    @if (Auth::check() && Auth::user()->role && Auth::user()->role->permission && Auth::user()->role->permission->role_id == 1)
+                    @if (isset(Auth()->user()->role->permission['name']['meeting']['can-edit']))
                     <a data-bs-toggle="modal" data-bs-target="#acceptModal{{$meeting->id}}", href="#" title="Accept">
                         <button type="button" class="btn btn-success"><i class="fa-regular fa-square-check"></i></button></a> 
                     @endif
@@ -83,7 +83,7 @@
                     <a href="{{route('meeting.edit',[$meeting->id])}}" title="Re-schedule">
                         <button type="button" class="btn btn-warning"><i class="fa-solid fa-calendar-days"></i></button></a> 
                     
-                    @if (Auth::check() && Auth::user()->role && Auth::user()->role->permission && Auth::user()->role->permission->role_id == 1)
+                    @if (isset(Auth()->user()->role->permission['name']['meeting']['can-edit']))
 
                     <a data-bs-toggle="modal" data-bs-target="#rejectModal{{$meeting->id}}", href="#" title="Reject">
                         <button type="button" class="btn btn-danger"><i class="fa-solid fa-ban"></i></button> </a> 

@@ -8,13 +8,16 @@
                 <div class="card mt-3" style="border-bottom: 1px solid silver;">
                     <div class="panel-heading no-print mt-2 mb-2">
                         <div class="d-flex justify-content-between align-items-center">
+                            @if (isset(Auth()->user()->role->permission['name']['user']['can-add']))
+
                             <div class="ms-3">
                                 <a href="{{ Route('users.create') }}"><button type="button" class="btn btn-primary"><i
                                             class="fa fa-plus"></i> Add Users</button></a>
                             </div>
+                            @endif
                             <div class="btn-group d-flex justify-content-center align-items-center me-3">
                                 <div class="row gx-0">
-                                    <div class="col-md">
+                                    <div class="col-md ms-2">
                                         <form action="#" method="post" target="_blank">
                                             @csrf
                                             <button type="submit"
@@ -80,7 +83,10 @@
                             <th>Mobile</th>
                             <th>Email</th>
                             <th>Department</th>
+                            @if (Auth::check() && Auth::user()->role && Auth::user()->role->permission && Auth::user()->role->permission->role_id == 1)
+
                             <th>Action</th>
+                            @endif
 
                         </tr>
                     </thead>
@@ -101,6 +107,9 @@
                                     <td>{{ $user->mobile_number }}</td>
                                     <td>{{ $user->email }}</td>
                                     <td>{{ $user->designation }}</td>
+
+                                    @if (isset(Auth()->user()->role->permission['name']['user']['can-edit']))
+
                                     <td>
                                         @if (isset(Auth()->user()->role->permission['name']['user']['can-edit']))
                                             <div class="d-flex align-items-center">
@@ -120,6 +129,8 @@
                                                         class="fas fa-trash"></i></button>
                                             </a>
                                         @endif
+
+
                                         <a data-bs-toggle="modal" data-bs-target="#acceptModal{{ $user->id }}",
                                             href="#" title="Accept" class="form-check form-switch ms-2">
                                             <input class="form-check form-switch form-check-input" type="checkbox"
@@ -160,6 +171,7 @@
                                                 </div>
                                             </div>
                                         </div>
+                                    @endif
 
 
 
