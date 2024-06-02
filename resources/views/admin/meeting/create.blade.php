@@ -93,12 +93,16 @@
             <div class="form-group row mt-3">
               <label class="col-sm-3 col-form-label">Host</label>
               <div class="col-sm-9">
-                <select name="host_id" class="form-select" required>
+                <input type="text" name="host_id" value="{{ Auth::user()->name }}" class="form-control @error('host_id') is-invalid @enderror" disabled >
+
+                <input type="hidden" name="host_id" value="{{ Auth::user()->employee_id }}" >
+
+                {{-- <select name="host_id" class="form-select" required>
                   <option value="">Select Host</option>
                   @foreach(App\Models\Employee::where('status', 'active')->get() as $host)
                     <option value="{{$host->employee_id}}">{{$host->name}}</option>
                   @endforeach
-                </select>
+                </select> --}}
               </div>
             </div>
 
