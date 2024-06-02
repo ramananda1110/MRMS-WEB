@@ -4,6 +4,26 @@ namespace App\Traits;
 trait permissionTrait{
     public function hasPermission(){
 
+
+         // for meeting
+         if(!isset(auth()->user()->role->permission['name']['meeting']['can-add']) && \Route::is('meeting.create')){
+            return abort(401);
+        }
+
+        if(!isset(auth()->user()->role->permission['name']['meeting']['can-list']) && \Route::is('meeting.index')){
+            return abort(401);
+        }
+
+         // for employee
+         if(!isset(auth()->user()->role->permission['name']['employee']['can-add']) && \Route::is('employee.create')){
+            return abort(401);
+        }
+
+        if(!isset(auth()->user()->role->permission['name']['employee']['can-list']) && \Route::is('employee.index')){
+            return abort(401);
+        }
+
+
         // for department
         if(!isset(auth()->user()->role->permission['name']['department']['can-add']) && \Route::is('departments.create')){
             return abort(401);
