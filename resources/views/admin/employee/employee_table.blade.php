@@ -22,14 +22,27 @@
                         <a href="#" data-bs-toggle="modal" data-bs-target="#viewModal{{ $employee->id }}"
                             title="View">
                             <button type="button" class="btn btn-primary"><i class="fa-solid fa-eye"></i></button></a>
-                        <a href="{{ route('employee.edit', [$employee->id]) }}" title="Edit">
-                            <button type="button" class="btn btn-warning"><i class="fas fa-edit"></i></button></a>
 
-                        <a data-bs-toggle="modal" data-bs-target="#exampleModal{{ $employee->id }}" href="#" title="Delete">
+
+                        @if (Auth::check() && Auth::user()->role && Auth::user()->role->permission && Auth::user()->role->permission->role_id == 1)
+                            <a href="{{ route('employee.edit', [$employee->id]) }}" title="Edit">
+                                <button type="button" class="btn btn-warning"><i class="fas fa-edit"></i></button></a>
+                        @endif
+
+                        @if (Auth::check() && Auth::user()->role && Auth::user()->role->permission && Auth::user()->role->permission->role_id == 1)
+
+                        <a data-bs-toggle="modal" data-bs-target="#exampleModal{{ $employee->id }}" href="#"
+                            title="Delete">
                             <button type="button" class="btn btn-danger"><i class="fas fa-trash"></i></button></a>
-                        <a href="#" data-bs-toggle="modal" data-bs-target="#exampleModal2{{ $employee->id }}" title="Add">
+                        @endif
+
+                        @if (Auth::check() && Auth::user()->role && Auth::user()->role->permission && Auth::user()->role->permission->role_id == 1)
+
+                        <a href="#" data-bs-toggle="modal" data-bs-target="#exampleModal2{{ $employee->id }}"
+                            title="Add">
                             <button type="button" class="btn btn-success"><i
                                     class="fa-solid fa-user-plus"></i></button></a>
+                        @endif
 
 
 
