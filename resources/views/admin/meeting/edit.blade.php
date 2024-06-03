@@ -59,7 +59,7 @@
             <div class="form-group row mt-3">
               <label class="col-sm-3 col-form-label">Start Date</label>
               <div class="col-sm-9">
-                <input name="start_date" class="form-control" required value="{{ $meeting->start_date }}" id="datepicker">
+                <input name="start_date" class="form-control" required value="{{ $meeting->start_date }}" id="datepicker" autocomplete="off">
                 @error('start_date')
                   <span class="invalid-feedback" role="alert">
                     <strong>{{ $message }}</strong>

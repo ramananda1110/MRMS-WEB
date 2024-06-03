@@ -59,7 +59,7 @@
                                 <label class="col-sm-3 col-form-label">Start Date</label>
                                 <div class="col-sm-9">
                                     <input name="start_date" class="form-control" required placeholder="yyyy-mm-dd"
-                                        id="datepicker">
+                                        id="datepicker" autocomplete="off">
                                     @error('start_date')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
