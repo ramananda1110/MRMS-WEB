@@ -38,6 +38,36 @@
                                 <tbody>
 
                                     <tr>
+                                        <td>User</td>
+                                        <td><input type="checkbox" name="name[user][can-add]"
+                                            @if(isset($permission['name']['user']['can-add'])) checked @endif value="1"></td>
+                                        <td><input type="checkbox" name="name[user][can-edit]"
+                                            @if(isset($permission['name']['user']['can-edit'])) checked @endif value="1"></td>
+                                        <td><input type="checkbox" name="name[user][can-view]"
+                                            @if(isset($permission['name']['user']['can-view'])) checked @endif value="1"></td>
+                                        <td><input type="checkbox" name="name[user][can-delete]"
+                                            @if(isset($permission['name']['user']['can-delete'])) checked @endif value="1"></td>
+                                        <td><input type="checkbox" name="name[user][can-list]"
+                                            @if(isset($permission['name']['user']['can-list'])) checked @endif value="1"></td>
+                                    
+                                    </tr>
+
+                                    <tr>
+                                        <td>Role</td>
+                                        <td><input type="checkbox" name="name[role][can-add]" 
+                                            @if(isset($permission['name']['role']['can-add'])) checked @endif value="1"></td>
+                                        <td><input type="checkbox" name="name[role][can-edit]"
+                                             @if(isset($permission['name']['role']['can-edit'])) checked @endif value="1"></td>
+                                        <td><input type="checkbox" name="name[role][can-view]"
+                                            @if(isset($permission['name']['role']['can-view'])) checked @endif value="1"></td>
+                                        <td><input type="checkbox" name="name[role][can-delete]"
+                                            @if(isset($permission['name']['role']['can-delete'])) checked @endif value="1"></td>
+                                        <td><input type="checkbox" name="name[role][can-list]"
+                                            @if(isset($permission['name']['role']['can-list'])) checked @endif value="1"></td>
+                                    
+                                    </tr>
+
+                                    <tr>
                                         <td>Meeting</td>
                                         <td><input type="checkbox" name="name[meeting][can-add]" 
                                             @if(isset($permission['name']['meeting']['can-add'])) checked @endif value="1"></td>
@@ -84,20 +114,7 @@
                                             @if(isset($permission['name']['department']['can-list'])) checked @endif value="1"></td>
                                     
                                     </tr>
-                                    <tr>
-                                        <td>Role</td>
-                                        <td><input type="checkbox" name="name[role][can-add]" 
-                                            @if(isset($permission['name']['role']['can-add'])) checked @endif value="1"></td>
-                                        <td><input type="checkbox" name="name[role][can-edit]"
-                                             @if(isset($permission['name']['role']['can-edit'])) checked @endif value="1"></td>
-                                        <td><input type="checkbox" name="name[role][can-view]"
-                                            @if(isset($permission['name']['role']['can-view'])) checked @endif value="1"></td>
-                                        <td><input type="checkbox" name="name[role][can-delete]"
-                                            @if(isset($permission['name']['role']['can-delete'])) checked @endif value="1"></td>
-                                        <td><input type="checkbox" name="name[role][can-list]"
-                                            @if(isset($permission['name']['role']['can-list'])) checked @endif value="1"></td>
-                                    
-                                    </tr>
+                                   
                                     
                                     <tr>
                                         <td>Permissions</td>
@@ -114,18 +131,19 @@
                                     
                                     </tr>
                                     
+                                   
                                     <tr>
-                                        <td>User</td>
-                                        <td><input type="checkbox" name="name[user][can-add]"
-                                            @if(isset($permission['name']['user']['can-add'])) checked @endif value="1"></td>
-                                        <td><input type="checkbox" name="name[user][can-edit]"
-                                            @if(isset($permission['name']['user']['can-edit'])) checked @endif value="1"></td>
-                                        <td><input type="checkbox" name="name[user][can-view]"
-                                            @if(isset($permission['name']['user']['can-view'])) checked @endif value="1"></td>
-                                        <td><input type="checkbox" name="name[user][can-delete]"
-                                            @if(isset($permission['name']['user']['can-delete'])) checked @endif value="1"></td>
-                                        <td><input type="checkbox" name="name[user][can-list]"
-                                            @if(isset($permission['name']['user']['can-list'])) checked @endif value="1"></td>
+                                        <td>Room</td>
+                                        <td><input type="checkbox" name="name[room][can-add]"
+                                            @if(isset($permission['name']['room']['can-add'])) checked @endif value="1"></td>
+                                        <td><input type="checkbox" name="name[room][can-edit]"
+                                            @if(isset($permission['name']['room']['can-edit'])) checked @endif value="1"></td>
+                                        <td><input type="checkbox" name="name[room][can-view]"
+                                            @if(isset($permission['name']['room']['can-view'])) checked @endif value="1"></td>
+                                        <td><input type="checkbox" name="name[room][can-delete]"
+                                            @if(isset($permission['name']['room']['can-delete'])) checked @endif value="1"></td>
+                                        <td><input type="checkbox" name="name[room][can-list]"
+                                            @if(isset($permission['name']['room']['can-list'])) checked @endif value="1"></td>
                                     
                                     </tr>
                                     
