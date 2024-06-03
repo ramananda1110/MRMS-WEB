@@ -147,7 +147,7 @@
             <div class="form-group row ms-1 mt-4">
               <label class="col-sm-3 col-form-label"></label>
               <div class="col-sm-9">
-                <button type="submit" class="btn btn-primary">Submit</button>
+                <button type="submit" class="btn btn-primary mb-3">Submit</button>
               </div>
             </div>
 

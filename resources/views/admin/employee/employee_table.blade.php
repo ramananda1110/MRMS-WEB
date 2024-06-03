@@ -6,7 +6,10 @@
             <th scope="col">Division</th>
             <th scope="col">Mobile</th>
             <th scope="col">Email</th>
+            @if (isset(Auth()->user()->role->permission['name']['employee']['can-view']))
+
             <th scope="col">Action</th>
+            @endif
         </tr>
     </thead>
     <tbody>

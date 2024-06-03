@@ -8,6 +8,8 @@
             @if (isset(Auth()->user()->role->permission['name']['room']['can-add']))
 
             <div class="card mt-3" style="border-bottom: 1px solid silver;">
+                @if (isset(Auth()->user()->role->permission['name']['employee']['can-add']))
+
                 <div class="panel-heading no-print mt-2 mb-2">
                     <div class="d-flex justify-content-between align-items-center">
                         <div class="ms-3">
@@ -16,6 +18,7 @@
                          
                     </div>
                 </div>
+                @endif
             </div>
             @endif
             <nav aria-label="breadcrumb">
@@ -36,7 +39,10 @@
                         <th>Location</th>
                         <th>Capacity</th>
                         <th>Facilities</th>
+                        @if(isset(Auth()->user()->role->permission['name']['role']['can-edit']))
+
                         <th>Action</th>
+                        @endif
                     </tr>
                 </thead>
                 
@@ -50,12 +56,13 @@
                             <td>{{$room->location}}</td>
                             <td>{{$room->capacity}}</td>
                             <td>{{$room->facilities}}</td>
-                           
-                            <td>
                             @if(isset(Auth()->user()->role->permission['name']['role']['can-edit']))
+
+                            <td>
                             <a style="margin-right: 5px;" href="{{Route('rooms.edit', [$room->id])}}">
                                 <button type="button" class="btn btn-primary"> <i  class="fas fa-edit"></i></button></a> 
-                             @endif   
+                            @endif   
+
                             <!-- </td> -->
                             
                            
