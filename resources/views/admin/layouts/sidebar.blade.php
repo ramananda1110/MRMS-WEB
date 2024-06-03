@@ -25,9 +25,15 @@
                     <div class="collapse" id="collapseLayoutsMeeting" aria-labelledby="headingOne"
                         data-bs-parent="#sidenavAccordion">
                         <nav class="sb-sidenav-menu-nested nav">
+                            @if (isset(Auth()->user()->role->permission['name']['meeting']['can-view']))
+
                             <a class="nav-link" href="{{ Route('meeting.index') }}">View</a>
+                            @endif
+
+                            @if (isset(Auth()->user()->role->permission['name']['meeting']['can-add']))
 
                             <a class="nav-link" href="{{ Route('meeting.create') }}">Create</a>
+                            @endif
 
                         </nav>
                     </div>

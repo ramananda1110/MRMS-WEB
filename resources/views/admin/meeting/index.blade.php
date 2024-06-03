@@ -23,14 +23,17 @@
                     <div class="card mt-3" style="border-bottom: 1px solid silver;">
                         <div class="panel-heading no-print mt-2 mb-2">
                             <div class="d-flex justify-content-between align-items-center">
+                                @if (isset(Auth()->user()->role->permission['name']['meeting']['can-add']))
+
                                 <div class="ms-3 col-sm-4 mt-1 d-flex justify-content-start">
                                     <a href="{{ Route('meeting.create') }}"><button type="button"
                                             class="btn btn-primary"><i class="fa fa-plus"></i> Add Meeting</button></a>
                                     
 
                                 </div>
+                                @endif
                                 
-                                <div class="btn-group d-flex justify-content-center align-items-center">
+                                <div class="btn-group d-flex justify-content-center align-items-center ms-2">
                                     <div class="row gx-0">
                                         <div class="col-md">
                                             <form action="{{ route('meetings.exportCsv') }}" method="get" target="_blank">

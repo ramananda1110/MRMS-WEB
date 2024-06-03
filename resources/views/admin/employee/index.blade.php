@@ -14,6 +14,8 @@
     @endif
     
     <div class="row justify-content-center px-2 py-2 rounded shadow p-3 mb-5 bg-white">
+        @if (isset(Auth()->user()->role->permission['name']['employee']['can-add']))
+
         <div class="card ms-4 mt-3 me-4" style="border-bottom: 1px solid silver;">
             <div class="panel-heading no-print mt-2 mb-2">
                 <div class="btn-group">
@@ -23,14 +25,19 @@
                 </div>  
             </div>
         </div>
+        @endif
         
         <div class="row mb-3 mt-3">
             <div class="col-sm-4">
-                <form action="{{ route('import.excel') }}" method="POST" enctype="multipart/form-data">@csrf        
+                <form action="{{ route('import.excel') }}" method="POST" enctype="multipart/form-data">@csrf  
+                    @if (isset(Auth()->user()->role->permission['name']['employee']['can-add']))
+      
                     <div class="input-group mt-2"> 
                         <input type="file" name="file" placeholder="attached xlsx" class="form-control">
                         <button class="btn btn-outline-primary">Import</button>
                     </div>
+                    @endif
+
                 </form>
             </div>
 
