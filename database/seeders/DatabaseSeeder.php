@@ -127,7 +127,7 @@ class DatabaseSeeder extends Seeder
         // create a default permission
 
         // JSON string with your data
-        $jsonData = '{"meeting":{"can-add":"1","can-edit":"1","can-view":"1","can-delete":"1","can-list":"1"},"employee":{"can-add":"1","can-edit":"1","can-view":"1","can-delete":"1","can-list":"1"},"department":{"can-add":"1","can-edit":"1","can-view":"1","can-delete":"1","can-list":"1"},"role":{"can-add":"1","can-edit":"1","can-view":"1","can-delete":"1","can-list":"1"},"permission":{"can-add":"1","can-edit":"1","can-view":"1","can-delete":"1","can-list":"1"},"user":{"can-add":"1","can-edit":"1","can-view":"1","can-delete":"1","can-list":"1"},"notice":{"can-add":"1","can-edit":"1","can-view":"1","can-delete":"1","can-list":"1"},"leave":{"can-list":"1"}}';
+        $jsonData = '{"meeting":{"can-add":"1","can-edit":"1","can-view":"1","can-delete":"1","can-list":"1"},"employee":{"can-add":"1","can-edit":"1","can-view":"1","can-delete":"1","can-list":"1"},"department":{"can-add":"1","can-edit":"1","can-view":"1","can-delete":"1","can-list":"1"},"role":{"can-add":"1","can-edit":"1","can-view":"1","can-delete":"1","can-list":"1"},"permission":{"can-add":"1","can-edit":"1","can-view":"1","can-delete":"1","can-list":"1"},"user":{"can-add":"1","can-edit":"1","can-view":"1","can-delete":"1","can-list":"1"},"room":{"can-add":"1","can-edit":"1","can-view":"1","can-delete":"1","can-list":"1"},"leave":{"can-list":"1"},"notice":{"can-add":"1","can-edit":"1","can-view":"1","can-delete":"1","can-list":"1"},"leave":{"can-list":"1"}}';
 
         // Decode the JSON string into a PHP associative array
         $data = json_decode($jsonData, true);
