@@ -23,6 +23,8 @@
         
         <div class="card-body">
             <div class="card mt-3" style="border-bottom: 1px solid silver;">
+                @if (isset(Auth()->user()->role->permission['name']['meeting']['can-add']))
+
                 <div class="panel-heading no-print mt-2 mb-2">
                     <div class="d-flex justify-content-between align-items-center">
                         <div class="ms-3">
@@ -31,6 +33,7 @@
                         
                     </div>
                 </div>
+                @endif
             </div>
 
             <ul class="nav nav-tabs mt-3">

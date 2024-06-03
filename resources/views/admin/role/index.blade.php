@@ -35,8 +35,14 @@
                         <th>SN</th>
                         <th>Name</th>
                         <th>Description</th>
+                        @if(isset(Auth()->user()->role->permission['name']['role']['can-edit']))
+
                         <th>Edit</th>
+                        @endif
+                        @if(isset(Auth()->user()->role->permission['name']['role']['can-delete']))
+
                         <th>Delete</th>  
+                        @endif
                     </tr>
                 </thead>
                 
@@ -48,24 +54,23 @@
                             <td>{{$key+1}}</td>
                             <td>{{$role->name}}</td>
                             <td>{{$role->description}}</td>
-                           
-                            <td>
                             @if(isset(Auth()->user()->role->permission['name']['role']['can-edit']))
+
+                            <td>
                              <a href="{{Route('roles.edit', [$role->id])}}">
                                 <button type="button" class="btn btn-primary"><i class="fas fa-edit"></i></button></a> 
-                             @endif   
                             </td>
-                            
+                            @endif   
+
+                            @if(isset(Auth()->user()->role->permission['name']['role']['can-delete']))
 
                             <td>
 
                                 <!-- Button trigger modal -->
-                                @if(isset(Auth()->user()->role->permission['name']['role']['can-delete']))
 
                                 <a   data-bs-toggle="modal" data-bs-target="#exampleModal{{$role->id}}", href="#">
                                     <button type="button" class="btn btn-danger"><i class="fas fa-trash"></i></button>
                                 </a>
-                                @endif
 
                                 <!-- Modal -->
                                 <div class="modal fade" id="exampleModal{{$role->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -95,6 +100,8 @@
                                 </div>
 
                               </td>
+                              @endif
+
                         </tr>
                     @endforeach
                      @else

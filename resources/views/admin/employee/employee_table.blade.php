@@ -6,7 +6,10 @@
             <th scope="col">Division</th>
             <th scope="col">Mobile</th>
             <th scope="col">Email</th>
+            @if (isset(Auth()->user()->role->permission['name']['employee']['can-view']))
+
             <th scope="col">Action</th>
+            @endif
         </tr>
     </thead>
     <tbody>
@@ -19,9 +22,13 @@
                     <td>{{ $employee->mobile_number }}</td>
                     <td>{{ $employee->email }}</td>
                     <td>
+
+                        @if (isset(Auth()->user()->role->permission['name']['employee']['can-view']))
+
                         <a href="#" data-bs-toggle="modal" data-bs-target="#viewModal{{ $employee->id }}"
                             title="View">
                             <button type="button" class="btn btn-primary"><i class="fa-solid fa-eye"></i></button></a>
+                        @endif
 
 
                         @if (Auth::check() && Auth::user()->role && Auth::user()->role->permission && Auth::user()->role->permission->role_id == 1)

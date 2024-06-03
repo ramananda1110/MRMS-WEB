@@ -25,7 +25,7 @@
                     <div class="collapse" id="collapseLayoutsMeeting" aria-labelledby="headingOne"
                         data-bs-parent="#sidenavAccordion">
                         <nav class="sb-sidenav-menu-nested nav">
-                            @if (isset(Auth()->user()->role->permission['name']['meeting']['can-view']))
+                            @if (isset(Auth()->user()->role->permission['name']['meeting']['can-list']))
 
                             <a class="nav-link" href="{{ Route('meeting.index') }}">View</a>
                             @endif
@@ -162,7 +162,7 @@
                     <div class="collapse" id="collapseLayoutsRoom" aria-labelledby="headingOne"
                         data-bs-parent="#sidenavAccordion">
                         <nav class="sb-sidenav-menu-nested nav">
-                            @if (isset(Auth()->user()->role->permission['name']['department']['can-add']))
+                            @if (isset(Auth()->user()->role->permission['name']['room']['can-add']))
 
                             <a class="nav-link" href="{{ Route('rooms.create') }}">Create</a>
                             @endif
@@ -172,8 +172,10 @@
 
                             <!--
 @endif -->
+                            @if (isset(Auth()->user()->role->permission['name']['room']['can-list']))
 
                             <a class="nav-link" href="{{ Route('rooms.index') }}">View</a>
+                            @endif
 
 
                         </nav>
