@@ -5,6 +5,16 @@ trait permissionTrait{
     public function hasPermission(){
 
 
+        // for room
+        if(!isset(auth()->user()->role->permission['name']['room']['can-add']) && \Route::is('rooms.create')){
+            return abort(401);
+        }
+
+        if(!isset(auth()->user()->role->permission['name']['room']['can-list']) && \Route::is('rooms.index')){
+            return abort(401);
+        }
+
+
          // for meeting
          if(!isset(auth()->user()->role->permission['name']['meeting']['can-add']) && \Route::is('meeting.create')){
             return abort(401);
