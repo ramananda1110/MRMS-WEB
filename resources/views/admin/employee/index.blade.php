@@ -43,7 +43,7 @@
                     @if (isset(Auth()->user()->role->permission['name']['employee']['can-add']))
 
                     <a href="../preview/employee_preview.xlsx" download class="text-primary text-decoration-none mt-1"><i
-                            class="fa-solid fa-circle-info me-1"></i>Download a CSV file preview</a>
+                            class="fa-solid fa-circle-info me-1"></i>Download sample template for file import</a>
                     @endif
                 </div>
 
