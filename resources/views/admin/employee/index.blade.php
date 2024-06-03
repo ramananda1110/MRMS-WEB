@@ -29,18 +29,21 @@
         
         <div class="row mb-3 mt-3">
             <div class="col-sm-4">
-                <form action="{{ route('import.excel') }}" method="POST" enctype="multipart/form-data">@csrf  
+                <form action="{{ route('import.excel') }}" method="POST" enctype="multipart/form-data">
+                    @csrf  
                     @if (isset(Auth()->user()->role->permission['name']['employee']['can-add']))
-      
                     <div class="input-group mt-2"> 
                         <input type="file" name="file" placeholder="attached xlsx" class="form-control">
                         <button class="btn btn-outline-primary">Import</button>
                     </div>
                     @endif
-
                 </form>
+            
+                <!-- Preview Button -->
+                
+                    <a href="../preview/employee_preview.xlsx" download class="text-primary text-decoration-none mt-1"><i class="fa-solid fa-circle-info me-1"></i>Download a CSV file preview</a>
             </div>
-
+        
             <div class="col-sm-4 text-center mt-2">
                 <div class="dt-buttons btn-group border">
                     <form action="{{ route('employee.exportCsv') }}" method="get" target="_blank">
@@ -57,11 +60,12 @@
                     </form>
                 </div>
             </div>
-
-            <div class="col-sm-4 mt-1 d-flex justify-content-end">
-                <input id="searchInput" type="text" name="search" class="form-control" placeholder="Search..."  style="width: 200px;">
+        
+            <div class="col-sm-4 mt-1 d-flex align-items-center justify-content-end">
+                <input id="searchInput" type="text" name="search" class="form-control" placeholder="Search..."  style="max-width: 200px;">
             </div>
         </div>
+        
 
         <div class="card-body" id="employeeTableContainer">
             @include('admin.employee.employee_table', ['employees' => $employees])
