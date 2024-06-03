@@ -84,7 +84,9 @@ class MeetingController extends Controller
         }
 
          // Order meetings by latest start_date
-        $meetings = $meetings->sortByDesc('start_date')->values()->all();
+        // $meetings = $meetings->sortByDesc('start_date')->values()->all();
+        $meetings = $meetings->sortBy('start_date')->values()->all();
+
    
         return view('admin.meeting.index', compact('meetings'));
 
@@ -462,14 +464,22 @@ class MeetingController extends Controller
 
        
         // Attach participants to the meeting
-        if ($request->has('participants')) {
-            foreach ($request->participants as $participantId) {
-                // Create a new participant record
-                Participant::create([
-                    'meeting_id' => $meeting->id,
-                    'participant_id' => $participantId
-                ]);
-            }
+        $participants = $request->input('participants', []);
+
+        // Include host and co-host in participants if they are selected
+        if ($request->has('host_id')) {
+            $participants[] = $request->input('host_id');
+        }
+        if ($request->has('co_host_id') && $request->input('co_host_id')) {
+            $participants[] = $request->input('co_host_id');
+        }
+
+        foreach ($participants as $participantId) {
+            // Create a new participant record
+            Participant::create([
+                'meeting_id' => $meeting->id,
+                'participant_id' => $participantId
+            ]);
         }
 
 

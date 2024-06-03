@@ -5,6 +5,8 @@ use App\Http\Controllers\MeetingController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\UserController;
 
+use App\Http\Controllers\Auth\ChangePasswordController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -37,6 +39,8 @@ Route::group(['middleware'=> ['auth', 'has.permission']], function(){
 
     Route::get('/', [MeetingController::class, 'dashboardMeetingCount'])->name('meeting.count');
     
+
+    Route::post('/change-password', [UserController::class, 'changePasswordByWeb'])->name('password.change');
 
 
     Route::resource('departments', 'DepartmentController');
