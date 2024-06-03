@@ -109,7 +109,7 @@
             <div class="form-group row mt-3">
               <label class="col-sm-3 col-form-label">Co-Host</label>
               <div class="col-sm-9">
-                <select class="form-control" name="co_host_id" required>
+                <select class="form-control" name="co_host_id" >
                 @foreach($activeEmployees as $coHost)
                       
                   <option value="{{ $coHost->employee_id }}" @if($coHost->employee_id == $meeting->co_host_id) selected @endif>

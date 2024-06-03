@@ -109,7 +109,7 @@
                             <div class="form-group row mt-3">
                                 <label class="col-sm-3 col-form-label">Co-Host</label>
                                 <div class="col-sm-9">
-                                    <select name="co_host_id" class="form-select" required>
+                                    <select name="co_host_id" class="form-select" >
                                         <option value="">Select Co-Host</option>
                                         @foreach (App\Models\Employee::where('status', 'active')->get() as $co_host)
                                             <option value="{{ $co_host->employee_id }}">{{ $co_host->name }}</option>

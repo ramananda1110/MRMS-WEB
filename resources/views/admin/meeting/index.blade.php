@@ -24,15 +24,14 @@
                         <div class="panel-heading no-print mt-2 mb-2">
                             <div class="d-flex justify-content-between align-items-center">
                                 @if (isset(Auth()->user()->role->permission['name']['meeting']['can-add']))
+                                    <div class="ms-3 col-sm-4 mt-1 d-flex justify-content-start">
+                                        <a href="{{ Route('meeting.create') }}"><button type="button"
+                                                class="btn btn-primary"><i class="fa fa-plus"></i> Add Meeting</button></a>
 
-                                <div class="ms-3 col-sm-4 mt-1 d-flex justify-content-start">
-                                    <a href="{{ Route('meeting.create') }}"><button type="button"
-                                            class="btn btn-primary"><i class="fa fa-plus"></i> Add Meeting</button></a>
-                                    
 
-                                </div>
+                                    </div>
                                 @endif
-                                
+
                                 <div class="btn-group d-flex justify-content-center align-items-center ms-2">
                                     <div class="row gx-0">
                                         <div class="col-md">
@@ -69,8 +68,46 @@
                                         </div>
                                     </div>
                                 </div>
-                                <input id="searchInput" type="text" name="search" class="form-control me-3"
-                                        placeholder="Search..." style="width: 200px;">
+
+                                <div class="d-flex justify-content-between align-items-center">
+
+
+                                    <!-- Filter dropdown -->
+                                    <div class="dropdown me-2">
+                                        <button class="btn btn-secondary dropdown-toggle" type="button" id="filterDropdown"
+                                                data-bs-toggle="dropdown" aria-expanded="false">
+                                                <i class="fa-solid fa-filter"></i>
+                                        </button>
+                                        <ul class="dropdown-menu" aria-labelledby="filterDropdown">
+                                            <!-- Dummy data in radio button format -->
+                                            <li>
+                                                <label class="dropdown-item">
+                                                    <input type="radio" class="filter-radio" name="filterOption" value="5"> Previous 5 days
+                                                </label>
+                                            </li>
+                                            <li>
+                                                <label class="dropdown-item">
+                                                    <input type="radio" class="filter-radio" name="filterOption" value="10"> Previous 10 days
+                                                </label>
+                                            </li>
+                                            <li>
+                                                <label class="dropdown-item">
+                                                    <input type="radio" class="filter-radio" name="filterOption" value="15"> Previous 15 days
+                                                </label>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    
+                                    <!-- Search input -->
+                                    <div class="me-3">
+                                        <input id="searchInput" type="text" name="search" class="form-control"
+                                            placeholder="Search..." style="width: 200px;">
+                                    </div>
+                                </div>
+
+
+
+
                             </div>
 
 
