@@ -30,9 +30,9 @@
                                 <!-- 2 column grid layout with text inputs for the first and last names -->
                                 <div class="row">
                                     <div class="row mb-3">
-                                        <label class="col-md-4 col-form-label text-md-end">{{ __('Employee ID') }}</label>
+                                        <label class="row-md-4 col-form-label text-md-start">{{ __('Employee ID') }}</label>
 
-                                        <div class="col-md-6">
+                                        <div class="row-md-6">
                                             <input type="number"
                                                 class="form-control @error('employee_id') is-invalid @enderror"
                                                 name="employee_id">
@@ -47,9 +47,9 @@
 
                                     <div class="row mb-3">
                                         <label for="password"
-                                            class="col-md-4 col-form-label text-md-end">{{ __('Password') }}</label>
+                                            class="row-md-4 col-form-label text-md-start">{{ __('Password') }}</label>
 
-                                        <div class="col-md-6">
+                                        <div class="row-md-6">
                                             <input id="password" type="password"
                                                 class="form-control @error('password') is-invalid @enderror" name="password"
                                                 required autocomplete="current-password">
@@ -65,8 +65,8 @@
 
 
                                     <div class="row mb-3">
-                                        <div class="col-md-6 offset-md-4">
-                                            <a class="dropdown-item text-danger mb-2" href="#!">Forgot Password</a>
+                                        <div class="row-md-6 offset-md-4">
+                                            <a class="dropdown-item text-danger mb-2 ms-3" href="#!">Forgot Password</a>
 
                                             {{-- <div class="form-check">
                             <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
@@ -81,7 +81,7 @@
 
 
                                     <button type="submit"
-                                        class="btn btn-primary btn-block mb-4 w-50 d-flex justify-content-center mx-auto">
+                                        class="ms-3 btn btn-primary btn-block mb-4 w-25 d-flex justify-content-center ">
                                         {{ __('Login') }}
                                     </button>
 
