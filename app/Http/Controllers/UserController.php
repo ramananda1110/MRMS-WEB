@@ -113,17 +113,7 @@ class UserController extends Controller
     public function update(Request $request, $id)
     {
 
-        // $this->validate($request, [
-        //     'name'=>'required',
-        //     'email'=>'required|string|email|max:255|unique:users',
-        //     'department_id'=>'required',
-        //     'role_id'=>'required',
-        //     'image'=>'mimes:jpeg,jpg,png',
-        //     'start_from'=>'required',
-        //     'designation'=>'required'
-        // ]);
-      
-        
+       
 
         $data = $request->all();
        
