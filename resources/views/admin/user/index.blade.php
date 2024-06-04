@@ -35,8 +35,8 @@
                         @endif
                         <div class="btn-group d-flex justify-content-center align-items-center me-3">
                             <div class="row gx-0">
-                                <div class="col-md ms-2">
-                                    <form action="{{ route('user.download-excel') }}" method="post" target="_blank">
+                                <div class="dt-buttons btn-group border">
+                                    <form action="{{ route('users.download-excel') }}" method="post" target="_blank">
                                         @csrf
                                         <button type="submit"
                                             class="btn btn-default buttons-csv border buttons-html5 btn-sm btn-block"
@@ -44,26 +44,24 @@
                                             <span>Csv</span>
                                         </button>
                                     </form>
-                                </div>
-                                <div class="col-md">
+                               
+                                
                                     <form action="#" method="post" target="_blank">
                                         @csrf
                                         <button
                                             class="btn btn-default buttons-csv border buttons-html5 btn-sm btn-block">Excel</button>
                                     </form>
-                                </div>
-                                <div class="col-md">
-                                    <form action="{{ route('user.download-excel') }}" method="get" target="_blank">
+                                
+                
+                                    <form action="{{ route('users.printView') }}" method="get" target="_blank">
                                         @csrf
                                         <button
                                             class="btn btn-default buttons-csv border buttons-html5 btn-sm btn-block">Pdf</button>
                                     </form>
-                                </div>
-                                <div class="col-md">
-                                    <a class="btn btn-default buttons-print border buttons-html5 btn-sm btn-block"
-                                        tabindex="0" aria-controls="employees">
-                                        <span>Print</span>
-                                    </a>
+                                
+                                    <form action="{{ route('users.printView') }}" method="get" target="_blank">
+                                        <button class="btn btn-default buttons-csv border buttons-html5 btn-sm">Print</button>
+                                    </form>
                                 </div>
                             </div>
                         </div>
