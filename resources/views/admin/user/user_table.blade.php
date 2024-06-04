@@ -10,7 +10,7 @@
             <th>Designation</th>
             <!-- <th>Start Date</th> -->
             <!-- <th>Address</th> -->
-            <th>Mobile</th>
+            <!-- <th>Mobile</th> -->
             <th>Email</th>
             <th>Department</th>
             @if (Auth::check() && Auth::user()->role && Auth::user()->role->permission && Auth::user()->role->permission->role_id == 1)
@@ -34,7 +34,7 @@
 
                     <!-- <td>{{ $user->start_from }}</td> -->
                     <!-- <td>{{ $user->address }}</td> -->
-                    <td>{{ $user->mobile_number }}</td>
+                    <!-- <td>{{ $user->mobile_number }}</td> -->
                     <td>{{ $user->email }}</td>
                     <td>{{ $user->designation }}</td>
 
