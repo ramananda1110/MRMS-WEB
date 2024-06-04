@@ -1534,20 +1534,8 @@ class MeetingController extends Controller
         $roleId = Auth()->user()->role_id;
 
         // Fetch meetings based on user role
-        $meetingsQuery = Meeting::with(['room', 'host', 'coHost', 'participants.employee'])
-            ->select(
-                'id', 
-                'room_id', 
-                'meeting_title', 
-                'start_date', 
-                'start_time', 
-                'end_time', 
-                'host_id', 
-                'co_host_id', 
-                'booking_type', 
-                'booking_status', 
-                'description'
-            );
+        $meetingsQuery = Meeting::with(['room', 'host', 'coHost', 'participants.employee']);
+           
 
         if ($roleId !== 1) {
             $meetingsQuery->where(function ($query) use ($employeeId) {
