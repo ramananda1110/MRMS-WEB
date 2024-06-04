@@ -19,7 +19,7 @@
                                         id="employee_id"class="form-control  form-control-lg @error('employee_id') is-invalid @enderror"
                                         name="employee_id" />
                                     @error('employee_id')
-                                        <span class="invalid-feedback" role="alert">
+                                        <span class="invalid-feedback text-start" role="alert">
                                             <strong>{{ $message }}</strong>
                                         </span>
                                     @enderror
@@ -28,10 +28,10 @@
                                 <div data-mdb-input-init class="form-outline mb-4">
                                     <h5 for="password" class="text-start">{{ __('Password') }}</h5>
                                     <input type="password"
-                                        id="password"class="form-control  form-control-lg @error('employee_id') is-invalid @enderror"
+                                        id="password"class="form-control  form-control-lg @error('password') is-invalid @enderror"
                                         name="password" />
                                     @error('password')
-                                        <span class="invalid-feedback" role="alert">
+                                        <span class="invalid-feedback text-start" role="alert">
                                             <strong>{{ $message }}</strong>
                                         </span>
                                     @enderror
