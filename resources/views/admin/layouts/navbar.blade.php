@@ -63,110 +63,27 @@
                     </i>{{ Auth()->user()->name }}</a>
                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                     <li><a class="dropdown-item" href="#!">Settings</a></li>
-                    <li><a class="dropdown-item" href="#!" data-bs-toggle="modal"
-                            data-bs-target="#staticBackdrop">Change Password</a></li>
+                    <li> <a class="dropdown-item" href="{{ Route('change.password.form') }}">Change Password</a>
+                    </li>
 
                     <li><a class="dropdown-item" href="#!">Activity Log</a></li>
                     <li>
                         <hr class="dropdown-divider" />
                     </li>
-                    <li><a class="dropdown-item" href="#!">
+                   
 
                             <a class="dropdown-item" href="{{ route('logout') }}"
                                 onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
+                                document.getElementById('logout-form').submit();">
                                 {{ __('Logout') }}
                             </a>
 
                             <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                 @csrf
                             </form>
-                        </a></li>
+                        
                 </ul>
             </li>
         </ul>
 
     </nav>
-    <!-- Modal -->
-    <form id="changepasswordform" action="{{ route('password.change') }}" method="post" enctype="multipart/form-data">
-        @csrf
-        <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-            aria-labelledby="staticBackdropLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="staticBackdropLabel">Change Password</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <form id="changePasswordForm">
-                            <div class="form-group">
-                                <label for="current_password">Current Password</label>
-                                <input type="password"
-                                    class="form-control mt-1 @error('current_password') is-invalid @enderror"
-                                    id="current_password" name="current_password" placeholder="Current Password">
-                                @error('current_password')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                            <div class="form-group mt-2">
-                                <label for="new_password">New Password</label>
-                                <input type="password"
-                                    class="form-control mt-1 @error('new_password') is-invalid @enderror"
-                                    id="new_password" name="new_password" placeholder="New Password">
-                                @error('new_password')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                            <div class="form-group mt-2">
-                                <label for="confirm_password">Confirm Password</label>
-                                <input type="password"
-                                    class="form-control mt-1 @error('password_confirmation') is-invalid @enderror"
-                                    id="confirm_password" name="password_confirmation"
-                                    placeholder="Confirm Password">
-                                @error('password_confirmation')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary" id="savePasswordBtn">Save</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </form>
-
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const changepasswordform = document.getElementById('changepasswordform');
-    
-            changepasswordform.addEventListener('submit', function(event) {
-                // Prevent the default form submission behavior
-                event.preventDefault();
-                event.stopPropagation();
-    
-                if (!changepasswordform.checkValidity()) {
-                    // If the form is not valid, add Bootstrap's validation class
-                    changepasswordform.classList.add('was-validated');
-    
-                } 
-            });
-    
-            // Add a click event listener to the confirmation button in the modal
-            document.getElementById('savePasswordBtn').addEventListener('click', function() {
-                // Manually submit the form if the user confirms in the modal
-                changepasswordform.submit();
-            });
-    
-        });
-    </script>
