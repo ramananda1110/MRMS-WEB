@@ -36,7 +36,7 @@
                         <div class="btn-group d-flex justify-content-center align-items-center me-3">
                             <div class="row gx-0">
                                 <div class="col-md ms-2">
-                                    <form action="#" method="post" target="_blank">
+                                    <form action="{{ route('user.download-excel') }}" method="post" target="_blank">
                                         @csrf
                                         <button type="submit"
                                             class="btn btn-default buttons-csv border buttons-html5 btn-sm btn-block"
@@ -53,7 +53,7 @@
                                     </form>
                                 </div>
                                 <div class="col-md">
-                                    <form action="#" method="get" target="_blank">
+                                    <form action="{{ route('user.download-excel') }}" method="get" target="_blank">
                                         @csrf
                                         <button
                                             class="btn btn-default buttons-csv border buttons-html5 btn-sm btn-block">Pdf</button>

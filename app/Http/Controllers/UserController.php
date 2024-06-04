@@ -7,6 +7,8 @@ use App\Models\User;
 use App\Models\Department;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Validator;
+use App\Exports\UserDataExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 
 class UserController extends Controller
@@ -244,5 +246,10 @@ class UserController extends Controller
         // Return a success response
         return redirect()->back()->with('message', 'User status updated successfully');
 
+    }
+
+    public function exportExcel()
+    {
+        return Excel::download(new UserDataExport, 'users-data.xlsx');
     }
 }
