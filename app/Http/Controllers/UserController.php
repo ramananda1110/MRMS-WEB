@@ -201,6 +201,30 @@ class UserController extends Controller
     }
 
 
+    public function userProfile()
+    {
+        $user = Auth::user();
+
+        // Check if the user is authenticated
+        if ($user) {
+            // Make department_id and role_id hidden in the JSON response
+            $user->makeHidden(['department_id', 'role_id']);
+
+            // Prepare the user data
+            $userData = array_merge($user->toArray(), [
+                'is_admin' => $user->isAdmin(),
+                'department_name' => optional($user->department)->name,
+                'role' => optional($user->role)->name,
+            ]);
+
+            return view('admin.user.user_profile', ['user' => $userData]);
+        }
+
+        // If authentication fails, redirect to login page with error
+        return redirect()->route('login')->with('error', "Oops! It seems your credentials don't match. Please verify and retry.");
+    }
+
+
     
 
     public function updateUserStatus(Request $request, $id)
