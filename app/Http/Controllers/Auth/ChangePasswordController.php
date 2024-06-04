@@ -44,7 +44,10 @@ class ChangePasswordController extends Controller
             'message' => 'Password changed successfully'
              ], Response::HTTP_OK);
     }
-    
+    public function showChangePasswordForm()
+    {
+        return view('admin.layouts.change_password');
+    }
 
     public function changePasswordByWeb(Request $request)
     {

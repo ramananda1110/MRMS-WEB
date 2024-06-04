@@ -39,6 +39,8 @@ Route::group(['middleware'=> ['auth', 'has.permission']], function(){
 
     Route::get('/', [MeetingController::class, 'dashboardMeetingCount'])->name('meeting.count');
     
+    
+    Route::get('/change-password', [ChangePasswordController::class, 'showChangePasswordForm'])->name('change.password.form');
 
     Route::post('/change-password', [ChangePasswordController::class, 'changePasswordByWeb'])->name('password.change');
 
