@@ -242,4 +242,14 @@ class UserController extends Controller
     {
         return Excel::download(new UserDataExport, 'users-data.xlsx');
     }
+
+
+    public function printView()
+    {
+       
+        $users = User::all();
+
+        return view('admin.user.print', compact('users'));
+    }
+
 }
