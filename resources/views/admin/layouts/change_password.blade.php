@@ -9,6 +9,7 @@
                 <div class='alert alert-success'>
                     {{ Session::get('message') }}
                 </div>
+                
             @endif
 
             @if (Session::has('error'))
@@ -91,6 +92,7 @@
             if (changepasswordform.checkValidity()) {
                 // If the form is valid, submit the form
                 this.submit();
+               
             }
         });
 
@@ -98,7 +100,9 @@
         document.getElementById('savePasswordBtn').addEventListener('click', function() {
             // Manually trigger form submission
             changepasswordform.dispatchEvent(new Event('submit'));
-        });
+           
 
+        });
+      
     });
 </script>
