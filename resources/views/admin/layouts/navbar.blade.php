@@ -62,11 +62,12 @@
 
                     </i>{{ Auth()->user()->name }}</a>
                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                    <li><a class="dropdown-item" href="{{ Route('user.profile') }}">User Profile</a></li>
+
                     <li><a class="dropdown-item" href="#!">Settings</a></li>
                     <li> <a class="dropdown-item" href="{{ Route('change.password.form') }}">Change Password</a>
                     </li>
 
-                    <li><a class="dropdown-item" href="#!">Activity Log</a></li>
                     <li>
                         <hr class="dropdown-divider" />
                     </li>
