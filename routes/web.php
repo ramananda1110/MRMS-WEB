@@ -56,6 +56,8 @@ Route::group(['middleware'=> ['auth', 'has.permission']], function(){
     Route::post('/user/update-status/{id}', [UserController::class, 'updateUserStatus'])->name('user.updateStatus');
     Route::post('user/export-excel', [UserController::class, 'exportExcel'])->name('users.download-excel');
     Route::get('user/print', [UserController::class, 'printView'])->name('users.printView');
+    Route::get('user/export-cvs', [UserController::class, 'exportUserCsv'])->name('users.export-csv');
+
     Route::get('/user-profile', [UserController::class, 'userProfile'])->name('user.profile');
 
 

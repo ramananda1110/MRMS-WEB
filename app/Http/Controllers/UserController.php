@@ -276,4 +276,77 @@ class UserController extends Controller
         return view('admin.user.print', compact('users'));
     }
 
+
+    public function exportUserCsv()
+    {
+
+        $users = User::all();
+
+        $csvHeader = [
+            'Employee ID', 
+            'Name', 
+            'Role', 
+            'Project Code', 
+            'Joining Date', 
+            'Division', 
+            'Designation', 
+            'Mobile', 
+            'Email', 
+            'Address'
+        ];
+        
+        $csvData = $users->map(function ($user) {
+            
+            return [
+                'user_id' => $user->employee_id,
+                'name' => $user->name,
+                'role' => $user->role->name,
+                'project_code' => $user->project_code,
+                'joining_date' => $user->start_from,
+                'division' => $user->department->name,
+                'designaion' => $user->designation,
+                'mobile' => $user->mobile_number,
+                'email' => $user->email,
+                'address' => $user->address,
+               
+            ];
+        });
+
+        // foreach ($users as $user) {
+           
+
+           
+        //     $csvData[] = [
+        //         $meeting->id,
+        //         $meeting->room ? $meeting->room->name : 'N/A',
+        //         $meeting->meeting_title,
+        //         $meeting->start_date,
+        //         $meeting->start_time,
+        //         $meeting->end_time,
+        //         $meeting->host ? $meeting->host->name : '',
+        //         $meeting->coHost ? $meeting->coHost->name : 'New',
+        //         $meeting->booking_type,
+        //         $meeting->booking_status,
+        //         $meeting->description,
+        //         $participants
+        //     ];
+        // }
+
+        $filename = 'users-csv-export.csv';
+        $handle = fopen($filename, 'w+');
+        fputcsv($handle, $csvHeader);
+
+        foreach ($csvData as $row) {
+            fputcsv($handle, $row);
+        }
+
+        fclose($handle);
+
+        $headers = [
+            'Content-Type' => 'text/csv',
+        ];
+
+        return response()->download($filename, $filename, $headers)->deleteFileAfterSend(true);
+    }
+
 }
