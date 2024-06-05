@@ -19,7 +19,7 @@
                                         id="employee_id"class="form-control  form-control-lg @error('employee_id') is-invalid @enderror"
                                         name="employee_id" />
                                     @error('employee_id')
-                                        <span class="invalid-feedback" role="alert">
+                                        <span class="invalid-feedback text-start" role="alert">
                                             <strong>{{ $message }}</strong>
                                         </span>
                                     @enderror
@@ -28,18 +28,21 @@
                                 <div data-mdb-input-init class="form-outline mb-4">
                                     <h5 for="password" class="text-start">{{ __('Password') }}</h5>
                                     <div class="input-group">
-                                        <input type="password" id="password" class="form-control form-control-lg @error('employee_id') is-invalid @enderror" name="password" />
+                                        <input type="password" id="password"
+                                            class="form-control form-control-lg @error('password') is-invalid @enderror"
+                                            name="password" />
                                         <button class="btn btn-outline-secondary" type="button" id="togglePassword">
                                             <i class="fas fa-eye"></i>
                                         </button>
+                                        @error('password')
+                                            <span class="invalid-feedback text-start" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
                                     </div>
-                                    @error('password')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
+
                                 </div>
-                                
+
 
                                 <!-- Checkbox -->
                                 <div class="form-check d-flex justify-content-end mb-4">
@@ -68,19 +71,15 @@
     <script>
         const togglePassword = document.getElementById('togglePassword');
         const password = document.getElementById('password');
-    
-        togglePassword.addEventListener('click', function () {
-        console.log("Toggle button clicked");
-        const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
-        password.setAttribute('type', type);
-        // Toggle eye icon
-        const eyeIcon = togglePassword.querySelector('i');
-        eyeIcon.classList.toggle('fa-eye');
-        eyeIcon.classList.toggle('fa-eye-slash');
-    });
-    
+
+        togglePassword.addEventListener('click', function() {
+            console.log("Toggle button clicked");
+            const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+            password.setAttribute('type', type);
+            // Toggle eye icon
+            const eyeIcon = togglePassword.querySelector('i');
+            eyeIcon.classList.toggle('fa-eye');
+            eyeIcon.classList.toggle('fa-eye-slash');
+        });
     </script>
 @endsection
-
-
-
