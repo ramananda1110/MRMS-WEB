@@ -312,26 +312,7 @@ class UserController extends Controller
             ];
         });
 
-        // foreach ($users as $user) {
-           
-
-           
-        //     $csvData[] = [
-        //         $meeting->id,
-        //         $meeting->room ? $meeting->room->name : 'N/A',
-        //         $meeting->meeting_title,
-        //         $meeting->start_date,
-        //         $meeting->start_time,
-        //         $meeting->end_time,
-        //         $meeting->host ? $meeting->host->name : '',
-        //         $meeting->coHost ? $meeting->coHost->name : 'New',
-        //         $meeting->booking_type,
-        //         $meeting->booking_status,
-        //         $meeting->description,
-        //         $participants
-        //     ];
-        // }
-
+        
         $filename = 'users-csv-export.csv';
         $handle = fopen($filename, 'w+');
         fputcsv($handle, $csvHeader);
