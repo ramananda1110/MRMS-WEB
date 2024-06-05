@@ -10,16 +10,13 @@
  
     
  <form action="{{route('rooms.store')}}" method="post", enctype="multipart/form-data">@csrf        
-    <div class="row justify-content-center">
-    
-        <div class="col-md-10">
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item active" aria-current="page">Create a Room</li>
-            </ol>
-        </nav>
-        <div class="card">
-            <div class="card-header"></div>
+    <div class="row justify-content-center rounded shadow p-3 mb-5 bg-white" style="background-color: white">
+
+        <div class="col-md-11">
+       
+        <div class="card mt-3 mb-3">
+            
+                <div class="card-header">Create a Room</div>
 
                 <div class="card-body">
                     <div class="form-group">

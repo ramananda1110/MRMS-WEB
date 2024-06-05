@@ -2,8 +2,8 @@
 
 @section('content')
 <div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-10">
+    <div class="row justify-content-center rounded shadow p-3 mb-5 bg-white" style="background-color: white">
+    <div class="col-md-11">
                 @if(Session::has('message'))
                      <div class='alert alert-success'>
                           {{Session::get('message')}}
@@ -11,7 +11,7 @@
                 @endif
            
                 <form action="{{route('notices.store')}}" method="post">@csrf
-                <div class="card">
+                <div class="card mt-3 mb-3">
                     <div class="card-header">Create New Notice</div>
 
                     <div class="card-body">
