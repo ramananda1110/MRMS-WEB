@@ -9,6 +9,7 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use App\Models\Department;
 use App\Models\Role;
+use App\Models\Employee;
 
 class User extends Authenticatable
 {
@@ -63,6 +64,10 @@ class User extends Authenticatable
 
     public function role(){
         return $this->hasOne(Role::class, 'id', 'role_id');
+    }
+
+    public function employee(){
+        return $this->hasOne(Employee::class, 'employee_id', 'employee_id');
     }
 
     public function isAdmin(){
