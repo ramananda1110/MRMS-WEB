@@ -72,9 +72,17 @@
                                 <div class="d-flex justify-content-between align-items-center">
 
 
-                                    <!-- Filter dropdown -->
-                                    <div class="dropdown me-2">
-                                        <button class="btn btn-secondary dropdown-toggle" type="button" id="filterDropdown"
+                                  
+                                    
+                                    <!-- Search input -->
+                                    <div class="me-3">
+                                        <input id="searchInput" type="text" name="search" class="form-control"
+                                            placeholder="Search..." style="width: 200px;">
+                                    </div>
+
+                                      <!-- Filter dropdown -->
+                                      <div class="dropdown me-2">
+                                        <button class="btn btn-primary dropdown-toggle" type="button" id="filterDropdown"
                                                 data-bs-toggle="dropdown" aria-expanded="false">
                                                 <i class="fa-solid fa-filter"></i>
                                         </button>
@@ -96,12 +104,6 @@
                                                 </label>
                                             </li>
                                         </ul>
-                                    </div>
-                                    
-                                    <!-- Search input -->
-                                    <div class="me-3">
-                                        <input id="searchInput" type="text" name="search" class="form-control"
-                                            placeholder="Search..." style="width: 200px;">
                                     </div>
                                 </div>
 
