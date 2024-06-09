@@ -1406,7 +1406,7 @@ class MeetingController extends Controller
             $html .= '<td>' . $meeting->start_time . '</td>';
             $html .= '<td>' . $meeting->end_time . '</td>';
             $html .= '<td>' . ($meeting->host ? $meeting->host->name : '') . '</td>';
-            $html .= '<td>' . ($meeting->coHost ? $meeting->coHost->name : 'New') . '</td>';
+            $html .= '<td>' . ($meeting->coHost ? $meeting->coHost->name : '') . '</td>';
             $html .= '<td>' . $meeting->booking_type . '</td>';
             $html .= '<td>' . $meeting->booking_status . '</td>';
             $html .= '<td>' . $meeting->description . '</td>';
