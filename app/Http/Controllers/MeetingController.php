@@ -488,6 +488,7 @@ class MeetingController extends Controller
 
         $this->notificationController->attemtNotification($devicesToken, "Created a Meeting", "Requested to you a meeting schedule.");
 
+
         
         return redirect()->route("meeting.index")->with('message', 'Meeting created successfully');
 
@@ -1014,6 +1015,12 @@ class MeetingController extends Controller
                 $meeting->participants()->get()->each->touch();
 
             }
+
+            // sent the notification to user admin
+            $devicesToken = User::where('role_id', 1)->pluck('device_token')->toArray();
+
+            $this->notificationController->attemtNotification($devicesToken, "Reschedule a Meeting", "Requested to you a meeting re-schedule.");
+    
             
             // Return a successful response with the updated meeting
             return response()->json([
@@ -1333,6 +1340,13 @@ class MeetingController extends Controller
             $meeting->participants()->get()->each->touch();
 
         }
+
+         // sent the notification to user admin
+         $devicesToken = User::where('role_id', 1)->pluck('device_token')->toArray();
+
+         $this->notificationController->attemtNotification($devicesToken, "Reschedule a Meeting", "Requested to you a meeting re-schedule.");
+ 
+         
                 
         return redirect()->route("meeting.index")->with('message', 'Meeting rescheduled successfully');
 
