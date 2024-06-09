@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Validator;
 use App\Exports\UserDataExport;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Auth;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 
 class UserController extends Controller
@@ -316,5 +317,84 @@ class UserController extends Controller
 
         return response()->download($filename, $filename, $headers)->deleteFileAfterSend(true);
     }
+
+
+
+    public function exportUserPdf()
+    {
+        ini_set('memory_limit', '1024M');
+        ini_set('max_execution_time', 300);
+
+
+        $users = User::all();
+
+
+        $html = '
+        <html>
+        <head>
+            <style>
+                body { font-family: sans-serif; margin: 20px; }
+                table { border-collapse: collapse; width: 100%; }
+                th, td { border: 1px solid black; padding: 8px; text-align: left; }
+                th { background-color: #f2f2f2; }
+                .page-break { page-break-after: always; }
+            </style>
+        </head>
+        <body>
+            <h1>Meetings List</h1>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Employee ID</th>
+                        <th>Name</th>
+                        <th>Role</th>
+                        <th>Project Code</th>
+                        <th>Joining Date</th>
+                        <th>Division</th>
+                        <th>Designaion</th>
+                        <th>Mobile</th>
+                        <th>Email</th>
+                        <th>Address</th>
+                    </tr>
+                </thead>
+                <tbody>';
+
+        foreach ($users as $user) {
+            
+
+            $html .= '<tr>';
+            $html .= '<td>' . $user->employee_id . '</td>';
+            $html .= '<td>' . $user->name .'</td>';
+            $html .= '<td>' . $user->role->name . '</td>';
+            $html .= '<td>' . $user->project_code . '</td>';
+            $html .= '<td>' . $user->start_from . '</td>';
+            $html .= '<td>' . $user->department->name . '</td>';
+            $html .= '<td>' . $user->designation . '</td>';
+            $html .= '<td>' . $user->mobile_number . '</td>';
+            $html .= '<td>' . $user->email . '</td>';
+            $html .= '<td>' . $user->address . '</td>';
+           
+            $html .= '</tr>';
+        }
+
+        $html .= '</tbody></table></body></html>';
+
+
+         // Set paper size and margins
+        $pdf = Pdf::loadHTML($html)
+        ->setPaper('a4', 'landscape')
+        ->setOptions([
+            'isHtml5ParserEnabled' => true,
+            'isRemoteEnabled' => true,
+            'dpi' => 96,
+            'defaultFont' => 'sans-serif',
+            'margin_left' => 10,
+            'margin_right' => 10,
+            'margin_top' => 10,
+            'margin_bottom' => 10,
+        ]);
+        return $pdf->download('users-pdf-export.pdf');
+
+    }  
 
 }

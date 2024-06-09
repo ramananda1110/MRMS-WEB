@@ -83,7 +83,7 @@ class DatabaseSeeder extends Seeder
             'password'=>bcrypt('password'),
             'email_verified_at'=>NOW(),
             'address'=>'Bangladesh',
-            'mobile_number'=>'01738039685',
+            'mobile_number'=>'N/A',
             'department_id'=>6,
             'role_id'=>1,
             'start_from'=> '1952-02-02',

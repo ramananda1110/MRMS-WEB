@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-use App\Imports\ExcelImpoter;
+use App\Imports\EmployeeDataImport;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Models\Employee;
 use DataTables;
@@ -60,7 +60,7 @@ class EmployeeController extends Controller
         return view('admin.employee.index', compact('employees'));
     }
 
-    
+
 
 
     public function import(Request $request)
@@ -74,7 +74,7 @@ class EmployeeController extends Controller
         $file = $request->file('file');
  
         // Process the Excel file
-        Excel::import(new ExcelImpoter, $file);
+        Excel::import(new EmployeeDataImport, $file);
  
         return redirect()->back()->with('message', 'User data imported successfully!');
     }

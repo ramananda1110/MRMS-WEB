@@ -4,7 +4,7 @@
 <div class="container mt-5 rounded shadow p-3 mb-5 bg-white" style="background-color: white" >
     <div class="row justify-content-center">
    
-        <div class="col-md-10">
+        <div class="col-md-11">
             @if (isset(Auth()->user()->role->permission['name']['room']['can-add']))
 
             <div class="card mt-3" style="border-bottom: 1px solid silver;">

@@ -57,6 +57,7 @@ Route::group(['middleware'=> ['auth', 'has.permission']], function(){
     Route::post('user/export-excel', [UserController::class, 'exportExcel'])->name('users.download-excel');
     Route::get('user/print', [UserController::class, 'printView'])->name('users.printView');
     Route::get('user/export-cvs', [UserController::class, 'exportUserCsv'])->name('users.export-csv');
+    Route::get('user/download-pdf', [UserController::class, 'exportUserPdf'])->name('users.exportPdf');
 
     Route::get('/user-profile', [UserController::class, 'userProfile'])->name('user.profile');
 

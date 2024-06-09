@@ -190,7 +190,7 @@
                                                              </tr>
                                                              <tr>
                                                                  <th>Co-Host Name</th>
-                                                                 <td>{{ $meeting->coHost->name }}</td>
+                                                                 <td>{{ $meeting->coHost->name ?? 'N/A'}}</td>
                                                              </tr>
                                                              <tr>
                                                                  <th>Participants Name</th>
