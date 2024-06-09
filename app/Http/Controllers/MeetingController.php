@@ -1148,12 +1148,6 @@ class MeetingController extends Controller
         // If validation passes, create the meeting using the validated data
         $meeting = Meeting::create($validator->validated());
 
-
-
-
-         // If validation passes, create the meeting using the validated data
-         $meeting = Meeting::create($validator->validated());
-
        
          // Attach participants to the meeting
          $participants = $request->input('participants', []);
