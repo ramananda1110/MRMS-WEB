@@ -53,7 +53,7 @@
                                     </form>
                                 
                 
-                                    <form action="{{ route('users.printView') }}" method="GET" target="_blank">
+                                    <form action="{{ route('users.exportPdf') }}" method="GET" target="_blank">
                                         @csrf
                                         <button
                                             class="btn btn-default buttons-csv border buttons-html5 btn-sm btn-block">Pdf</button>

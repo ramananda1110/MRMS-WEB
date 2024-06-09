@@ -299,7 +299,7 @@ class MeetingController extends Controller
                 'host_id' => $meeting->host_id,
                 'host_name' => $meeting->host ? $meeting->host->name : '',
                 'co_host_id' => $meeting->co_host_id ? $meeting->co_host_id : 0,
-                'co_host_name' => $meeting->coHost ? $meeting->coHost->name : "New",
+                'co_host_name' => $meeting->coHost ? $meeting->coHost->name : '',
                 'booking_type' => $meeting->booking_type,
                 'booking_status' => $status,
                 'created_at' => $meeting->created_at,
@@ -1406,7 +1406,7 @@ class MeetingController extends Controller
             $html .= '<td>' . $meeting->start_time . '</td>';
             $html .= '<td>' . $meeting->end_time . '</td>';
             $html .= '<td>' . ($meeting->host ? $meeting->host->name : '') . '</td>';
-            $html .= '<td>' . ($meeting->coHost ? $meeting->coHost->name : 'New') . '</td>';
+            $html .= '<td>' . ($meeting->coHost ? $meeting->coHost->name : '') . '</td>';
             $html .= '<td>' . $meeting->booking_type . '</td>';
             $html .= '<td>' . $meeting->booking_status . '</td>';
             $html .= '<td>' . $meeting->description . '</td>';
@@ -1499,7 +1499,7 @@ class MeetingController extends Controller
                 $meeting->start_time,
                 $meeting->end_time,
                 $meeting->host ? $meeting->host->name : '',
-                $meeting->coHost ? $meeting->coHost->name : 'New',
+                $meeting->coHost ? $meeting->coHost->name : '',
                 $meeting->booking_type,
                 $meeting->booking_status,
                 $meeting->description,
