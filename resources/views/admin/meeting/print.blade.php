@@ -54,7 +54,7 @@
                     <td>{{ $meeting->start_time }}</td>
                     <td>{{ $meeting->end_time }}</td>
                     <td>{{ $meeting->host ? $meeting->host->name : '' }}</td>
-                    <td>{{ $meeting->coHost ? $meeting->coHost->name : 'New' }}</td>
+                    <td>{{ $meeting->coHost ? $meeting->coHost->name : 'N/A' }}</td>
                     <td>{{ $meeting->booking_type }}</td>
                     <td>{{ $meeting->booking_status }}</td>
                     <td>{{ $meeting->description }}</td>

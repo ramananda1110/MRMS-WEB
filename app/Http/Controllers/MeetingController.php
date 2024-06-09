@@ -1405,8 +1405,8 @@ class MeetingController extends Controller
             $html .= '<td>' . $meeting->start_date . '</td>';
             $html .= '<td>' . $meeting->start_time . '</td>';
             $html .= '<td>' . $meeting->end_time . '</td>';
-            $html .= '<td>' . ($meeting->host ? $meeting->host->name : '') . '</td>';
-            $html .= '<td>' . ($meeting->coHost ? $meeting->coHost->name : '') . '</td>';
+            $html .= '<td>' . ($meeting->host ? $meeting->host->name : 'N/A') . '</td>';
+            $html .= '<td>' . ($meeting->coHost ? $meeting->coHost->name : 'N/A') . '</td>';
             $html .= '<td>' . $meeting->booking_type . '</td>';
             $html .= '<td>' . $meeting->booking_status . '</td>';
             $html .= '<td>' . $meeting->description . '</td>';
@@ -1498,8 +1498,8 @@ class MeetingController extends Controller
                 $meeting->start_date,
                 $meeting->start_time,
                 $meeting->end_time,
-                $meeting->host ? $meeting->host->name : '',
-                $meeting->coHost ? $meeting->coHost->name : '',
+                $meeting->host ? $meeting->host->name : 'N/A',
+                $meeting->coHost ? $meeting->coHost->name : 'N/A',
                 $meeting->booking_type,
                 $meeting->booking_status,
                 $meeting->description,
@@ -1547,6 +1547,7 @@ class MeetingController extends Controller
         }
 
         $meetings = $meetingsQuery->get();
+
 
         return view('admin.meeting.print', compact('meetings'));
     }
