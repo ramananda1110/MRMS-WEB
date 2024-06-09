@@ -33,6 +33,7 @@ class MeetingController extends Controller
          $this->notificationController = $notificationController;
      }
 
+     
 
      public function index()
      {
@@ -63,7 +64,7 @@ class MeetingController extends Controller
             switch ($status) {
                 case 'pending':
                     if ($startDate < $today) {
-                        $status = 'canceled';
+                        $status = 'expired';
                     }
                     break;
                 case 'accepted':
@@ -73,9 +74,9 @@ class MeetingController extends Controller
                         $status = 'upcoming';
                     }
                     break;
-                case 'rejected':
-                    $status = 'canceled';
-                    break;
+                // case 'rejected':
+                //     $status = 'canceled';
+                //     break;
             }
 
             // Update the meeting status
@@ -83,18 +84,16 @@ class MeetingController extends Controller
         }
 
          // Order meetings by latest start_date
-        $meetings = $meetings->sortByDesc('start_date')->values()->all();
-   
-        
-        //dd($meetings);
+        // $meetings = $meetings->sortByDesc('start_date')->values()->all();
+        $meetings = $meetings->sortBy('start_date')->values()->all();
 
+   
         return view('admin.meeting.index', compact('meetings'));
 
      }
 
     public function upcoming(Request $request)
     {
-        
          // Retrieve the authenticated user's employee ID and role ID
          $employeeId = Auth()->user()->employee_id;
          $roleId = Auth()->user()->role_id;
@@ -112,7 +111,6 @@ class MeetingController extends Controller
  
          $meetings = $meetingsQuery->get();
  
-
         // Determine today's date
         $today = now()->toDateString();
 
@@ -121,7 +119,8 @@ class MeetingController extends Controller
             return $meeting->booking_status === 'accepted' && $meeting->start_date >= $today;
         });
 
-    
+        $meetings = $meetings->sortBy('start_date')->values()->all();
+
         return view('admin.meeting.upcoming', compact('meetings'));
     }
 
@@ -185,6 +184,28 @@ class MeetingController extends Controller
         });
 
 
+        // update booking status base on condition
+        foreach ($meetings as $meeting) {
+            $status = $meeting->booking_status;
+            $startDate = $meeting->start_date;
+
+            switch ($status) {
+                case 'pending':
+                    if ($startDate < $today) {
+                        $status = 'expired';
+                    }
+                    break;
+                
+            }
+
+            // Update the meeting status
+            $meeting->booking_status = $status;
+        }
+
+         // Order meetings by latest start_date
+        $meetings = $meetings->sortByDesc('start_date')->values()->all();
+   
+
         return view('admin.meeting.canceled', compact('meetings'));
     }
 
@@ -208,7 +229,6 @@ class MeetingController extends Controller
 
        $meetings = $meetingsQuery->get();
 
-
         // Determine today's date
         $today = now()->toDateString();
 
@@ -229,7 +249,6 @@ class MeetingController extends Controller
         // Retrieve the user based on the employee ID
         $user = User::where('employee_id', $employeeId)->first();
 
-        // Initialize the meetings query
         $meetingsQuery = Meeting::with('participants');
 
         // Check if the user exists and is an admin (role_id = 1)
@@ -255,7 +274,7 @@ class MeetingController extends Controller
 
             if ($status === 'pending') {
                 if ($startDate < $today) {
-                    $status = 'canceled';
+                    $status = 'expired';
                 } 
             } elseif ($status === 'accepted') {
                 if ($startDate < $today) {
@@ -263,9 +282,10 @@ class MeetingController extends Controller
                 } else {
                     $status = 'upcoming';
                 }
-            } elseif ($status === 'rejected') {
-                    $status = 'canceled';
             } 
+            // elseif ($status === 'rejected') {
+            //         $status = 'canceled';
+            // } 
 
             return [
                 'id' => $meeting->id,
@@ -279,7 +299,7 @@ class MeetingController extends Controller
                 'host_id' => $meeting->host_id,
                 'host_name' => $meeting->host ? $meeting->host->name : '',
                 'co_host_id' => $meeting->co_host_id ? $meeting->co_host_id : 0,
-                'co_host_name' => $meeting->coHost ? $meeting->coHost->name : "New",
+                'co_host_name' => $meeting->coHost ? $meeting->coHost->name : '',
                 'booking_type' => $meeting->booking_type,
                 'booking_status' => $status,
                 'created_at' => $meeting->created_at,
@@ -307,8 +327,6 @@ class MeetingController extends Controller
             'data' => $data,
             'message' => 'Success'
         ]);
-
-            
     }
 
     /**
@@ -446,14 +464,22 @@ class MeetingController extends Controller
 
        
         // Attach participants to the meeting
-        if ($request->has('participants')) {
-            foreach ($request->participants as $participantId) {
-                // Create a new participant record
-                Participant::create([
-                    'meeting_id' => $meeting->id,
-                    'participant_id' => $participantId
-                ]);
-            }
+        $participants = $request->input('participants', []);
+
+        // Include host and co-host in participants if they are selected
+        if ($request->has('host_id')) {
+            $participants[] = $request->input('host_id');
+        }
+        if ($request->has('co_host_id') && $request->input('co_host_id')) {
+            $participants[] = $request->input('co_host_id');
+        }
+
+        foreach ($participants as $participantId) {
+            // Create a new participant record
+            Participant::create([
+                'meeting_id' => $meeting->id,
+                'participant_id' => $participantId
+            ]);
         }
 
 
@@ -469,6 +495,76 @@ class MeetingController extends Controller
     }
 
 
+    // filter meeting for web
+
+    public function searchMeeting(Request $request)
+    {
+        $employeeId = auth()->user()->employee_id;
+        $roleId = auth()->user()->role_id;
+
+        // Fetch meetings based on user role
+        $meetingsQuery = Meeting::with('participants');
+        if ($roleId !== 1) {
+            $meetingsQuery->where(function ($query) use ($employeeId) {
+                $query->where('host_id', $employeeId)
+                    ->orWhereHas('participants', function ($query) use ($employeeId) {
+                        $query->where('participant_id', $employeeId);
+                    });
+            });
+        }
+
+        // Apply search filters
+        if ($request->has('search')) {
+            $search = $request->search;
+            $meetingsQuery->where(function ($query) use ($search) {
+                $query->where('meeting_title', 'like', '%' . $search . '%')
+                   
+                    ->orWhere('start_date', 'like', '%' . $search . '%')
+                    ->orWhere('start_time', 'like', '%' . $search . '%')
+                    ->orWhere('end_time', 'like', '%' . $search . '%')
+                    ->orWhere('booking_status', 'like', '%' . $search . '%')
+                    ->orWhere('booking_type', 'like', '%' . $search . '%');
+            });
+        }
+
+        // Get paginated results
+        $meetings = $meetingsQuery->orderBy('start_date')->paginate(30);
+
+        // Update booking status based on conditions
+        $today = now()->toDateString();
+        foreach ($meetings as $meeting) {
+            $status = $meeting->booking_status;
+            $startDate = $meeting->start_date;
+
+            switch ($status) {
+                case 'pending':
+                    if ($startDate < $today) {
+                        $status = 'expired';
+                    }
+                    break;
+                case 'accepted':
+                    if ($startDate < $today) {
+                        $status = 'completed';
+                    } else {
+                        $status = 'upcoming';
+                    }
+                    break;
+                // case 'rejected':
+                //     $status = 'canceled';
+                //     break;
+            }
+
+            // Update the meeting status
+            $meeting->booking_status = $status;
+        }
+
+
+        if ($request->ajax()) {
+            return view('admin.meeting.meeting_table', compact('meetings'))->render();
+        }
+
+        return view('admin.meeting.index', compact('meetings'));
+    }
 
 
     public function getMeetingsByDate(Request $request)
@@ -537,47 +633,69 @@ class MeetingController extends Controller
         $upcomingCount = Meeting::where('booking_status', 'accepted')
         ->whereDate('start_date', '>=', $today) // Start date on or after today
         ->count();
-
-        //$upcomingCount = 100;
        
 
-        $pendingCount = Meeting::where('booking_status', 'pending')->count();
+        $pendingCount = Meeting::whereIn('booking_status', ['pending', 'rejected'])->count();
 
-       // $pendingCount = 90;
 
         $completedCount = Meeting::where('booking_status', 'accepted')
         ->whereDate('start_date', '<', $today) // Start date before today
         ->count();
-    
-       // $completedCount = 244;
+       
+        // Get the start date of the current week (Sunday)
+        $startOfWeek = Carbon::now()->startOfWeek()->subDay()->format('Y-m-d');
 
-       $weekendData = [
-        'Sunday' => 10,
-        'Monday' => 12,
-        'Tuesday' => 9,
-        'Wednesday' => 30,
-        'Thursday' => 25,
-        'Friday' => 10,
-        'Saturday' => 7,
+        // Get the end date of the current week (Saturday)
+        $endOfWeek = Carbon::now()->endOfWeek()->format('Y-m-d');
+        
+        // Get the start and end dates of the current year
+        $startOfYear = Carbon::now()->startOfYear()->format('Y-m-d');
+        $endOfYear = Carbon::now()->endOfYear()->format('Y-m-d');
+        
+        // Get meetings for the current week and current year
+        $weeklyMeetings = Meeting::whereBetween('start_date', [$startOfWeek, $endOfWeek])->get();
+        $yearlyMeetings = Meeting::whereBetween('start_date', [$startOfYear, $endOfYear])->get();
+        
+        // Initialize the weekend data array
+        $weekendData = [
+            'Sunday' => 0,
+            'Monday' => 0,
+            'Tuesday' => 0,
+            'Wednesday' => 0,
+            'Thursday' => 0,
+            'Friday' => 0,
+            'Saturday' => 0,
         ];
 
+        // Initialize the yearly data array
         $yearlyData = [
-            'Jan' => 90,
-            'Feb' => 122,
-            'Mar' => 90,
-            'Apr' => 30,
-            'May' => 70,
-            'Jun' => 80,
-            'Jul' => 7,
-            'Aug' => 6,
-            'Sep' => 3,
-            'Oct' => 7,
-            'Nov' => 43,
-            'Dec' => 10
-            ];
+            'Jan' => 0,
+            'Feb' => 0,
+            'Mar' => 0,
+            'Apr' => 0,
+            'May' => 0,
+            'Jun' => 0,
+            'Jul' => 0,
+            'Aug' => 0,
+            'Sep' => 0,
+            'Oct' => 0,
+            'Nov' => 0,
+            'Dec' => 0
+        ];
 
-       // dd($weekendData);
+        // Populate the weekendData array
+        foreach ($weeklyMeetings as $meeting) {
+            // Extract the day of the week from the start date
+            $weekDay = Carbon::parse($meeting->start_date)->format('l');
+            $weekendData[$weekDay]++;
+        }
 
+        // Populate the yearlyData array
+        foreach ($yearlyMeetings as $meeting) {
+            // Extract the month from the start date
+            $month = Carbon::parse($meeting->start_date)->format('M');
+            $yearlyData[$month]++;
+        }
         return view('welcome', compact('totalMeeting', 'upcomingCount', 'pendingCount', 'completedCount', 'weekendData', 'yearlyData'));
 
     }
@@ -604,7 +722,6 @@ class MeetingController extends Controller
         // Total meeting count
         $totalMeetingCount = Meeting::count();
 
-
         
         // Get the start date of the current week (Sunday)
         $startOfWeek = Carbon::now()->startOfWeek()->subDay()->format('Y-m-d');
@@ -616,7 +733,6 @@ class MeetingController extends Controller
         $meetings = Meeting::whereBetween('start_date', [$startOfWeek, $endOfWeek])->get();
 
 
-        // dd($meetings->count);
 
         // Initialize the weekend data array
         $weekendData = [
@@ -1025,17 +1141,43 @@ class MeetingController extends Controller
         // If validation passes, create the meeting using the validated data
         $meeting = Meeting::create($validator->validated());
 
+
+
+
+         // If validation passes, create the meeting using the validated data
+         $meeting = Meeting::create($validator->validated());
+
        
-        // Attach participants to the meeting
-        if ($request->has('participants')) {
-            foreach ($request->participants as $participantId) {
-                // Create a new participant record
-                Participant::create([
-                    'meeting_id' => $meeting->id,
-                    'participant_id' => $participantId
-                ]);
-            }
-        }
+         // Attach participants to the meeting
+         $participants = $request->input('participants', []);
+ 
+         // Include host and co-host in participants if they are selected
+         if ($request->has('host_id')) {
+             $participants[] = $request->input('host_id');
+         }
+         if ($request->has('co_host_id') && $request->input('co_host_id')) {
+             $participants[] = $request->input('co_host_id');
+         }
+ 
+         foreach ($participants as $participantId) {
+             // Create a new participant record
+             Participant::create([
+                 'meeting_id' => $meeting->id,
+                 'participant_id' => $participantId
+             ]);
+         }
+
+       
+        // Attach participants to the meeting 
+        // if ($request->has('participants')) {
+        //     foreach ($request->participants as $participantId) {
+        //         // Create a new participant record
+        //         Participant::create([
+        //             'meeting_id' => $meeting->id,
+        //             'participant_id' => $participantId
+        //         ]);
+        //     }
+        // }
 
 
         // sent the notification to user admin
@@ -1053,19 +1195,16 @@ class MeetingController extends Controller
     }
 
 
+   
     public function edit($id)
     {
-    
-        // In your controller method
-        $meeting = Meeting::with('updateParticipants')->find($id);
+        $meeting = Meeting::with('participants')->find($id);
         $activeEmployees = Employee::where('status', 'active')->get();
-
-        // Debugging
-        // dd($meeting->updateParticipants->pluck('employee_id')->toArray(), $activeEmployees->pluck('employee_id')->toArray());
-
+    
         return view('admin.meeting.edit', compact('meeting', 'activeEmployees'));
-
     }
+    
+
 
     public function update(Request $request, $id)
     
@@ -1186,13 +1325,15 @@ class MeetingController extends Controller
             $meeting->update(['booking_type' => 'reschedule']);
         
 
+    
+
         // Update or attach participants to the meeting
         if ($request->has('participants')) {
             $meeting->updateParticipants()->sync($request->participants);
             $meeting->participants()->get()->each->touch();
 
         }
-        
+                
         return redirect()->route("meeting.index")->with('message', 'Meeting rescheduled successfully');
 
     }
@@ -1290,8 +1431,8 @@ class MeetingController extends Controller
             $html .= '<td>' . $meeting->start_date . '</td>';
             $html .= '<td>' . $meeting->start_time . '</td>';
             $html .= '<td>' . $meeting->end_time . '</td>';
-            $html .= '<td>' . ($meeting->host ? $meeting->host->name : '') . '</td>';
-            $html .= '<td>' . ($meeting->coHost ? $meeting->coHost->name : 'New') . '</td>';
+            $html .= '<td>' . ($meeting->host ? $meeting->host->name : 'N/A') . '</td>';
+            $html .= '<td>' . ($meeting->coHost ? $meeting->coHost->name : 'N/A') . '</td>';
             $html .= '<td>' . $meeting->booking_type . '</td>';
             $html .= '<td>' . $meeting->booking_status . '</td>';
             $html .= '<td>' . $meeting->description . '</td>';
@@ -1383,8 +1524,8 @@ class MeetingController extends Controller
                 $meeting->start_date,
                 $meeting->start_time,
                 $meeting->end_time,
-                $meeting->host ? $meeting->host->name : '',
-                $meeting->coHost ? $meeting->coHost->name : 'New',
+                $meeting->host ? $meeting->host->name : 'N/A',
+                $meeting->coHost ? $meeting->coHost->name : 'N/A',
                 $meeting->booking_type,
                 $meeting->booking_status,
                 $meeting->description,
@@ -1419,20 +1560,8 @@ class MeetingController extends Controller
         $roleId = Auth()->user()->role_id;
 
         // Fetch meetings based on user role
-        $meetingsQuery = Meeting::with(['room', 'host', 'coHost', 'participants.employee'])
-            ->select(
-                'id', 
-                'room_id', 
-                'meeting_title', 
-                'start_date', 
-                'start_time', 
-                'end_time', 
-                'host_id', 
-                'co_host_id', 
-                'booking_type', 
-                'booking_status', 
-                'description'
-            );
+        $meetingsQuery = Meeting::with(['room', 'host', 'coHost', 'participants.employee']);
+           
 
         if ($roleId !== 1) {
             $meetingsQuery->where(function ($query) use ($employeeId) {
@@ -1444,6 +1573,7 @@ class MeetingController extends Controller
         }
 
         $meetings = $meetingsQuery->get();
+
 
         return view('admin.meeting.print', compact('meetings'));
     }

@@ -2,21 +2,29 @@
 
 @section('content')
 <div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-10">
-            <nav aria-label="breadcrumb">
+    <div class="row justify-content-center rounded shadow p-3 mb-5 bg-white" style="background-color: white">
+
+        <div class="col-md-11 mt-3 mb-3">
+            <!-- <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item active" aria-current="page">Permision From</li>
                 </ol>
-            </nav>
+            </nav> -->
             @if(Session::has('message'))
                      <div class='alert alert-success'>
                           {{Session::get('message')}}
                       </div>
-                @endif
+            @endif
+
+            @if (Session::has('error'))
+                <div class='alert alert-warning'>
+                {{Session::get('error') }}
+                </div>
+            @endif
+
             <form action="{{route('permissions.store')}}" method="post">@csrf
                 <div class="card">
-                    <div class="card-header">Permission</div>
+                    <div class="card-header">Create Permission</div>
 
                     <div class="card-body">
                         <div class="form-group mt-2">
@@ -27,6 +35,7 @@
                                 @foreach(App\Models\Role::all() as $role)
                                 <option value="{{$role->id}}">{{$role->name}}</option>
                                 @endforeach
+                               
                                 @error('role_id')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
@@ -46,15 +55,17 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+
                                     <tr>
-                                        <td>Department</td>
-                                        <td><input type="checkbox" name="name[department][can-add]" value="1"></td>
-                                        <td><input type="checkbox" name="name[department][can-edit]" value="1"></td>
-                                        <td><input type="checkbox" name="name[department][can-view]" value="1"></td>
-                                        <td><input type="checkbox" name="name[department][can-delete]" value="1"></td>
-                                        <td><input type="checkbox" name="name[department][can-list]" value="1"></td>
+                                        <td>User</td>
+                                        <td><input type="checkbox" name="name[user][can-add]" value="1"></td>
+                                        <td><input type="checkbox" name="name[user][can-edit]" value="1"></td>
+                                        <td><input type="checkbox" name="name[user][can-view]" value="1"></td>
+                                        <td><input type="checkbox" name="name[user][can-delete]" value="1"></td>
+                                        <td><input type="checkbox" name="name[user][can-list]" value="1"></td>
                                     
                                     </tr>
+
                                     <tr>
                                         <td>Role</td>
                                         <td><input type="checkbox" name="name[role][can-add]" value="1"></td>
@@ -66,6 +77,37 @@
                                     </tr>
                                     
                                     <tr>
+                                        <td>Meeting</td>
+                                        <td><input type="checkbox" name="name[meeting][can-add]" value="1"></td>
+                                        <td><input type="checkbox" name="name[meeting][can-edit]" value="1"></td>
+                                        <td><input type="checkbox" name="name[meeting][can-view]" value="1"></td>
+                                        <td><input type="checkbox" name="name[meeting][can-delete]" value="1"></td>
+                                        <td><input type="checkbox" name="name[meeting][can-list]" value="1"></td>
+                                    
+                                    </tr>
+
+                                    <tr>
+                                        <td>Employee</td>
+                                        <td><input type="checkbox" name="name[employee][can-add]" value="1"></td>
+                                        <td><input type="checkbox" name="name[employee][can-edit]" value="1"></td>
+                                        <td><input type="checkbox" name="name[employee][can-view]" value="1"></td>
+                                        <td><input type="checkbox" name="name[employee][can-delete]" value="1"></td>
+                                        <td><input type="checkbox" name="name[employee][can-list]" value="1"></td>
+                                    
+                                    </tr>
+
+                                    <tr>
+                                        <td>Department</td>
+                                        <td><input type="checkbox" name="name[department][can-add]" value="1"></td>
+                                        <td><input type="checkbox" name="name[department][can-edit]" value="1"></td>
+                                        <td><input type="checkbox" name="name[department][can-view]" value="1"></td>
+                                        <td><input type="checkbox" name="name[department][can-delete]" value="1"></td>
+                                        <td><input type="checkbox" name="name[department][can-list]" value="1"></td>
+                                    
+                                    </tr>
+                                   
+                                    
+                                    <tr>
                                         <td>Permissions</td>
                                         <td><input type="checkbox" name="name[permission][can-add]" value="1"></td>
                                         <td><input type="checkbox" name="name[permission][can-edit]" value="1"></td>
@@ -75,16 +117,17 @@
                                     
                                     </tr>
                                     
+                                    
+                                    
                                     <tr>
-                                        <td>User</td>
-                                        <td><input type="checkbox" name="name[user][can-add]" value="1"></td>
-                                        <td><input type="checkbox" name="name[user][can-edit]" value="1"></td>
-                                        <td><input type="checkbox" name="name[user][can-view]" value="1"></td>
-                                        <td><input type="checkbox" name="name[user][can-delete]" value="1"></td>
-                                        <td><input type="checkbox" name="name[user][can-list]" value="1"></td>
+                                        <td>Room</td>
+                                        <td><input type="checkbox" name="name[room][can-add]" value="1"></td>
+                                        <td><input type="checkbox" name="name[room][can-edit]" value="1"></td>
+                                        <td><input type="checkbox" name="name[room][can-view]" value="1"></td>
+                                        <td><input type="checkbox" name="name[room][can-delete]" value="1"></td>
+                                        <td><input type="checkbox" name="name[room][can-list]" value="1"></td>
                                     
                                     </tr>
-
                                     
 
                                     <tr>
@@ -97,7 +140,7 @@
                                     
                                     </tr>
 
-                                    <tr>
+                                    <!-- <tr>
                                         <td>Leave</td>
                                         <td></td>
                                         <td></td>
@@ -105,7 +148,9 @@
                                         <td></td>
                                         <td><input type="checkbox" name="name[leave][can-list]" value="1"></td>
                                     
-                                    </tr>
+                                    </tr> -->
+
+
                                     
                                 </tbody>
                             </table>

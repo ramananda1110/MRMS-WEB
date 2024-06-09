@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-use App\Imports\ExcelImpoter;
+use App\Imports\EmployeeDataImport;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Models\Employee;
 use DataTables;
@@ -29,46 +29,38 @@ class EmployeeController extends Controller
 
     }
 
-    public function searchEmployee2(Request $request){
-       
-        if($request->search){
-            $employees = Employee::where('name','like','%'.$request->search.'%')
-            ->orWhere('employee_id','like','%'.$request->search.'%')
-            ->orWhere('division','like','%'.$request->search.'%')
-            ->orWhere('mobile_number','like','%'.$request->search.'%')
-            ->orWhere('project_code','like','%'.$request->search.'%')
-            ->orWhere('email','like','%'.$request->search.'%')
-            ->orWhere('designation','like','%'.$request->search.'%')
-            ->paginate(30);
-            return view('admin.employee.index',compact('employees'));
-        }
-
-
-        $employees  =Employee::latest()->paginate(30);
-
-        return view('admin.employee.index', compact('employees'));
-       
-    }
-
+  
     public function searchEmployee(Request $request)
     {
+        // Initialize the query builder
+        $query = Employee::query();
+
+        // Apply search filters if search query is present
+        if ($request->ajax() && $request->has('search')) {
+            $search = $request->search;
+            $query->where(function ($query) use ($search) {
+                $query->where('name', 'like', '%' . $search . '%')
+                    ->orWhere('employee_id', 'like', '%' . $search . '%')
+                    ->orWhere('division', 'like', '%' . $search . '%')
+                    ->orWhere('mobile_number', 'like', '%' . $search . '%')
+                    ->orWhere('project_code', 'like', '%' . $search . '%')
+                    ->orWhere('email', 'like', '%' . $search . '%')
+                    ->orWhere('designation', 'like', '%' . $search . '%');
+            });
+        }
+
+        // Paginate the results
+        $employees = $query->paginate(30);
+
+        // Return the appropriate view for AJAX or standard requests
         if ($request->ajax()) {
-            $employees = Employee::where('name', 'like', '%' . $request->search . '%')
-                ->orWhere('employee_id', 'like', '%' . $request->search . '%')
-                ->orWhere('division', 'like', '%' . $request->search . '%')
-                ->orWhere('mobile_number', 'like', '%' . $request->search . '%')
-                ->orWhere('project_code', 'like', '%' . $request->search . '%')
-                ->orWhere('email', 'like', '%' . $request->search . '%')
-                ->orWhere('designation', 'like', '%' . $request->search . '%')
-                ->paginate(30);
-    
             return view('admin.employee.employee_table', compact('employees'))->render();
         }
-    
-        $employees = Employee::latest()->paginate(30);
+
         return view('admin.employee.index', compact('employees'));
     }
-    
+
+
 
 
     public function import(Request $request)
@@ -82,7 +74,7 @@ class EmployeeController extends Controller
         $file = $request->file('file');
  
         // Process the Excel file
-        Excel::import(new ExcelImpoter, $file);
+        Excel::import(new EmployeeDataImport, $file);
  
         return redirect()->back()->with('message', 'User data imported successfully!');
     }
@@ -174,21 +166,24 @@ class EmployeeController extends Controller
 
     public function destroy($id)
     {
-        $department = Employee::find($id);
-        $department->delete();
+
+        $employee = Employee::find($id);
+        $employee->delete();
         return redirect()->route('employee.index')->with('message', 'Recored  Deleted');
 
     }
 
     public function edit($id)
     {
-        $employee = Employee::find($id);
+       $employee = Employee::find($id);
+       
         return view('admin.employee.edit', compact('employee'));
 
     }
 
     public function update(Request $request, $id)
     {
+        
         $notice = Employee::find($id);
         $data = $request->all();
         $notice->update($data);

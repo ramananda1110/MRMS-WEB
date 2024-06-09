@@ -59,7 +59,7 @@ class MeetingDataExport implements FromCollection, WithHeadings
                 'start_time' => $meeting->start_time,
                 'end_time' => $meeting->end_time,
                 'host_name' => $meeting->host ? $meeting->host->name : '',
-                'co_host_name' => $meeting->coHost ? $meeting->coHost->name : 'New',
+                'co_host_name' => $meeting->coHost ? $meeting->coHost->name : 'N/A',
                 'booking_type' => $meeting->booking_type,
                 'booking_status' => $status,
                 'description' => $meeting->description,

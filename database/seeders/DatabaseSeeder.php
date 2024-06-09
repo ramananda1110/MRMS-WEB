@@ -83,7 +83,7 @@ class DatabaseSeeder extends Seeder
             'password'=>bcrypt('password'),
             'email_verified_at'=>NOW(),
             'address'=>'Bangladesh',
-            'mobile_number'=>'01738039685',
+            'mobile_number'=>'N/A',
             'department_id'=>6,
             'role_id'=>1,
             'start_from'=> '1952-02-02',
@@ -127,15 +127,24 @@ class DatabaseSeeder extends Seeder
         // create a default permission
 
         // JSON string with your data
-        $jsonData = '{"department":{"can-add":"1","can-edit":"1","can-view":"1","can-delete":"1","can-list":"1"},"role":{"can-add":"1","can-edit":"1","can-view":"1","can-delete":"1","can-list":"1"},"permission":{"can-add":"1","can-edit":"1","can-view":"1","can-delete":"1","can-list":"1"},"user":{"can-add":"1","can-edit":"1","can-view":"1","can-delete":"1","can-list":"1"},"notice":{"can-add":"1","can-edit":"1","can-view":"1","can-delete":"1","can-list":"1"},"leave":{"can-list":"1"}}';
+        $adminPermission = '{"meeting":{"can-add":"1","can-edit":"1","can-view":"1","can-delete":"1","can-list":"1"},"employee":{"can-add":"1","can-edit":"1","can-view":"1","can-delete":"1","can-list":"1"},"department":{"can-add":"1","can-edit":"1","can-view":"1","can-delete":"1","can-list":"1"},"role":{"can-add":"1","can-edit":"1","can-view":"1","can-delete":"1","can-list":"1"},"permission":{"can-add":"1","can-edit":"1","can-view":"1","can-delete":"1","can-list":"1"},"user":{"can-add":"1","can-edit":"1","can-view":"1","can-delete":"1","can-list":"1"},"room":{"can-add":"1","can-edit":"1","can-view":"1","can-delete":"1","can-list":"1"},"leave":{"can-list":"1"},"notice":{"can-add":"1","can-edit":"1","can-view":"1","can-delete":"1","can-list":"1"},"leave":{"can-list":"1"}}';
+
+
+        $viewPersmission = '{"user":{"can-view":"1","can-list":"1"},"role":{"can-view":"1","can-list":"1"},"meeting":{"can-view":"1","can-list":"1"},"employee":{"can-view":"1","can-list":"1"},"department":{"can-view":"1","can-list":"1"},"permission":{"can-view":"1","can-list":"1"},"room":{"can-view":"1","can-list":"1"},"notice":{"can-view":"1","can-list":"1"}}';
 
         // Decode the JSON string into a PHP associative array
         $data = json_decode($jsonData, true);
 
         Permission::create([
             'role_id'=>1,
-            'name'=> $data
+            'name'=> $adminPermission
         ]);
+
+        Permission::create([
+            'role_id'=>3,
+            'name'=> $viewPersmission
+        ]);
+
     }
 
 

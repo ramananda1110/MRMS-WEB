@@ -23,9 +23,15 @@
         
         
 
-        <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
-        
+        <!-- Include jQuery library -->
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
+        <!-- Include jQuery UI library and CSS -->
+        <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+        <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+
+        <!-- Yield for custom scripts -->
+        @yield('scripts')
 
         
         <script>

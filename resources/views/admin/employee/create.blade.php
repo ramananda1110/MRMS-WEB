@@ -7,16 +7,12 @@
             {{Session::get('message')}}
         </div>
      @endif
-    <nav aria-label="breadcrumb">
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item active" aria-current="page">Create Employee</li>
-        </ol>
-     </nav>
     
  <form action="{{route('employee.store')}}" method="post", enctype="multipart/form-data">@csrf        
-    <div class="row justify-content-center">
+    <div class="row justify-content-center rounded shadow p-3 mb-5 bg-white" style="background-color: white">
+
         <div class="col-md-11" >
-            <div class="card" >
+            <div class="card mb-3 mt-3" >
                 <div class="card-header">Create a New Employee</div>
 
                 <div class="card-body">

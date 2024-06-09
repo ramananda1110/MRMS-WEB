@@ -7,18 +7,15 @@
             {{Session::get('message')}}
         </div>
      @endif
-    <nav aria-label="breadcrumb">
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item active" aria-current="page">Update</li>
-        </ol>
-     </nav>
+    
     
      <form action="{{route('employee.update', [$employee->id])}}" method="post">@csrf
             {{method_field('PATCH')}}
 
-    <div class="row justify-content-center">
+    <div class="row justify-content-center rounded shadow p-3 mb-5 bg-white" style="background-color: white">
+
         <div class="col-md-11">
-            <div class="card">
+            <div class="card mt-3 mb-3">
                 <div class="card-header">Update an Employee</div>
 
                 <div class="card-body">

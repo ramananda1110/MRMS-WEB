@@ -6,6 +6,12 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Department;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Validator;
+use App\Exports\UserDataExport;
+use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\Auth;
+use Barryvdh\DomPDF\Facade\Pdf;
+
 
 class UserController extends Controller
 {
@@ -109,17 +115,7 @@ class UserController extends Controller
     public function update(Request $request, $id)
     {
 
-        // $this->validate($request, [
-        //     'name'=>'required',
-        //     'email'=>'required|string|email|max:255|unique:users',
-        //     'department_id'=>'required',
-        //     'role_id'=>'required',
-        //     'image'=>'mimes:jpeg,jpg,png',
-        //     'start_from'=>'required',
-        //     'designation'=>'required'
-        // ]);
-      
-        
+       
 
         $data = $request->all();
        
@@ -207,6 +203,16 @@ class UserController extends Controller
     }
 
 
+    public function userProfile()
+    {
+        $user = Auth::user();
+
+        return view('admin.user.user_profile', compact('user'));
+
+
+     }
+
+
     
 
     public function updateUserStatus(Request $request, $id)
@@ -243,4 +249,152 @@ class UserController extends Controller
         return redirect()->back()->with('message', 'User status updated successfully');
 
     }
+
+    public function exportExcel()
+    {
+        return Excel::download(new UserDataExport, 'users-data.xlsx');
+    }
+
+
+    public function printView()
+    {
+       
+        $users = User::all();
+
+        return view('admin.user.print', compact('users'));
+    }
+
+
+    public function exportUserCsv()
+    {
+
+        $users = User::all();
+
+        $csvHeader = [
+            'Employee ID', 
+            'Name', 
+            'Role', 
+            'Project Code', 
+            'Joining Date', 
+            'Division', 
+            'Designation', 
+            'Mobile', 
+            'Email', 
+            'Address'
+        ];
+        
+        $csvData = $users->map(function ($user) {
+            
+            return [
+                'user_id' => $user->employee_id,
+                'name' => $user->name,
+                'role' => $user->role->name,
+                'project_code' => $user->project_code,
+                'joining_date' => $user->start_from,
+                'division' => $user->department->name,
+                'designaion' => $user->designation,
+                'mobile' => $user->mobile_number,
+                'email' => $user->email,
+                'address' => $user->address,
+               
+            ];
+        });
+
+        
+        $filename = 'users-csv-export.csv';
+        $handle = fopen($filename, 'w+');
+        fputcsv($handle, $csvHeader);
+
+        foreach ($csvData as $row) {
+            fputcsv($handle, $row);
+        }
+
+        fclose($handle);
+
+        $headers = [
+            'Content-Type' => 'text/csv',
+        ];
+
+        return response()->download($filename, $filename, $headers)->deleteFileAfterSend(true);
+    }
+
+
+
+    public function exportUserPdf()
+    {
+        ini_set('memory_limit', '1024M');
+        ini_set('max_execution_time', 300);
+
+
+        $users = User::all();
+
+
+        $html = '
+        <html>
+        <head>
+            <style>
+                body { font-family: sans-serif; margin: 20px; }
+                table { border-collapse: collapse; width: 100%; }
+                th, td { border: 1px solid black; padding: 8px; text-align: left; }
+                th { background-color: #f2f2f2; }
+                .page-break { page-break-after: always; }
+            </style>
+        </head>
+        <body>
+            <h1>Meetings List</h1>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Employee ID</th>
+                        <th>Name</th>
+                        <th>Role</th>
+                        <th>Project Code</th>
+                        <th>Joining Date</th>
+                        <th>Division</th>
+                        <th>Designaion</th>
+                        <th>Mobile</th>
+                        <th>Email</th>
+                        <th>Address</th>
+                    </tr>
+                </thead>
+                <tbody>';
+
+        foreach ($users as $user) {
+            
+
+            $html .= '<tr>';
+            $html .= '<td>' . $user->employee_id . '</td>';
+            $html .= '<td>' . $user->name .'</td>';
+            $html .= '<td>' . $user->role->name . '</td>';
+            $html .= '<td>' . $user->project_code . '</td>';
+            $html .= '<td>' . $user->start_from . '</td>';
+            $html .= '<td>' . $user->department->name . '</td>';
+            $html .= '<td>' . $user->designation . '</td>';
+            $html .= '<td>' . $user->mobile_number . '</td>';
+            $html .= '<td>' . $user->email . '</td>';
+            $html .= '<td>' . $user->address . '</td>';
+           
+            $html .= '</tr>';
+        }
+
+        $html .= '</tbody></table></body></html>';
+
+
+         // Set paper size and margins
+        $pdf = Pdf::loadHTML($html)
+        ->setPaper('a4', 'landscape')
+        ->setOptions([
+            'isHtml5ParserEnabled' => true,
+            'isRemoteEnabled' => true,
+            'dpi' => 96,
+            'defaultFont' => 'sans-serif',
+            'margin_left' => 10,
+            'margin_right' => 10,
+            'margin_top' => 10,
+            'margin_bottom' => 10,
+        ]);
+        return $pdf->download('users-pdf-export.pdf');
+
+    }  
+
 }

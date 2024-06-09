@@ -44,5 +44,33 @@ class ChangePasswordController extends Controller
             'message' => 'Password changed successfully'
              ], Response::HTTP_OK);
     }
+    public function showChangePasswordForm()
+    {
+        return view('admin.layouts.change_password');
+    }
+
+    public function changePasswordByWeb(Request $request)
+    {
+        // Validate the request data
+        $request->validate([
+            'current_password' => 'required',
+            'new_password' => 'required|string|min:6',
+            'password_confirmation' => 'required|same:new_password',
+        ]);
+
+        $user = Auth::user();
+
+        // Check if the current password matches the user's password
+        if (!Hash::check($request->current_password, $user->password)) {
+            return redirect()->back()->with('error', 'Current password does not match');
+        }
+
+        // Update the user's password
+        $user->password = Hash::make($request->new_password);
+        $user->save();
+
+        return redirect()->back()->with('message', 'Password changed successfully');
+    }
+
     
 }

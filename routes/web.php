@@ -3,6 +3,9 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MeetingController;
 use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\UserController;
+
+use App\Http\Controllers\Auth\ChangePasswordController;
 
 
 /*
@@ -36,6 +39,10 @@ Route::group(['middleware'=> ['auth', 'has.permission']], function(){
 
     Route::get('/', [MeetingController::class, 'dashboardMeetingCount'])->name('meeting.count');
     
+    
+    Route::get('/change-password', [ChangePasswordController::class, 'showChangePasswordForm'])->name('change.password.form');
+
+    Route::post('/change-password', [ChangePasswordController::class, 'changePasswordByWeb'])->name('password.change');
 
 
     Route::resource('departments', 'DepartmentController');
@@ -47,6 +54,12 @@ Route::group(['middleware'=> ['auth', 'has.permission']], function(){
     Route::resource('users', 'UserController');
 
     Route::post('/user/update-status/{id}', [UserController::class, 'updateUserStatus'])->name('user.updateStatus');
+    Route::post('user/export-excel', [UserController::class, 'exportExcel'])->name('users.download-excel');
+    Route::get('user/print', [UserController::class, 'printView'])->name('users.printView');
+    Route::get('user/export-cvs', [UserController::class, 'exportUserCsv'])->name('users.export-csv');
+    Route::get('user/download-pdf', [UserController::class, 'exportUserPdf'])->name('users.exportPdf');
+
+    Route::get('/user-profile', [UserController::class, 'userProfile'])->name('user.profile');
 
 
     Route::get('/user-list', 'UserController@listOfUser');
@@ -71,6 +84,7 @@ Route::group(['middleware'=> ['auth', 'has.permission']], function(){
 
     Route::resource('employee', 'EmployeeController');
 
+
     // Define resource routes for other CRUD operations
     //  Route::resource('employee', EmployeeController::class);
 
@@ -87,6 +101,8 @@ Route::group(['middleware'=> ['auth', 'has.permission']], function(){
 
     Route::post('/meeting/update-status/{id}', [MeetingController::class, 'updateMeetingByWeb'])->name('meeting.update.web');
 
+
+    Route::get('/search-meeting', [MeetingController::class, 'searchMeeting'])->name('search.meeting');
 
     Route::get('/meetings/all', [MeetingController::class, 'index'])->name('meetings.all');
     Route::get('/meetings/upcoming', [MeetingController::class, 'upcoming'])->name('meetings.upcoming');
