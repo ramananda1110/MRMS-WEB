@@ -48,6 +48,7 @@
 
                                             <form action="{{ route('meetings.download-excel') }}" method="post"
                                                 target="_blank">@csrf
+                                                <input type="hidden" name="filter" id="exportFilter" value="0">
 
                                                 <button
                                                     class="btn btn-default buttons-csv border buttons-html5 btn-sm">Excel</button>
@@ -152,29 +153,22 @@
             window.location.href = element.getAttribute('href');
         }
 
-        function submitForm(status, formId) {
-            document.getElementById(formId).querySelector('[name="booking_status"]').value = status;
-            document.getElementById(formId).submit();
-        }
+       
 
         document.addEventListener('DOMContentLoaded', (event) => {
             const selectElement = document.querySelector('.form-select');
+            const searchInput = document.getElementById('searchInput');
+            const exportFilterInput = document.getElementById('exportFilter');
 
-            selectElement.addEventListener('change', function() {
-                const selectedValue = selectElement.value;
-                console.log(selectedValue);  
-                // Call API to update data
-                 updateData(selectedValue);
-            });
-
-            function updateData(filterValue) {
+            function updateData() {
+                const filterValue = selectElement.value;
+                const searchValue = searchInput.value;
                 $.ajax({
-                    url: '{{ route("search.meeting") }}', // Adjust to your route
+                    url: '{{ route("search.meeting") }}',
                     method: 'GET',
-                    data: { filter: filterValue },
+                    data: { filter: filterValue, search: searchValue },
                     success: function(response) {
-                        // Assuming you have a container to display the filtered meetings
-                        $('#meeting-container').html(response);
+                        $('#meetingTableContainer').html(response);
                     },
                     error: function(error) {
                         console.error('Error fetching filtered data:', error);
@@ -182,35 +176,16 @@
                 });
             }
 
-            
-        });
+            selectElement.addEventListener('change', updateData);
+            searchInput.addEventListener('input', updateData);
 
-       
 
-        document.addEventListener('DOMContentLoaded', function() {
-            const searchInput = document.getElementById('searchInput');
-
-            searchInput.addEventListener('input', function() {
-                const query = searchInput.value;
-                fetchEmployees(query);
+            selectElement.addEventListener('change', (event) => {
+                exportFilterInput.value = event.target.value;
             });
 
-            function fetchEmployees(query) {
-                fetch(`{{ route('search.meeting') }}?search=${query}`, {
-                        headers: {
-                            'X-Requested-With': 'XMLHttpRequest'
-                        }
-                    })
-                    .then(response => response.text())
-                    .then(data => {
-                        document.getElementById('meetingTableContainer').innerHTML = data;
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                        alert('Error fetching employee data'); // Add this line
-                    });
-            }
         });
+
     </script>
 @endsection
 @endsection

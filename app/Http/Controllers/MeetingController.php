@@ -152,6 +152,9 @@ class MeetingController extends Controller
             return $meeting->booking_status === 'pending' && $meeting->start_date >= $today;
         });
 
+        $meetings = $meetings->sortBy('start_date')->values()->all();
+
+
         return view('admin.meeting.pending', compact('meetings'));
     }
 
@@ -500,6 +503,8 @@ class MeetingController extends Controller
 
     public function searchMeeting(Request $request)
     {
+
+
         $employeeId = auth()->user()->employee_id;
         $roleId = auth()->user()->role_id;
 
@@ -525,15 +530,17 @@ class MeetingController extends Controller
             });
         }
 
-
+        
         // Apply date filter based on selected value
         if ($request->has('filter')) {
-            $filter = $request->filter;
+            
+            $filter = $request->input('filter');
             $dateFrom = now();
 
+            
             switch ($filter) {
                 case '1':
-                    $dateFrom = now()->subDays(2);
+                    $dateFrom = now()->subDays(15);
                     break;
                 case '2':
                     $dateFrom = now()->subDays(30);
@@ -548,16 +555,21 @@ class MeetingController extends Controller
                     $dateFrom = null;
             }
 
-            dd($dateFrom);
-            
             if ($dateFrom) {
-                $meetingsQuery->where('start_date', '>=', $dateFrom);
+                $formattedDateFrom = $dateFrom->toDateString();
+                $meetingsQuery->whereDate('start_date', '>=', $formattedDateFrom);
+
+               
             }
+
         }
 
+
+    
         // Get paginated results
         $meetings = $meetingsQuery->orderBy('start_date')->paginate(30);
 
+        
         // Update booking status based on conditions
         $today = now()->toDateString();
         foreach ($meetings as $meeting) {
@@ -1375,9 +1387,12 @@ class MeetingController extends Controller
 
 
 
-    public function exportExcel()
+    public function exportExcel(Request $request)
     {
-        return Excel::download(new MeetingDataExport, 'meetings-data.xlsx');
+        // return Excel::download(new MeetingDataExport, 'meetings-data.xlsx');
+
+        $filter = $request->input('filter', '0'); // Default to '0' if no filter is provided
+        return Excel::download(new MeetingDataExport($filter), 'meetings-data.xlsx');
     }
 
 

@@ -88,10 +88,6 @@ function setActiveTab(event, element) {
     // Redirect to the link's href
     window.location.href = element.getAttribute('href');
 }
-function submitForm(status, formId) {
-    document.getElementById(formId).querySelector('[name="booking_status"]').value = status;
-    document.getElementById(formId).submit();
-}
 
 
 </script>
