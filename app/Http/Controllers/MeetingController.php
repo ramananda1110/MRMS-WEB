@@ -540,16 +540,16 @@ class MeetingController extends Controller
             
             switch ($filter) {
                 case '1':
-                    $dateFrom = now()->subDays(2);
-                    break;
-                case '2':
-                    $dateFrom = now()->subDays(10);
-                    break;
-                case '3':
                     $dateFrom = now()->subDays(15);
                     break;
+                case '2':
+                    $dateFrom = now()->subDays(30);
+                    break;
+                case '3':
+                    $dateFrom = now()->subDays(90);
+                    break;
                 case '4':
-                    $dateFrom = now()->subDays(20);
+                    $dateFrom = now()->subDays(180);
                     break;
                 default:
                     $dateFrom = null;
@@ -1387,9 +1387,12 @@ class MeetingController extends Controller
 
 
 
-    public function exportExcel()
+    public function exportExcel(Request $request)
     {
-        return Excel::download(new MeetingDataExport, 'meetings-data.xlsx');
+        // return Excel::download(new MeetingDataExport, 'meetings-data.xlsx');
+
+        $filter = $request->input('filter', '0'); // Default to '0' if no filter is provided
+        return Excel::download(new MeetingDataExport($filter), 'meetings-data.xlsx');
     }
 
 

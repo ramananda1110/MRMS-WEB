@@ -48,6 +48,7 @@
 
                                             <form action="{{ route('meetings.download-excel') }}" method="post"
                                                 target="_blank">@csrf
+                                                <input type="hidden" name="filter" id="exportFilter" value="0">
 
                                                 <button
                                                     class="btn btn-default buttons-csv border buttons-html5 btn-sm">Excel</button>
@@ -152,10 +153,12 @@
             window.location.href = element.getAttribute('href');
         }
 
-        
+       
+
         document.addEventListener('DOMContentLoaded', (event) => {
             const selectElement = document.querySelector('.form-select');
             const searchInput = document.getElementById('searchInput');
+            const exportFilterInput = document.getElementById('exportFilter');
 
             function updateData() {
                 const filterValue = selectElement.value;
@@ -176,6 +179,10 @@
             selectElement.addEventListener('change', updateData);
             searchInput.addEventListener('input', updateData);
 
+
+            selectElement.addEventListener('change', (event) => {
+                exportFilterInput.value = event.target.value;
+            });
 
         });
 

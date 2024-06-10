@@ -10,11 +10,20 @@ use App\Models\Meeting;
 use Illuminate\Contracts\View\View;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 
 use App\Models\User;
 
 class MeetingDataExport implements FromCollection, WithHeadings
 {
+
+    protected $filter;
+
+    public function __construct($filter)
+    {
+        $this->filter = $filter;
+    }
+
     /**
      * @return \Illuminate\Support\Collection
      */
@@ -37,6 +46,30 @@ class MeetingDataExport implements FromCollection, WithHeadings
             });
         }
 
+
+         // Apply date filter based on selected value
+         $dateFrom = now();
+         switch ($this->filter) {
+             case '1':
+                 $dateFrom = now()->subDays(15);
+                 break;
+             case '2':
+                 $dateFrom = now()->subDays(30);
+                 break;
+             case '3':
+                 $dateFrom = now()->subDays(90);
+                 break;
+             case '4':
+                 $dateFrom = now()->subDays(180);
+                 break;
+             default:
+                 $dateFrom = null;
+         }
+
+         if ($dateFrom) {
+            $meetingsQuery->whereDate('start_date', '>=', $dateFrom);
+            }
+
         $meetings = $meetingsQuery->get();
 
 
@@ -52,10 +85,9 @@ class MeetingDataExport implements FromCollection, WithHeadings
             $status = $meeting->booking_status;
 
             return [
-                'id' => $meeting->id,
-                'room_name' => $meeting->room ? $meeting->room->name : 'N/A',
-                'meeting_title' => $meeting->meeting_title,
                 'start_date' => $meeting->start_date,
+                'meeting_title' => $meeting->meeting_title,
+                'room_name' => $meeting->room ? $meeting->room->name : 'N/A',
                 'start_time' => $meeting->start_time,
                 'end_time' => $meeting->end_time,
                 'host_name' => $meeting->host ? $meeting->host->name : '',
@@ -80,10 +112,9 @@ class MeetingDataExport implements FromCollection, WithHeadings
     public function headings(): array
     {
         return [
-            'Id',
-            'Room Name',
-            'Title',
             'Date',
+            'Title',
+            'Room Name',
             'Start Time',
             'End Time',
             'Host',
