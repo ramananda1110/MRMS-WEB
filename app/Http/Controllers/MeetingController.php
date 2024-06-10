@@ -152,6 +152,9 @@ class MeetingController extends Controller
             return $meeting->booking_status === 'pending' && $meeting->start_date >= $today;
         });
 
+        $meetings = $meetings->sortBy('start_date')->values()->all();
+
+
         return view('admin.meeting.pending', compact('meetings'));
     }
 
@@ -528,17 +531,12 @@ class MeetingController extends Controller
         }
 
         
-
         // Apply date filter based on selected value
         if ($request->has('filter')) {
             
-           
             $filter = $request->input('filter');
-
-           // $filter = $request->filter;
             $dateFrom = now();
 
-            
             
             switch ($filter) {
                 case '1':
