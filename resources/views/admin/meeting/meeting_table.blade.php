@@ -4,6 +4,7 @@
      <thead>
          <tr>
 
+             <th scope="col">SN</th>
              <th scope="col">Room Name</th>
              <th scope="col">Meeting Title</th>
              <th scope="col">Date</th>
@@ -20,6 +21,7 @@
              @foreach ($meetings as $key => $meeting)
                  <tr>
 
+                    <td>{{ $key + 1 }}</td>
                      <th scope="row">{{ $meeting->room->name }}</th>
                      <td>{{ $meeting->meeting_title }}</td>
                      <td>{{ \Carbon\Carbon::parse($meeting->start_date)->format('F j, Y') }}</td>
