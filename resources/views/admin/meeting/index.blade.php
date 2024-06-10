@@ -37,10 +37,10 @@
                                         <div class="col-md">
                                             <form action="{{ route('meetings.exportCsv') }}" method="get" target="_blank">
                                                 @csrf
-                                                <button type="submit"
+                                                <button 
                                                     class="btn btn-default buttons-csv border buttons-html5 btn-sm btn-block"
                                                     tabindex="0" aria-controls="employees">
-                                                    <span>Csv</span>
+                                                    Csv
                                                 </button>
                                             </form>
                                         </div>
@@ -70,45 +70,22 @@
                                 </div>
 
                                 <div class="d-flex justify-content-between align-items-center">
-
-
-                                  
-                                    
                                     <!-- Search input -->
-                                    <div class="me-3">
+                                    <div class="me-2">
                                         <input id="searchInput" type="text" name="search" class="form-control"
                                             placeholder="Search..." style="width: 200px;">
                                     </div>
 
                                       <!-- Filter dropdown -->
-                                      <div class="dropdown me-2">
-                                        <button class="btn btn-primary dropdown-toggle" type="button" id="filterDropdown"
-                                                data-bs-toggle="dropdown" aria-expanded="false">
-                                                <i class="fa-solid fa-filter"></i>
-                                        </button>
-                                        <ul class="dropdown-menu" aria-labelledby="filterDropdown">
-                                            <!-- Dummy data in radio button format -->
-                                            <li>
-                                                <label class="dropdown-item">
-                                                    <input type="radio" class="filter-radio" name="filterOption" value="5"> Previous 5 days
-                                                </label>
-                                            </li>
-                                            <li>
-                                                <label class="dropdown-item">
-                                                    <input type="radio" class="filter-radio" name="filterOption" value="10"> Previous 10 days
-                                                </label>
-                                            </li>
-                                            <li>
-                                                <label class="dropdown-item">
-                                                    <input type="radio" class="filter-radio" name="filterOption" value="15"> Previous 15 days
-                                                </label>
-                                            </li>
-                                        </ul>
-                                    </div>
+                                        <select class="form-select form-select-mm me-2" aria-label=".form-select-lg example">
+                                            <option value="0" selected>All</option>
+                                            <option value="1">Past 15 days</option>
+                                            <option value="2">Past 30 days</option>
+                                            <option value="3">Past 90 days</option>
+                                            <option value="4">Past 180 days</option>
+                                        </select>
+                                           
                                 </div>
-
-
-
 
                             </div>
 
@@ -180,7 +157,35 @@
             document.getElementById(formId).submit();
         }
 
+        document.addEventListener('DOMContentLoaded', (event) => {
+            const selectElement = document.querySelector('.form-select');
 
+            selectElement.addEventListener('change', function() {
+                const selectedValue = selectElement.value;
+                console.log(selectedValue);  
+                // Call API to update data
+                 updateData(selectedValue);
+            });
+
+            function updateData(filterValue) {
+                $.ajax({
+                    url: '{{ route("search.meeting") }}', // Adjust to your route
+                    method: 'GET',
+                    data: { filter: filterValue },
+                    success: function(response) {
+                        // Assuming you have a container to display the filtered meetings
+                        $('#meeting-container').html(response);
+                    },
+                    error: function(error) {
+                        console.error('Error fetching filtered data:', error);
+                    }
+                });
+            }
+
+            
+        });
+
+       
 
         document.addEventListener('DOMContentLoaded', function() {
             const searchInput = document.getElementById('searchInput');

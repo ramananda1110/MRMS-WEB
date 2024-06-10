@@ -519,13 +519,40 @@ class MeetingController extends Controller
             $search = $request->search;
             $meetingsQuery->where(function ($query) use ($search) {
                 $query->where('meeting_title', 'like', '%' . $search . '%')
-                   
                     ->orWhere('start_date', 'like', '%' . $search . '%')
-                    ->orWhere('start_time', 'like', '%' . $search . '%')
-                    ->orWhere('end_time', 'like', '%' . $search . '%')
                     ->orWhere('booking_status', 'like', '%' . $search . '%')
                     ->orWhere('booking_type', 'like', '%' . $search . '%');
             });
+        }
+
+
+        // Apply date filter based on selected value
+        if ($request->has('filter')) {
+            $filter = $request->filter;
+            $dateFrom = now();
+
+            switch ($filter) {
+                case '1':
+                    $dateFrom = now()->subDays(2);
+                    break;
+                case '2':
+                    $dateFrom = now()->subDays(30);
+                    break;
+                case '3':
+                    $dateFrom = now()->subDays(90);
+                    break;
+                case '4':
+                    $dateFrom = now()->subDays(180);
+                    break;
+                default:
+                    $dateFrom = null;
+            }
+
+            dd($dateFrom);
+            
+            if ($dateFrom) {
+                $meetingsQuery->where('start_date', '>=', $dateFrom);
+            }
         }
 
         // Get paginated results
