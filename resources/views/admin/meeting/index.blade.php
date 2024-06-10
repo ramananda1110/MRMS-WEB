@@ -152,29 +152,20 @@
             window.location.href = element.getAttribute('href');
         }
 
-        function submitForm(status, formId) {
-            document.getElementById(formId).querySelector('[name="booking_status"]').value = status;
-            document.getElementById(formId).submit();
-        }
-
+        
         document.addEventListener('DOMContentLoaded', (event) => {
             const selectElement = document.querySelector('.form-select');
+            const searchInput = document.getElementById('searchInput');
 
-            selectElement.addEventListener('change', function() {
-                const selectedValue = selectElement.value;
-                console.log(selectedValue);  
-                // Call API to update data
-                 updateData(selectedValue);
-            });
-
-            function updateData(filterValue) {
+            function updateData() {
+                const filterValue = selectElement.value;
+                const searchValue = searchInput.value;
                 $.ajax({
-                    url: '{{ route("search.meeting") }}', // Adjust to your route
+                    url: '{{ route("search.meeting") }}',
                     method: 'GET',
-                    data: { filter: filterValue },
+                    data: { filter: filterValue, search: searchValue },
                     success: function(response) {
-                        // Assuming you have a container to display the filtered meetings
-                        $('#meeting-container').html(response);
+                        $('#meetingTableContainer').html(response);
                     },
                     error: function(error) {
                         console.error('Error fetching filtered data:', error);
@@ -182,35 +173,12 @@
                 });
             }
 
-            
+            selectElement.addEventListener('change', updateData);
+            searchInput.addEventListener('input', updateData);
+
+
         });
 
-       
-
-        document.addEventListener('DOMContentLoaded', function() {
-            const searchInput = document.getElementById('searchInput');
-
-            searchInput.addEventListener('input', function() {
-                const query = searchInput.value;
-                fetchEmployees(query);
-            });
-
-            function fetchEmployees(query) {
-                fetch(`{{ route('search.meeting') }}?search=${query}`, {
-                        headers: {
-                            'X-Requested-With': 'XMLHttpRequest'
-                        }
-                    })
-                    .then(response => response.text())
-                    .then(data => {
-                        document.getElementById('meetingTableContainer').innerHTML = data;
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                        alert('Error fetching employee data'); // Add this line
-                    });
-            }
-        });
     </script>
 @endsection
 @endsection

@@ -500,6 +500,8 @@ class MeetingController extends Controller
 
     public function searchMeeting(Request $request)
     {
+
+
         $employeeId = auth()->user()->employee_id;
         $roleId = auth()->user()->role_id;
 
@@ -525,39 +527,51 @@ class MeetingController extends Controller
             });
         }
 
+        
 
         // Apply date filter based on selected value
         if ($request->has('filter')) {
-            $filter = $request->filter;
+            
+           
+            $filter = $request->input('filter');
+
+           // $filter = $request->filter;
             $dateFrom = now();
 
+            
+            
             switch ($filter) {
                 case '1':
                     $dateFrom = now()->subDays(2);
                     break;
                 case '2':
-                    $dateFrom = now()->subDays(30);
+                    $dateFrom = now()->subDays(10);
                     break;
                 case '3':
-                    $dateFrom = now()->subDays(90);
+                    $dateFrom = now()->subDays(15);
                     break;
                 case '4':
-                    $dateFrom = now()->subDays(180);
+                    $dateFrom = now()->subDays(20);
                     break;
                 default:
                     $dateFrom = null;
             }
 
-            dd($dateFrom);
-            
             if ($dateFrom) {
-                $meetingsQuery->where('start_date', '>=', $dateFrom);
+                $formattedDateFrom = $dateFrom->toDateString();
+                $meetingsQuery->whereDate('start_date', '>=', $formattedDateFrom);
+
+               
             }
+
         }
 
+
+    
         // Get paginated results
         $meetings = $meetingsQuery->orderBy('start_date')->paginate(30);
 
+        
         // Update booking status based on conditions
         $today = now()->toDateString();
         foreach ($meetings as $meeting) {
