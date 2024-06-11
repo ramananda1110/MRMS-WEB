@@ -58,6 +58,7 @@ class MeetingValidationService
             $startDateTime->add(new \DateInterval('PT1M'));
             $updated_start_time = $startDateTime->format('H:i');
 
+
             $overlappingMeeting = Meeting::where('room_id', $room_id)
                 ->where('start_date', $start_date)
                 ->where('booking_status', '!=', 'rejected')

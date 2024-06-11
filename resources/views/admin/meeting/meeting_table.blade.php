@@ -231,7 +231,7 @@
              @endforeach
          @else
              <tr>
-                 <td colspan="6" class="text-center">No meeting found!</td>
+                 <td colspan="7" class="text-center">No meeting found!</td>
              </tr>
 
          @endif
