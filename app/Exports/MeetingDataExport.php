@@ -17,11 +17,12 @@ use App\Models\User;
 class MeetingDataExport implements FromCollection, WithHeadings
 {
 
-    protected $filter;
+    protected $meetings;
 
-    public function __construct($filter)
+
+    public function __construct($meetings)
     {
-        $this->filter = $filter;
+        $this->meetings = $meetings;
     }
 
     /**
@@ -29,51 +30,8 @@ class MeetingDataExport implements FromCollection, WithHeadings
      */
     public function collection()
     {
-         // Retrieve the authenticated user's employee ID and role ID
-         $employeeId = Auth()->user()->employee_id;
-         $roleId = Auth()->user()->role_id;
- 
-        
-        $meetingsQuery = Meeting::with(['room', 'host', 'coHost', 'participants.employee']);
 
-
-        if ($roleId !== 1) {
-            $meetingsQuery->where(function ($query) use ($employeeId) {
-                $query->where('host_id', $employeeId)
-                    ->orWhereHas('participants', function ($query) use ($employeeId) {
-                        $query->where('participant_id', $employeeId);
-                    });
-            });
-        }
-
-
-         // Apply date filter based on selected value
-         $dateFrom = now();
-         switch ($this->filter) {
-             case '1':
-                 $dateFrom = now()->subDays(15);
-                 break;
-             case '2':
-                 $dateFrom = now()->subDays(30);
-                 break;
-             case '3':
-                 $dateFrom = now()->subDays(90);
-                 break;
-             case '4':
-                 $dateFrom = now()->subDays(180);
-                 break;
-             default:
-                 $dateFrom = null;
-         }
-
-         if ($dateFrom) {
-            $meetingsQuery->whereDate('start_date', '>=', $dateFrom);
-            }
-
-        $meetings = $meetingsQuery->get();
-
-
-        $data = $meetings->map(function ($meeting) {
+        $data = $this->meetings->map(function ($meeting) {
             // Concatenate participants' details into a single string
             $participants = $meeting->participants->map(function ($participant) {
                 return $participant->employee ? 
