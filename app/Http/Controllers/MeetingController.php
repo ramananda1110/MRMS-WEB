@@ -1207,18 +1207,6 @@ class MeetingController extends Controller
              ]);
          }
 
-       
-        // Attach participants to the meeting 
-        // if ($request->has('participants')) {
-        //     foreach ($request->participants as $participantId) {
-        //         // Create a new participant record
-        //         Participant::create([
-        //             'meeting_id' => $meeting->id,
-        //             'participant_id' => $participantId
-        //         ]);
-        //     }
-        // }
-
 
         // sent the notification to user admin
         $devicesToken = User::where('role_id', 1)->pluck('device_token')->toArray();
@@ -1386,53 +1374,21 @@ class MeetingController extends Controller
     }
 
 
-
     public function exportExcel(Request $request)
     {
-        // return Excel::download(new MeetingDataExport, 'meetings-data.xlsx');
 
-        $filter = $request->input('filter', '0'); // Default to '0' if no filter is provided
-        return Excel::download(new MeetingDataExport($filter), 'meetings-data.xlsx');
+        $meetings = $this->getFilteredMeetings($request);
+
+        return Excel::download(new MeetingDataExport($meetings), 'meetings-data.xlsx');
     }
 
 
-
-    public function exportMeetingPdf()
+    public function exportMeetingPdf(Request $request)
     {
         ini_set('memory_limit', '1024M');
         ini_set('max_execution_time', 300);
 
-        $employeeId = Auth()->user()->employee_id;
-        $roleId = Auth()->user()->role_id;
-
-
-        $meetingsQuery = Meeting::with(['room', 'host', 'coHost', 'participants.employee'])
-            ->select(
-                'id', 
-                'room_id', 
-                'meeting_title', 
-                'start_date', 
-                'start_time', 
-                'end_time', 
-                'host_id', 
-                'co_host_id', 
-                'booking_type', 
-                'booking_status', 
-                'description'
-            )
-            ->limit(500);
-
-        if ($roleId !== 1) {
-            $meetingsQuery->where(function ($query) use ($employeeId) {
-                $query->where('host_id', $employeeId)
-                    ->orWhereHas('participants', function ($query) use ($employeeId) {
-                        $query->where('participant_id', $employeeId);
-                    });
-            });
-        }
-
-        $meetings = $meetingsQuery->get();
-
+        $meetings = $this->getFilteredMeetings($request);
 
 
         $html = '
@@ -1511,37 +1467,10 @@ class MeetingController extends Controller
     }  
 
 
-    public function exportMeetingCsv()
+    public function exportMeetingCsv(Request $request)
     {
-        $employeeId = Auth()->user()->employee_id;
-        $roleId = Auth()->user()->role_id;
-
-        $meetingsQuery = Meeting::with(['room', 'host', 'coHost', 'participants.employee'])
-            ->select(
-                'id', 
-                'room_id', 
-                'meeting_title', 
-                'start_date', 
-                'start_time', 
-                'end_time', 
-                'host_id', 
-                'co_host_id', 
-                'booking_type', 
-                'booking_status', 
-                'description'
-            );
-
-        if ($roleId !== 1) {
-            $meetingsQuery->where(function ($query) use ($employeeId) {
-                $query->where('host_id', $employeeId)
-                    ->orWhereHas('participants', function ($query) use ($employeeId) {
-                        $query->where('participant_id', $employeeId);
-                    });
-            });
-        }
-
-        $meetings = $meetingsQuery->get();
-
+        
+        $meetings = $this->getFilteredMeetings($request);
 
         $csvHeader = [
             'Meeting ID', 
@@ -1603,15 +1532,36 @@ class MeetingController extends Controller
 
 
 
-    public function printView()
+    public function printView(Request $request)
     {
-        // Retrieve the authenticated user's employee ID and role ID
+        $meetings = $this->getFilteredMeetings($request);
+
+        return view('admin.meeting.print', compact('meetings'));
+    }
+
+
+
+
+    private function getFilteredMeetings(Request $request)
+    {
         $employeeId = Auth()->user()->employee_id;
         $roleId = Auth()->user()->role_id;
+        $filter = $request->input('filter', '0'); // Default to '0' if no filter is provided
 
-        // Fetch meetings based on user role
-        $meetingsQuery = Meeting::with(['room', 'host', 'coHost', 'participants.employee']);
-           
+        $meetingsQuery = Meeting::with(['room', 'host', 'coHost', 'participants.employee'])
+            ->select(
+                'id', 
+                'room_id', 
+                'meeting_title', 
+                'start_date', 
+                'start_time', 
+                'end_time', 
+                'host_id', 
+                'co_host_id', 
+                'booking_type', 
+                'booking_status', 
+                'description'
+            );
 
         if ($roleId !== 1) {
             $meetingsQuery->where(function ($query) use ($employeeId) {
@@ -1622,14 +1572,31 @@ class MeetingController extends Controller
             });
         }
 
-        $meetings = $meetingsQuery->get();
+        // Apply date filter based on selected value
+        $dateFrom = now();
+        switch ($filter) {
+            case '1':
+                $dateFrom = now()->subDays(15);
+                break;
+            case '2':
+                $dateFrom = now()->subDays(30);
+                break;
+            case '3':
+                $dateFrom = now()->subDays(90);
+                break;
+            case '4':
+                $dateFrom = now()->subDays(180);
+                break;
+            default:
+                $dateFrom = null;
+        }
 
+        if ($dateFrom) {
+            $meetingsQuery->whereDate('start_date', '>=', $dateFrom);
+        }
 
-        return view('admin.meeting.print', compact('meetings'));
+        return $meetingsQuery->get();
     }
 
 
 }
-
-
-

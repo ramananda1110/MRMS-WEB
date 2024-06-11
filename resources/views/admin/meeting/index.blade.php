@@ -37,6 +37,7 @@
                                         <div class="col-md">
                                             <form action="{{ route('meetings.exportCsv') }}" method="get" target="_blank">
                                                 @csrf
+                                                <input type="hidden" name="filter" id="exportFilterCsv" value="0">
                                                 <button 
                                                     class="btn btn-default buttons-csv border buttons-html5 btn-sm btn-block"
                                                     tabindex="0" aria-controls="employees">
@@ -48,7 +49,7 @@
 
                                             <form action="{{ route('meetings.download-excel') }}" method="post"
                                                 target="_blank">@csrf
-                                                <input type="hidden" name="filter" id="exportFilter" value="0">
+                                                <input type="hidden" name="filter" id="exportFilterExcel" value="0">
 
                                                 <button
                                                     class="btn btn-default buttons-csv border buttons-html5 btn-sm">Excel</button>
@@ -57,12 +58,16 @@
                                         </div>
                                         <div class="col-md">
                                             <form action="{{ route('meetings.exportPdf') }}" method="get" target="_blank">
+                                                <input type="hidden" name="filter" id="exportFilterPdf" value="0">
+
                                                 <button
                                                     class="btn btn-default buttons-csv border buttons-html5 btn-sm btn-block">Pdf</button>
                                             </form>
                                         </div>
                                         <div class="col-md">
                                             <form action="{{ route('meetings.printView') }}" method="get" target="_blank">
+                                                <input type="hidden" name="filter" id="exportFilterPrint" value="0">
+
                                                 <button
                                                     class="btn btn-default buttons-csv border buttons-html5 btn-sm btn-block">Print</button>
                                             </form>
@@ -158,7 +163,11 @@
         document.addEventListener('DOMContentLoaded', (event) => {
             const selectElement = document.querySelector('.form-select');
             const searchInput = document.getElementById('searchInput');
-            const exportFilterInput = document.getElementById('exportFilter');
+
+            const exportFilterCsv = document.getElementById('exportFilterCsv');
+            const exportFilterExcel = document.getElementById('exportFilterExcel');
+            const exportFilterPdf = document.getElementById('exportFilterPdf');
+            const exportFilterPrint = document.getElementById('exportFilterPrint');
 
             function updateData() {
                 const filterValue = selectElement.value;
@@ -181,7 +190,11 @@
 
 
             selectElement.addEventListener('change', (event) => {
-                exportFilterInput.value = event.target.value;
+                const filterValue = event.target.value;
+                exportFilterCsv.value = filterValue;
+                exportFilterExcel.value = filterValue;
+                exportFilterPdf.value = filterValue;
+                exportFilterPrint.value = filterValue;
             });
 
         });
