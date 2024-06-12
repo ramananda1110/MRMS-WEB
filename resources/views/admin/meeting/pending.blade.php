@@ -90,5 +90,10 @@ function setActiveTab(event, element) {
 }
 
 
+    function submitForm(status, formId) {
+        document.getElementById(formId).querySelector('[name="booking_status"]').value = status;
+        document.getElementById(formId).submit();
+    }
+
 </script>
 

@@ -158,6 +158,10 @@
             window.location.href = element.getAttribute('href');
         }
 
+        function submitForm(status, formId) {
+            document.getElementById(formId).querySelector('[name="booking_status"]').value = status;
+            document.getElementById(formId).submit();
+        }
        
 
         document.addEventListener('DOMContentLoaded', (event) => {
