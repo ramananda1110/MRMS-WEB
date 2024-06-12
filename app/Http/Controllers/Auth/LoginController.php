@@ -70,12 +70,15 @@ class LoginController extends Controller
             ]);
         }
 
-        // Generate a token for the authenticated user
-        $token = $user->createToken('auth_token')->plainTextToken;
+        if($user->api_token == null){
+            // Generate a token for the authenticated user
+            $token = $user->createToken('auth_token')->plainTextToken;
 
-        // Update the api_token field in the database
-        $user->api_token = $token;
-        $user->save();
+            // Update the api_token field in the database
+            $user->api_token = $token;
+            $user->save();
+
+        }
 
         // Optionally, return a response with the token
         // return response()->json([
