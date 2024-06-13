@@ -19,7 +19,7 @@
                         data-bs-target="#collapseLayoutsMeeting" aria-expanded="false" aria-controls="collapseLayouts">
                         <i class="fa-solid fa-couch"></i>
                         <div class="ms-2"> Meeting</div>
-                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                        <div class="sb-sidenav-collapse-arrow"><i style="color: black" class="fas fa-angle-down"></i></div>
                     </a>
 
                     <div class="collapse" id="collapseLayoutsMeeting" aria-labelledby="headingOne"
@@ -43,7 +43,7 @@
                         data-bs-target="#collapseLayoutsEmp" aria-expanded="false" aria-controls="collapseLayouts">
                         <i class="fa-solid fa-users"></i>
                         <div class="ms-2">Emplopyee</div>
-                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                        <div class="sb-sidenav-collapse-arrow"><i style="color: black" class="fas fa-angle-down"></i></div>
                     </a>
 
                     <div class="collapse" id="collapseLayoutsEmp" aria-labelledby="headingOne"
@@ -64,7 +64,7 @@
                         data-bs-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages">
                         <i class="fas fa-user"></i>
                         <div class="ms-2">User</div>
-                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                        <div class="sb-sidenav-collapse-arrow"><i style="color: black" class="fas fa-angle-down"></i></div>
                     </a>
                     <div class="collapse" id="collapsePages" aria-labelledby="headingTwo"
                         data-bs-parent="#sidenavAccordion">
@@ -73,7 +73,7 @@
                                 data-bs-target="#pagesCollapseAuth" aria-expanded="false"
                                 aria-controls="pagesCollapseAuth">
                                 Role
-                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                                <div class="sb-sidenav-collapse-arrow"><i style="color: black" class="fas fa-angle-down"></i></div>
                             </a>
                             <div class="collapse" id="pagesCollapseAuth" aria-labelledby="headingOne"
                                 data-bs-parent="#sidenavAccordionPages">
@@ -92,7 +92,7 @@
                                 data-bs-target="#pagesCollapseError" aria-expanded="false"
                                 aria-controls="pagesCollapseError">
                                 User
-                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                                <div class="sb-sidenav-collapse-arrow"><i style="color: black" class="fas fa-angle-down"></i></div>
                             </a>
                             <div class="collapse" id="pagesCollapseError" aria-labelledby="headingOne"
                                 data-bs-parent="#sidenavAccordionPages">
@@ -112,7 +112,7 @@
                                 data-bs-target="#pagesCollapsePermission" aria-expanded="false"
                                 aria-controls="pagesCollapsePermission">
                                 Permission
-                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                                <div class="sb-sidenav-collapse-arrow"><i style="color: black" class="fas fa-angle-down"></i></div>
                             </a>
                             <div class="collapse" id="pagesCollapsePermission" aria-labelledby="headingOne"
                                 data-bs-parent="#sidenavAccordionPages">
@@ -135,7 +135,7 @@
                         data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
                         <i class="fa-solid fa-building"></i>
                         <div class="ms-2"> Department</div>
-                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                        <div class="sb-sidenav-collapse-arrow"><i style="color: black" class="fas fa-angle-down"></i></div>
                     </a>
 
                     <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne"
@@ -157,7 +157,7 @@
                         aria-controls="collapseLayoutsRoom">
                         <i class="fa-solid fa-door-open"></i>
                         <div class="ms-2"> Room</div>
-                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                        <div class="sb-sidenav-collapse-arrow"><i style="color: black" class="fas fa-angle-down"></i></div>
                     </a>
                     <div class="collapse" id="collapseLayoutsRoom" aria-labelledby="headingOne"
                         data-bs-parent="#sidenavAccordion">
@@ -209,7 +209,7 @@
                         aria-controls="collapseLayoutsNotice">
                         <i class="fa-solid fa-circle-exclamation"></i>
                         <div class="ms-2"> Staf Notice</div>
-                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                        <div class="sb-sidenav-collapse-arrow"><i style="color: black" class="fas fa-angle-down"></i></div>
                     </a>
                     <div class="collapse" id="collapseLayoutsNotice" aria-labelledby="headingOne"
                         data-bs-parent="#sidenavAccordion">
@@ -234,3 +234,23 @@
             </div>
         </nav>
     </div>
+    <script>
+        // JavaScript to handle sidebar item click
+        document.addEventListener('DOMContentLoaded', function () {
+            const sidebarItems = document.querySelectorAll('.nav-link');
+            
+            sidebarItems.forEach(item => {
+                item.addEventListener('click', function () {
+                    // Remove 'show' class from all other items
+                    sidebarItems.forEach(item => {
+                        item.classList.remove('show');
+                    });
+                    
+                    // Add 'show' class to the clicked item
+                    this.classList.add('show');
+                });
+            });
+        });
+    </script>
+    
+   

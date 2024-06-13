@@ -35,6 +35,18 @@
         }
     </style>
 
+    <style>
+        /* CSS for active sidebar item */
+        .nav-link.show {
+            background-color: #7bbbff;
+            /* Change this to your desired background color */
+            color: #fff;
+
+            /* Change this to your desired text color */
+        }
+
+    </style>
+
 
 
 </head>
@@ -71,18 +83,18 @@
                     <li>
                         <hr class="dropdown-divider" />
                     </li>
-                   
 
-                            <a class="dropdown-item" href="{{ route('logout') }}"
-                                onclick="event.preventDefault();
+
+                    <a class="dropdown-item" href="{{ route('logout') }}"
+                        onclick="event.preventDefault();
                                 document.getElementById('logout-form').submit();">
-                                {{ __('Logout') }}
-                            </a>
+                        {{ __('Logout') }}
+                    </a>
 
-                            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                @csrf
-                            </form>
-                        
+                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                        @csrf
+                    </form>
+
                 </ul>
             </li>
         </ul>
