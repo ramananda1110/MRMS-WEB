@@ -1,14 +1,15 @@
-<div id="layoutSidenav_content">
+<div id="layoutSidenav_content" >
     <main>
         <div class="container-fluid px-4">
             <!-- <h1 class="mt-4">Dashboard</h1> -->
+            <div class="card rounded shadow my-4 bg-white">
 
             <ol class="breadcrumb mb-4">
                 <li class="breadcrumb-item active">
                     <p class="mt-2"></p>
                 </li>
             </ol>
-            <div class="row">
+            <div class="row px-3">
 
 
                 <div class="col-xl-3 col-md-6">
@@ -85,7 +86,7 @@
             </div>
 
 
-            <div class="row">
+            <div class="row px-3">
 
 
 
@@ -139,7 +140,7 @@
                             </div>
                         </div> -->
 
-
+            </div>
         </div>
     </main>
 
