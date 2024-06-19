@@ -9,21 +9,40 @@
                     <p class="mt-2"></p>
                 </li>
             </ol>
+           
             <div class="row px-3">
-
-
-                <div class="col-xl-3 col-md-6">
+            <div class="card-title">Meeting Deshboard</div>
+                <div class="col-xl-2 col-md-6">
                     <div class="card shadow mb-4">
                         <div class="card-body d-flex align-items-center ">
 
                             <div class="icon">
-                                <image src="{{ asset('/images/Group.svg') }}" height="60" width="60" />
+                                <image src="{{ asset('/images/Group.svg') }}" height="50" width="50" />
 
                             </div>
-                            <div class="ps-4">
-                                <div class="card-title">Total Meetings</div>
+                            <div class="ps-3">
+                                <div class="card-title" style="margin-bottom: 0.5rem;">Total</div>
+                                <div class="card-text" style="margin-top: 0.5rem;">
+                                    <span style="font-size: 1.5rem;">{{ $totalMeeting ?? '0' }}</span>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="col-xl-2 col-md-6">
+                    <div class="card shadow mb-4">
+                        <div class="card-body d-flex align-items-center ">
+
+                            <div class="icon">
+                                <image src="{{ asset('/images/Group-1.svg') }}" height="50" width="50" />
+                            </div>
+                            <div class="ps-3">
+                                <div class="card-title">Completed</div>
                                 <div class="card-text">
-                                    <span style="font-size: 2rem;">{{ $totalMeeting ?? '0' }}</span>
+                                    <span style="font-size: 1.5rem;">{{ $completedCount ?? '0' }}</span>
                                 </div>
                             </div>
                         </div>
@@ -31,17 +50,34 @@
                     </div>
                 </div>
 
-                <div class="col-xl-3 col-md-6">
+                <div class="col-xl-2 col-md-6">
                     <div class="card shadow mb-4">
                         <div class="card-body d-flex align-items-center ">
 
                             <div class="icon">
-                                <image src="{{ asset('/images/Group-1.svg') }}" height="60" width="60" />
+                                <image src="{{ asset('/images/Group-3.svg') }}" height="50" width="50" />
                             </div>
-                            <div class="ps-4">
-                                <div class="card-title">Completed Meetings</div>
+                            <div class="ps-3">
+                                <div class="card-title">Upcoming</div>
                                 <div class="card-text">
-                                    <span style="font-size: 2rem;">{{ $completedCount ?? '0' }}</span>
+                                    <span style="font-size: 1.5rem;">{{ $upcomingCount ?? '0' }}</span>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-xl-2 col-md-6">
+                    <div class="card shadow mb-4">
+                        <div class="card-body d-flex align-items-center ">
+
+                            <div class="icon">
+                                <image src="{{ asset('/images/Group-4.svg') }}" height="50" width="50" />
+                            </div>
+                            <div class="ps-3">
+                                <div class="card-title">Pending</div>
+                                <div class="card-text">
+                                    <span style="font-size: 1.5rem;">{{ $pendingCount ?? '0' }}</span>
                                 </div>
                             </div>
                         </div>
@@ -49,34 +85,35 @@
                     </div>
                 </div>
 
-                <div class="col-xl-3 col-md-6">
+                <div class="col-xl-2 col-md-6">
                     <div class="card shadow mb-4">
                         <div class="card-body d-flex align-items-center ">
 
                             <div class="icon">
-                                <image src="{{ asset('/images/Group-3.svg') }}" height="60" width="60" />
+                                <image src="{{ asset('/images/Group-4.svg') }}" height="50" width="50" />
                             </div>
-                            <div class="ps-4">
-                                <div class="card-title">Upcoming Meetings</div>
+                            <div class="ps-3">
+                                <div class="card-title">Rejected</div>
                                 <div class="card-text">
-                                    <span style="font-size: 2rem;">{{ $upcomingCount ?? '0' }}</span>
+                                    <span style="font-size: 1.5rem;">{{ $rejectedCount ?? '0' }}</span>
                                 </div>
                             </div>
                         </div>
 
                     </div>
                 </div>
-                <div class="col-xl-3 col-md-6">
+
+                <div class="col-xl-2 col-md-6">
                     <div class="card shadow mb-4">
                         <div class="card-body d-flex align-items-center ">
 
                             <div class="icon">
-                                <image src="{{ asset('/images/Group-4.svg') }}" height="60" width="60" />
+                                <image src="{{ asset('/images/Group-4.svg') }}" height="50" width="50" />
                             </div>
-                            <div class="ps-4">
-                                <div class="card-title">Pending Meetings</div>
+                            <div class="ps-3">
+                                <div class="card-title">Rejected</div>
                                 <div class="card-text">
-                                    <span style="font-size: 2rem;">{{ $pendingCount ?? '0' }}</span>
+                                    <span style="font-size: 1.5rem;">{{ $expiredCount ?? '0' }}</span>
                                 </div>
                             </div>
                         </div>
@@ -87,9 +124,6 @@
 
 
             <div class="row px-3">
-
-
-
 
 
                 <div class="col-xl-6">

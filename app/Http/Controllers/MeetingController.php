@@ -579,8 +579,17 @@ class MeetingController extends Controller
         ->whereDate('start_date', '>=', $today) // Start date on or after today
         ->count();
        
+        $pendingCount = Meeting::where('booking_status', 'pending')
+        ->whereDate('start_date', '>=', $today) // Start date on or after today
+        ->count();
 
-        $pendingCount = Meeting::whereIn('booking_status', ['pending', 'rejected'])->count();
+        //$pendingCount = Meeting::whereIn('booking_status', ['pending', 'rejected'])->count();
+
+        $rejectedCount = Meeting::where('booking_status', 'rejected')->count();
+
+        $expiredCount = Meeting::where('booking_status', 'pending')
+        ->whereDate('start_date', '<', $today) // Start date before today
+        ->count();
 
 
         $completedCount = Meeting::where('booking_status', 'accepted')
@@ -641,7 +650,7 @@ class MeetingController extends Controller
             $month = Carbon::parse($meeting->start_date)->format('M');
             $yearlyData[$month]++;
         }
-        return view('welcome', compact('totalMeeting', 'upcomingCount', 'pendingCount', 'completedCount', 'weekendData', 'yearlyData'));
+        return view('welcome', compact('totalMeeting', 'upcomingCount', 'pendingCount', 'completedCount', 'rejectedCount', 'expiredCount', 'weekendData', 'yearlyData'));
 
     }
 
