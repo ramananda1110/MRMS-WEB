@@ -73,8 +73,8 @@ class MeetingController extends Controller
         }
 
          // Order meetings by latest start_date
-        // $meetings = $meetings->sortByDesc('start_date')->values()->all();
-        $meetings = $meetings->sortBy('start_date')->values()->all();
+        $meetings = $meetings->sortByDesc('start_date')->values()->all();
+        // $meetings = $meetings->sortBy('start_date')->values()->all();
 
    
         return view('admin.meeting.index', compact('meetings'));
