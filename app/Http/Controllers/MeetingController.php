@@ -17,6 +17,7 @@ use App\Exports\MeetingDataExport;
 use Maatwebsite\Excel\Facades\Excel;
 use Barryvdh\DomPDF\Facade\Pdf;
 use App\Services\MeetingValidationService;
+use App\Notifications\MeetingInvitation;
 
 
 class MeetingController extends Controller
@@ -342,7 +343,24 @@ class MeetingController extends Controller
         $this->notificationController->attemtNotification($devicesToken, "Created a Meeting", "Requested to you a meeting schedule.");
 
 
-        
+        // Fetch all users with role_id 1
+        $userEmails = User::where('role_id', 1)->pluck('email')->toArray();
+
+        // Loop through each email, fetch the user and send the notification
+        foreach ($userEmails as $email) {
+            $user = User::where('email', $email)->first();
+
+            if ($user) {
+                $user->notify(new MeetingInvitation(
+                    $meeting->id,
+                    $meeting->meeting_title,
+                    $meeting->start_date,
+                    $meeting->start_time,
+                    $meeting->end_time,
+                    $meeting->room->name . ' at ' . $meeting->room->location
+                ));
+            }
+        }
         return redirect()->route("meeting.index")->with('message', 'Meeting created successfully');
 
 
@@ -1181,4 +1199,17 @@ class MeetingController extends Controller
         return $meetingsQuery->get();
     }
 
+
+
+    public function getMeetingDataById(Request $request, $id)
+    {
+
+         // Find the meeting record by ID
+        $meeting = Meeting::find($id);
+
+        dd($meeting);
+        
+        return view('admin.meeting.meeting_view', compact('meetings'));
+
+    }
 }
