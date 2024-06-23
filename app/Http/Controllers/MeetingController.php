@@ -1208,7 +1208,7 @@ class MeetingController extends Controller
         $meeting = Meeting::find($id);
 
         dd($meeting);
-        
+
         return view('admin.meeting.meeting_view', compact('meetings'));
 
     }
