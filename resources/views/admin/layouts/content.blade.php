@@ -8,13 +8,13 @@
                     <div class="col-xl-2 col-md-6 mb-4">
                         <div class="card card-shadow">
                             <div class="card-body d-flex justify-content-center align-items-center">
-                                <div class=" pt-2">
+                                <div class="px-auto py-auto">
                                     <div class="card-text">
                                         <span class="h2">{{ $totalMeeting ?? '0' }}</span>
                                     </div>
-                                    <div class="font-weight-bold h6">Total Meetings</div>
+                                    <div class="font-weight-bold h6">Total</div>
                                 </div>
-                                <div class=" ps-4">
+                                <div class=" ms-auto">
                                     <img src="{{ asset('/images/Group.svg') }}" height="50" width="50"
                                         alt="Total Meetings">
                                 </div>
@@ -26,28 +26,28 @@
                     <div class="col-xl-2 col-md-6 mb-4">
                         <div class="card card-shadow">
                             <div class="card-body d-flex justify-content-center align-items-center">
-                                <div class=" pt-2 pe-2">
+                                <div class="px-auto py-auto">
                                     <div class="card-text">
                                         <span class="h2">{{ $completedCount ?? '0' }}</span>
                                     </div>
                                     <div class="font-weight-bold h6">Completed</div>
-                                  
+                                </div>
+                                <div class=" ms-auto">
+                                    <img src="{{ asset('/images/Group-1.svg') }}" height="50" width="50"
+                                        alt="Total Meetings">
                                 </div>
 
-                                <div class="ps-4">
-                                    <img src="{{ asset('/images/Group-1.svg') }}" height="50" width="50"
-                                        alt="Completed Meetings">
-                                </div>
-                               
                             </div>
                         </div>
                     </div>
+
+                    
 
                     <div class="col-xl-2 col-md-6 mb-4">
                         <div class="card card-shadow">
                             <div class="card-body d-flex justify-content-center align-items-center">
 
-                                <div class=" pt-2 pe-2">
+                                <div class=" px-auto py-auto">
                                     <div class="card-text">
                                         <span class="h2">{{ $upcomingCount ?? '0' }}</span>
                                     </div>
@@ -55,7 +55,7 @@
                                    
                                 </div>
 
-                                <div class="ps-4">
+                                <div class="ms-auto">
                                     <img src="{{ asset('/images/Group-3.svg') }}" height="50" width="50"
                                         alt="Upcoming Meetings">
                                 </div>
@@ -67,7 +67,7 @@
                     <div class="col-xl-2 col-md-6 mb-4">
                         <div class="card card-shadow">
                             <div class="card-body d-flex justify-content-center align-items-center">
-                                <div class=" pt-2 pe-2">
+                                <div class=" px-auto py-auto">
                                     <div class="card-text">
                                         <span class="h2">{{ $pendingCount ?? '0' }}</span>
                                     </div>
@@ -75,7 +75,7 @@
                                     
                                 </div>
 
-                                <div class="ps-4">
+                                <div class="ms-auto">
                                     <img src="{{ asset('/images/Group-4.svg') }}" height="50" width="50"
                                         alt="Pending Meetings">
                                 </div>
@@ -87,7 +87,7 @@
                     <div class="col-xl-2 col-md-6 mb-4">
                         <div class="card card-shadow">
                             <div class="card-body d-flex justify-content-center align-items-center">
-                                <div class=" pt-2 pe-2">
+                                <div class=" px-auto py-auto">
                                     <div class="card-text">
                                         <span class="h2">{{ $rejectedCount ?? '0' }}</span>
                                     </div>
@@ -95,7 +95,7 @@
                                    
                                 </div>
 
-                                <div class="ps-4">
+                                <div class="ms-auto">
                                     <img src="{{ asset('/images/reject.png') }}" height="60" width="60"
                                         alt="Rejected Meetings">
                                 </div>
@@ -107,7 +107,7 @@
                     <div class="col-xl-2 col-md-6 mb-4">
                         <div class="card card-shadow">
                             <div class="card-body d-flex justify-content-center align-items-center">
-                                <div class=" pt-2 pe-2">
+                                <div class=" px-auto py-auto">
                                     <div class="card-text">
                                         <span class="h2">{{ $expiredCount ?? '0' }}</span>
                                     </div>
@@ -115,7 +115,7 @@
                                     
                                 </div>
 
-                                <div class="ps-4">
+                                <div class="ms-auto">
                                     <i class="fa-regular fa-clock" style="font-size: 40px;"></i>
                                 </div>
                                
