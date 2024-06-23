@@ -7,8 +7,8 @@
             <div class="container py-5 h-100 ">
                 <div class="row d-flex justify-content-center align-items-center h-100">
                     <div class="col-12 col-md-8 col-lg-6 col-xl-5">
-                        <div class="card shadow-2-strong" style="border-radius: 1rem;">
-                            <div class="card-body p-5 text-center shadow-lg">
+                        <div class="card shadow-2-strong shadow-lg" style="border-radius: 1rem;">
+                            <div class="card-body p-5 text-center ">
 
                                 <img src="../images/mrms_logo_2.png" class="rounded  w-50 mb-4" alt="Cinque Terre">
 
@@ -44,10 +44,7 @@
                                 </div>
 
 
-                                <!-- Checkbox -->
-                                <div class="form-check d-flex justify-content-end mb-4">
-                                    <a class="form-check-label" for="form1Example3"> Forgot Password? </a>
-                                </div>
+                               
 
                                 {{-- <button data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-lg btn-block"
                                 type="submit">Login</button> --}}
