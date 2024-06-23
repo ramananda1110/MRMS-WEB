@@ -1207,7 +1207,7 @@ class MeetingController extends Controller
          // Find the meeting record by ID
         $meeting = Meeting::find($id);
 
-        dd($meeting);
+        //dd($meeting);
 
         return view('admin.meeting.meeting_view', compact('meetings'));
 
