@@ -10,37 +10,28 @@ use App\Models\Meeting;
 use Illuminate\Contracts\View\View;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 
 use App\Models\User;
 
 class MeetingDataExport implements FromCollection, WithHeadings
 {
+
+    protected $meetings;
+
+
+    public function __construct($meetings)
+    {
+        $this->meetings = $meetings;
+    }
+
     /**
      * @return \Illuminate\Support\Collection
      */
     public function collection()
     {
-         // Retrieve the authenticated user's employee ID and role ID
-         $employeeId = Auth()->user()->employee_id;
-         $roleId = Auth()->user()->role_id;
- 
-        
-        $meetingsQuery = Meeting::with(['room', 'host', 'coHost', 'participants.employee']);
 
-
-        if ($roleId !== 1) {
-            $meetingsQuery->where(function ($query) use ($employeeId) {
-                $query->where('host_id', $employeeId)
-                    ->orWhereHas('participants', function ($query) use ($employeeId) {
-                        $query->where('participant_id', $employeeId);
-                    });
-            });
-        }
-
-        $meetings = $meetingsQuery->get();
-
-
-        $data = $meetings->map(function ($meeting) {
+        $data = $this->meetings->map(function ($meeting) {
             // Concatenate participants' details into a single string
             $participants = $meeting->participants->map(function ($participant) {
                 return $participant->employee ? 
@@ -52,10 +43,9 @@ class MeetingDataExport implements FromCollection, WithHeadings
             $status = $meeting->booking_status;
 
             return [
-                'id' => $meeting->id,
-                'room_name' => $meeting->room ? $meeting->room->name : 'N/A',
-                'meeting_title' => $meeting->meeting_title,
                 'start_date' => $meeting->start_date,
+                'meeting_title' => $meeting->meeting_title,
+                'room_name' => $meeting->room ? $meeting->room->name : 'N/A',
                 'start_time' => $meeting->start_time,
                 'end_time' => $meeting->end_time,
                 'host_name' => $meeting->host ? $meeting->host->name : '',
@@ -80,10 +70,9 @@ class MeetingDataExport implements FromCollection, WithHeadings
     public function headings(): array
     {
         return [
-            'Id',
-            'Room Name',
-            'Title',
             'Date',
+            'Title',
+            'Room Name',
             'Start Time',
             'End Time',
             'Host',

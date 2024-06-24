@@ -4,6 +4,7 @@
      <thead>
          <tr>
 
+             <th scope="col">SN</th>
              <th scope="col">Room Name</th>
              <th scope="col">Meeting Title</th>
              <th scope="col">Date</th>
@@ -20,6 +21,7 @@
              @foreach ($meetings as $key => $meeting)
                  <tr>
 
+                     <td>{{ $key + 1 }}</td>
                      <th scope="row">{{ $meeting->room->name }}</th>
                      <td>{{ $meeting->meeting_title }}</td>
                      <td>{{ \Carbon\Carbon::parse($meeting->start_date)->format('F j, Y') }}</td>
@@ -51,13 +53,13 @@
                                          class="fa-solid fa-eye"></i></button></a>
                          @endif
 
-                         @if ($meeting->booking_status == 'pending')
-                             @if (isset(Auth()->user()->role->permission['name']['meeting']['can-edit']))
-                                 <a data-bs-toggle="modal" data-bs-target="#acceptModal{{ $meeting->id }}",
-                                     href="#" title="Accept">
-                                     <button type="button" class="btn btn-success"><i
-                                             class="fa-regular fa-square-check"></i></button></a>
-                             @endif
+                        @if ($meeting->booking_status == 'pending')
+                            @if (isset(Auth()->user()->role->permission['name']['meeting']['can-edit']))
+                                <a data-bs-toggle="modal" data-bs-target="#acceptModal{{ $meeting->id }}",
+                                    href="#" title="Accept">
+                                    <button type="button" class="btn btn-success"><i
+                                            class="fa-regular fa-square-check"></i></button></a>
+                            @endif
 
 
 
@@ -190,7 +192,7 @@
                                                              </tr>
                                                              <tr>
                                                                  <th>Co-Host Name</th>
-                                                                 <td>{{ $meeting->coHost->name ?? 'N/A'}}</td>
+                                                                 <td>{{ $meeting->coHost->name ?? 'N/A' }}</td>
                                                              </tr>
                                                              <tr>
                                                                  <th>Participants Name</th>
@@ -229,7 +231,7 @@
              @endforeach
          @else
              <tr>
-                 <td colspan="6" class="text-center">No meeting found!</td>
+                 <td colspan="7" class="text-center">No meeting found!</td>
              </tr>
 
          @endif

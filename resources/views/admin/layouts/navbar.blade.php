@@ -35,14 +35,25 @@
         }
     </style>
 
+    <style>
+        /* CSS for active sidebar item */
+        .nav-link.show {
+            background-color: #7bbbff;
+            /* Change this to your desired background color */
+            color: #fff;
+
+            /* Change this to your desired text color */
+        }
+    </style>
+
 
 
 </head>
 
 <body class="sb-nav-fixed">
-    <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
+    <nav class="sb-topnav navbar navbar-expand navbar-light shadow-lg">
         <!-- Navbar Brand-->
-        <a class="navbar-brand ps-3" href="{{ url('/') }}">{{ Auth()->user()->role->name }}</a>
+        <a class="navbar-brand ps-3 text-center" href="{{ url('/') }}">{{ Auth()->user()->role->name }}</a>
         <!-- Sidebar Toggle-->
         <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i
                 class="fas fa-bars"></i></button>
@@ -64,25 +75,25 @@
                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                     <li><a class="dropdown-item" href="{{ Route('user.profile') }}">User Profile</a></li>
 
-                    <li><a class="dropdown-item" href="#!">Settings</a></li>
+                    {{-- <li><a class="dropdown-item" href="#!">Settings</a></li> --}}
                     <li> <a class="dropdown-item" href="{{ Route('change.password.form') }}">Change Password</a>
                     </li>
 
                     <li>
                         <hr class="dropdown-divider" />
                     </li>
-                   
 
-                            <a class="dropdown-item" href="{{ route('logout') }}"
-                                onclick="event.preventDefault();
+
+                    <a class="dropdown-item" href="{{ route('logout') }}"
+                        onclick="event.preventDefault();
                                 document.getElementById('logout-form').submit();">
-                                {{ __('Logout') }}
-                            </a>
+                        {{ __('Logout') }}
+                    </a>
 
-                            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                @csrf
-                            </form>
-                        
+                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                        @csrf
+                    </form>
+
                 </ul>
             </li>
         </ul>

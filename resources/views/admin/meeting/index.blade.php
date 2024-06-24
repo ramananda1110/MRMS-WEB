@@ -37,10 +37,11 @@
                                         <div class="col-md">
                                             <form action="{{ route('meetings.exportCsv') }}" method="get" target="_blank">
                                                 @csrf
-                                                <button type="submit"
+                                                <input type="hidden" name="filter" id="exportFilterCsv" value="0">
+                                                <button 
                                                     class="btn btn-default buttons-csv border buttons-html5 btn-sm btn-block"
                                                     tabindex="0" aria-controls="employees">
-                                                    <span>Csv</span>
+                                                    Csv
                                                 </button>
                                             </form>
                                         </div>
@@ -48,6 +49,7 @@
 
                                             <form action="{{ route('meetings.download-excel') }}" method="post"
                                                 target="_blank">@csrf
+                                                <input type="hidden" name="filter" id="exportFilterExcel" value="0">
 
                                                 <button
                                                     class="btn btn-default buttons-csv border buttons-html5 btn-sm">Excel</button>
@@ -56,12 +58,16 @@
                                         </div>
                                         <div class="col-md">
                                             <form action="{{ route('meetings.exportPdf') }}" method="get" target="_blank">
+                                                <input type="hidden" name="filter" id="exportFilterPdf" value="0">
+
                                                 <button
                                                     class="btn btn-default buttons-csv border buttons-html5 btn-sm btn-block">Pdf</button>
                                             </form>
                                         </div>
                                         <div class="col-md">
                                             <form action="{{ route('meetings.printView') }}" method="get" target="_blank">
+                                                <input type="hidden" name="filter" id="exportFilterPrint" value="0">
+
                                                 <button
                                                     class="btn btn-default buttons-csv border buttons-html5 btn-sm btn-block">Print</button>
                                             </form>
@@ -70,45 +76,22 @@
                                 </div>
 
                                 <div class="d-flex justify-content-between align-items-center">
-
-
-                                  
-                                    
                                     <!-- Search input -->
-                                    <div class="me-3">
+                                    <div class="me-2">
                                         <input id="searchInput" type="text" name="search" class="form-control"
                                             placeholder="Search..." style="width: 200px;">
                                     </div>
 
                                       <!-- Filter dropdown -->
-                                      <div class="dropdown me-2">
-                                        <button class="btn btn-primary dropdown-toggle" type="button" id="filterDropdown"
-                                                data-bs-toggle="dropdown" aria-expanded="false">
-                                                <i class="fa-solid fa-filter"></i>
-                                        </button>
-                                        <ul class="dropdown-menu" aria-labelledby="filterDropdown">
-                                            <!-- Dummy data in radio button format -->
-                                            <li>
-                                                <label class="dropdown-item">
-                                                    <input type="radio" class="filter-radio" name="filterOption" value="5"> Previous 5 days
-                                                </label>
-                                            </li>
-                                            <li>
-                                                <label class="dropdown-item">
-                                                    <input type="radio" class="filter-radio" name="filterOption" value="10"> Previous 10 days
-                                                </label>
-                                            </li>
-                                            <li>
-                                                <label class="dropdown-item">
-                                                    <input type="radio" class="filter-radio" name="filterOption" value="15"> Previous 15 days
-                                                </label>
-                                            </li>
-                                        </ul>
-                                    </div>
+                                        <select class="form-select form-select-mm me-2" aria-label=".form-select-lg example">
+                                            <option value="0" selected>All</option>
+                                            <option value="1">Past 15 days</option>
+                                            <option value="2">Past 30 days</option>
+                                            <option value="3">Past 90 days</option>
+                                            <option value="4">Past 180 days</option>
+                                        </select>
+                                           
                                 </div>
-
-
-
 
                             </div>
 
@@ -179,33 +162,47 @@
             document.getElementById(formId).querySelector('[name="booking_status"]').value = status;
             document.getElementById(formId).submit();
         }
+       
 
-
-
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', (event) => {
+            const selectElement = document.querySelector('.form-select');
             const searchInput = document.getElementById('searchInput');
 
-            searchInput.addEventListener('input', function() {
-                const query = searchInput.value;
-                fetchEmployees(query);
+            const exportFilterCsv = document.getElementById('exportFilterCsv');
+            const exportFilterExcel = document.getElementById('exportFilterExcel');
+            const exportFilterPdf = document.getElementById('exportFilterPdf');
+            const exportFilterPrint = document.getElementById('exportFilterPrint');
+
+            function updateData() {
+                const filterValue = selectElement.value;
+                const searchValue = searchInput.value;
+                $.ajax({
+                    url: '{{ route("search.meeting") }}',
+                    method: 'GET',
+                    data: { filter: filterValue, search: searchValue },
+                    success: function(response) {
+                        $('#meetingTableContainer').html(response);
+                    },
+                    error: function(error) {
+                        console.error('Error fetching filtered data:', error);
+                    }
+                });
+            }
+
+            selectElement.addEventListener('change', updateData);
+            searchInput.addEventListener('input', updateData);
+
+
+            selectElement.addEventListener('change', (event) => {
+                const filterValue = event.target.value;
+                exportFilterCsv.value = filterValue;
+                exportFilterExcel.value = filterValue;
+                exportFilterPdf.value = filterValue;
+                exportFilterPrint.value = filterValue;
             });
 
-            function fetchEmployees(query) {
-                fetch(`{{ route('search.meeting') }}?search=${query}`, {
-                        headers: {
-                            'X-Requested-With': 'XMLHttpRequest'
-                        }
-                    })
-                    .then(response => response.text())
-                    .then(data => {
-                        document.getElementById('meetingTableContainer').innerHTML = data;
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                        alert('Error fetching employee data'); // Add this line
-                    });
-            }
         });
+
     </script>
 @endsection
 @endsection

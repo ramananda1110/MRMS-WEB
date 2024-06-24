@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\SendMeetingNotifications;
+
 use Illuminate\Http\Request;
 use App\Models\Meeting;
 use App\Models\Participant;
@@ -16,6 +18,8 @@ use Illuminate\Support\Facades\Auth;
 use App\Exports\MeetingDataExport;
 use Maatwebsite\Excel\Facades\Excel;
 use Barryvdh\DomPDF\Facade\Pdf;
+use App\Services\MeetingValidationService;
+use App\Notifications\MeetingInvitation;
 
 
 class MeetingController extends Controller
@@ -27,33 +31,20 @@ class MeetingController extends Controller
      */
 
      protected $notificationController;
+     protected $meetingValidationService;
 
-     public function __construct(FCMPushController $notificationController)
-     {
-         $this->notificationController = $notificationController;
-     }
+    public function __construct(FCMPushController $notificationController, MeetingValidationService $meetingValidationService)
+    {
+        $this->notificationController = $notificationController;
+        $this->meetingValidationService = $meetingValidationService;
+    }
 
      
 
      public function index()
      {
         
-        // Retrieve the authenticated user's employee ID and role ID
-        $employeeId = Auth()->user()->employee_id;
-        $roleId = Auth()->user()->role_id;
-
-        // Fetch meetings based on user role
-        $meetingsQuery = Meeting::with('participants');
-        if ($roleId !== 1) {
-            $meetingsQuery->where(function ($query) use ($employeeId) {
-                $query->where('host_id', $employeeId)
-                    ->orWhereHas('participants', function ($query) use ($employeeId) {
-                        $query->where('participant_id', $employeeId);
-                    });
-            });
-        }
-
-        $meetings = $meetingsQuery->get();
+        $meetings = $this->queryDataList();
 
         // Update booking status based on conditions
         $today = now()->toDateString();
@@ -84,8 +75,8 @@ class MeetingController extends Controller
         }
 
          // Order meetings by latest start_date
-        // $meetings = $meetings->sortByDesc('start_date')->values()->all();
-        $meetings = $meetings->sortBy('start_date')->values()->all();
+        $meetings = $meetings->sortByDesc('start_date')->values()->all();
+        // $meetings = $meetings->sortBy('start_date')->values()->all();
 
    
         return view('admin.meeting.index', compact('meetings'));
@@ -94,23 +85,7 @@ class MeetingController extends Controller
 
     public function upcoming(Request $request)
     {
-         // Retrieve the authenticated user's employee ID and role ID
-         $employeeId = Auth()->user()->employee_id;
-         $roleId = Auth()->user()->role_id;
- 
-         // Fetch meetings based on user role
-         $meetingsQuery = Meeting::with('participants');
-         if ($roleId !== 1) {
-             $meetingsQuery->where(function ($query) use ($employeeId) {
-                 $query->where('host_id', $employeeId)
-                     ->orWhereHas('participants', function ($query) use ($employeeId) {
-                         $query->where('participant_id', $employeeId);
-                     });
-             });
-         }
- 
-         $meetings = $meetingsQuery->get();
- 
+        $meetings = $this->queryDataList();
         // Determine today's date
         $today = now()->toDateString();
 
@@ -126,23 +101,7 @@ class MeetingController extends Controller
 
     public function pending()
     {
-         // Retrieve the authenticated user's employee ID and role ID
-         $employeeId = Auth()->user()->employee_id;
-         $roleId = Auth()->user()->role_id;
- 
-         // Fetch meetings based on user role
-         $meetingsQuery = Meeting::with('participants');
-         if ($roleId !== 1) {
-             $meetingsQuery->where(function ($query) use ($employeeId) {
-                 $query->where('host_id', $employeeId)
-                     ->orWhereHas('participants', function ($query) use ($employeeId) {
-                         $query->where('participant_id', $employeeId);
-                     });
-             });
-         }
- 
-         $meetings = $meetingsQuery->get();
- 
+        $meetings = $this->queryDataList();
 
         // Determine today's date
         $today = now()->toDateString();
@@ -152,6 +111,9 @@ class MeetingController extends Controller
             return $meeting->booking_status === 'pending' && $meeting->start_date >= $today;
         });
 
+        $meetings = $meetings->sortBy('start_date')->values()->all();
+
+
         return view('admin.meeting.pending', compact('meetings'));
     }
 
@@ -159,25 +121,9 @@ class MeetingController extends Controller
     public function cenceled()
     {
 
-        // Retrieve the authenticated user's employee ID and role ID
-        $employeeId = Auth()->user()->employee_id;
-        $roleId = Auth()->user()->role_id;
-
-        // Fetch meetings based on user role
-        $meetingsQuery = Meeting::with('participants');
-        if ($roleId !== 1) {
-            $meetingsQuery->where(function ($query) use ($employeeId) {
-                $query->where('host_id', $employeeId)
-                    ->orWhereHas('participants', function ($query) use ($employeeId) {
-                        $query->where('participant_id', $employeeId);
-                    });
-            });
-        }
-
-        $meetings = $meetingsQuery->get();
+        $meetings = $this->queryDataList();
 
         $today = now()->toDateString();
-
 
         $meetings = $meetings->filter(function ($meeting) use ($today) {
             return $meeting->booking_status === 'rejected' || $meeting->booking_status === 'pending' && $meeting->start_date < $today;
@@ -212,23 +158,7 @@ class MeetingController extends Controller
 
     public function completed()
     {
-       // Retrieve the authenticated user's employee ID and role ID
-       $employeeId = Auth()->user()->employee_id;
-       $roleId = Auth()->user()->role_id;
-
-       // Fetch meetings based on user role
-       $meetingsQuery = Meeting::with('participants');
-       if ($roleId !== 1) {
-           $meetingsQuery->where(function ($query) use ($employeeId) {
-               $query->where('host_id', $employeeId)
-                   ->orWhereHas('participants', function ($query) use ($employeeId) {
-                       $query->where('participant_id', $employeeId);
-                   });
-           });
-       }
-
-       $meetings = $meetingsQuery->get();
-
+        $meetings = $this->queryDataList();
         // Determine today's date
         $today = now()->toDateString();
 
@@ -238,6 +168,31 @@ class MeetingController extends Controller
 
         return view('admin.meeting.index', compact('meetings'));
     }
+
+
+    private function queryDataList()
+    {
+        // Retrieve the authenticated user's employee ID and role ID
+        $employeeId = Auth()->user()->employee_id;
+        $roleId = Auth()->user()->role_id;
+
+        // Fetch meetings based on user role
+        $meetingsQuery = Meeting::with('participants');
+        if ($roleId !== 1) {
+            $meetingsQuery->where(function ($query) use ($employeeId) {
+                $query->where('host_id', $employeeId)
+                    ->orWhereHas('participants', function ($query) use ($employeeId) {
+                        $query->where('participant_id', $employeeId);
+                    });
+            });
+        }
+
+        $meetings = $meetingsQuery->get();
+
+        return $meetings;
+
+    }
+
 
 
      // get all meeting for Mobile App
@@ -263,7 +218,7 @@ class MeetingController extends Controller
         }
 
         // Execute the query to get the meetings
-         $meetings = $meetingsQuery->get();
+        $meetings = $meetingsQuery->get();
 
         $data = $meetings->map(function ($meeting) {
 
@@ -347,110 +302,11 @@ class MeetingController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    
-    
     public function store(Request $request)
     {
-      $validator = Validator::make($request->all(), [
-            'room_id' => 'required|exists:rooms,id',
-            'meeting_title' => 'required|string|max:255',
-            'start_date' => [
-                'required',
-                'date',
-                'after_or_equal:today', // Ensure start date is after or equal to today
-            ],
-            // 'start_time' => [
-            //     'required',
-            //     'date_format:H:i',
-            //     'after_or_equal:09:00', // Start time must be after or equal to 09:00 (9:00 AM)
-            //     'before_or_equal:17:30' // Start time must be before or equal to 17:30 (5:00 PM)
-            // ],
+      
+        $validator = $this->meetingValidationService->validateMeeting($request);
 
-
-            'start_time' => [
-                'required',
-                'date_format:H:i',
-                'after_or_equal:09:00', // Start time must be after or equal to 09:00 (9:00 AM)
-                'before_or_equal:17:15', // Start time must be before or equal to 17:00 (5:00 PM)
-                function ($attribute, $value, $fail) use ($request) {
-                   
-                   // Get the current date and time in Bangladesh Standard Time (Asia/Dhaka)
-                    $currentTime = Carbon::now('Asia/Dhaka');
-                    // info('Current Time:', ['current_time' => $currentTime]);
-
-                    // Parse the provided start_date
-                    $startDate = Carbon::parse($request->input('start_date'));
-
-                    // Check if the user-provided start date is today
-                    if ($startDate->format('Y-m-d') === $currentTime->format('Y-m-d')) {
-                        // Today's date: Perform time validation
-
-                        // Add 30 minutes to the current time
-                        $validStartTime = $currentTime->copy()->addMinutes(30);
-                        //info('Valid Start Time:', ['valid_start_time' => $validStartTime]);
-
-                        // Convert start_time to a DateTime object in UTC
-                        $startTime = Carbon::parse($value, 'Asia/Dhaka')->setTimezone('UTC');
-                        //info('Start Time:', ['start_time' => $startTime]);
-
-                        if ($startTime < $validStartTime) {
-                            $fail('The start time must be at least 30 minutes after the current time.');
-                        }
-                    }
-                }
-            ],
-
-            'end_time' => [
-                'required',
-                'date_format:H:i',
-                'after:start_time', // End time must be after the start time
-                'after_or_equal:09:00', // End time must be after or equal to 09:00 (9:00 AM)
-                'before_or_equal:17:30' // End time must be before or equal to 17:30 (5:00 PM)
-            ],
-            'host_id' => 'required|exists:employees,employee_id',
-            'co_host_id' => 'nullable|exists:employees,employee_id',
-            'participants' => 'required|array', // Ensure participants is an array and required
-        ]);
-        
-        
-
-        // Add custom validation rule to check for overlapping meetings
-        $validator->after(function ($validator) use ($request) {
-            // Retrieve input data
-            $room_id = $request->input('room_id');
-            $start_date = $request->input('start_date');
-            $start_time = $request->input('start_time');
-            $end_time = $request->input('end_time');
-
-        
-           // Convert start_time to a DateTime object
-           $startDateTime = \DateTime::createFromFormat('H:i', $start_time);
-           // Add 1 minute
-           $startDateTime->add(new \DateInterval('PT1M'));
-           // Format the updated start time as a string
-           $updated_start_time = $startDateTime->format('H:i');
-          
-
-            // Check for overlapping meetings
-            $overlappingMeeting = Meeting::where('room_id', $room_id)
-                ->where('start_date', $start_date)
-                ->where('booking_status', '!=', 'rejected') // New condition
-                ->where(function ($query) use ($updated_start_time, $end_time) {
-                    $query->whereBetween('start_time', [$updated_start_time, $end_time])
-                        ->orWhereBetween('end_time', [$updated_start_time, $end_time])
-                        ->orWhere(function ($query) use ($updated_start_time, $end_time) {
-                            $query->where('start_time', '<', $updated_start_time)
-                                    ->where('end_time', '>', $end_time);
-                        });
-                })
-                ->exists();
-
-            
-            // If overlapping meeting found, add error message
-            if ($overlappingMeeting) {
-                $validator->errors()->add('overlap', 'There is already a meeting scheduled at this time.');
-            }
-        });
         
             // If validation fails, return a custom response
         if ($validator->fails()) {
@@ -482,23 +338,117 @@ class MeetingController extends Controller
             ]);
         }
 
+         $devicesToken = User::where('role_id', 1)->pluck('device_token')->toArray();
+
+            $this->notificationController->attemtNotification($devicesToken, "Created a Meeting", "Requested to you a meeting schedule.");
+
+
 
         // sent the notification to user admin
-        $devicesToken = User::where('role_id', 1)->pluck('device_token')->toArray();
+       
+        // // Fetch all users with role_id 1
+        // $userEmails = User::where('role_id', 1)->pluck('email')->toArray();
 
-        $this->notificationController->attemtNotification($devicesToken, "Created a Meeting", "Requested to you a meeting schedule.");
+        // // Loop through each email, fetch the user and send the notification
+        // foreach ($userEmails as $email) {
+        //     $user = User::where('email', $email)->first();
 
-        
+        //     if ($user) {
+        //         $user->notify(new MeetingInvitation(
+        //             $meeting->id,
+        //             $meeting->meeting_title,
+        //             $meeting->start_date,
+        //             $meeting->start_time,
+        //             $meeting->end_time,
+        //             $meeting->room->name . ' at ' . $meeting->room->location
+        //         ));
+        //     }
+        // }
+
+
+
+        // // Prepare meeting details for the job
+        // $meetingDetails = [
+        //     'id' => $meeting->id,
+        //     'title' => $meeting->meeting_title,
+        //     'start_date' => $meeting->start_date,
+        //     'start_time' => $meeting->start_time,
+        //     'end_time' => $meeting->end_time,
+        //     'location' => $meeting->room->name . ' at ' . $meeting->room->location
+        // ];
+
+        // // Dispatch the job to send notifications
+        // SendMeetingNotifications::dispatch($meeting, $meetingDetails);
+
+
+
         return redirect()->route("meeting.index")->with('message', 'Meeting created successfully');
 
 
     }
 
 
+     // create meeting by APP
+     public function createMeeting(Request $request)
+     {
+ 
+         $validator = $this->meetingValidationService->validateMeeting($request);
+ 
+         
+             // If validation fails, return a custom response
+         if ($validator->fails()) {
+             return response()->json([
+                 'message' => $validator->errors()->first(),
+                 'status_code' => 422
+             ], 200);
+         }
+ 
+         // If validation passes, create the meeting using the validated data
+         $meeting = Meeting::create($validator->validated());
+ 
+        
+          // Attach participants to the meeting
+          $participants = $request->input('participants', []);
+  
+          // Include host and co-host in participants if they are selected
+          if ($request->has('host_id')) {
+              $participants[] = $request->input('host_id');
+          }
+          if ($request->has('co_host_id') && $request->input('co_host_id')) {
+              $participants[] = $request->input('co_host_id');
+          }
+  
+          foreach ($participants as $participantId) {
+              // Create a new participant record
+              Participant::create([
+                  'meeting_id' => $meeting->id,
+                  'participant_id' => $participantId
+              ]);
+          }
+ 
+ 
+         // sent the notification to user admin
+         $devicesToken = User::where('role_id', 1)->pluck('device_token')->toArray();
+ 
+         $this->notificationController->attemtNotification($devicesToken, "Created a Meeting", "Requested to you a meeting schedule.");
+ 
+ 
+         // Return a success response with the created meeting
+             return response()->json([
+                 'status_code' => 200,
+                 'message' => 'Meeting created successfully',
+                 //'meeting' => $meeting,
+             ], 200);
+     }
+ 
+
+
     // filter meeting for web
 
     public function searchMeeting(Request $request)
     {
+
+
         $employeeId = auth()->user()->employee_id;
         $roleId = auth()->user()->role_id;
 
@@ -518,18 +468,52 @@ class MeetingController extends Controller
             $search = $request->search;
             $meetingsQuery->where(function ($query) use ($search) {
                 $query->where('meeting_title', 'like', '%' . $search . '%')
-                   
                     ->orWhere('start_date', 'like', '%' . $search . '%')
-                    ->orWhere('start_time', 'like', '%' . $search . '%')
-                    ->orWhere('end_time', 'like', '%' . $search . '%')
                     ->orWhere('booking_status', 'like', '%' . $search . '%')
                     ->orWhere('booking_type', 'like', '%' . $search . '%');
             });
         }
 
+        
+        // Apply date filter based on selected value
+        if ($request->has('filter')) {
+            
+            $filter = $request->input('filter');
+            $dateFrom = now();
+
+            
+            switch ($filter) {
+                case '1':
+                    $dateFrom = now()->subDays(15);
+                    break;
+                case '2':
+                    $dateFrom = now()->subDays(30);
+                    break;
+                case '3':
+                    $dateFrom = now()->subDays(90);
+                    break;
+                case '4':
+                    $dateFrom = now()->subDays(180);
+                    break;
+                default:
+                    $dateFrom = null;
+            }
+
+            if ($dateFrom) {
+                $formattedDateFrom = $dateFrom->toDateString();
+                $meetingsQuery->whereDate('start_date', '>=', $formattedDateFrom);
+
+               
+            }
+
+        }
+
+
+    
         // Get paginated results
         $meetings = $meetingsQuery->orderBy('start_date')->paginate(30);
 
+        
         // Update booking status based on conditions
         $today = now()->toDateString();
         foreach ($meetings as $meeting) {
@@ -634,8 +618,17 @@ class MeetingController extends Controller
         ->whereDate('start_date', '>=', $today) // Start date on or after today
         ->count();
        
+        $pendingCount = Meeting::where('booking_status', 'pending')
+        ->whereDate('start_date', '>=', $today) // Start date on or after today
+        ->count();
 
-        $pendingCount = Meeting::whereIn('booking_status', ['pending', 'rejected'])->count();
+        //$pendingCount = Meeting::whereIn('booking_status', ['pending', 'rejected'])->count();
+
+        $rejectedCount = Meeting::where('booking_status', 'rejected')->count();
+
+        $expiredCount = Meeting::where('booking_status', 'pending')
+        ->whereDate('start_date', '<', $today) // Start date before today
+        ->count();
 
 
         $completedCount = Meeting::where('booking_status', 'accepted')
@@ -696,7 +689,7 @@ class MeetingController extends Controller
             $month = Carbon::parse($meeting->start_date)->format('M');
             $yearlyData[$month]++;
         }
-        return view('welcome', compact('totalMeeting', 'upcomingCount', 'pendingCount', 'completedCount', 'weekendData', 'yearlyData'));
+        return view('welcome', compact('totalMeeting', 'upcomingCount', 'pendingCount', 'completedCount', 'rejectedCount', 'expiredCount', 'weekendData', 'yearlyData'));
 
     }
 
@@ -875,101 +868,10 @@ class MeetingController extends Controller
 
     public function reschedule(Request $request, $id)
         {
-            $validator = Validator::make($request->all(), [
-                'room_id' => 'required|exists:rooms,id',
-                'meeting_title' => 'required|string|max:255',
-                'start_date' => [
-                    'required',
-                    'date',
-                    'after_or_equal:today', // Ensure start date is after or equal to today
-                ],
-                // 'start_time' => [
-                //     'required',
-                //     'date_format:H:i',
-                //     'after_or_equal:09:00', // Start time must be after or equal to 09:00 (9:00 AM)
-                //     'before_or_equal:17:15' // Start time must be before or equal to 17:00 (5:00 PM)
-                // ],
+           
 
-                'start_time' => [
-                    'required',
-                    'date_format:H:i',
-                    'after_or_equal:09:00', // Start time must be after or equal to 09:00 (9:00 AM)
-                    'before_or_equal:17:15', // Start time must be before or equal to 17:00 (5:00 PM)
-                    function ($attribute, $value, $fail) use ($request) {
-                       
-                       // Get the current date and time in Bangladesh Standard Time (Asia/Dhaka)
-                        $currentTime = Carbon::now('Asia/Dhaka');
-                        // info('Current Time:', ['current_time' => $currentTime]);
-    
-                        // Parse the provided start_date
-                        $startDate = Carbon::parse($request->input('start_date'));
-    
-                        // Check if the user-provided start date is today
-                        if ($startDate->format('Y-m-d') === $currentTime->format('Y-m-d')) {
-                            // Today's date: Perform time validation
-    
-                            // Add 30 minutes to the current time
-                            $validStartTime = $currentTime->copy()->addMinutes(5);
-                            //info('Valid Start Time:', ['valid_start_time' => $validStartTime]);
-    
-                            // Convert start_time to a DateTime object in UTC
-                            $startTime = Carbon::parse($value, 'Asia/Dhaka')->setTimezone('UTC');
-                            //info('Start Time:', ['start_time' => $startTime]);
-    
-                            if ($startTime < $validStartTime) {
-                                $fail('The start time must be at least 30 minutes after the current time.');
-                            }
-                        }
-                    }
-                ],
+            $validator = $this->meetingValidationService->validateMeeting($request);
 
-                'end_time' => [
-                    'required',
-                    'date_format:H:i',
-                    'after:start_time', // End time must be after the start time
-                    'after_or_equal:09:00', // End time must be after or equal to 09:00 (9:00 AM)
-                    'before_or_equal:17:30' // End time must be before or equal to 17:00 (5:00 PM)
-                ],
-                'host_id' => 'required|exists:employees,employee_id',
-                'co_host_id' => 'nullable|exists:employees,employee_id',
-                'participants' => 'required|array', // Ensure participants is an array and required
-            ]);
-            
-            // Add custom validation rule to check for overlapping meetings
-            $validator->after(function ($validator) use ($request, $id) {
-                // Retrieve input data
-                $room_id = $request->input('room_id');
-                $start_date = $request->input('start_date');
-                $start_time = $request->input('start_time');
-                $end_time = $request->input('end_time');
-
-
-                // Convert start_time to a DateTime object
-                $startDateTime = \DateTime::createFromFormat('H:i', $start_time);
-                // Add 1 minute
-                $startDateTime->add(new \DateInterval('PT1M'));
-                // Format the updated start time as a string
-                $updated_start_time = $startDateTime->format('H:i');
-
-                // Check for overlapping meetings excluding the current meeting
-                $overlappingMeeting = Meeting::where('room_id', $room_id)
-                    ->where('start_date', $start_date)
-                    ->where('id', '!=', $id)
-                    ->where(function ($query) use ($updated_start_time, $end_time) {
-                        $query->whereBetween('start_time', [$updated_start_time, $end_time])
-                            ->orWhereBetween('end_time', [$updated_start_time, $end_time])
-                            ->orWhere(function ($query) use ($updated_start_time, $end_time) {
-                                $query->where('start_time', '<', $updated_start_time)
-                                    ->where('end_time', '>', $end_time);
-                            });
-                    })
-                    ->exists();
-
-                // If overlapping meeting found, add error message
-                if ($overlappingMeeting) {
-                    $validator->errors()->add('overlap', 'There is already a meeting scheduled at this time.');
-                }
-            });
 
             // If validation fails, return a custom response
             if ($validator->fails()) {
@@ -1014,6 +916,12 @@ class MeetingController extends Controller
                 $meeting->participants()->get()->each->touch();
 
             }
+
+            // sent the notification to user admin
+            $devicesToken = User::where('role_id', 1)->pluck('device_token')->toArray();
+
+            $this->notificationController->attemtNotification($devicesToken, "Reschedule a Meeting", "Requested to you a meeting re-schedule.");
+    
             
             // Return a successful response with the updated meeting
             return response()->json([
@@ -1025,175 +933,7 @@ class MeetingController extends Controller
    
 
 
-
-    public function createMeeting(Request $request)
-    {
-      $validator = Validator::make($request->all(), [
-            'room_id' => 'required|exists:rooms,id',
-            'meeting_title' => 'required|string|max:255',
-            'start_date' => [
-                'required',
-                'date',
-                'after_or_equal:today', // Ensure start date is after or equal to today
-            ],
-            // 'start_time' => [
-            //     'required',
-            //     'date_format:H:i',
-            //     'after_or_equal:09:00', // Start time must be after or equal to 09:00 (9:00 AM)
-            //     'before_or_equal:17:30' // Start time must be before or equal to 17:30 (5:00 PM)
-            // ],
-
-
-            'start_time' => [
-                'required',
-                'date_format:H:i',
-                'after_or_equal:09:00', // Start time must be after or equal to 09:00 (9:00 AM)
-                'before_or_equal:17:15', // Start time must be before or equal to 17:00 (5:00 PM)
-                function ($attribute, $value, $fail) use ($request) {
-                   
-                   // Get the current date and time in Bangladesh Standard Time (Asia/Dhaka)
-                    $currentTime = Carbon::now('Asia/Dhaka');
-                    // info('Current Time:', ['current_time' => $currentTime]);
-
-                    // Parse the provided start_date
-                    $startDate = Carbon::parse($request->input('start_date'));
-
-                    // Check if the user-provided start date is today
-                    if ($startDate->format('Y-m-d') === $currentTime->format('Y-m-d')) {
-                        // Today's date: Perform time validation
-
-                        // Add 30 minutes to the current time
-                        $validStartTime = $currentTime->copy()->addMinutes(30);
-                        //info('Valid Start Time:', ['valid_start_time' => $validStartTime]);
-
-                        // Convert start_time to a DateTime object in UTC
-                        $startTime = Carbon::parse($value, 'Asia/Dhaka')->setTimezone('UTC');
-                        //info('Start Time:', ['start_time' => $startTime]);
-
-                        if ($startTime < $validStartTime) {
-                            $fail('The start time must be at least 30 minutes after the current time.');
-                        }
-                    }
-                }
-            ],
-
-            'end_time' => [
-                'required',
-                'date_format:H:i',
-                'after:start_time', // End time must be after the start time
-                'after_or_equal:09:00', // End time must be after or equal to 09:00 (9:00 AM)
-                'before_or_equal:17:30' // End time must be before or equal to 17:30 (5:00 PM)
-            ],
-            'host_id' => 'required|exists:employees,employee_id',
-            'co_host_id' => 'nullable|exists:employees,employee_id',
-            'participants' => 'required|array', // Ensure participants is an array and required
-        ]);
-        
-        
-
-        // Add custom validation rule to check for overlapping meetings
-        $validator->after(function ($validator) use ($request) {
-            // Retrieve input data
-            $room_id = $request->input('room_id');
-            $start_date = $request->input('start_date');
-            $start_time = $request->input('start_time');
-            $end_time = $request->input('end_time');
-        
-          
-           
-           // Convert start_time to a DateTime object
-           $startDateTime = \DateTime::createFromFormat('H:i', $start_time);
-           // Add 1 minute
-           $startDateTime->add(new \DateInterval('PT1M'));
-           // Format the updated start time as a string
-           $updated_start_time = $startDateTime->format('H:i');
-          
-
-            // Check for overlapping meetings
-            $overlappingMeeting = Meeting::where('room_id', $room_id)
-                ->where('start_date', $start_date)
-                ->where('booking_status', '!=', 'rejected') // New condition
-                ->where(function ($query) use ($updated_start_time, $end_time) {
-                    $query->whereBetween('start_time', [$updated_start_time, $end_time])
-                        ->orWhereBetween('end_time', [$updated_start_time, $end_time])
-                        ->orWhere(function ($query) use ($updated_start_time, $end_time) {
-                            $query->where('start_time', '<', $updated_start_time)
-                                    ->where('end_time', '>', $end_time);
-                        });
-                })
-                ->exists();
-
-            
-            // If overlapping meeting found, add error message
-            if ($overlappingMeeting) {
-                $validator->errors()->add('overlap', 'There is already a meeting scheduled at this time.');
-            }
-        });
-        
-            // If validation fails, return a custom response
-        if ($validator->fails()) {
-            return response()->json([
-                'message' => $validator->errors()->first(),
-                'status_code' => 422
-            ], 200);
-        }
-
-        // If validation passes, create the meeting using the validated data
-        $meeting = Meeting::create($validator->validated());
-
-
-
-
-         // If validation passes, create the meeting using the validated data
-         $meeting = Meeting::create($validator->validated());
-
-       
-         // Attach participants to the meeting
-         $participants = $request->input('participants', []);
- 
-         // Include host and co-host in participants if they are selected
-         if ($request->has('host_id')) {
-             $participants[] = $request->input('host_id');
-         }
-         if ($request->has('co_host_id') && $request->input('co_host_id')) {
-             $participants[] = $request->input('co_host_id');
-         }
- 
-         foreach ($participants as $participantId) {
-             // Create a new participant record
-             Participant::create([
-                 'meeting_id' => $meeting->id,
-                 'participant_id' => $participantId
-             ]);
-         }
-
-       
-        // Attach participants to the meeting 
-        // if ($request->has('participants')) {
-        //     foreach ($request->participants as $participantId) {
-        //         // Create a new participant record
-        //         Participant::create([
-        //             'meeting_id' => $meeting->id,
-        //             'participant_id' => $participantId
-        //         ]);
-        //     }
-        // }
-
-
-        // sent the notification to user admin
-        $devicesToken = User::where('role_id', 1)->pluck('device_token')->toArray();
-
-        $this->notificationController->attemtNotification($devicesToken, "Created a Meeting", "Requested to you a meeting schedule.");
-
-
-        // Return a success response with the created meeting
-            return response()->json([
-                'status_code' => 200,
-                'message' => 'Meeting created successfully',
-                //'meeting' => $meeting,
-            ], 200);
-    }
-
+   
 
    
     public function edit($id)
@@ -1205,98 +945,12 @@ class MeetingController extends Controller
     }
     
 
-
     public function update(Request $request, $id)
     
     {
-        $validator = Validator::make($request->all(), [
-            'room_id' => 'required|exists:rooms,id',
-            'meeting_title' => 'required|string|max:255',
-            'start_date' => [
-                'required',
-                'date',
-                'after_or_equal:today', // Ensure start date is after or equal to today
-            ],
-            'start_time' => [
-                'required',
-                'date_format:H:i',
-                'after_or_equal:09:00', // Start time must be after or equal to 09:00 (9:00 AM)
-                'before_or_equal:17:15', // Start time must be before or equal to 17:00 (5:00 PM)
-                function ($attribute, $value, $fail) use ($request) {
-                    
-                    // Get the current date and time in Bangladesh Standard Time (Asia/Dhaka)
-                    $currentTime = Carbon::now('Asia/Dhaka');
-                    // info('Current Time:', ['current_time' => $currentTime]);
 
-                    // Parse the provided start_date
-                    $startDate = Carbon::parse($request->input('start_date'));
+        $validator = $this->meetingValidationService->validateMeeting($request);
 
-                    // Check if the user-provided start date is today
-                    if ($startDate->format('Y-m-d') === $currentTime->format('Y-m-d')) {
-                        // Today's date: Perform time validation
-
-                        // Add 30 minutes to the current time
-                        $validStartTime = $currentTime->copy()->addMinutes(5);
-                        //info('Valid Start Time:', ['valid_start_time' => $validStartTime]);
-
-                        // Convert start_time to a DateTime object in UTC
-                        $startTime = Carbon::parse($value, 'Asia/Dhaka')->setTimezone('UTC');
-                        //info('Start Time:', ['start_time' => $startTime]);
-
-                        if ($startTime < $validStartTime) {
-                            $fail('The start time must be at least 30 minutes after the current time.');
-                        }
-                    }
-                }
-            ],
-
-            'end_time' => [
-                'required',
-                'date_format:H:i',
-                'after:start_time', // End time must be after the start time
-                'after_or_equal:09:00', // End time must be after or equal to 09:00 (9:00 AM)
-                'before_or_equal:17:30' // End time must be before or equal to 17:00 (5:00 PM)
-            ],
-            'host_id' => 'required|exists:employees,employee_id',
-            'co_host_id' => 'nullable|exists:employees,employee_id',
-            'participants' => 'required|array', // Ensure participants is an array and required
-        ]);
-        
-        // Add custom validation rule to check for overlapping meetings
-        $validator->after(function ($validator) use ($request, $id) {
-            // Retrieve input data
-            $room_id = $request->input('room_id');
-            $start_date = $request->input('start_date');
-            $start_time = $request->input('start_time');
-            $end_time = $request->input('end_time');
-
-           
-            // Convert start_time to a DateTime object
-            $startDateTime = \DateTime::createFromFormat('H:i', $start_time);
-            // Add 1 minute
-            $startDateTime->add(new \DateInterval('PT1M'));
-            // Format the updated start time as a string
-            $updated_start_time = $startDateTime->format('H:i');
-
-            // Check for overlapping meetings excluding the current meeting
-            $overlappingMeeting = Meeting::where('room_id', $room_id)
-                ->where('start_date', $start_date)
-                ->where('id', '!=', $id)
-                ->where(function ($query) use ($updated_start_time, $end_time) {
-                    $query->whereBetween('start_time', [$updated_start_time, $end_time])
-                        ->orWhereBetween('end_time', [$updated_start_time, $end_time])
-                        ->orWhere(function ($query) use ($updated_start_time, $end_time) {
-                            $query->where('start_time', '<', $updated_start_time)
-                                ->where('end_time', '>', $end_time);
-                        });
-                })
-                ->exists();
-
-            // If overlapping meeting found, add error message
-            if ($overlappingMeeting) {
-                $validator->errors()->add('overlap', 'There is already a meeting scheduled at this time.');
-            }
-        });
 
         // If validation fails, return a custom response
         if ($validator->fails()) {
@@ -1333,56 +987,34 @@ class MeetingController extends Controller
             $meeting->participants()->get()->each->touch();
 
         }
+
+         // sent the notification to user admin
+         $devicesToken = User::where('role_id', 1)->pluck('device_token')->toArray();
+
+         $this->notificationController->attemtNotification($devicesToken, "Reschedule a Meeting", "Requested to you a meeting re-schedule.");
+ 
+         
                 
         return redirect()->route("meeting.index")->with('message', 'Meeting rescheduled successfully');
 
     }
 
 
-
-    public function exportExcel()
+    public function exportExcel(Request $request)
     {
-        return Excel::download(new MeetingDataExport, 'meetings-data.xlsx');
+
+        $meetings = $this->getFilteredMeetings($request);
+
+        return Excel::download(new MeetingDataExport($meetings), 'meetings-data.xlsx');
     }
 
 
-
-    public function exportMeetingPdf()
+    public function exportMeetingPdf(Request $request)
     {
         ini_set('memory_limit', '1024M');
         ini_set('max_execution_time', 300);
 
-        $employeeId = Auth()->user()->employee_id;
-        $roleId = Auth()->user()->role_id;
-
-
-        $meetingsQuery = Meeting::with(['room', 'host', 'coHost', 'participants.employee'])
-            ->select(
-                'id', 
-                'room_id', 
-                'meeting_title', 
-                'start_date', 
-                'start_time', 
-                'end_time', 
-                'host_id', 
-                'co_host_id', 
-                'booking_type', 
-                'booking_status', 
-                'description'
-            )
-            ->limit(500);
-
-        if ($roleId !== 1) {
-            $meetingsQuery->where(function ($query) use ($employeeId) {
-                $query->where('host_id', $employeeId)
-                    ->orWhereHas('participants', function ($query) use ($employeeId) {
-                        $query->where('participant_id', $employeeId);
-                    });
-            });
-        }
-
-        $meetings = $meetingsQuery->get();
-
+        $meetings = $this->getFilteredMeetings($request);
 
 
         $html = '
@@ -1461,37 +1093,10 @@ class MeetingController extends Controller
     }  
 
 
-    public function exportMeetingCsv()
+    public function exportMeetingCsv(Request $request)
     {
-        $employeeId = Auth()->user()->employee_id;
-        $roleId = Auth()->user()->role_id;
-
-        $meetingsQuery = Meeting::with(['room', 'host', 'coHost', 'participants.employee'])
-            ->select(
-                'id', 
-                'room_id', 
-                'meeting_title', 
-                'start_date', 
-                'start_time', 
-                'end_time', 
-                'host_id', 
-                'co_host_id', 
-                'booking_type', 
-                'booking_status', 
-                'description'
-            );
-
-        if ($roleId !== 1) {
-            $meetingsQuery->where(function ($query) use ($employeeId) {
-                $query->where('host_id', $employeeId)
-                    ->orWhereHas('participants', function ($query) use ($employeeId) {
-                        $query->where('participant_id', $employeeId);
-                    });
-            });
-        }
-
-        $meetings = $meetingsQuery->get();
-
+        
+        $meetings = $this->getFilteredMeetings($request);
 
         $csvHeader = [
             'Meeting ID', 
@@ -1551,17 +1156,34 @@ class MeetingController extends Controller
     }
 
 
-
-
-    public function printView()
+    public function printView(Request $request)
     {
-        // Retrieve the authenticated user's employee ID and role ID
+        $meetings = $this->getFilteredMeetings($request);
+
+        return view('admin.meeting.print', compact('meetings'));
+    }
+
+
+    private function getFilteredMeetings(Request $request)
+    {
         $employeeId = Auth()->user()->employee_id;
         $roleId = Auth()->user()->role_id;
+        $filter = $request->input('filter', '0'); // Default to '0' if no filter is provided
 
-        // Fetch meetings based on user role
-        $meetingsQuery = Meeting::with(['room', 'host', 'coHost', 'participants.employee']);
-           
+        $meetingsQuery = Meeting::with(['room', 'host', 'coHost', 'participants.employee'])
+            ->select(
+                'id', 
+                'room_id', 
+                'meeting_title', 
+                'start_date', 
+                'start_time', 
+                'end_time', 
+                'host_id', 
+                'co_host_id', 
+                'booking_type', 
+                'booking_status', 
+                'description'
+            );
 
         if ($roleId !== 1) {
             $meetingsQuery->where(function ($query) use ($employeeId) {
@@ -1572,14 +1194,43 @@ class MeetingController extends Controller
             });
         }
 
-        $meetings = $meetingsQuery->get();
+        // Apply date filter based on selected value
+        $dateFrom = now();
+        switch ($filter) {
+            case '1':
+                $dateFrom = now()->subDays(15);
+                break;
+            case '2':
+                $dateFrom = now()->subDays(30);
+                break;
+            case '3':
+                $dateFrom = now()->subDays(90);
+                break;
+            case '4':
+                $dateFrom = now()->subDays(180);
+                break;
+            default:
+                $dateFrom = null;
+        }
 
+        if ($dateFrom) {
+            $meetingsQuery->whereDate('start_date', '>=', $dateFrom);
+        }
 
-        return view('admin.meeting.print', compact('meetings'));
+        return $meetingsQuery->get();
     }
 
 
+
+    public function getMeetingDataById(Request $request, $id)
+    {
+
+         // Find the meeting record by ID
+        $meeting = Meeting::find($id);
+
+        //dd($meeting);
+
+        return view('admin.meeting.meeting_view', compact('meeting'));
+
+    }
 }
-
-
-

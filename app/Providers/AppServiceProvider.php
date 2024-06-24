@@ -3,6 +3,10 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use App\Services\MeetingValidationService;
+
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -13,7 +17,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->app->singleton(MeetingValidationService::class, function ($app) {
+            return new MeetingValidationService();
+        });
+
     }
 
     /**
@@ -23,6 +30,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        DB::listen(function ($query) {
+            Log::info('Executed Query:', ['sql' => $query->sql, 'bindings' => $query->bindings, 'time' => $query->time]);
+        });
     }
 }

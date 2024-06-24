@@ -1,150 +1,158 @@
 <div id="layoutSidenav_content">
     <main>
         <div class="container-fluid px-4">
-            <!-- <h1 class="mt-4">Dashboard</h1> -->
+            <div class="dashboard-header mt-3">Meeting Dashboard</div>
+            <div class="card rounded shadow my-4 bg-white">
 
-            <ol class="breadcrumb mb-4">
-                <li class="breadcrumb-item active">
-                    <p class="mt-2"></p>
-                </li>
-            </ol>
-            <div class="row">
-
-
-                <div class="col-xl-3 col-md-6">
-                    <div class="card shadow mb-4">
-                        <div class="card-body d-flex align-items-center ">
-
-                            <div class="icon">
-                                <image src="{{ asset('/images/Group.svg') }}" height="60" width="60" />
-
-                            </div>
-                            <div class="ps-4">
-                                <div class="card-title">Total Meetings</div>
-                                <div class="card-text">
-                                    <span style="font-size: 2rem;">{{ $totalMeeting ?? '0' }}</span>
+                <div class="row px-3 mt-4">
+                    <div class="col-xl-2 col-md-6 mb-4">
+                        <div class="card card-shadow">
+                            <div class="card-body d-flex justify-content-center align-items-center">
+                                <div class="px-auto py-auto">
+                                    <div class="card-text">
+                                        <span class="h2">{{ $totalMeeting ?? '0' }}</span>
+                                    </div>
+                                    <div class="font-weight-bold h6">Total</div>
                                 </div>
+                                <div class=" ms-auto">
+                                    <img src="{{ asset('/images/Group.svg') }}" height="50" width="50"
+                                        alt="Total Meetings">
+                                </div>
+
                             </div>
                         </div>
+                    </div>
 
+                    <div class="col-xl-2 col-md-6 mb-4">
+                        <div class="card card-shadow">
+                            <div class="card-body d-flex justify-content-center align-items-center">
+                                <div class="px-auto py-auto">
+                                    <div class="card-text">
+                                        <span class="h2">{{ $completedCount ?? '0' }}</span>
+                                    </div>
+                                    <div class="font-weight-bold h6">Completed</div>
+                                </div>
+                                <div class=" ms-auto">
+                                    <img src="{{ asset('/images/Group-1.svg') }}" height="50" width="50"
+                                        alt="Total Meetings">
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    
+
+                    <div class="col-xl-2 col-md-6 mb-4">
+                        <div class="card card-shadow">
+                            <div class="card-body d-flex justify-content-center align-items-center">
+
+                                <div class=" px-auto py-auto">
+                                    <div class="card-text">
+                                        <span class="h2">{{ $upcomingCount ?? '0' }}</span>
+                                    </div>
+                                    <div class="font-weight-bold h6">Upcoming</div>
+                                   
+                                </div>
+
+                                <div class="ms-auto">
+                                    <img src="{{ asset('/images/Group-3.svg') }}" height="50" width="50"
+                                        alt="Upcoming Meetings">
+                                </div>
+                               
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xl-2 col-md-6 mb-4">
+                        <div class="card card-shadow">
+                            <div class="card-body d-flex justify-content-center align-items-center">
+                                <div class=" px-auto py-auto">
+                                    <div class="card-text">
+                                        <span class="h2">{{ $pendingCount ?? '0' }}</span>
+                                    </div>
+                                    <div class="font-weight-bold h6">Pending</div>
+                                    
+                                </div>
+
+                                <div class="ms-auto">
+                                    <img src="{{ asset('/images/Group-4.svg') }}" height="50" width="50"
+                                        alt="Pending Meetings">
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xl-2 col-md-6 mb-4">
+                        <div class="card card-shadow">
+                            <div class="card-body d-flex justify-content-center align-items-center">
+                                <div class=" px-auto py-auto">
+                                    <div class="card-text">
+                                        <span class="h2">{{ $rejectedCount ?? '0' }}</span>
+                                    </div>
+                                    <div class="font-weight-bold h6">Rejected</div>
+                                   
+                                </div>
+
+                                <div class="ms-auto">
+                                    <img src="{{ asset('/images/reject.png') }}" height="60" width="60"
+                                        alt="Rejected Meetings">
+                                </div>
+                               
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xl-2 col-md-6 mb-4">
+                        <div class="card card-shadow">
+                            <div class="card-body d-flex justify-content-center align-items-center">
+                                <div class=" px-auto py-auto">
+                                    <div class="card-text">
+                                        <span class="h2">{{ $expiredCount ?? '0' }}</span>
+                                    </div>
+                                    <div class="font-weight-bold h6">Expired</div>
+                                    
+                                </div>
+
+                                <div class="ms-auto">
+                                    <i class="fa-regular fa-clock" style="font-size: 40px;"></i>
+                                </div>
+                               
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <div class="col-xl-3 col-md-6">
-                    <div class="card shadow mb-4">
-                        <div class="card-body d-flex align-items-center ">
-
-                            <div class="icon">
-                                <image src="{{ asset('/images/Group-1.svg') }}" height="60" width="60" />
+                <div class="row px-3 chart-card">
+                    <div class="col-xl-6">
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <i class="fas fa-chart-bar me-1"></i>
+                                Daily Meetings
                             </div>
-                            <div class="ps-4">
-                                <div class="card-title">Completed Meetings</div>
-                                <div class="card-text">
-                                    <span style="font-size: 2rem;">{{ $completedCount ?? '0' }}</span>
-                                </div>
+                            <div class="card-body">
+                                <canvas id="myWeeklyChart" width="100%" height="40"></canvas>
                             </div>
                         </div>
-
                     </div>
-                </div>
 
-                <div class="col-xl-3 col-md-6">
-                    <div class="card shadow mb-4">
-                        <div class="card-body d-flex align-items-center ">
-
-                            <div class="icon">
-                                <image src="{{ asset('/images/Group-3.svg') }}" height="60" width="60" />
+                    <div class="col-xl-6">
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <i class="fas fa-chart-area me-1"></i>
+                                Yearly Meetings
                             </div>
-                            <div class="ps-4">
-                                <div class="card-title">Upcoming Meetings</div>
-                                <div class="card-text">
-                                    <span style="font-size: 2rem;">{{ $upcomingCount ?? '0' }}</span>
-                                </div>
+                            <div class="card-body">
+                                <canvas id="yearlyDataChart" width="100%" height="40"></canvas>
                             </div>
                         </div>
-
-                    </div>
-                </div>
-                <div class="col-xl-3 col-md-6">
-                    <div class="card shadow mb-4">
-                        <div class="card-body d-flex align-items-center ">
-
-                            <div class="icon">
-                                <image src="{{ asset('/images/Group-4.svg') }}" height="60" width="60" />
-                            </div>
-                            <div class="ps-4">
-                                <div class="card-title">Pending Meetings</div>
-                                <div class="card-text">
-                                    <span style="font-size: 2rem;">{{ $pendingCount ?? '0' }}</span>
-                                </div>
-                            </div>
-                        </div>
-
                     </div>
                 </div>
             </div>
-
-
-            <div class="row">
-
-
-
-
-
-                <div class="col-xl-6">
-                    <div class="card mb-4">
-                        <div class="card-header">
-                            <i class="fas fa-chart-bar me-1"></i>
-                            Daily Meetings
-                        </div>
-                        <div class="card-body"><canvas id="myWeeklyChart" width="100%" height="40"></canvas></div>
-                    </div>
-                </div>
-
-                <div class="col-xl-6">
-                    <div class="card mb-4">
-                        <div class="card-header">
-                            <i class="fas fa-chart-area me-1"></i>
-                            Yearly Meetings
-                        </div>
-                        <div class="card-body"><canvas id="yearlyDataChart" width="100%" height="40"></canvas>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- <div class="row">
-                            <div class="col-xl-12">
-                                <div class="card mb-4">
-                                    <div class="card-header">Yor details</div>
-                                    <div class="card-header" style="background-color:orange">
-                                        Name: {{ Auth::user()->name }}
-                                    </div>
-                                    <div class="card-header" style="background-color:orange">
-                                        Email: {{ Auth::user()->email }}
-                                    </div>
-                                    <div class="card-header" style="background-color:orange">
-                                        Address: {{ Auth::user()->address }}
-                                    </div>
-                                    <div class="card-header" style="background-color:orange">
-                                        Mobile: {{ Auth::user()->mobile_number }}
-                                    </div>
-                                    <div class="card-header" style="background-color:orange">
-                                        Designation: {{ Auth::user()->designation }}
-                                    </div>
-                                    <div class="card-header" style="background-color:orange">
-                                        Join Date: {{ Auth::user()->start_from }}
-                                    </div>
-                                </div>
-                            </div>
-                        </div> -->
-
-
         </div>
     </main>
 
-
-    <!-- JavaScript code -->
     <!-- JavaScript code -->
     <script>
         // PHP data passed to JavaScript
@@ -199,8 +207,8 @@
 
                         beginAtZero: true,
                         ticks: {
-                            precision: 0, 
-                            stepSize: 1 
+                            precision: 0,
+                            stepSize: 1
                         }
                     }
                 },
@@ -279,9 +287,6 @@
         });
 
         var border_Colors = bgColors; // Same as background colors for solid effect
-
-
-
 
         // Get the canvas element
 
