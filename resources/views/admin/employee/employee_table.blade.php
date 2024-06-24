@@ -6,6 +6,7 @@
             <th scope="col">Division</th>
             <th scope="col">Mobile</th>
             <th scope="col">Email</th>
+            <th scope="col">User Status</th>
             @if (isset(Auth()->user()->role->permission['name']['employee']['can-view']))
 
             <th scope="col">Action</th>
@@ -19,8 +20,17 @@
                     <th scope="row">{{ $employee->employee_id }}</th>
                     <td>{{ $employee->name }}</td>
                     <td>{{ $employee->division }}</td>
+                    
                     <td>{{ $employee->mobile_number }}</td>
                     <td>{{ $employee->email }}</td>
+                    <td> 
+                        @if($employee->is_user)
+                                true
+                        @else
+                                false
+                        @endif  
+                    </td>
+                    
                     <td>
 
                         @if (isset(Auth()->user()->role->permission['name']['employee']['can-view']))
