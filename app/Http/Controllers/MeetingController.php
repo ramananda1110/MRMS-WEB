@@ -257,6 +257,7 @@ class MeetingController extends Controller
                 'co_host_name' => $meeting->coHost ? $meeting->coHost->name : '',
                 'booking_type' => $meeting->booking_type,
                 'booking_status' => $status,
+                'location' => $meeting->room->location,
                 'created_at' => $meeting->created_at,
                 'updated_at' => $meeting->updated_at,
                 'participants' => $meeting->participants->map(function ($participant) {
@@ -340,7 +341,7 @@ class MeetingController extends Controller
 
          $devicesToken = User::where('role_id', 1)->pluck('device_token')->toArray();
 
-            $this->notificationController->attemtNotification($devicesToken, "Created a Meeting", "Requested to you a meeting schedule.");
+        $this->notificationController->attemtNotification($devicesToken, "Created a Meeting", "Requested to you a meeting schedule.");
 
 
 
@@ -1230,7 +1231,7 @@ class MeetingController extends Controller
 
         //dd($meeting);
 
-        return view('admin.meeting.meeting_view', compact('meeting'));
+        return view('admin.meeting.meeting_view', compact('meetings'));
 
     }
 }
