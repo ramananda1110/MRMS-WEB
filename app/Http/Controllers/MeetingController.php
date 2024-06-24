@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\SendMeetingNotifications;
+
 use Illuminate\Http\Request;
 use App\Models\Meeting;
 use App\Models\Participant;
@@ -336,31 +338,50 @@ class MeetingController extends Controller
             ]);
         }
 
+         $devicesToken = User::where('role_id', 1)->pluck('device_token')->toArray();
+
+            $this->notificationController->attemtNotification($devicesToken, "Created a Meeting", "Requested to you a meeting schedule.");
+
+
 
         // sent the notification to user admin
-        $devicesToken = User::where('role_id', 1)->pluck('device_token')->toArray();
+       
+        // // Fetch all users with role_id 1
+        // $userEmails = User::where('role_id', 1)->pluck('email')->toArray();
 
-        $this->notificationController->attemtNotification($devicesToken, "Created a Meeting", "Requested to you a meeting schedule.");
+        // // Loop through each email, fetch the user and send the notification
+        // foreach ($userEmails as $email) {
+        //     $user = User::where('email', $email)->first();
+
+        //     if ($user) {
+        //         $user->notify(new MeetingInvitation(
+        //             $meeting->id,
+        //             $meeting->meeting_title,
+        //             $meeting->start_date,
+        //             $meeting->start_time,
+        //             $meeting->end_time,
+        //             $meeting->room->name . ' at ' . $meeting->room->location
+        //         ));
+        //     }
+        // }
 
 
-        // Fetch all users with role_id 1
-        $userEmails = User::where('role_id', 1)->pluck('email')->toArray();
 
-        // Loop through each email, fetch the user and send the notification
-        foreach ($userEmails as $email) {
-            $user = User::where('email', $email)->first();
+        // // Prepare meeting details for the job
+        // $meetingDetails = [
+        //     'id' => $meeting->id,
+        //     'title' => $meeting->meeting_title,
+        //     'start_date' => $meeting->start_date,
+        //     'start_time' => $meeting->start_time,
+        //     'end_time' => $meeting->end_time,
+        //     'location' => $meeting->room->name . ' at ' . $meeting->room->location
+        // ];
 
-            if ($user) {
-                $user->notify(new MeetingInvitation(
-                    $meeting->id,
-                    $meeting->meeting_title,
-                    $meeting->start_date,
-                    $meeting->start_time,
-                    $meeting->end_time,
-                    $meeting->room->name . ' at ' . $meeting->room->location
-                ));
-            }
-        }
+        // // Dispatch the job to send notifications
+        // SendMeetingNotifications::dispatch($meeting, $meetingDetails);
+
+
+
         return redirect()->route("meeting.index")->with('message', 'Meeting created successfully');
 
 
