@@ -7,7 +7,7 @@
             <div class="col-md-11">
 
 
-                @if (isset(Auth()->user()->role->permission['name']['department']['can-add']))
+                {{-- @if (isset(Auth()->user()->role->permission['name']['department']['can-add']))
                     <div class="card mt-3" style="border-bottom: 1px solid silver;">
                         <div class="panel-heading no-print mt-2 mb-2">
                             <div class="d-flex justify-content-between align-items-center">
@@ -19,7 +19,7 @@
                             </div>
                         </div>
                     </div>
-                @endif
+                @endif --}}
 
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb mt-2">
@@ -38,10 +38,10 @@
                             <th>SN</th>
                             <th>Name</th>
                             <th>Description</th>
-                            @if (isset(Auth()->user()->role->permission['name']['department']['can-edit']) ||
+                            {{-- @if (isset(Auth()->user()->role->permission['name']['department']['can-edit']) ||
                                     isset(Auth()->user()->role->permission['name']['department']['can-delete']))
                                 <th>Action</th>
-                            @endif
+                            @endif --}}
                         </tr>
                     </thead>
 
@@ -54,7 +54,7 @@
                                     <td>{{ $department->description }}</td>
 
 
-                                    @if (isset(Auth()->user()->role->permission['name']['department']['can-edit']) ||
+                                    {{-- @if (isset(Auth()->user()->role->permission['name']['department']['can-edit']) ||
                                     isset(Auth()->user()->role->permission['name']['department']['can-delete']))
                                     <td>
                                         @if (isset(Auth()->user()->role->permission['name']['department']['can-edit']))
@@ -107,7 +107,7 @@
                                         </div>
 
                                     </td>
-                                    @endif
+                                    @endif --}}
                                 </tr>
                             @endforeach
                         @else

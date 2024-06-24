@@ -6,7 +6,7 @@
             <th scope="col">Division</th>
             <th scope="col">Mobile</th>
             <th scope="col">Email</th>
-            <th scope="col">User Status</th>
+            {{-- <th scope="col">User Status</th> --}}
             @if (isset(Auth()->user()->role->permission['name']['employee']['can-view']))
 
             <th scope="col">Action</th>
@@ -16,20 +16,20 @@
     <tbody>
         @if (count($employees) > 0)
             @foreach ($employees as $key => $employee)
-                <tr>
+                <tr @if($employee->is_user) style="background-color: #ffCCCC;" @endif>
                     <th scope="row">{{ $employee->employee_id }}</th>
                     <td>{{ $employee->name }}</td>
                     <td>{{ $employee->division }}</td>
                     
                     <td>{{ $employee->mobile_number }}</td>
                     <td>{{ $employee->email }}</td>
-                    <td> 
+                    {{-- <td> 
                         @if($employee->is_user)
                                 true
                         @else
                                 false
                         @endif  
-                    </td>
+                    </td> --}}
                     
                     <td>
 
@@ -53,7 +53,7 @@
                             <button type="button" class="btn btn-danger"><i class="fas fa-trash"></i></button></a>
                         @endif --}}
 
-                        @if (Auth::check() && Auth::user()->role && Auth::user()->role->permission && Auth::user()->role->permission->role_id == 1)
+                        @if (Auth::check() && Auth::user()->role && Auth::user()->role->permission && Auth::user()->role->permission->role_id == 1 && $employee->is_user == false )
 
                         <a href="#" data-bs-toggle="modal" data-bs-target="#exampleModal2{{ $employee->id }}"
                             title="Add">
@@ -68,7 +68,7 @@
 
 
                         <!-- Modal delete -->
-                        <div class="modal fade" id="exampleModal{{ $employee->id }}" tabindex="-1"
+                        {{-- <div class="modal fade" id="exampleModal{{ $employee->id }}" tabindex="-1"
                             aria-labelledby="exampleModalLabel" aria-hidden="true">
                             <div class="modal-dialog">
                                 <div class="modal-content">
@@ -95,7 +95,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> --}}
 
                         <div class="modal fade" id="viewModal{{ $employee->id }}" tabindex="-1"
                             aria-labelledby="exampleModalLabel" aria-hidden="true">
