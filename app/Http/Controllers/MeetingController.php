@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\SendMeetingNotifications;
+
 use Illuminate\Http\Request;
 use App\Models\Meeting;
 use App\Models\Participant;
@@ -73,8 +75,8 @@ class MeetingController extends Controller
         }
 
          // Order meetings by latest start_date
-        // $meetings = $meetings->sortByDesc('start_date')->values()->all();
-        $meetings = $meetings->sortBy('start_date')->values()->all();
+        $meetings = $meetings->sortByDesc('start_date')->values()->all();
+        // $meetings = $meetings->sortBy('start_date')->values()->all();
 
    
         return view('admin.meeting.index', compact('meetings'));
@@ -255,6 +257,7 @@ class MeetingController extends Controller
                 'co_host_name' => $meeting->coHost ? $meeting->coHost->name : '',
                 'booking_type' => $meeting->booking_type,
                 'booking_status' => $status,
+                'location' => $meeting->room->location,
                 'created_at' => $meeting->created_at,
                 'updated_at' => $meeting->updated_at,
                 'participants' => $meeting->participants->map(function ($participant) {
@@ -336,31 +339,50 @@ class MeetingController extends Controller
             ]);
         }
 
-
-        // sent the notification to user admin
-        $devicesToken = User::where('role_id', 1)->pluck('device_token')->toArray();
+         $devicesToken = User::where('role_id', 1)->pluck('device_token')->toArray();
 
         $this->notificationController->attemtNotification($devicesToken, "Created a Meeting", "Requested to you a meeting schedule.");
 
 
-        // Fetch all users with role_id 1
-        $userEmails = User::where('role_id', 1)->pluck('email')->toArray();
 
-        // Loop through each email, fetch the user and send the notification
-        foreach ($userEmails as $email) {
-            $user = User::where('email', $email)->first();
+        // sent the notification to user admin
+       
+        // // Fetch all users with role_id 1
+        // $userEmails = User::where('role_id', 1)->pluck('email')->toArray();
 
-            if ($user) {
-                $user->notify(new MeetingInvitation(
-                    $meeting->id,
-                    $meeting->meeting_title,
-                    $meeting->start_date,
-                    $meeting->start_time,
-                    $meeting->end_time,
-                    $meeting->room->name . ' at ' . $meeting->room->location
-                ));
-            }
-        }
+        // // Loop through each email, fetch the user and send the notification
+        // foreach ($userEmails as $email) {
+        //     $user = User::where('email', $email)->first();
+
+        //     if ($user) {
+        //         $user->notify(new MeetingInvitation(
+        //             $meeting->id,
+        //             $meeting->meeting_title,
+        //             $meeting->start_date,
+        //             $meeting->start_time,
+        //             $meeting->end_time,
+        //             $meeting->room->name . ' at ' . $meeting->room->location
+        //         ));
+        //     }
+        // }
+
+
+
+        // // Prepare meeting details for the job
+        // $meetingDetails = [
+        //     'id' => $meeting->id,
+        //     'title' => $meeting->meeting_title,
+        //     'start_date' => $meeting->start_date,
+        //     'start_time' => $meeting->start_time,
+        //     'end_time' => $meeting->end_time,
+        //     'location' => $meeting->room->name . ' at ' . $meeting->room->location
+        // ];
+
+        // // Dispatch the job to send notifications
+        // SendMeetingNotifications::dispatch($meeting, $meetingDetails);
+
+
+
         return redirect()->route("meeting.index")->with('message', 'Meeting created successfully');
 
 
@@ -1209,7 +1231,7 @@ class MeetingController extends Controller
 
         //dd($meeting);
 
-        return view('admin.meeting.meeting_view', compact('meeting'));
+        return view('admin.meeting.meeting_view', compact('meetings'));
 
     }
 }
