@@ -31,17 +31,17 @@
                         @endif
 
 
-                        @if (Auth::check() && Auth::user()->role && Auth::user()->role->permission && Auth::user()->role->permission->role_id == 1)
+                        {{-- @if (Auth::check() && Auth::user()->role && Auth::user()->role->permission && Auth::user()->role->permission->role_id == 1)
                             <a href="{{ route('employee.edit', [$employee->id]) }}" title="Edit">
                                 <button type="button" class="btn btn-warning"><i class="fas fa-edit"></i></button></a>
-                        @endif
+                        @endif --}}
 
-                        @if (Auth::check() && Auth::user()->role && Auth::user()->role->permission && Auth::user()->role->permission->role_id == 1)
+                        {{-- @if (Auth::check() && Auth::user()->role && Auth::user()->role->permission && Auth::user()->role->permission->role_id == 1)
 
                         <a data-bs-toggle="modal" data-bs-target="#exampleModal{{ $employee->id }}" href="#"
                             title="Delete">
                             <button type="button" class="btn btn-danger"><i class="fas fa-trash"></i></button></a>
-                        @endif
+                        @endif --}}
 
                         @if (Auth::check() && Auth::user()->role && Auth::user()->role->permission && Auth::user()->role->permission->role_id == 1)
 
@@ -159,7 +159,7 @@
                                 <form action="{{ route('create.user', [$employee->id]) }}" method="post">@csrf
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h1 class="modal-title fs-5" id="exampleModalLabel">Create a User</h1>
+                                            <h1 class="modal-title fs-5" id="exampleModalLabel">Add as User</h1>
                                             <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                 aria-label="Close"></button>
                                         </div>

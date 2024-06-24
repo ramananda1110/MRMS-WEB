@@ -53,9 +53,9 @@
                                 <a class="nav-link" href="{{ Route('employee.index') }}">View</a>
                             @endif
 
-                            @if (isset(Auth()->user()->role->permission['name']['role']['can-add']))
+                            {{-- @if (isset(Auth()->user()->role->permission['name']['role']['can-add']))
                                 <a class="nav-link" href="{{ Route('employee.create') }}">Create</a>
-                            @endif
+                            @endif --}}
 
                         </nav>
                     </div>
