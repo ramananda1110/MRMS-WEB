@@ -118,6 +118,21 @@ class MeetingController extends Controller
     }
 
 
+    public function rejected()
+    {
+
+        $meetings = $this->queryDataList();
+
+        $meetings = $meetings->filter(function ($meeting) {
+            return $meeting->booking_status === 'rejected';
+        });
+
+         // Order meetings by latest start_date
+        $meetings = $meetings->sortByDesc('start_date')->values()->all();
+   
+
+        return view('admin.meeting.rejected', compact('meetings'));
+    }
     public function cenceled()
     {
 
@@ -126,22 +141,18 @@ class MeetingController extends Controller
         $today = now()->toDateString();
 
         $meetings = $meetings->filter(function ($meeting) use ($today) {
-            return $meeting->booking_status === 'rejected' || $meeting->booking_status === 'pending' && $meeting->start_date < $today;
+            return $meeting->booking_status === 'pending' && $meeting->start_date < $today;
         });
-
 
         // update booking status base on condition
         foreach ($meetings as $meeting) {
             $status = $meeting->booking_status;
-            $startDate = $meeting->start_date;
-
+           
             switch ($status) {
-                case 'pending':
-                    if ($startDate < $today) {
-                        $status = 'expired';
-                    }
+                case 'pending': 
+                     $status = 'expired';
+                    
                     break;
-                
             }
 
             // Update the meeting status
