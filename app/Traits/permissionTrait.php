@@ -23,6 +23,13 @@ trait permissionTrait{
         if(!isset(auth()->user()->role->permission['name']['meeting']['can-list']) && \Route::is('meeting.index')){
             return abort(401);
         }
+        
+        if(!isset(auth()->user()->role->permission['name']['meeting']['can-reschedule']) 
+             && \Route::is('meeting.edit')){
+            return abort(401);
+        }
+
+
 
          // for employee
          if(!isset(auth()->user()->role->permission['name']['employee']['can-add']) && \Route::is('employee.create')){
