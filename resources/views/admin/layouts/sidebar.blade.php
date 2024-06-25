@@ -141,9 +141,9 @@
                     <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne"
                         data-bs-parent="#sidenavAccordion">
                         <nav class="sb-sidenav-menu-nested nav">
-                            @if (isset(Auth()->user()->role->permission['name']['department']['can-add']))
+                            {{-- @if (isset(Auth()->user()->role->permission['name']['department']['can-add']))
                                 <a class="nav-link" href="{{ Route('departments.create') }}">Create</a>
-                            @endif
+                            @endif --}}
                             @if (isset(Auth()->user()->role->permission['name']['department']['can-list']))
                                 <a class="nav-link" href="{{ Route('departments.index') }}">View</a>
                             @endif

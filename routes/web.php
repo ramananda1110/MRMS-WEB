@@ -111,6 +111,8 @@ Route::group(['middleware'=> ['auth', 'has.permission']], function(){
     Route::get('/meetings/upcoming', [MeetingController::class, 'upcoming'])->name('meetings.upcoming');
     Route::get('/meetings/pending', [MeetingController::class, 'pending'])->name('meetings.pending');
     Route::get('/meetings/cenceled', [MeetingController::class, 'cenceled'])->name('meetings.cenceled');
+    Route::get('/meetings/rejected', [MeetingController::class, 'rejected'])->name('meetings.rejected');
+
 
     Route::post('meetings/export-excel', [MeetingController::class, 'exportExcel'])->name('meetings.download-excel');
 

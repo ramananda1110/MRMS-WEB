@@ -41,11 +41,13 @@
                     <a class="nav-link" href="{{ route('meetings.pending') }}" id="pending" onclick="setActiveTab(event, this)" >Pending</a>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <a class="nav-link active" href="{{ route('meetings.cenceled') }}" id="canceled" onclick="setActiveTab(event, this)" >Canceled</a>
+                    <a class="nav-link" href="{{ route('meetings.cenceled') }}" id="canceled" onclick="setActiveTab(event, this)" >Canceled</a>
                 </li>
+
                 <li class="nav-item" role="presentation">
-                    <a class="nav-link" href="{{ route('meetings.rejected') }}" id="rejected" onclick="setActiveTab(event, this)" >Rejected</a>
+                    <a class="nav-link active" href="{{ route('meetings.rejected') }}" id="rejected" onclick="setActiveTab(event, this)" >Rejected</a>
                 </li>
+
                     <!-- Add more tabs if needed -->
             </ul>
         

@@ -23,7 +23,13 @@ class EmployeeController extends Controller
 
         $employees = Employee::query()->where('status', '=', 'Active')->paginate(30);
 
-        //$employees = Employee::latest()->paginate(30);
+        // Fetch all users
+        $users = User::all()->keyBy('employee_id');
+
+        // Check if each employee is also a user
+        foreach ($employees as $employee) {
+            $employee->is_user = $users->has($employee->employee_id);
+        }
         
         return view('admin.employee.index', compact('employees'));
 
@@ -34,6 +40,7 @@ class EmployeeController extends Controller
     {
         // Initialize the query builder
         $query = Employee::query();
+
 
         // Apply search filters if search query is present
         if ($request->ajax() && $request->has('search')) {
@@ -51,6 +58,14 @@ class EmployeeController extends Controller
 
         // Paginate the results
         $employees = $query->paginate(30);
+
+         // Fetch all users
+         $users = User::all()->keyBy('employee_id');
+
+         // Check if each employee is also a user
+         foreach ($employees as $employee) {
+             $employee->is_user = $users->has($employee->employee_id);
+         }
 
         // Return the appropriate view for AJAX or standard requests
         if ($request->ajax()) {

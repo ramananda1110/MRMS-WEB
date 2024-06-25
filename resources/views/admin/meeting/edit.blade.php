@@ -49,7 +49,7 @@
                 <select class="form-control" name="room_id" required>
                   @foreach(App\Models\Room::all() as $room)
                     <option value="{{ $room->id }}" @if($room->id == $meeting->room_id) selected @endif>
-                      {{ $room->name }}
+                      {{ $room->name }} <p>({{ $room->location }})</p>
                     </option>
                   @endforeach
                 </select>

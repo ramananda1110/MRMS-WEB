@@ -49,7 +49,7 @@
                                     <select class="form-control mt-1" name="room_id" required>
                                         <option value="">Select Room</option>
                                         @foreach (App\Models\Room::all() as $room)
-                                            <option value="{{ $room->id }}">{{ $room->name }}</option>
+                                            <option value="{{ $room->id }}">{{ $room->name }} <p>({{ $room->location }})</p></option>
                                         @endforeach
                                     </select>
                                 </div>

@@ -23,7 +23,7 @@ class DatabaseSeeder extends Seeder
     ];
 
     protected $roles = [
-        'admin', 'manager', 'employee', 'supervisor', 'Team lead', 'executive', 'sales rep', 'customer service', 'HR', 'IT Specialist'
+        'admin', 'supervisor', 'employee'
     ];
 
 
