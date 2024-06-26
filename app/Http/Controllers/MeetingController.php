@@ -946,8 +946,6 @@ class MeetingController extends Controller
 
 
    
-
-   
     public function edit($id)
     {
         $meeting = Meeting::with('participants')->find($id);
