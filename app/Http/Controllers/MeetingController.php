@@ -880,9 +880,17 @@ class MeetingController extends Controller
 
     public function reschedule(Request $request, $id)
         {
-           
 
-            $validator = $this->meetingValidationService->validateMeeting($request);
+            $meeting = Meeting::find($id);
+
+             // Check if the meeting exists
+            if (!$meeting) {
+                return response()->json(['status_code' => 404, 'message' => 'Meeting not found'], 200);
+            }
+            
+            $validator = $this->meetingValidationService->validateMeetingUpdate($request, $meeting);
+
+            // $validator = $this->meetingValidationService->validateMeeting($request);
 
 
             // If validation fails, return a custom response
@@ -893,15 +901,7 @@ class MeetingController extends Controller
                 ], 200);
             }
 
-            // If validation passes, update the meeting using the validated data
-            $meeting = Meeting::find($id);
-
-            // Check if the meeting exists
-            if (!$meeting) {
-            return response()->json(['status_code' => 404, 'message' => 'Meeting not found'], 200);
-            }
-
-
+           
             $meeting->update($validator->validated());
 
 
@@ -946,8 +946,6 @@ class MeetingController extends Controller
 
 
    
-
-   
     public function edit($id)
     {
         $meeting = Meeting::with('participants')->find($id);
@@ -961,21 +959,19 @@ class MeetingController extends Controller
     
     {
 
-        $validator = $this->meetingValidationService->validateMeeting($request);
+        $meeting = Meeting::find($id);
 
-
+         // Check if the meeting exists
+         if (!$meeting) {
+            return  redirect()->back()->with('error', 'Meeting not found'); 
+    
+            }
+           
+        $validator = $this->meetingValidationService->validateMeetingUpdate($request, $meeting);
+    
         // If validation fails, return a custom response
         if ($validator->fails()) {
             return  redirect()->back()->with('error', $validator->errors()->first()); 
-        }
-
-        // If validation passes, update the meeting using the validated data
-        $meeting = Meeting::find($id);
-
-        // Check if the meeting exists
-        if (!$meeting) {
-        return  redirect()->back()->with('error', 'Meeting not found'); 
-
         }
 
         $meeting->update($validator->validated());

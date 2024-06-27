@@ -62,7 +62,6 @@
                             @endif
 
 
-
                              <div class="modal fade" id="acceptModal{{ $meeting->id }}" tabindex="-1"
                                  aria-labelledby="acceptModalLabel" aria-hidden="true">
                                  <div class="modal-dialog">
