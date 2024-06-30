@@ -963,9 +963,10 @@ class MeetingController extends Controller
 
          // Check if the meeting exists
          if (!$meeting) {
+            
             return  redirect()->back()->with('error', 'Meeting not found'); 
     
-            }
+        }
            
         $validator = $this->meetingValidationService->validateMeetingUpdate($request, $meeting);
     
