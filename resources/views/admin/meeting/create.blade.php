@@ -141,7 +141,8 @@
                                         placeholder="Select up to 25 Participants" multiple required>
                                         
                                       
-                                        <option>{{ Auth::user()->name . ' - ' . Auth::user()->division }}</option>
+                                        <!-- <option>{{ Auth::user()->name . ' - ' . Auth::user()->division }}</option> -->
+                                       
                                         @foreach (App\Models\Employee::where('status', 'active')->get() as $employee)
                                             @if ($employee->employee_id != Auth::user()->employee_id)
                                                 <option value="{{ $employee->employee_id }}">

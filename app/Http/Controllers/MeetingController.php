@@ -316,7 +316,8 @@ class MeetingController extends Controller
 
     public function store(Request $request)
     {
-      
+
+        
         $validator = $this->meetingValidationService->validateMeeting($request);
 
         
@@ -342,6 +343,8 @@ class MeetingController extends Controller
             $participants[] = $request->input('co_host_id');
         }
 
+        $participants = array_unique($participants);
+        
         foreach ($participants as $participantId) {
             // Create a new participant record
             Participant::create([
@@ -350,11 +353,11 @@ class MeetingController extends Controller
             ]);
         }
 
-         $devicesToken = User::where('role_id', 1)->pluck('device_token')->toArray();
+        $devicesToken = User::where('role_id', 1)->pluck('device_token')->toArray();
 
         $this->notificationController->attemtNotification($devicesToken, "Created a Meeting", "Requested to you a meeting schedule.");
 
-
+        
 
         // sent the notification to user admin
        
@@ -429,6 +432,8 @@ class MeetingController extends Controller
           if ($request->has('co_host_id') && $request->input('co_host_id')) {
               $participants[] = $request->input('co_host_id');
           }
+
+          $participants = array_unique($participants);
   
           foreach ($participants as $participantId) {
               // Create a new participant record
