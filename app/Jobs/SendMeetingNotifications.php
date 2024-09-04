@@ -3,7 +3,8 @@
 namespace App\Jobs;
 
 use App\Notifications\MeetingInvitation;
-use App\User;
+
+use App\Models\User;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
@@ -11,6 +12,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Log; 
 
 
 class SendMeetingNotifications implements ShouldQueue
@@ -42,7 +44,7 @@ class SendMeetingNotifications implements ShouldQueue
 
         // Send push notifications
         $devicesToken = User::where('role_id', 1)->pluck('device_token')->toArray();
-        app('App\Http\Controllers\NotificationController')->attemtNotification($devicesToken, "Created a Meeting", "Requested to you a meeting schedule.");
+        app('App\Http\Controllers\FCMPushController')->attemtNotification($devicesToken, "Created a Meeting", "Requested to you a new meeting schedule.");
 
         // Send email notifications
         $userEmails = User::where('role_id', 1)->pluck('email')->toArray();

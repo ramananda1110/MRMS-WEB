@@ -353,9 +353,9 @@ class MeetingController extends Controller
             ]);
         }
 
-        $devicesToken = User::where('role_id', 1)->pluck('device_token')->toArray();
+        //$devicesToken = User::where('role_id', 1)->pluck('device_token')->toArray();
 
-        $this->notificationController->attemtNotification($devicesToken, "Created a Meeting", "Requested to you a meeting schedule.");
+        //$this->notificationController->attemtNotification($devicesToken, "Created a Meeting", "Requested to you a meeting schedule.");
 
         
 
@@ -382,18 +382,18 @@ class MeetingController extends Controller
 
 
 
-        // // Prepare meeting details for the job
-        // $meetingDetails = [
-        //     'id' => $meeting->id,
-        //     'title' => $meeting->meeting_title,
-        //     'start_date' => $meeting->start_date,
-        //     'start_time' => $meeting->start_time,
-        //     'end_time' => $meeting->end_time,
-        //     'location' => $meeting->room->name . ' at ' . $meeting->room->location
-        // ];
+        // Prepare meeting details for the job
+        $meetingDetails = [
+            'id' => $meeting->id,
+            'title' => $meeting->meeting_title,
+            'start_date' => $meeting->start_date,
+            'start_time' => $meeting->start_time,
+            'end_time' => $meeting->end_time,
+            'location' => $meeting->room->name . ' at ' . $meeting->room->location
+        ];
 
-        // // Dispatch the job to send notifications
-        // SendMeetingNotifications::dispatch($meeting, $meetingDetails);
+        // Dispatch the job to send notifications
+        SendMeetingNotifications::dispatch($meeting, $meetingDetails);
 
 
 
