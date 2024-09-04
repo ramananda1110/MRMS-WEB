@@ -1244,7 +1244,7 @@ class MeetingController extends Controller
 
         //dd($meeting);
 
-        return view('admin.meeting.meeting_view', compact('meetings'));
+        return view('admin.meeting.meeting_view', compact('meeting'));
 
     }
 }
