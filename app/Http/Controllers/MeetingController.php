@@ -316,7 +316,8 @@ class MeetingController extends Controller
 
     public function store(Request $request)
     {
-      
+
+        
         $validator = $this->meetingValidationService->validateMeeting($request);
 
         
@@ -342,6 +343,8 @@ class MeetingController extends Controller
             $participants[] = $request->input('co_host_id');
         }
 
+        $participants = array_unique($participants);
+        
         foreach ($participants as $participantId) {
             // Create a new participant record
             Participant::create([
@@ -350,12 +353,11 @@ class MeetingController extends Controller
             ]);
         }
 
-         $devicesToken = User::where('role_id', 1)->pluck('device_token')->toArray();
+        $devicesToken = User::where('role_id', 1)->pluck('device_token')->toArray();
 
         $this->notificationController->attemtNotification($devicesToken, "Created a Meeting", "Requested to you a meeting schedule.");
 
-
-
+        
         // sent the notification to user admin
        
         // // Fetch all users with role_id 1
@@ -379,18 +381,18 @@ class MeetingController extends Controller
 
 
 
-        // // Prepare meeting details for the job
-        // $meetingDetails = [
-        //     'id' => $meeting->id,
-        //     'title' => $meeting->meeting_title,
-        //     'start_date' => $meeting->start_date,
-        //     'start_time' => $meeting->start_time,
-        //     'end_time' => $meeting->end_time,
-        //     'location' => $meeting->room->name . ' at ' . $meeting->room->location
-        // ];
+        // Prepare meeting details for the job
+        $meetingDetails = [
+            'id' => $meeting->id,
+            'title' => $meeting->meeting_title,
+            'start_date' => $meeting->start_date,
+            'start_time' => $meeting->start_time,
+            'end_time' => $meeting->end_time,
+            'location' => $meeting->room->name . ' at ' . $meeting->room->location
+        ];
 
-        // // Dispatch the job to send notifications
-        // SendMeetingNotifications::dispatch($meeting, $meetingDetails);
+        // Dispatch the job to send notifications
+        SendMeetingNotifications::dispatch($meeting, $meetingDetails);
 
 
 
@@ -429,6 +431,8 @@ class MeetingController extends Controller
           if ($request->has('co_host_id') && $request->input('co_host_id')) {
               $participants[] = $request->input('co_host_id');
           }
+
+          $participants = array_unique($participants);
   
           foreach ($participants as $participantId) {
               // Create a new participant record
@@ -963,9 +967,10 @@ class MeetingController extends Controller
 
          // Check if the meeting exists
          if (!$meeting) {
+            
             return  redirect()->back()->with('error', 'Meeting not found'); 
     
-            }
+        }
            
         $validator = $this->meetingValidationService->validateMeetingUpdate($request, $meeting);
     
@@ -1238,7 +1243,7 @@ class MeetingController extends Controller
 
         //dd($meeting);
 
-        return view('admin.meeting.meeting_view', compact('meetings'));
+        return view('admin.meeting.meeting_view', compact('meeting'));
 
     }
 }
