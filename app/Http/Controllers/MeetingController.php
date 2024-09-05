@@ -353,12 +353,11 @@ class MeetingController extends Controller
             ]);
         }
 
-        //$devicesToken = User::where('role_id', 1)->pluck('device_token')->toArray();
+        $devicesToken = User::where('role_id', 1)->pluck('device_token')->toArray();
 
-        //$this->notificationController->attemtNotification($devicesToken, "Created a Meeting", "Requested to you a meeting schedule.");
+        $this->notificationController->attemtNotification($devicesToken, "Created a Meeting", "Requested to you a meeting schedule.");
 
         
-
         // sent the notification to user admin
        
         // // Fetch all users with role_id 1
