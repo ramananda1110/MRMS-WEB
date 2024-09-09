@@ -74,6 +74,6 @@ Route::group(['middleware' => ['auth.api']], function () {
 
 
     Route::post('/save-token', [FCMPushController::class, 'saveToken'])->name('save-token');
-    Route::post('/send-notification', [FCMPushController::class, 'sendNotification'])->name('send.notification');
+    Route::post('/send-notification', [FCMPushController::class, 'sendNotificationV1'])->name('send.notification');
 
 });

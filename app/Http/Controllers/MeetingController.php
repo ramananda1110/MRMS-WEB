@@ -870,10 +870,15 @@ class MeetingController extends Controller
 
        $users = User::whereIn('employee_id', [$hostId, $coHostId])->get();
 
-       // Extract api_tokens from the user records
-       $devicesToken = $users->pluck('device_token')->toArray();
-    
-       $this->notificationController->attemtNotification($devicesToken, "Meeting Updated", "Your meeting has been " . $request->booking_status);
+
+        // Filter out null device tokens
+        $devicesToken = $users->pluck('device_token')->filter()->toArray();
+
+        // Only call the notification controller if there are valid tokens
+        if (!empty($devicesToken)) {
+            $this->notificationController->attemtNotificationV1($devicesToken, "Meeting Updated", "Your meeting has been " . $request->booking_status);
+        }
+
  
         // Return a success response
         return redirect()->back()->with('message', 'Meeting status updated successfully');
@@ -938,6 +943,7 @@ class MeetingController extends Controller
 
             $this->notificationController->attemtNotification($devicesToken, "Reschedule a Meeting", "Requested to you a meeting re-schedule.");
     
+
             
             // Return a successful response with the updated meeting
             return response()->json([
