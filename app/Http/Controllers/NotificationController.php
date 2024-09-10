@@ -1,0 +1,77 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use App\Models\Notification;
+use App\Models\NotificationReceiver;
+
+class NotificationController extends Controller
+{
+    /**
+     * Store notifications and attach to participants.
+     *
+     * @param array $participants
+     * @param array $notificationData
+     * @return void
+     */
+    public function createNotification(array $participants, array $notificationData)
+    {
+        // Store the notification
+        $notification = Notification::create([
+            'type' => $notificationData['type'],
+            'title' => $notificationData['title'],
+            'body' => $notificationData['body'],
+            'meeting_id' => $notificationData['meeting_id'],
+        ]);
+
+        // Attach notification to participants
+        foreach ($participants as $participantId) {
+            NotificationReceiver::create([
+                'notification_id' => $notification->id,
+                'participant_id' => $participantId,
+                'is_read' => false
+            ]);
+        }
+    }
+
+    /**
+     * API: Get the count of unread notifications for a participant.
+     *
+     * @param int $participantId
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getNotificationCount($participantId)
+    {
+        $count = NotificationReceiver::where('participant_id', $participantId)
+            ->where('is_read', false)
+            ->count();
+
+        return response()->json([
+            'new_notification_count' => $count
+        ]);
+    }
+
+    /**
+     * API: Get the notification list for a participant.
+     *
+     * @param int $participantId
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getNotifications($participantId)
+    {
+        $notifications = NotificationReceiver::where('participant_id', $participantId)
+            ->join('notifications', 'notification_receivers.notification_id', '=', 'notifications.id')
+            ->select('notifications.id', 'notifications.type', 'notifications.title', 'notifications.body', 'notification_receivers.is_read', 'notifications.created_at')
+            ->orderBy('notifications.created_at', 'desc')
+            ->get();
+
+        // Mark all notifications as read
+        NotificationReceiver::where('participant_id', $participantId)
+            ->update(['is_read' => true]);
+
+        return response()->json([
+            'notifications' => $notifications
+        ]);
+    }
+}

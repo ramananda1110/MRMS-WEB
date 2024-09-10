@@ -28,10 +28,10 @@ class Meeting extends Model
      // Define the participants relationship
      
 
-     public function participants()
+    public function participants()
     {
         return $this->hasMany(Participant::class);
-       
+        
     }
 
     

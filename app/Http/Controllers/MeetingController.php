@@ -9,6 +9,8 @@ use App\Models\Meeting;
 use App\Models\Participant;
 use DataTables;
 use App\Http\Controllers\FCMPushController;
+use App\Http\Controllers\NotificationController;
+
 use App\Models\User;
 use App\Models\Employee;
 use Illuminate\Http\Response;
@@ -30,13 +32,15 @@ class MeetingController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-     protected $notificationController;
-     protected $meetingValidationService;
+    protected $fcmController;
+    protected $meetingValidationService;
+    protected $notificationController;
 
-    public function __construct(FCMPushController $notificationController, MeetingValidationService $meetingValidationService)
+    public function __construct(FCMPushController $fcmController, MeetingValidationService $meetingValidationService, NotificationController $notificationController)
     {
-        $this->notificationController = $notificationController;
+        $this->fcmController = $fcmController;
         $this->meetingValidationService = $meetingValidationService;
+        $this->notificationController = $notificationController;
     }
 
      
@@ -352,6 +356,24 @@ class MeetingController extends Controller
             ]);
         }
 
+
+        // Prepare the notification data
+        $notificationData = [
+            'type' => 'meeting',
+            'title' => 'New Meeting Scheduled',
+            'body' => 'A new meeting titled "' . $meeting->meeting_title . '" has been scheduled.',
+            'meeting_id' => $meeting->id
+        ];
+
+
+        $recipients = User::where('role_id', 1)->pluck('employee_id')->toArray();
+
+        // Call the createNotification() function to send notifications
+        $this->notificationController->createNotification($recipients, $notificationData);
+
+
+        // Optionally, send device-specific notifications (Firebase)
+
         $devicesToken = User::where('role_id', 1)->pluck('device_token')->toArray();
 
 
@@ -429,6 +451,7 @@ class MeetingController extends Controller
                 $this->notificationController->attemtNotificationV1($devicesToken, "Created a Meeting", "Requested to you a meeting schedule.");
             }
     
+
 
             $meetingDetails = [
                 'id' => $meeting->id,
