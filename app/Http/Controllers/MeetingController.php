@@ -324,7 +324,6 @@ class MeetingController extends Controller
             // If validation fails, return a custom response
         if ($validator->fails()) {
           return  redirect()->back()->with('error', $validator->errors()->first()); 
-        
         }
         
 
@@ -355,33 +354,13 @@ class MeetingController extends Controller
 
         $devicesToken = User::where('role_id', 1)->pluck('device_token')->toArray();
 
-        $this->notificationController->attemtNotification($devicesToken, "Created a Meeting", "Requested to you a meeting schedule.");
 
-        
-        // sent the notification to user admin
-       
-        // // Fetch all users with role_id 1
-        // $userEmails = User::where('role_id', 1)->pluck('email')->toArray();
-
-        // // Loop through each email, fetch the user and send the notification
-        // foreach ($userEmails as $email) {
-        //     $user = User::where('email', $email)->first();
-
-        //     if ($user) {
-        //         $user->notify(new MeetingInvitation(
-        //             $meeting->id,
-        //             $meeting->meeting_title,
-        //             $meeting->start_date,
-        //             $meeting->start_time,
-        //             $meeting->end_time,
-        //             $meeting->room->name . ' at ' . $meeting->room->location
-        //         ));
-        //     }
-        // }
-
-
+        if (!empty($devicesToken)) {
+            $this->notificationController->attemtNotificationV1($devicesToken, "Created a Meeting", "Requested to you a meeting schedule.");
+        }
 
         // Prepare meeting details for the job
+       
         $meetingDetails = [
             'id' => $meeting->id,
             'title' => $meeting->meeting_title,
@@ -443,12 +422,27 @@ class MeetingController extends Controller
           }
  
  
-         // sent the notification to user admin
-         $devicesToken = User::where('role_id', 1)->pluck('device_token')->toArray();
- 
-         $this->notificationController->attemtNotification($devicesToken, "Created a Meeting", "Requested to you a meeting schedule.");
- 
- 
+            // // sent the notification to user admin
+            $devicesToken = User::where('role_id', 1)->pluck('device_token')->toArray();
+
+            if (!empty($devicesToken)) {
+                $this->notificationController->attemtNotificationV1($devicesToken, "Created a Meeting", "Requested to you a meeting schedule.");
+            }
+    
+
+            $meetingDetails = [
+                'id' => $meeting->id,
+                'title' => $meeting->meeting_title,
+                'start_date' => $meeting->start_date,
+                'start_time' => $meeting->start_time,
+                'end_time' => $meeting->end_time,
+                'location' => $meeting->room->name . ' at ' . $meeting->room->location
+            ];
+    
+            // Dispatch the job to send notifications
+            SendMeetingNotifications::dispatch($meeting, $meetingDetails);
+    
+    
          // Return a success response with the created meeting
              return response()->json([
                  'status_code' => 200,
@@ -820,8 +814,10 @@ class MeetingController extends Controller
        // Extract api_tokens from the user records
        $devicesToken = $users->pluck('device_token')->toArray();
     
-       $this->notificationController->attemtNotification($devicesToken, "Meeting Updated", "Your meeting has been " . $request->booking_status);
  
+       if (!empty($devicesToken)) {
+            $this->notificationController->attemtNotificationV1($devicesToken, "Meeting Updated", "Your meeting has been " . $request->booking_status);
+        }
 
         // Return a success response
         return response()->json(['status_code' => 200, 'message' => 'Meeting status updated successfully']);
@@ -874,7 +870,6 @@ class MeetingController extends Controller
         // Filter out null device tokens
         $devicesToken = $users->pluck('device_token')->filter()->toArray();
 
-        // Only call the notification controller if there are valid tokens
         if (!empty($devicesToken)) {
             $this->notificationController->attemtNotificationV1($devicesToken, "Meeting Updated", "Your meeting has been " . $request->booking_status);
         }
@@ -941,9 +936,12 @@ class MeetingController extends Controller
             // sent the notification to user admin
             $devicesToken = User::where('role_id', 1)->pluck('device_token')->toArray();
 
-            $this->notificationController->attemtNotification($devicesToken, "Reschedule a Meeting", "Requested to you a meeting re-schedule.");
-    
+            
+            if (!empty($devicesToken)) {
+                $this->notificationController->attemtNotificationV1($devicesToken, "Reschedule a Meeting", "Requested to you a meeting re-schedule.");
+            }
 
+ 
             
             // Return a successful response with the updated meeting
             return response()->json([
@@ -1010,8 +1008,12 @@ class MeetingController extends Controller
          // sent the notification to user admin
          $devicesToken = User::where('role_id', 1)->pluck('device_token')->toArray();
 
-         $this->notificationController->attemtNotification($devicesToken, "Reschedule a Meeting", "Requested to you a meeting re-schedule.");
- 
+         if (!empty($devicesToken)) {
+            $this->notificationController->attemtNotificationV1($devicesToken, "Reschedule a Meeting", "Requested to you a meeting re-schedule.");
+        }
+
+
+        
          
                 
         return redirect()->route("meeting.index")->with('message', 'Meeting rescheduled successfully');

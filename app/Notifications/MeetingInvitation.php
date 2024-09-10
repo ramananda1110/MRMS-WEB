@@ -66,8 +66,8 @@ class MeetingInvitation extends Notification
             ->line('**End Time:** ' . $this->endTime)
             ->line('**Location:** ' . $this->location)
             ->line('Please review the meeting details and accept the invitation if you are available.')
-            // ->action('View Meeting Details', url('/meeting-view/' . $this->id))
-            ->action('View Details', url(config('app.url') . '/meeting-view/' . $this->id))
+            ->action('View Meeting Details', url('/meeting-view/' . $this->id))
+            // ->action('View Details', url(config('app.url') . '/meeting-view/' . $this->id))
             ->line('If you have any questions, feel free to contact us.')
             ->line('Thank you!');
     }
