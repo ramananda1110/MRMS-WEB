@@ -13,13 +13,16 @@ class CreateNotificationsTable extends Migration
      */
     public function up()
     {
+        
         Schema::create('notifications', function (Blueprint $table) {
-            $table->bigIncrements('id'); // Make sure 'id' is 'bigint unsigned'
+            $table->bigIncrements('id');
             $table->string('type');
             $table->string('title');
+            $table->text('body');  // Add this line
             $table->unsignedBigInteger('meeting_id');
             $table->timestamps();
         });
+        
     }
 
     /**

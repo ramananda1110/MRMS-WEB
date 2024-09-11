@@ -359,9 +359,9 @@ class MeetingController extends Controller
 
         // Prepare the notification data
         $notificationData = [
-            'type' => 'meeting',
-            'title' => 'New Meeting Scheduled',
-            'body' => 'A new meeting titled "' . $meeting->meeting_title . '" has been scheduled.',
+            'type' => 'created_meeting',
+            'title' => 'New meeting request',
+            'body' => 'You have received a new meeting request for <b>'. $meeting->meeting_title .'</b>',
             'meeting_id' => $meeting->id
         ];
 
@@ -378,7 +378,7 @@ class MeetingController extends Controller
 
 
         if (!empty($devicesToken)) {
-            $this->notificationController->attemtNotificationV1($devicesToken, "Created a Meeting", "Requested to you a meeting schedule.");
+            $this->fcmController->attemtNotificationV1($devicesToken, "Created a Meeting", "Requested to you a meeting schedule.");
         }
 
         // Prepare meeting details for the job
@@ -448,7 +448,7 @@ class MeetingController extends Controller
             $devicesToken = User::where('role_id', 1)->pluck('device_token')->toArray();
 
             if (!empty($devicesToken)) {
-                $this->notificationController->attemtNotificationV1($devicesToken, "Created a Meeting", "Requested to you a meeting schedule.");
+                $this->fcmController->attemtNotificationV1($devicesToken, "Created a Meeting", "Requested to you a meeting schedule.");
             }
     
 
@@ -839,7 +839,7 @@ class MeetingController extends Controller
     
  
        if (!empty($devicesToken)) {
-            $this->notificationController->attemtNotificationV1($devicesToken, "Meeting Updated", "Your meeting has been " . $request->booking_status);
+            $this->fcmController->attemtNotificationV1($devicesToken, "Meeting Updated", "Your meeting has been " . $request->booking_status);
         }
 
         // Return a success response
@@ -894,7 +894,7 @@ class MeetingController extends Controller
         $devicesToken = $users->pluck('device_token')->filter()->toArray();
 
         if (!empty($devicesToken)) {
-            $this->notificationController->attemtNotificationV1($devicesToken, "Meeting Updated", "Your meeting has been " . $request->booking_status);
+            $this->fcmController->attemtNotificationV1($devicesToken, "Meeting Updated", "Your meeting has been " . $request->booking_status);
         }
 
  
@@ -961,7 +961,7 @@ class MeetingController extends Controller
 
             
             if (!empty($devicesToken)) {
-                $this->notificationController->attemtNotificationV1($devicesToken, "Reschedule a Meeting", "Requested to you a meeting re-schedule.");
+                $this->fcmController->attemtNotificationV1($devicesToken, "Reschedule a Meeting", "Requested to you a meeting re-schedule.");
             }
 
  
@@ -1032,13 +1032,12 @@ class MeetingController extends Controller
          $devicesToken = User::where('role_id', 1)->pluck('device_token')->toArray();
 
          if (!empty($devicesToken)) {
-            $this->notificationController->attemtNotificationV1($devicesToken, "Reschedule a Meeting", "Requested to you a meeting re-schedule.");
+            $this->fcmController->attemtNotificationV1($devicesToken, "Reschedule a Meeting", "Requested to you a meeting re-schedule.");
         }
 
 
         
          
-                
         return redirect()->route("meeting.index")->with('message', 'Meeting rescheduled successfully');
 
     }

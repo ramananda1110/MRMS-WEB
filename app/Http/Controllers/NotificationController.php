@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\NotificationResource;
+
 use Illuminate\Http\Request;
-use App\Models\Notification;
+use App\Models\Notifications;
 use App\Models\NotificationReceiver;
+use Illuminate\Http\Response;
+use Carbon\Carbon;
 
 class NotificationController extends Controller
 {
@@ -18,7 +22,7 @@ class NotificationController extends Controller
     public function createNotification(array $participants, array $notificationData)
     {
         // Store the notification
-        $notification = Notification::create([
+        $notification = Notifications::create([
             'type' => $notificationData['type'],
             'title' => $notificationData['title'],
             'body' => $notificationData['body'],
@@ -48,7 +52,9 @@ class NotificationController extends Controller
             ->count();
 
         return response()->json([
-            'new_notification_count' => $count
+            'status_code' => Response::HTTP_OK,
+            'new_notification_count' => $count,
+            'message' => 'Success'
         ]);
     }
 
@@ -58,20 +64,33 @@ class NotificationController extends Controller
      * @param int $participantId
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getNotifications($participantId)
-    {
-        $notifications = NotificationReceiver::where('participant_id', $participantId)
-            ->join('notifications', 'notification_receivers.notification_id', '=', 'notifications.id')
-            ->select('notifications.id', 'notifications.type', 'notifications.title', 'notifications.body', 'notification_receivers.is_read', 'notifications.created_at')
-            ->orderBy('notifications.created_at', 'desc')
-            ->get();
+  
 
-        // Mark all notifications as read
-        NotificationReceiver::where('participant_id', $participantId)
-            ->update(['is_read' => true]);
 
-        return response()->json([
-            'notifications' => $notifications
-        ]);
-    }
+     public function getNotifications($participantId)
+     {
+         // Fetch notifications
+         $notifications = NotificationReceiver::where('participant_id', $participantId)
+             ->join('notifications', 'notification_receivers.notification_id', '=', 'notifications.id')
+             ->select('notifications.id', 'notifications.type', 'notifications.title', 'notifications.body', 'notification_receivers.is_read', 'notifications.created_at')
+             ->orderBy('notifications.created_at', 'desc')
+             ->get();
+     
+         // Convert notifications to resources
+         $notifications = NotificationResource::collection($notifications);
+     
+         // Mark all notifications as read
+         NotificationReceiver::where('participant_id', $participantId)
+             ->update(['is_read' => true]);
+     
+         return response()->json([
+             'status_code' => Response::HTTP_OK,
+             'data' => $notifications,
+             'message' => 'Success'
+         ]);
+     }
+     
+
+     
+
 }
