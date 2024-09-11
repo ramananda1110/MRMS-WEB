@@ -14,8 +14,17 @@ class CreateNotificationReceiversTable extends Migration
     public function up()
     {
         Schema::create('notification_receivers', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements('id');
+            $table->unsignedBigInteger('notification_id'); // Foreign key should match type
+            $table->unsignedBigInteger('participant_id');
+            $table->boolean('is_read')->default(false);
             $table->timestamps();
+        
+            // Define foreign key constraints
+            $table->foreign('notification_id')
+                  ->references('id')
+                  ->on('notifications')
+                  ->onDelete('cascade');
         });
     }
 
