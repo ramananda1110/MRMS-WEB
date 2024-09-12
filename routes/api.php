@@ -10,6 +10,7 @@ use App\Http\Controllers\FCMPushController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\NotificationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -74,6 +75,10 @@ Route::group(['middleware' => ['auth.api']], function () {
 
 
     Route::post('/save-token', [FCMPushController::class, 'saveToken'])->name('save-token');
-    Route::post('/send-notification', [FCMPushController::class, 'sendNotification'])->name('send.notification');
+    Route::post('/send-notification', [FCMPushController::class, 'sendNotificationV1'])->name('send.notification');
+
+
+    Route::get('notifications/count/{participantId}', [NotificationController::class, 'getNotificationCount']);
+    Route::get('notifications/list/{participantId}', [NotificationController::class, 'getNotifications']);
 
 });

@@ -44,15 +44,11 @@ class SendMeetingNotifications implements ShouldQueue
 
         // Batch send push notifications
         $users = User::where('role_id', 1)->get();
-        //$devicesToken = $users->pluck('device_token')->toArray();
-
-        // Send push notifications using FCMPushController
-        // app('App\Http\Controllers\FCMPushController')
-        //     ->attemtNotification($devicesToken, "Created a Meeting", "Requested to you a new meeting schedule.");
-
+        
+       
         // Throttle emails to avoid overwhelming the server
         foreach ($users as $user) {
-           // if ($this->shouldSendEmailToUser($user)) {
+            if ($this->shouldSendEmailToUser($user)) {
                 // Send email notifications using Laravel's Notification system
                 $user->notify(new MeetingInvitation(
                     $this->meetingDetails['id'],
@@ -62,7 +58,7 @@ class SendMeetingNotifications implements ShouldQueue
                     $this->meetingDetails['end_time'],
                     $this->meetingDetails['location']
                 ));
-            //}
+            }
         }
 
         Log::info('Meeting notifications sent successfully.');
