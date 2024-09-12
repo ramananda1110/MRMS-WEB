@@ -9,6 +9,8 @@ use App\Models\Notifications;
 use App\Models\NotificationReceiver;
 use Illuminate\Http\Response;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
+use App\Models\User;
 
 class NotificationController extends Controller
 {
@@ -92,5 +94,19 @@ class NotificationController extends Controller
      
 
      
+    public function checkUser(Request $request)
+    {
+        // Retrieve the authenticated user's employee ID and role ID
+        // $roleId = Auth()->user();
+        $token = $request->query('api_token');
+        $user = User::where('api_token', $token)->first();
+
+        return response()->json([
+            'status_code' => Response::HTTP_OK,
+            'data' => $user->role_id,
+            'message' => 'Success'
+        ]);
+
+    }
 
 }

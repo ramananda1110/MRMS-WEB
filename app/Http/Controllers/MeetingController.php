@@ -357,45 +357,47 @@ class MeetingController extends Controller
         }
 
 
-        // Prepare the notification data
-        $notificationData = [
-            'type' => 'created_meeting',
-            'title' => 'New meeting request',
-            'body' => 'You have received a new meeting request for <b>'. $meeting->meeting_title .'</b>',
-            'meeting_id' => $meeting->id
-        ];
+
+        if(Auth()->user()->role_id !== 1)
+        {
+            // Prepare the notification data
+            $notificationData = [
+                'type' => 'booked',
+                'title' => 'New meeting request',
+                'body' => 'You have received a new meeting request for <b>'. $meeting->meeting_title .'</b>',
+                'meeting_id' => $meeting->id
+            ];
+
+            $recipients = User::where('role_id', 1)->pluck('employee_id')->toArray();
+
+            // Call the createNotification() 
+            $this->notificationController->createNotification($recipients, $notificationData);
+
+        
+            // send device-specific notifications (Firebase)
+
+            $devicesToken = User::where('role_id', 1)->pluck('device_token')->toArray();
 
 
-        $recipients = User::where('role_id', 1)->pluck('employee_id')->toArray();
+            if (!empty($devicesToken)) {
+                $this->fcmController->attemtNotificationV1($devicesToken, "Created a Meeting", "Requested to you a meeting schedule.");
+            }
 
-        // Call the createNotification() function to send notifications
-        $this->notificationController->createNotification($recipients, $notificationData);
+            // Prepare meeting details for the job
+        
+            $meetingDetails = [
+                'id' => $meeting->id,
+                'title' => $meeting->meeting_title,
+                'start_date' => $meeting->start_date,
+                'start_time' => $meeting->start_time,
+                'end_time' => $meeting->end_time,
+                'location' => $meeting->room->name . ' at ' . $meeting->room->location
+            ];
 
+            // Dispatch the job to send notifications
+            SendMeetingNotifications::dispatch($meeting, $meetingDetails);
 
-        // Optionally, send device-specific notifications (Firebase)
-
-        $devicesToken = User::where('role_id', 1)->pluck('device_token')->toArray();
-
-
-        if (!empty($devicesToken)) {
-            $this->fcmController->attemtNotificationV1($devicesToken, "Created a Meeting", "Requested to you a meeting schedule.");
-        }
-
-        // Prepare meeting details for the job
-       
-        $meetingDetails = [
-            'id' => $meeting->id,
-            'title' => $meeting->meeting_title,
-            'start_date' => $meeting->start_date,
-            'start_time' => $meeting->start_time,
-            'end_time' => $meeting->end_time,
-            'location' => $meeting->room->name . ' at ' . $meeting->room->location
-        ];
-
-        // Dispatch the job to send notifications
-        SendMeetingNotifications::dispatch($meeting, $meetingDetails);
-
-
+         }
 
         return redirect()->route("meeting.index")->with('message', 'Meeting created successfully');
 
@@ -444,27 +446,48 @@ class MeetingController extends Controller
           }
  
  
-            // // sent the notification to user admin
-            $devicesToken = User::where('role_id', 1)->pluck('device_token')->toArray();
 
-            if (!empty($devicesToken)) {
-                $this->fcmController->attemtNotificationV1($devicesToken, "Created a Meeting", "Requested to you a meeting schedule.");
+          // Prepare the notification data
+
+          $token = $request->query('api_token');
+          $user = User::where('api_token', $token)->first();
+
+          if($user->role_id !== 1)
+            {
+                $notificationData = [
+                    'type' => 'booked',
+                    'title' => 'New meeting request',
+                    'body' => 'You have received a new meeting request for <b>'. $meeting->meeting_title .'</b>',
+                    'meeting_id' => $meeting->id
+                ];
+
+
+                $recipients = User::where('role_id', 1)->pluck('employee_id')->toArray();
+
+                // Call the createNotification() 
+                $this->notificationController->createNotification($recipients, $notificationData);
+
+
+                // // sent the notification to user admin
+                $devicesToken = User::where('role_id', 1)->pluck('device_token')->toArray();
+
+                if (!empty($devicesToken)) {
+                    $this->fcmController->attemtNotificationV1($devicesToken, "Created a Meeting", "Requested to you a meeting schedule.");
+                }
+        
+                $meetingDetails = [
+                    'id' => $meeting->id,
+                    'title' => $meeting->meeting_title,
+                    'start_date' => $meeting->start_date,
+                    'start_time' => $meeting->start_time,
+                    'end_time' => $meeting->end_time,
+                    'location' => $meeting->room->name . ' at ' . $meeting->room->location
+                ];
+        
+                // Dispatch the job to send notifications
+                SendMeetingNotifications::dispatch($meeting, $meetingDetails);
+            
             }
-    
-
-
-            $meetingDetails = [
-                'id' => $meeting->id,
-                'title' => $meeting->meeting_title,
-                'start_date' => $meeting->start_date,
-                'start_time' => $meeting->start_time,
-                'end_time' => $meeting->end_time,
-                'location' => $meeting->room->name . ' at ' . $meeting->room->location
-            ];
-    
-            // Dispatch the job to send notifications
-            SendMeetingNotifications::dispatch($meeting, $meetingDetails);
-    
     
          // Return a success response with the created meeting
              return response()->json([
