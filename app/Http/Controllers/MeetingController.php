@@ -380,7 +380,8 @@ class MeetingController extends Controller
 
 
             if (!empty($devicesToken)) {
-                $this->fcmController->attemtNotificationV1($devicesToken, "Created a Meeting", "Requested to you a meeting schedule.");
+                $this->fcmController->attemtNotificationV1($devicesToken, "New meeting request", "You have received a new meeting request for . $meeting->meeting_title ." );
+
             }
 
             // Prepare meeting details for the job
@@ -472,7 +473,7 @@ class MeetingController extends Controller
                 $devicesToken = User::where('role_id', 1)->pluck('device_token')->toArray();
 
                 if (!empty($devicesToken)) {
-                    $this->fcmController->attemtNotificationV1($devicesToken, "Created a Meeting", "Requested to you a meeting schedule.");
+                    $this->fcmController->attemtNotificationV1($devicesToken, "New meeting request", "You have received a new meeting request for  . $meeting->meeting_title .");
                 }
         
                 $meetingDetails = [
@@ -860,7 +861,7 @@ class MeetingController extends Controller
        // Extract api_tokens from the user records
        $devicesToken = $users->pluck('device_token')->toArray();
     
- 
+      
        if (!empty($devicesToken)) {
             $this->fcmController->attemtNotificationV1($devicesToken, "Meeting Updated", "Your meeting has been " . $request->booking_status);
         }
@@ -892,6 +893,48 @@ class MeetingController extends Controller
          // Find the meeting record by ID
         $meeting = Meeting::find($id);
 
+    
+
+       // Prepare the notification data for accepted meeting request
+        $notificationData = [
+            'type' => 'accepted',
+            'title' => 'Meeting Request Accepted',
+            'body' => 'Your meeting request for <b>'. $meeting->meeting_title .'</b> has been accepted by the admin.',
+            'meeting_id' => $meeting->id
+        ];
+
+        
+        // Prepare the notification data  for meeting participants
+        $participantData = [
+            'type' => 'participant',
+            'title' => 'You’ve Been Added to a Meeting',
+            'body' => 'You have been added as a participant to the meeting titled <b>'. $meeting->meeting_title .'</b>. Please check the details and prepare accordingly.',
+            'meeting_id' => $meeting->id
+        ];
+
+
+
+        $recipients = User::where('role_id', 1)->pluck('employee_id')->toArray();
+
+        $hostId = $meeting->host_id;
+        $coHostId = $meeting->co_host_id;
+ 
+        $users = User::whereIn('employee_id', [$coHostId])->pluck('employee_id')->toArray();
+        
+
+         if($request->booking_status == 'accepted') {
+            dd('booking status is Accepted');
+         } else if ($request->booking_status == 'rejected'){
+            dd('booking status is Rejected');
+         }
+
+
+        return;
+
+        $this->notificationController->createNotification($recipients, $notificationData);
+
+         
+
         // Check if the meeting exists
         if (!$meeting) {
             return  redirect()->back()->with('error', 'Meeting not found'); 
@@ -912,7 +955,7 @@ class MeetingController extends Controller
 
        $users = User::whereIn('employee_id', [$hostId, $coHostId])->get();
 
-
+       
         // Filter out null device tokens
         $devicesToken = $users->pluck('device_token')->filter()->toArray();
 
@@ -987,7 +1030,7 @@ class MeetingController extends Controller
                 $this->fcmController->attemtNotificationV1($devicesToken, "Reschedule a Meeting", "Requested to you a meeting re-schedule.");
             }
 
- 
+            
             
             // Return a successful response with the updated meeting
             return response()->json([
