@@ -41,6 +41,25 @@ class NotificationController extends Controller
         }
     }
 
+
+    public function createNotificationForHost($participant, array $notificationData)
+    {
+        // Store the notification
+        $notification = Notifications::create([
+            'type' => $notificationData['type'],
+            'title' => $notificationData['title'],
+            'body' => $notificationData['body'],
+            'meeting_id' => $notificationData['meeting_id'],
+        ]);
+
+        NotificationReceiver::create([
+            'notification_id' => $notification->id,
+            'participant_id' => $participant,
+            'is_read' => false
+        ]);
+    }
+
+
     /**
      * API: Get the count of unread notifications for a participant.
      *
