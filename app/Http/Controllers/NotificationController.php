@@ -95,6 +95,7 @@ class NotificationController extends Controller
              ->join('notifications', 'notification_receivers.notification_id', '=', 'notifications.id')
              ->select('notifications.id', 'notifications.type', 'notifications.title', 'notifications.body', 'notification_receivers.is_read', 'notifications.created_at')
              ->orderBy('notifications.created_at', 'desc')
+             ->limit(10) // Limit to last 10 notifications
              ->get();
      
          // Convert notifications to resources
