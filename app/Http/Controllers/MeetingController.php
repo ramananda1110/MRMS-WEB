@@ -819,24 +819,22 @@ class MeetingController extends Controller
         ]);
     }
     
-    
+   
+
     public function updateMeetingStatus(Request $request, $id)
     {
-
-       // Validate the incoming request data
-       $validator = Validator::make($request->all(), [
-        'booking_status' => 'required|in:accepted,completed,rejected',
-       // 'booking_type' => 'required|in:booked,rescheduled',
+        // Validate the incoming request data
+        $validator = Validator::make($request->all(), [
+            'booking_status' => 'required|in:accepted,completed,rejected',
         ]);
 
-        // Check if the validation fails
+        // Check if validation fails
         if ($validator->fails()) {
-            $errors = $validator->errors()->all();
-            $message = implode('. ', $errors);
-            return response()->json(['status_code' => 422, 'message' => $message], 200);
+            $errors = implode('. ', $validator->errors()->all());
+            return response()->json(['status_code' => 422, 'message' => $errors], 200);
         }
 
-         // Find the meeting record by ID
+        // Find the meeting record by ID
         $meeting = Meeting::find($id);
 
         // Check if the meeting exists
@@ -847,150 +845,168 @@ class MeetingController extends Controller
         // Update the meeting record with the validated data
         $meeting->update([
             'booking_status' => $request->booking_status,
-        ]
-       );
+        ]);
 
+        // Retrieve host and co-host IDs
+        $hostId = $meeting->host_id;
+        $coHostId = $meeting->co_host_id;
 
-        // sent the notification to user host and co-host
-      
-       $hostId = $meeting->host_id;
-       $coHostId = $meeting->co_host_id;
-
-       $users = User::whereIn('employee_id', [$hostId, $coHostId])->get();
-
-       // Extract api_tokens from the user records
-       $devicesToken = $users->pluck('device_token')->toArray();
-       
-      
-       if (!empty($devicesToken)) {
-            $this->fcmController->attemtNotificationV1($devicesToken, "Meeting Updated", "Your meeting has been " . $request->booking_status);
+           // Update the meeting status
+        $meeting->update(['booking_status' => $request->booking_status]);
+    
+        $hostId = $meeting->host_id;
+        $coHostId = $meeting->co_host_id;
+    
+        // Retrieve device tokens for host and co-host
+        $tokens = User::whereIn('employee_id', [$hostId, $coHostId])
+            ->whereNotNull('device_token')
+            ->pluck('device_token', 'employee_id')
+            ->toArray();
+    
+        $hostToken = $tokens[$hostId] ?? null;
+        $coHostToken = $tokens[$coHostId] ?? null;
+    
+        // Handle meeting acceptance
+        if ($request->booking_status == 'accepted') {
+            // Prepare notifications
+            $messageHost = [
+                'type' => 'accepted',
+                'title' => 'Meeting Request Accepted',
+                'body' => 'Your meeting request for <b>' . $meeting->meeting_title . '</b> has been accepted by the admin.',
+                'meeting_id' => $meeting->id,
+            ];
+    
+            $messageParticipants = [
+                'type' => 'accepted',
+                'title' => 'You’ve Been Added to a Meeting',
+                'body' => 'You have been added as a participant to the meeting titled <b>' . $meeting->meeting_title . '</b>. Please check the details and prepare accordingly.',
+                'meeting_id' => $meeting->id,
+            ];
+    
+            // Send notification for the host
+            $this->notificationController->createNotificationForHost($hostId, $messageHost);
+    
+            // Send notification to participants (excluding host)
+            $participants = array_diff($meeting->participants->pluck('participant_id')->toArray(), [$hostId]);
+            $this->notificationController->createNotification($participants, $messageParticipants);
+    
+            // Send FCM notifications
+            if ($hostToken) {
+                $this->fcmController->attemtNotificationV1($hostToken, $messageHost['title'], strip_tags($messageHost['body']));
+            }
+            if ($coHostToken) {
+                $this->fcmController->attemtNotificationV1($coHostToken, $messageParticipants['title'], strip_tags($messageParticipants['body']));
+            }
+    
+        } elseif ($request->booking_status == 'rejected') {
+            // Prepare rejection notification
+            $messageRejected = [
+                'type' => 'rejected',
+                'title' => 'Meeting Request Rejected',
+                'body' => 'Your meeting request for <b>' . $meeting->meeting_title . '</b> has been rejected by the admin.',
+                'meeting_id' => $meeting->id,
+            ];
+    
+            // Send in-app and FCM notification for host
+            $this->notificationController->createNotificationForHost($hostId, $messageRejected);
+            if ($hostToken) {
+                $this->fcmController->attemtNotificationV1($hostToken, $messageRejected['title'], strip_tags($messageRejected['body']));
+            }
         }
 
         // Return a success response
         return response()->json(['status_code' => 200, 'message' => 'Meeting status updated successfully']);
-
     }
+
 
 
     public function updateMeetingByWeb(Request $request, $id)
     {
-
-       // Validate the incoming request data
-       $validator = Validator::make($request->all(), [
-        'booking_status' => 'required|in:accepted,completed,rejected',
-       // 'booking_type' => 'required|in:booked,rescheduled',
+        // Validate the incoming request data
+        $validator = Validator::make($request->all(), [
+            'booking_status' => 'required|in:accepted,completed,rejected',
         ]);
-
-        // Check if the validation fails
+    
+        // Check if validation fails
         if ($validator->fails()) {
-            $errors = $validator->errors()->all();
-            $message = implode('. ', $errors);
-
-            return  redirect()->back()->with('error', $message);
-
+            return redirect()->back()->with('error', implode('. ', $validator->errors()->all()));
         }
-
-         // Find the meeting record by ID
+    
+        // Find the meeting record by ID
         $meeting = Meeting::find($id);
-
-        
-         // Check if the meeting exists
-         if (!$meeting) {
-            return  redirect()->back()->with('error', 'Your Meeting not found!'); 
-
+    
+        // Check if the meeting exists
+        if (!$meeting) {
+            return redirect()->back()->with('error', 'Meeting not found!');
         }
-
-        // Update the meeting record with the validated data
-        $meeting->update([
-            'booking_status' => $request->booking_status,
-            ]
-        );
-      
+    
+        // Update the meeting status
+        $meeting->update(['booking_status' => $request->booking_status]);
+    
         $hostId = $meeting->host_id;
         $coHostId = $meeting->co_host_id;
- 
-        
-         // Filter out null device tokens
-        
-         $hostToken = User::whereIn('employee_id', [$hostId])
-         ->whereNotNull('device_token')
-         ->pluck('device_token')
-         ->toArray();
-
-
-         if($request->booking_status == 'accepted') {
-
-            // if accepted meeting
-
-            $participants =  $meeting->participants->pluck('participant_id')->toArray();
-            $participants = array_diff($participants, [$hostId]);
     
-
-            $meessage1 = [
+        // Retrieve device tokens for host and co-host
+        $tokens = User::whereIn('employee_id', [$hostId, $coHostId])
+            ->whereNotNull('device_token')
+            ->pluck('device_token', 'employee_id')
+            ->toArray();
+    
+        $hostToken = $tokens[$hostId] ?? null;
+        $coHostToken = $tokens[$coHostId] ?? null;
+    
+        // Handle meeting acceptance
+        if ($request->booking_status == 'accepted') {
+            // Prepare notifications
+            $messageHost = [
                 'type' => 'accepted',
                 'title' => 'Meeting Request Accepted',
-                'body' => 'Your meeting request for <b>'. $meeting->meeting_title .'</b> has been accepted by the admin.',
-                'meeting_id' => $meeting->id
+                'body' => 'Your meeting request for <b>' . $meeting->meeting_title . '</b> has been accepted by the admin.',
+                'meeting_id' => $meeting->id,
             ];
-
-
-            $meessage2 = [
+    
+            $messageParticipants = [
                 'type' => 'accepted',
                 'title' => 'You’ve Been Added to a Meeting',
-                'body' => 'You have been added as a participant to the meeting titled <b>'. $meeting->meeting_title .'</b>. Please check the details and prepare accordingly.',
-                'meeting_id' => $meeting->id
+                'body' => 'You have been added as a participant to the meeting titled <b>' . $meeting->meeting_title . '</b>. Please check the details and prepare accordingly.',
+                'meeting_id' => $meeting->id,
             ];
-
-            // send notification for host
-            $this->notificationController->createNotificationForHost($hostId, $meessage1);
-
-            // send notification for participants
-            $this->notificationController->createNotification($participants, $meessage2);
-
-
-
-            if (!empty($hostToken)) {
-                $this->fcmController->attemtNotificationV1($hostToken, "Meeting Request Accepted", "Your meeting request for ". $meeting->meeting_title .' has been accepted by the admin.',);
+    
+            // Send notification for the host
+            $this->notificationController->createNotificationForHost($hostId, $messageHost);
+    
+            // Send notification to participants (excluding host)
+            $participants = array_diff($meeting->participants->pluck('participant_id')->toArray(), [$hostId]);
+            $this->notificationController->createNotification($participants, $messageParticipants);
+    
+            // Send FCM notifications
+            if ($hostToken) {
+                $this->fcmController->attemtNotificationV1($hostToken, $messageHost['title'], strip_tags($messageHost['body']));
             }
-
-
-            $coHostToken = User::whereIn('employee_id', [$coHostId])
-            ->whereNotNull('device_token')
-            ->pluck('device_token')
-            ->toArray();
-
-            if (!empty($coHostToken)) {
-                $this->fcmController->attemtNotificationV1($coHostToken, "You’ve Been Added to a Meeting", "You have been added as a participant to the meeting titled ". $meeting->meeting_title .' Please check the details and prepare accordingly.',);
+            if ($coHostToken) {
+                $this->fcmController->attemtNotificationV1($coHostToken, $messageParticipants['title'], strip_tags($messageParticipants['body']));
             }
-
-
-
-         } else if ($request->booking_status == 'rejected'){
-        
-            $meessage = [
+    
+        } elseif ($request->booking_status == 'rejected') {
+            // Prepare rejection notification
+            $messageRejected = [
                 'type' => 'rejected',
                 'title' => 'Meeting Request Rejected',
-                'body' => 'Your meeting request for <b>'. $meeting->meeting_title .'</b> has been rejected by the admin.',
-                'meeting_id' => $meeting->id
+                'body' => 'Your meeting request for <b>' . $meeting->meeting_title . '</b> has been rejected by the admin.',
+                'meeting_id' => $meeting->id,
             ];
-
-
-             // send in app notification to host
-             $this->notificationController->createNotificationForHost($hostId, $meessage);
-
-            
-            // send push notification to host
-             if (!empty($hostToken)) {
-                $this->fcmController->attemtNotificationV1($hostToken, "Meeting Request Rejected", "Your meeting request for ". $meeting->meeting_title .' has been rejected by the admin.',);
+    
+            // Send in-app and FCM notification for host
+            $this->notificationController->createNotificationForHost($hostId, $messageRejected);
+            if ($hostToken) {
+                $this->fcmController->attemtNotificationV1($hostToken, $messageRejected['title'], strip_tags($messageRejected['body']));
             }
-         }
-
- 
-        // Return a success response
-        return redirect()->back()->with('message', 'Successfully, Meeting has been updated!');
-
+        }
+    
+        // Return success response
+        return redirect()->back()->with('message', 'Successfully updated the meeting!');
     }
-
+    
 
 
     public function reschedule(Request $request, $id)
