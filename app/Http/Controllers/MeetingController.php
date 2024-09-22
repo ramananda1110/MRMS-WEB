@@ -858,14 +858,12 @@ class MeetingController extends Controller
         $coHostId = $meeting->co_host_id;
     
         // Retrieve device tokens for host and co-host
-        $tokens = User::whereIn('employee_id', [$hostId, $coHostId])
-            ->whereNotNull('device_token')
-            ->pluck('device_token', 'employee_id')
-            ->toArray();
+        
     
-        $hostToken = $tokens[$hostId] ?? null;
-        $coHostToken = $tokens[$coHostId] ?? null;
+        $hostToken = User::where('employee_id', $hostId)->pluck('device_token')->toArray();
+        $coHostToken = User::where('employee_id', $coHostId)->pluck('device_token')->toArray();
     
+        
         // Handle meeting acceptance
         if ($request->booking_status == 'accepted') {
             // Prepare notifications
@@ -947,13 +945,14 @@ class MeetingController extends Controller
         $coHostId = $meeting->co_host_id;
     
         // Retrieve device tokens for host and co-host
-        $tokens = User::whereIn('employee_id', [$hostId, $coHostId])
-            ->whereNotNull('device_token')
-            ->pluck('device_token', 'employee_id')
-            ->toArray();
+       
+
+        $hostToken = User::where('employee_id', $hostId)->pluck('device_token')->toArray();
+        $coHostToken = User::where('employee_id', $coHostId)->pluck('device_token')->toArray();
+
     
-        $hostToken = $tokens[$hostId] ?? null;
-        $coHostToken = $tokens[$coHostId] ?? null;
+
+
     
         // Handle meeting acceptance
         if ($request->booking_status == 'accepted') {
