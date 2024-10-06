@@ -9,6 +9,8 @@ use App\Models\Notifications;
 use App\Models\NotificationReceiver;
 use Illuminate\Http\Response;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
+use App\Models\User;
 
 class NotificationController extends Controller
 {
@@ -38,6 +40,25 @@ class NotificationController extends Controller
             ]);
         }
     }
+
+
+    public function createNotificationForHost($participant, array $notificationData)
+    {
+        // Store the notification
+        $notification = Notifications::create([
+            'type' => $notificationData['type'],
+            'title' => $notificationData['title'],
+            'body' => $notificationData['body'],
+            'meeting_id' => $notificationData['meeting_id'],
+        ]);
+
+        NotificationReceiver::create([
+            'notification_id' => $notification->id,
+            'participant_id' => $participant,
+            'is_read' => false
+        ]);
+    }
+
 
     /**
      * API: Get the count of unread notifications for a participant.
@@ -74,6 +95,7 @@ class NotificationController extends Controller
              ->join('notifications', 'notification_receivers.notification_id', '=', 'notifications.id')
              ->select('notifications.id', 'notifications.type', 'notifications.title', 'notifications.body', 'notification_receivers.is_read', 'notifications.created_at')
              ->orderBy('notifications.created_at', 'desc')
+             ->limit(10) // Limit to last 10 notifications
              ->get();
      
          // Convert notifications to resources
@@ -92,5 +114,19 @@ class NotificationController extends Controller
      
 
      
+    public function checkUser(Request $request)
+    {
+        // Retrieve the authenticated user's employee ID and role ID
+        // $roleId = Auth()->user();
+        $token = $request->query('api_token');
+        $user = User::where('api_token', $token)->first();
+
+        return response()->json([
+            'status_code' => Response::HTTP_OK,
+            'data' => $user->role_id,
+            'message' => 'Success'
+        ]);
+
+    }
 
 }

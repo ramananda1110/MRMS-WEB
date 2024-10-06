@@ -81,4 +81,5 @@ Route::group(['middleware' => ['auth.api']], function () {
     Route::get('notifications/count/{participantId}', [NotificationController::class, 'getNotificationCount']);
     Route::get('notifications/list/{participantId}', [NotificationController::class, 'getNotifications']);
 
+    Route::get('checkUser', [NotificationController::class, 'checkUser']);
 });
