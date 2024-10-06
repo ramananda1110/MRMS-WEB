@@ -87,10 +87,12 @@
                                                                     <th>Division</th>
                                                                     <td>{{ $user->department->name }}</td>
                                                                 </tr>
-                                                                <tr>
-                                                                    <th>Project Name</th>
-                                                                    <td>{{ $user->employee->project_name }}</td>
-                                                                </tr>
+                                                                {{-- 
+                                                                    <tr>
+                                                                        <th>Project Name</th>
+                                                                        <td>{{ $user->employee->project_name }}</td>
+                                                                    </tr> 
+                                                                 --}}
                                                                 <tr>
                                                                     <th>Role</th>
                                                                     <td>{{ $user->role->name }}</td>

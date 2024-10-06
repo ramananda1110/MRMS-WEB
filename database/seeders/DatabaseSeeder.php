@@ -133,16 +133,18 @@ class DatabaseSeeder extends Seeder
         $viewPersmission = '{"user":{"can-view":"1","can-list":"1"},"role":{"can-view":"1","can-list":"1"},"meeting":{"can-view":"1","can-list":"1"},"employee":{"can-view":"1","can-list":"1"},"department":{"can-view":"1","can-list":"1"},"permission":{"can-view":"1","can-list":"1"},"room":{"can-view":"1","can-list":"1"},"notice":{"can-view":"1","can-list":"1"}}';
 
         // Decode the JSON string into a PHP associative array
-        $data = json_decode($jsonData, true);
+        $data1 = json_decode($adminPermission, true);
+
+        $data2 = json_decode($viewPersmission, true);
 
         Permission::create([
             'role_id'=>1,
-            'name'=> $adminPermission
+            'name'=> $data1
         ]);
 
         Permission::create([
             'role_id'=>3,
-            'name'=> $viewPersmission
+            'name'=> $data2
         ]);
 
     }

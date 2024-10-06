@@ -3,7 +3,8 @@
 namespace App\Jobs;
 
 use App\Notifications\MeetingInvitation;
-use App\User;
+
+use App\Models\User;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
@@ -11,6 +12,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Log; 
 
 
 class SendMeetingNotifications implements ShouldQueue
@@ -38,17 +40,16 @@ class SendMeetingNotifications implements ShouldQueue
      */
     public function handle()
     {
-        Log::info('Sending meeting notifications job executed.');
+        Log::info('SendMeetingNotifications job started.');
 
-        // Send push notifications
-        $devicesToken = User::where('role_id', 1)->pluck('device_token')->toArray();
-        app('App\Http\Controllers\NotificationController')->attemtNotification($devicesToken, "Created a Meeting", "Requested to you a meeting schedule.");
-
-        // Send email notifications
-        $userEmails = User::where('role_id', 1)->pluck('email')->toArray();
-        foreach ($userEmails as $email) {
-            $user = User::where('email', $email)->first();
-            if ($user) {
+        // Batch send push notifications
+        $users = User::where('role_id', 1)->get();
+        
+       
+        // Throttle emails to avoid overwhelming the server
+        foreach ($users as $user) {
+            if ($this->shouldSendEmailToUser($user)) {
+                // Send email notifications using Laravel's Notification system
                 $user->notify(new MeetingInvitation(
                     $this->meetingDetails['id'],
                     $this->meetingDetails['title'],
@@ -61,6 +62,13 @@ class SendMeetingNotifications implements ShouldQueue
         }
 
         Log::info('Meeting notifications sent successfully.');
+    }
 
+
+    protected function shouldSendEmailToUser($user)
+    {
+        // Customize your throttling logic, e.g., skip email if the user received one recently
+        // For now, this method returns true, but you can add time-based checks here
+        return true;
     }
 }

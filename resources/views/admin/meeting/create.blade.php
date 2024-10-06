@@ -106,7 +106,7 @@
                                 </div>
                             </div>
 
-                            <div class="form-group row mt-3">
+                            {{-- <div class="form-group row mt-3">
                                 <label class="col-sm-3 col-form-label">Co-Host</label>
                                 <div class="col-sm-9">
                                     <select name="co_host_id" class="form-select" >
@@ -115,6 +115,22 @@
                                             <option value="{{ $co_host->employee_id }}">{{ $co_host->name }}</option>
                                         @endforeach
                                     </select>
+                                </div>
+                            </div> --}}
+
+                            <div class="form-group row mt-3">
+                                <label class="col-sm-3 col-form-label">Co-Host</label>
+                                <div class="col-sm-9">
+                                    <select name="co_host_id" id="choices-multiple-co-host-button"
+                                        placeholder="Select Co-Host" multiple required>
+                                        
+                                      
+                                        <option value="">Select Co-Host</option>
+                                        @foreach (App\Models\Employee::where('status', 'active')->get() as $co_host)
+                                            <option value="{{ $co_host->employee_id }}">{{ $co_host->name }}</option>
+                                        @endforeach
+                                    </select>
+
                                 </div>
                             </div>
 
@@ -125,7 +141,8 @@
                                         placeholder="Select up to 25 Participants" multiple required>
                                         
                                       
-                                        <option>{{ Auth::user()->name . ' - ' . Auth::user()->division }}</option>
+                                        <!-- <option>{{ Auth::user()->name . ' - ' . Auth::user()->division }}</option> -->
+                                       
                                         @foreach (App\Models\Employee::where('status', 'active')->get() as $employee)
                                             @if ($employee->employee_id != Auth::user()->employee_id)
                                                 <option value="{{ $employee->employee_id }}">
@@ -205,6 +222,12 @@
         var choices = new Choices(selectElement, {
             removeItemButton: true,
             maxItemCount: 25,
+            renderChoiceLimit: 10
+        });
+        var selectElement = document.getElementById('choices-multiple-co-host-button');
+        var choices = new Choices(selectElement, {
+            removeItemButton: true,
+            maxItemCount: 1,
             renderChoiceLimit: 10
         });
     });

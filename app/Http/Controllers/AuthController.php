@@ -73,7 +73,7 @@ class AuthController extends Controller
         $user = User::where('api_token', $apiToken)->first();
 
 
-         // Update booking type to 'reschedule'
+         // reset device token
         $user->update(['api_token' => null]);
         $user->update(['device_token' => null]);
 
