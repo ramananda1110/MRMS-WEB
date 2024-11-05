@@ -1,9 +1,19 @@
 @extends('admin.layouts.master')
 
 @section('content')
-    <form id="changepasswordform" action="/meeting-view/{id}" method="get" enctype="multipart/form-data">
-        @csrf
+   
         <div class="container mt-3">
+
+        @if (Session::has('message'))
+            <div class='alert alert-success'>
+                {{ Session::get('message') }}
+            </div>
+        @endif
+        @if (Session::has('error'))
+            <div class='alert alert-danger'>
+                {{ Session::get('error') }}
+            </div>
+        @endif
 
             <div class="container  ">
                 <div class="container mt-3 py-5">
@@ -137,50 +147,48 @@
                                         </div>
                                     </div>
                                     <hr>
+                                   
+                                    @if (isset(Auth()->user()->role->permission['name']['meeting']['can-edit'])) 
 
-                                    @if ($meeting->booking_status == 'pending' && strtotime($meeting->start_date) >= strtotime(date('Y-m-d')))
+                                        @if ($meeting->booking_status == 'pending' && strtotime($meeting->start_date) >= strtotime(date('Y-m-d')))
                                             <a data-bs-toggle="modal" data-bs-target="#acceptModal{{ $meeting->id }}",
                                                 href="#" title="Accept">
                                                 <button type="button" class="btn btn-success">Accept</button></a>
                                       
+                                            <div class="modal fade" id="acceptModal{{ $meeting->id }}" tabindex="-1"
+                                                aria-labelledby="acceptModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h1 class="modal-title fs-5" id="acceptModalLabel">Confirm!</h1>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                                aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body">
 
+                                                            Are you sure? do you want to accept meeting?
 
-
-                                        <div class="modal fade" id="acceptModal{{ $meeting->id }}" tabindex="-1"
-                                            aria-labelledby="acceptModalLabel" aria-hidden="true">
-                                            <div class="modal-dialog">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h1 class="modal-title fs-5" id="acceptModalLabel">Confirm!</h1>
-                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                            aria-label="Close"></button>
-                                                    </div>
-                                                    <div class="modal-body">
-
-                                                        Are you sure? do you want to accept meeting?
-
-
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary"
-                                                            data-bs-dismiss="modal">Close</button>
-                                                        <form id="acceptMeetingForm{{ $meeting->id }}"
-                                                            action="{{ route('meeting.update.web', [$meeting->id]) }}"
-                                                            method="post">@csrf
-                                                            <input type="hidden" name="booking_status"
-                                                                id="accept_booking_status">
-                                                            <button class="btn btn-outline-success"
-                                                                onclick="submitForm('accepted', 'acceptMeetingForm{{ $meeting->id }}')">
-                                                                Accept
-                                                            </button>
-                                                        </form>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary"
+                                                                data-bs-dismiss="modal">Close</button>
+                                                            <form id="acceptMeetingForm{{ $meeting->id }}"
+                                                                action="{{ route('meeting.update.web', [$meeting->id]) }}"
+                                                                method="post">@csrf
+                                                                <input type="hidden" name="booking_status"
+                                                                    id="accept_booking_status">
+                                                                <button class="btn btn-outline-success"
+                                                                    onclick="submitForm('accepted', 'acceptMeetingForm{{ $meeting->id }}')">
+                                                                    Accept
+                                                                </button>
+                                                            </form>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
+                                        @endif
+
                                     @endif
-
-
 
 
                                 </div>
@@ -192,8 +200,35 @@
                 </div>
             </div>
         </div>
-    </form>
-
+    
 
 
 @endsection
+
+
+
+<script>
+function setActiveTab(event, element) {
+   // Prevent the default link behavior
+   event.preventDefault();
+    
+    // Remove the 'active' class from all nav links
+    var navLinks = document.querySelectorAll('.nav-link');
+    navLinks.forEach(function(link) {
+        link.classList.remove('active');
+    });
+    
+    // Add the 'active' class to the clicked nav link
+    element.classList.add('active');
+    
+    // Redirect to the link's href
+    window.location.href = element.getAttribute('href');
+}
+
+
+    function submitForm(status, formId) {
+        document.getElementById(formId).querySelector('[name="booking_status"]').value = status;
+        document.getElementById(formId).submit();
+    }
+
+</script>
