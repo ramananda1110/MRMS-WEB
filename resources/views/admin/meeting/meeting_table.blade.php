@@ -20,7 +20,7 @@
          @if (count($meetings) > 0)
              @foreach ($meetings as $key => $meeting)
                  <tr>
-
+                       
                      <td>{{ $key + 1 }}</td>
                      <th scope="row">{{ $meeting->room->name }}</th>
                      <td>{{ $meeting->meeting_title }}</td>

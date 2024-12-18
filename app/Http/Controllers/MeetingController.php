@@ -921,6 +921,7 @@ class MeetingController extends Controller
     public function updateMeetingByWeb(Request $request, $id)
     {
         // Validate the incoming request data
+
         $validator = Validator::make($request->all(), [
             'booking_status' => 'required|in:accepted,completed,rejected',
         ]);
