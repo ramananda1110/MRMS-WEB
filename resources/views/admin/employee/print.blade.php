@@ -28,7 +28,7 @@
     </style>
 </head>
 <body onload="window.print()">
-    <h1>Meetings List</h1>
+    <h1>Employee List</h1>
     <button onclick="window.print()" class="no-print">Print</button>
     <table>
         <thead>
