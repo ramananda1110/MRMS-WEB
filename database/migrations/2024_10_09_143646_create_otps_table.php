@@ -11,19 +11,22 @@ return new class extends Migration
      *
      * @return void
      */
+   
+
     public function up()
     {
-        Schema::create('otps', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('identifier');
-            $table->string('token');
-            $table->integer('validity');
-            $table->boolean('valid')->default(true);
-            $table->timestamps();
-
-            $table->index(['id']);
-        });
+        if (!Schema::hasTable('otps')) {
+            Schema::create('otps', function (Blueprint $table) {
+                $table->id();
+                $table->string('identifier');
+                $table->string('token');
+                $table->integer('validity');
+                $table->boolean('valid')->default(true);
+                $table->timestamps();
+            });
+        }
     }
+
 
     /**
      * Reverse the migrations.
