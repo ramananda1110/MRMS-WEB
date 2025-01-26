@@ -24,13 +24,13 @@
 
             <form action="{{route('permissions.store')}}" method="post">@csrf
                 <div class="card">
-                    <div class="card-header">Create Permission</div>
+                    <div class="card-header">{{__('messages.createPermission')}} </div>
 
                     <div class="card-body">
                         <div class="form-group mt-2">
                         
                             <select class="form-control  mt-2 @error('role_id') is-invalid @enderror" name="role_id">
-                                <option value="">Select Role</option>
+                                <option value="">{{__('messages.selectRole')}} </option>
                         
                                 @foreach(App\Models\Role::all() as $role)
                                 <option value="{{$role->id}}">{{$role->name}}</option>
@@ -46,19 +46,19 @@
                             <table class="table table-gray mt-3">
                                 <thead>
                                     <tr>
-                                    <th scope="col">Permission Type</th>
-                                    <th scope="col">can-add</th>
-                                    <th scope="col">can-edit</th>
-                                    <th scope="col">can-view</th>
-                                    <th scope="col">can-delete</th>
-                                    <th scope="col">can-list</th>
-                                    <th scope="col">can-rechedule</th>
+                                    <th scope="col">{{__('messages.permissionType')}} </th>
+                                    <th scope="col">{{__('messages.canAdd')}} </th>
+                                    <th scope="col">{{__('messages.canEdit')}} </th>
+                                    <th scope="col">{{__('messages.canView')}} </th>
+                                    <th scope="col">{{__('messages.canDelete')}} </th>
+                                    <th scope="col">{{__('messages.canList')}} </th>
+                                    <th scope="col">{{__('messages.canReSchedule')}} </th>
                                     </tr>
                                 </thead>
                                 <tbody>
 
                                     <tr>
-                                        <td>User</td>
+                                        <td>{{__('messages.user')}} </td>
                                         <td><input type="checkbox" name="name[user][can-add]" value="1"></td>
                                         <td><input type="checkbox" name="name[user][can-edit]" value="1"></td>
                                         <td><input type="checkbox" name="name[user][can-view]" value="1"></td>
@@ -68,7 +68,7 @@
                                     </tr>
 
                                     <tr>
-                                        <td>Role</td>
+                                        <td>{{__('messages.role')}} </td>
                                         <td><input type="checkbox" name="name[role][can-add]" value="1"></td>
                                         <td><input type="checkbox" name="name[role][can-edit]" value="1"></td>
                                         <td><input type="checkbox" name="name[role][can-view]" value="1"></td>
@@ -78,7 +78,7 @@
                                     </tr>
                                     
                                     <tr>
-                                        <td>Meeting</td>
+                                        <td>{{__('messages.meeting')}} </td>
                                         <td><input type="checkbox" name="name[meeting][can-add]" value="1"></td>
                                         <td><input type="checkbox" name="name[meeting][can-edit]" value="1"></td>
                                         <td><input type="checkbox" name="name[meeting][can-view]" value="1"></td>
@@ -90,7 +90,7 @@
                                     </tr>
 
                                     <tr>
-                                        <td>Employee</td>
+                                        <td>{{__('messages.employee')}} </td>
                                         <td><input type="checkbox" name="name[employee][can-add]" value="1"></td>
                                         <td><input type="checkbox" name="name[employee][can-edit]" value="1"></td>
                                         <td><input type="checkbox" name="name[employee][can-view]" value="1"></td>
@@ -100,7 +100,7 @@
                                     </tr>
 
                                     <tr>
-                                        <td>Department</td>
+                                        <td>{{__('messages.division')}} </td>
                                         <td><input type="checkbox" name="name[department][can-add]" value="1"></td>
                                         <td><input type="checkbox" name="name[department][can-edit]" value="1"></td>
                                         <td><input type="checkbox" name="name[department][can-view]" value="1"></td>
@@ -111,7 +111,7 @@
                                    
                                     
                                     <tr>
-                                        <td>Permissions</td>
+                                        <td>{{__('messages.permission')}} </td>
                                         <td><input type="checkbox" name="name[permission][can-add]" value="1"></td>
                                         <td><input type="checkbox" name="name[permission][can-edit]" value="1"></td>
                                         <td><input type="checkbox" name="name[permission][can-view]" value="1"></td>
@@ -123,7 +123,7 @@
                                     
                                     
                                     <tr>
-                                        <td>Room</td>
+                                        <td>{{__('messages.room')}} </td>
                                         <td><input type="checkbox" name="name[room][can-add]" value="1"></td>
                                         <td><input type="checkbox" name="name[room][can-edit]" value="1"></td>
                                         <td><input type="checkbox" name="name[room][can-view]" value="1"></td>
@@ -134,7 +134,7 @@
                                     
 
                                     <tr>
-                                        <td>Notice</td>
+                                        <td>{{__('messages.notice')}} </td>
                                         <td><input type="checkbox" name="name[notice][can-add]" value="1"></td>
                                         <td><input type="checkbox" name="name[notice][can-edit]" value="1"></td>
                                         <td><input type="checkbox" name="name[notice][can-view]" value="1"></td>
@@ -159,7 +159,7 @@
                             </table>
 
                             <div class="form-group mt-3">
-                            <button class="btn btn-outline-primary">Submit</button>
+                            <button class="btn btn-outline-primary">{{__('messages.submit')}} </button>
                         </div>
 
                         </div>

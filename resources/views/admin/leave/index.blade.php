@@ -13,22 +13,22 @@
         <div class="col-md-10">
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item active" aria-current="page">Leave List</li>
+                <li class="breadcrumb-item active" aria-current="page">{{__('messages.leaveList')}} </li>
             </ol>
         </nav>
     <div class="card">
         <table class="table">
                 <thead>
                     <tr>
-                    <th scope="col">Name</th>
-                    <th scope="col">Date from</th>
-                    <th scope="col">Date to</th>
-                    <th scope="col">Description</th>
-                    <th scope="col">Type</th>
-                    <th scope="col">Replay</th>
-                    <th scope="col">Status</th>
+                    <th scope="col">{{__('messages.name')}} </th>
+                    <th scope="col">{{__('messages.dateFrom')}} </th>
+                    <th scope="col">{{__('messages.dateTo')}} </th>
+                    <th scope="col">{{__('messages.description')}} </th>
+                    <th scope="col">{{__('messages.type')}} </th>
+                    <th scope="col">{{__('messages.replay')}} </th>
+                    <th scope="col">{{__('messages.status')}} </th>
                    
-                    <th scope="col">Approve/Reject</th>
+                    <th scope="col">{{__('messages.approveOrReject')}} </th>
                     </tr>
                 </thead>
                 <tbody>
@@ -43,9 +43,9 @@
                     <td>{{$leave->message}}</td>
                     <td>
                         @if($leave->status=='0') 
-                        <span class="badge bg-danger"> pending</span>
+                        <span class="badge bg-danger">{{__('messages.pending')}} </span>
                         @else 
-                        <span class="badge bg-success"> Approved</span>
+                        <span class="badge bg-success">{{__('messages.approved')}} </span>
 
                         @endif
                     </td>
@@ -53,7 +53,7 @@
                     <td>
                         <!-- Button trigger modal -->
                         <a data-bs-toggle="modal" data-bs-target="#exampleModal{{$leave->id}}", href="#">
-                            Accept/Reject
+                            {{__('messages.acceptOrReject')}}
                         </a>
 
                         <!-- <button type="button" data-bs-target="#exampleModal{{$leave->id}}" class="btn btn-default btn-xs">inbox <span class="glyphicon glyphicon-inbox"></span></button> -->
@@ -70,26 +70,26 @@
                                     <div class="modal-body">
                                     
                                     <div class="from-group"> 
-                                            <lavel>Change Status </lavel>
+                                            <lavel>{{__('messages.changeStatus')}}  </lavel>
 
                                             <select class="from-control" name="status">
-                                                <option value="0">Pending</option>
-                                                <option value="1">Accept</option>
+                                                <option value="0">{{__('messages.pending')}} </option>
+                                                <option value="1">{{__('messages.accept')}} </option>
                                                 
                                             </select>
                                         </div>
                                         <div class="from-group mt-3"> 
-                                        <label>Message</label>
+                                        <label>{{__('messages.message')}} </label>
                                         <textarea class="form-control" name="message" rows="2" required=""></textarea>
                                         </div>
 
                                     </div>
                                     <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{__('messages.close')}} </button>
                                     <form action="#" method="post">@csrf
                                             
                                                 <button class="btn btn-outline-danger">
-                                                    Submit
+                                                    {{__('messages.submit')}}
                                                 </button>
                                     </form>
                                     </div>

@@ -16,11 +16,11 @@
         <div class="col-md-11">
        
         <div class="card mb-3 mt-3">
-            <div class="card-header">Update Room</div>
+            <div class="card-header">{{__('messages.updateRoom')}} </div>
 
                 <div class="card-body">
                     <div class="form-group">
-                        <label>Room Name</label>
+                        <label>{{__('messages.roomName')}} </label>
                         <input  name="name" 
                         class="form-control @error('name') is-invalid @enderror" value="{{$room->name}}">
 
@@ -33,7 +33,7 @@
                     </div>
 
                     <div class="form-group mt-2">
-                        <label>Location</label>
+                        <label>{{__('messages.roomLocation')}} </label>
                         <input  name="location" 
                         class="form-control form-control @error('location') is-invalid @enderror" value="{{$room->location}}">
 
@@ -46,7 +46,7 @@
                     </div>
 
                     <div class="form-group mt-2">
-                        <label>To capacity</label>
+                        <label>{{__('messages.capacity')}} </label>
                         <input  name="capacity" type="number" placeholder="10" value="{{$room->capacity}}"
                         class="form-control form-control @error('capacity') is-invalid @enderror">
 
@@ -61,7 +61,7 @@
                         
                 
                     <div class="form-group mt-2">
-                    <label for="description">Facilities</label>
+                    <label for="description">{{__('messages.facilities')}} </label>
                     <textarea class="form-control form-control @error('facilities') is-invalid @enderror" name="facilities" placeholder="Projector, white board, wiper, marker etc" rows="3">{{$room->facilities}}</textarea>
                     @error('facilities')
                             <span class="invalid-feedback" role="alert">
@@ -70,7 +70,7 @@
                     @enderror
                         </div>
                     <div class="form-group mt-3">
-                        <button class="btn btn-outline-primary">Submit</button>
+                        <button class="btn btn-outline-primary">{{__('messages.submit')}} </button>
                     </div>
                 </div>
             </div>

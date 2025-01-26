@@ -11259,3 +11259,28 @@ body {
   font-size: 0.75rem;
   border-radius: 0.375rem !important;
 }
+/* Loader Style */
+.loader {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.1);
+  display: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%); /* Center the loader */
+
+  
+  
+  
+}
+.loader img{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100px;
+  height: auto;
+  transform: translate(-50%, -50%);
+  animation: none;
+}

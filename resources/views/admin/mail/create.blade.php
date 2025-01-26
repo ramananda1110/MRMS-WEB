@@ -5,7 +5,7 @@
     <div class="row justify-content-center">
         <div class="col-md-10">
             <div class="card">
-                <div class="card-header">Send Email</div>
+                <div class="card-header">{{__('messages.sendEmail')}} </div>
 
                 <div class="card-body">
                     @if (session('status'))
@@ -18,13 +18,13 @@
                 <div class="row justify-content-center">
                     
                     <div class="form-group mt-2">
-                        <label>Select</Select></label>
+                        <label>{{__('messages.select')}} </Select></label>
                         <select class="form-control" name="mail" id="mail">
-                            <option value="0">mail to all staff</option>
+                            <option value="0">{{__('messages.mailToAllStaff')}} </option>
                       
-                            <option value="1">choose department</option>
+                            <option value="1">{{__('messages.chooseDepartment')}} </option>
                         
-                            <option value="2">choose person</option>
+                            <option value="2">{{__('messages.choosePerson')}} </option>
                             
                         </select>
                         <br>
@@ -51,7 +51,7 @@
                         <br>
 
                         <div class="form-group mt-2">
-                            <label>Body</label>
+                            <label>{{__('messages.body')}} </label>
                             <textarea type="text" name="body"  
                             class="form-control @error('body') is-invalid @enderror"></textarea>
 
@@ -66,7 +66,7 @@
                    
 
                         <div class="form-group mt-2">
-                            <label>File</label>
+                            <label>{{__('messages.file')}} </label>
                             <input type="file" name="file"  
                             class="form-control @error('file') is-invalid @enderror">
 
@@ -81,7 +81,7 @@
                    
                        
                     <div class="form-group mt-3">
-                        <button class="btn btn-outline-primary">Submit</button>
+                        <button class="btn btn-outline-primary">{{__('messages.submit')}} </button>
                     </div>
                
       

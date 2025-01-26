@@ -8,11 +8,11 @@
             <form action="{{route('departments.update', [$department->id])}}" method="post">@csrf
             {{method_field('PATCH')}}
                 <div class="card mt-3 mb-3">
-                    <div class="card-header">Update Department</div>
+                    <div class="card-header">{{__('messages.updateDivision')}} </div>
 
                     <div class="card-body">
                         <div class="form-group">
-                            <label for="name">Name</label>
+                            <label for="name">{{__('messages.name')}} </label>
                             <input type="text" name="name" 
                             class="form-control @error('name') is-invalid @enderror" value="{{$department->name}}">
 
@@ -27,7 +27,7 @@
 
                        
                         <div class="form-group mt-2">
-                            <label>Description</label>
+                            <label>{{__('messages.description')}} </label>
                             <textarea type="text" name="description" class="form-control @error('description') is-invalid @enderror">{{$department->description}}</textarea>
 
                             @error('description')
@@ -43,7 +43,7 @@
                         <div class="form-group mt-3">
                             @if(isset(Auth()->user()->role->permission['name']['department']['can-edit']))
 
-                             <button class="btn btn-outline-primary">Update</button>
+                             <button class="btn btn-outline-primary">{{__('messages.update')}} </button>
                              @endif
                        </div>
                     </div>

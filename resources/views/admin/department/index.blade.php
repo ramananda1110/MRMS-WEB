@@ -23,7 +23,7 @@
 
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb mt-2">
-                        <li class="breadcrumb-item active" aria-current="page">All Departments</li>
+                        <li class="breadcrumb-item active" aria-current="page">{{__('messages.allDivisions')}} </li>
                     </ol>
                 </nav>
                 @if (Session::has('message'))
@@ -35,9 +35,9 @@
                 <table id="table ", class="table table-striped table-bordered">
                     <thead>
                         <tr>
-                            <th>SN</th>
-                            <th>Name</th>
-                            <th>Description</th>
+                            <th>{{__('messages.sn')}} </th>
+                            <th>{{__('messages.name')}} </th>
+                            <th>{{__('messages.description')}} </th>
                             {{-- @if (isset(Auth()->user()->role->permission['name']['department']['can-edit']) ||
                                     isset(Auth()->user()->role->permission['name']['department']['can-delete']))
                                 <th>Action</th>
@@ -111,7 +111,7 @@
                                 </tr>
                             @endforeach
                         @else
-                            <td> No Department to display</td>
+                            <td>{{__('messages. noDivisionDisplayMsg')}} </td>
                         @endif
                     </tbody>
                 </table>

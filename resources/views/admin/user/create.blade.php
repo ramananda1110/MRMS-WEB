@@ -9,7 +9,7 @@
      @endif
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item active" aria-current="page">Register Employee</li>
+            <li class="breadcrumb-item active" aria-current="page">{{__('messages.registerEmp')}} </li>
         </ol>
      </nav>
     
@@ -18,52 +18,52 @@
 
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">General Information</div>
+                <div class="card-header">{{__('messages.genInfo')}} </div>
 
                 <div class="card-body">
 
                    
                     <div class="form-group">
-                        <label>Project Code</label>
+                        <label>{{__('messages.projectCode')}} </label>
                         <input type="text" name="project_code" 
                         class="form-control" required="">
                     </div>
 
                     <div class="form-group mt-2">
-                        <label>First Name</label>
+                        <label>{{__('messages.firstName')}} </label>
                         <input type="text" name="firstname" 
                         class="form-control" required="">
                     </div>
 
                     <div class="form-group  mt-2">
-                        <label>Last Name</label>
+                        <label>{{__('messages.lastName')}} </label>
                         <input type="text" name="lastname" 
                         class="form-control" required="">
 
                     </div>
 
                     <div class="form-group  mt-2">
-                        <label for="name">Email</label>
+                        <label for="name">{{__('messages.email')}} </label>
                         <input type="email" name="email" 
                         class="form-control" required="">
 
                     </div>
 
                     <div class="form-group  mt-2">
-                        <label for="address">Address</label>
+                        <label for="address">{{__('messages.address')}} </label>
                         <input type="text" name="address" 
                         class="form-control" required="">
                     </div>
 
                     <div class="form-group  mt-2">
-                        <label>Mobile Number</label>
+                        <label>{{__('messages.mobile')}} </label>
                         <input type="text" name="mobile_number" 
                         class="form-control" required="">
     
                     </div>
 
                     <div class="form-group  mt-2">
-                        <label>Division</label>
+                        <label>{{__('messages.division')}} </label>
                         <select class="form-control" name="department_id"
                         require="">
                             @foreach(App\Models\Department::all() as $department)
@@ -74,7 +74,7 @@
 
                     </div>
                     <div class="form-group  mt-2">
-                        <label>Designation</label>
+                        <label>{{__('messages.designation')}} </label>
                         <input type="text" name="designation" 
                         class="form-control", required="">
 
@@ -83,7 +83,7 @@
                     </div>
 
                     <div class="form-group  mt-2">
-                        <label>Start Date</label>
+                        <label>{{__('messages.joiningDate')}} </label>
                         <input  name="start_from" 
                         class="form-control" required="" placeholder="yy-mm-dd" id="datepicker">
 
@@ -96,7 +96,7 @@
                     </div>
                 
                     <div class="form-group  mt-2">
-                        <label>Image</label>
+                        <label>{{__('messages.image')}} </label>
                         <input type="file" name="image"  accept="image/*"
                         class="form-control">
 
@@ -109,25 +109,25 @@
         </div>
         <div class="col-md-4">
         <div class="card">
-            <div class="card-header">Login Information</div>
+            <div class="card-header">{{__('messages.loginInformation')}} </div>
 
                 <div class="card-body">
                    
 
                     <div class="form-group">
-                        <label>Employee ID</label>
+                        <label>{{__('messages.empId')}} </label>
                         <input type="text" name="employee_id" 
                         class="form-control" required="">
                     </div>
 
                     <div class="form-group  mt-2">
-                        <label for="name">Password</label>
+                        <label for="name">{{__('messages.password')}} </label>
                         <input type="password" name="password" 
                         class="form-control" required="">
                     </div>
 
                     <div class="form-group  mt-2">
-                        <label>Role</label>
+                        <label>{{__('messages.role')}} </label>
                         <select class="form-control" name="role_id"
                         require="">
                             @foreach(App\Models\Role::all() as $role)
@@ -138,7 +138,7 @@
                     </div>
 
                     <div class="form-group mt-3">
-                        <button class="btn btn-outline-primary">Submit</button>
+                        <button class="btn btn-outline-primary">{{__('messages.submit')}} </button>
                     </div>
                 </div>
             </div>

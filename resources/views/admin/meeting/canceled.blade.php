@@ -20,7 +20,7 @@
                 <div class="panel-heading no-print mt-2 mb-2">
                     <div class="d-flex justify-content-between align-items-center">
                         <div class="ms-3">
-                            <a href="{{ Route('meeting.create') }}"><button type="button" class="btn btn-primary"><i class="fa fa-plus"></i> Add Meeting</button></a>
+                            <a href="{{ Route('meeting.create') }}"><button type="button" class="btn btn-primary"><i class="fa fa-plus"></i> {{__('messages.addMeeting')}} </button></a>
                         </div>
                           
                     </div>
@@ -31,20 +31,20 @@
             <ul class="nav nav-tabs mt-3">
                 <li class="nav-item" role="presentation">
                 
-                <a class="nav-link" aria-current="page" href="{{ route('meetings.all') }}" id="all"  onclick="setActiveTab(event, this)">All</a>
+                <a class="nav-link" aria-current="page" href="{{ route('meetings.all') }}" id="all"  onclick="setActiveTab(event, this)">{{__('messages.all')}} </a>
 
                 </li>
                 <li class="nav-item" role="presentation">
-                <a class="nav-link" href="{{ route('meetings.upcoming')}}"  id="upcoming" onclick="setActiveTab(event, this)">Upcoming</a>
+                <a class="nav-link" href="{{ route('meetings.upcoming')}}"  id="upcoming" onclick="setActiveTab(event, this)">{{__('messages.upcoming')}} </a>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <a class="nav-link" href="{{ route('meetings.pending') }}" id="pending" onclick="setActiveTab(event, this)" >Pending</a>
+                    <a class="nav-link" href="{{ route('meetings.pending') }}" id="pending" onclick="setActiveTab(event, this)" >{{__('messages.pending')}} </a>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <a class="nav-link active" href="{{ route('meetings.cenceled') }}" id="canceled" onclick="setActiveTab(event, this)" >Canceled</a>
+                    <a class="nav-link active" href="{{ route('meetings.cenceled') }}" id="canceled" onclick="setActiveTab(event, this)" >{{__('messages.cancelled')}} </a>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <a class="nav-link" href="{{ route('meetings.rejected') }}" id="rejected" onclick="setActiveTab(event, this)" >Rejected</a>
+                    <a class="nav-link" href="{{ route('meetings.rejected') }}" id="rejected" onclick="setActiveTab(event, this)" >{{__('messages.rejected')}} </a>
                 </li>
                     <!-- Add more tabs if needed -->
             </ul>

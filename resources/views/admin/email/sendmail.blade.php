@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Mail from ddcl </title> </head>
+    <title>{{__('messages.mailFromDdcl')}} </title> </head>
 
 <body>
     <p>{{$details['body']}}</p>
-    <p>Thank You</p>
+    <p>{{__('messages.thankYou')}} </p>
 
 </body>
 

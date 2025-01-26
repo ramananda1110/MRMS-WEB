@@ -5,7 +5,7 @@
 
         <nav aria-label="breadcrumb" class="mt-3 ms-5">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item active" aria-current="page">All Users</li>
+                <li class="breadcrumb-item active" aria-current="page">{{__('messages.allUser')}} </li>
             </ol>
         </nav>
         @if (Session::has('message'))
@@ -30,7 +30,7 @@
 
                         <div class="ms-3">
                             <a href="{{ Route('users.create') }}"><button type="button" class="btn btn-primary"><i
-                                        class="fa fa-plus"></i> Add Users</button></a>
+                                        class="fa fa-plus"></i>{{__('messages.addUser')}} </button></a>
                         </div>
                         @endif
                         <div class="btn-group d-flex justify-content-center align-items-center me-3">
@@ -41,7 +41,7 @@
                                         <button type="submit"
                                             class="btn btn-default buttons-csv border buttons-html5 btn-sm btn-block"
                                             tabindex="0" aria-controls="employees">
-                                            <span>Csv</span>
+                                            <span>{{__('messages.csv')}}</span>
                                         </button>
                                     </form>
                                
@@ -49,18 +49,18 @@
                                     <form action="#" method="post" target="_blank">
                                         @csrf
                                         <button
-                                            class="btn btn-default buttons-csv border buttons-html5 btn-sm btn-block">Excel</button>
+                                            class="btn btn-default buttons-csv border buttons-html5 btn-sm btn-block">{{__('messages.excel')}}</button>
                                     </form>
                                 
                 
                                     <form action="{{ route('users.exportPdf') }}" method="GET" target="_blank">
                                         @csrf
                                         <button
-                                            class="btn btn-default buttons-csv border buttons-html5 btn-sm btn-block">Pdf</button>
+                                            class="btn btn-default buttons-csv border buttons-html5 btn-sm btn-block">{{__('messages.pdf')}}</button>
                                     </form>
                                 
                                     <form action="{{ route('users.printView') }}" method="get" target="_blank">
-                                        <button class="btn btn-default buttons-csv border buttons-html5 btn-sm">Print</button>
+                                        <button class="btn btn-default buttons-csv border buttons-html5 btn-sm">{{__('messages.print')}}</button>
                                     </form>
                                 </div>
                             </div>

@@ -1,7 +1,7 @@
 <div id="layoutSidenav_content">
     <main>
         <div class="container-fluid px-4">
-            <div class="dashboard-header mt-3">Meeting Dashboard</div>
+            <div class="dashboard-header mt-3">{{ __('messages.meetingDashboard') }} </div>
             <div class="card rounded shadow my-4 bg-white">
 
                 <div class="row px-3 mt-4">
@@ -12,7 +12,7 @@
                                     <div class="card-text">
                                         <span class="h2">{{ $totalMeeting ?? '0' }}</span>
                                     </div>
-                                    <div class="font-weight-bold h6">Total</div>
+                                    <div class="font-weight-bold h6">{{ __('messages.total') }} </div>
                                 </div>
                                 <div class=" ms-auto">
                                     <img src="{{ asset('/images/Group.svg') }}" height="50" width="50"
@@ -30,7 +30,7 @@
                                     <div class="card-text">
                                         <span class="h2">{{ $completedCount ?? '0' }}</span>
                                     </div>
-                                    <div class="font-weight-bold h6">Completed</div>
+                                    <div class="font-weight-bold h6">{{ __('messages.completed') }} </div>
                                 </div>
                                 <div class=" ms-auto">
                                     <img src="{{ asset('/images/Group-1.svg') }}" height="50" width="50"
@@ -41,7 +41,7 @@
                         </div>
                     </div>
 
-                    
+
 
                     <div class="col-xl-2 col-md-6 mb-4">
                         <div class="card card-shadow">
@@ -51,15 +51,15 @@
                                     <div class="card-text">
                                         <span class="h2">{{ $upcomingCount ?? '0' }}</span>
                                     </div>
-                                    <div class="font-weight-bold h6">Upcoming</div>
-                                   
+                                    <div class="font-weight-bold h6">{{ __('messages.upcoming') }} </div>
+
                                 </div>
 
                                 <div class="ms-auto">
                                     <img src="{{ asset('/images/Group-3.svg') }}" height="50" width="50"
                                         alt="Upcoming Meetings">
                                 </div>
-                               
+
                             </div>
                         </div>
                     </div>
@@ -71,15 +71,15 @@
                                     <div class="card-text">
                                         <span class="h2">{{ $pendingCount ?? '0' }}</span>
                                     </div>
-                                    <div class="font-weight-bold h6">Pending</div>
-                                    
+                                    <div class="font-weight-bold h6">{{ __('messages.pending') }} </div>
+
                                 </div>
 
                                 <div class="ms-auto">
                                     <img src="{{ asset('/images/Group-4.svg') }}" height="50" width="50"
                                         alt="Pending Meetings">
                                 </div>
-                                
+
                             </div>
                         </div>
                     </div>
@@ -91,15 +91,15 @@
                                     <div class="card-text">
                                         <span class="h2">{{ $rejectedCount ?? '0' }}</span>
                                     </div>
-                                    <div class="font-weight-bold h6">Rejected</div>
-                                   
+                                    <div class="font-weight-bold h6">{{ __('messages.rejected') }} </div>
+
                                 </div>
 
                                 <div class="ms-auto">
                                     <img src="{{ asset('/images/reject.png') }}" height="60" width="60"
                                         alt="Rejected Meetings">
                                 </div>
-                               
+
                             </div>
                         </div>
                     </div>
@@ -111,14 +111,14 @@
                                     <div class="card-text">
                                         <span class="h2">{{ $expiredCount ?? '0' }}</span>
                                     </div>
-                                    <div class="font-weight-bold h6">Expired</div>
-                                    
+                                    <div class="font-weight-bold h6">{{ __('messages.expired') }} </div>
+
                                 </div>
 
                                 <div class="ms-auto">
                                     <i class="fa-regular fa-clock" style="font-size: 40px;"></i>
                                 </div>
-                               
+
                             </div>
                         </div>
                     </div>
@@ -129,7 +129,7 @@
                         <div class="card mb-4">
                             <div class="card-header">
                                 <i class="fas fa-chart-bar me-1"></i>
-                                Daily Meetings
+                                {{ __('messages.dailyMeetings') }}
                             </div>
                             <div class="card-body">
                                 <canvas id="myWeeklyChart" width="100%" height="40"></canvas>
@@ -141,7 +141,7 @@
                         <div class="card mb-4">
                             <div class="card-header">
                                 <i class="fas fa-chart-area me-1"></i>
-                                Yearly Meetings
+                                {{ __('messages.yearlyMeetings') }}
                             </div>
                             <div class="card-body">
                                 <canvas id="yearlyDataChart" width="100%" height="40"></canvas>

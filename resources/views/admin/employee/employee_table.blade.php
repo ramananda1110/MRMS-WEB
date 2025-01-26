@@ -1,15 +1,15 @@
 <table id="employeeTable" class="table table-striped table-bordered datatable">
     <thead>
         <tr>
-            <th scope="col">Employee ID</th>
-            <th scope="col">Name</th>
-            <th scope="col">Division</th>
-            <th scope="col">Mobile</th>
-            <th scope="col">Email</th>
+            <th scope="col">{{__('messages.empId')}}</th>
+            <th scope="col">{{__('messages.name')}}</th>
+            <th scope="col">{{__('messages.division')}}</th>
+            <th scope="col">{{__('messages.mobile')}}</th>
+            <th scope="col">{{__('messages.email')}}</th>
             {{-- <th scope="col">User Status</th> --}}
             @if (isset(Auth()->user()->role->permission['name']['employee']['can-view']))
 
-            <th scope="col">Action</th>
+            <th scope="col">{{__('messages.action')}}</th>
             @endif
         </tr>
     </thead>
@@ -103,7 +103,7 @@
                                 <form>@csrf
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h1 class="modal-title fs-5" id="exampleModalLabel">Employee Details</h1>
+                                            <h1 class="modal-title fs-5" id="exampleModalLabel">{{__('messages.employeeDetails')}}</h1>
                                             <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                 aria-label="Close"></button>
                                         </div>
@@ -114,35 +114,35 @@
                                                         <tbody>
 
                                                             <tr>
-                                                                <th>Employee ID</th>
+                                                                <th>{{__('messages.empId')}}</th>
                                                                 <td>{{ $employee->employee_id }}</td>
                                                             </tr>
                                                             <tr>
-                                                                <th>Employee Name</th>
+                                                                <th>{{__('messages.empName')}}</th>
                                                                 <td>{{ $employee->name }}</td>
                                                             </tr>
                                                             <tr>
-                                                                <th>Grade</th>
+                                                                <th>{{__('messages.grade')}}</th>
                                                                 <td>{{ $employee->grade }}</td>
                                                             </tr>
                                                             <tr>
-                                                                <th>Status</th>
+                                                                <th>{{__('messages.status')}}</th>
                                                                 <td>{{ $employee->status }}</td>
                                                             </tr>
                                                             <tr>
-                                                                <th>Division</th>
+                                                                <th>{{__('messages.division')}} </th>
                                                                 <td>{{ $employee->division }}</td>
                                                             </tr>
                                                             <tr>
-                                                                <th>Project Name</th>
+                                                                <th>{{__('messages.projectName')}}</th>
                                                                 <td>{{ $employee->project_name }}</td>
                                                             </tr>
                                                             <tr>
-                                                                <th>Project Code</th>
+                                                                <th>{{__('messages.projectCode')}}</th>
                                                                 <td>{{ $employee->project_code }}</td>
                                                             </tr>
                                                             <tr>
-                                                                <th>Email</th>
+                                                                <th>{{__('messages.email')}} </th>
                                                                 <td>{{ $employee->email }}</td>
                                                             </tr>
 
@@ -154,7 +154,7 @@
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-secondary"
-                                                data-bs-dismiss="modal">Close</button>
+                                                data-bs-dismiss="modal">{{__('messages.close')}}</button>
                                             <!-- Add your form elements if needed -->
                                         </div>
                                     </div>
@@ -169,7 +169,7 @@
                                 <form action="{{ route('create.user', [$employee->id]) }}" method="post">@csrf
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h1 class="modal-title fs-5" id="exampleModalLabel">Add as User</h1>
+                                            <h1 class="modal-title fs-5" id="exampleModalLabel">{{__('messages.addAsUser')}}</h1>
                                             <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                 aria-label="Close"></button>
                                         </div>
@@ -179,7 +179,7 @@
 
                                                 <div class="card-body">
                                                     <div class="form-group">
-                                                        <label>Division</label>
+                                                        <label>{{__('messages.division')}} </label>
                                                         <select class="form-control" name="department_id"
                                                             require="">
                                                             @foreach (App\Models\Department::all() as $department)
@@ -194,7 +194,7 @@
                                                     </div>
 
                                                     <div class="form-group  mt-2">
-                                                        <label>Role</label>
+                                                        <label>{{__('messages.role')}}</label>
                                                         <select class="form-control" name="role_id" require="">
                                                             @foreach (App\Models\Role::all() as $role)
                                                                 <option value="{{ $role->id }}">
@@ -206,7 +206,7 @@
 
 
                                                     <div class="form-group  mt-2">
-                                                        <label for="name">Password</label>
+                                                        <label for="name">{{__('messages.password')}}</label>
                                                         <input type="password" name="password" class="form-control"
                                                             required="">
                                                     </div>
@@ -217,10 +217,10 @@
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-secondary"
-                                                    data-bs-dismiss="modal">Close</button>
+                                                    data-bs-dismiss="modal">{{__('messages.close')}}</button>
                                                 <form action="#" method="post">@csrf
                                                     <button class="btn btn-outline-success">
-                                                        Create
+                                                        {{__('messages.create')}}
                                                     </button>
                                                 </form>
                                             </div>
@@ -235,7 +235,7 @@
             @endforeach
         @else
             <tr>
-                <td colspan="6" class="text-center">Opps! No matching record found!</td>
+                <td colspan="6" class="text-center">{{__('messages.noRecordFoundMsg')}}</td>
             </tr>
         @endif
     </tbody>

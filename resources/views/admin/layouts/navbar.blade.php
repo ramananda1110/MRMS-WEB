@@ -44,6 +44,92 @@
 
             /* Change this to your desired text color */
         }
+
+        /* Parent label styling for alignment */
+        .custom-label {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+            cursor: pointer;
+        }
+
+        /* Hide the default checkbox */
+        .custom-slider {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        /* The slider */
+        .custom-slider-indicator {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            border-radius: 34px;
+            transition: 0.4s;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            color: white;
+            font-size: 14px;
+            font-weight: bold;
+            padding: 0 10px;
+            box-sizing: border-box;
+        }
+
+        /* Circle inside the slider */
+        .custom-slider-indicator:before {
+            content: "";
+            position: absolute;
+            height: 26px;
+            width: 26px;
+            background-color: white;
+            border-radius: 50%;
+            bottom: 4px;
+            left: 4px;
+            transition: 0.4s;
+        }
+
+        /* When the checkbox is checked */
+        .custom-slider:checked+.custom-slider-indicator {
+            background-color: #373de2;
+
+        }
+
+        .custom-slider:checked+.custom-slider-indicator:before {
+            transform: translateX(26px);
+            /* Slide to the right */
+        }
+
+        /* Labels for on and off states */
+        .on-label,
+        .off-label {
+            position: absolute;
+            font-size: 12px;
+            font-weight: bold;
+            transition: opacity 0.4s;
+        }
+
+        .on-label {
+            left: 10px;
+        }
+
+        .off-label {
+            right: 10px;
+        }
+
+        /* Hide the inactive label */
+        .custom-slider:checked+.custom-slider-indicator .off-label {
+            opacity: 0;
+        }
+
+        .custom-slider:not(:checked)+.custom-slider-indicator .on-label {
+            opacity: 0;
+        }
     </style>
 
 
@@ -65,6 +151,35 @@
                 {{-- </button> --}}
             </div>
         </form>
+        @php
+            $lang = app()->getLocale();
+        @endphp
+        <div class="loader">
+            <img src="{{ asset('images/Animation - 1737448447779.gif') }}" alt="">
+        </div>
+        <div class="form-check form-switch">
+            <label class="form-check-label custom-label" for="toggleLanguage">
+                <input type="checkbox" class="form-check-input custom-slider" id="toggleLanguage"
+                    @if ($lang == 'bn') checked @endif onchange = "toggleLanguageFunction(this)">
+                <span class="custom-slider-indicator">
+                    <span class="on-label">
+                        @if ($lang == 'bn')
+                            BN
+                        @else
+                            EN
+                        @endif
+                    </span>
+                    <span class="off-label">
+                        @if ($lang == 'en')
+                            EN
+                        @else
+                            BN
+                        @endif
+                    </span>
+                </span>
+            </label>
+        </div>
+
         <!-- Navbar-->
         <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
             <li class="nav-item dropdown">
@@ -99,3 +214,27 @@
         </ul>
 
     </nav>
+    <script>
+        function toggleLanguageFunction(toggle) {
+            let lang;
+            if (toggle.checked) {
+                lang = 'bn';
+            } else {
+                lang = 'en';
+            }
+
+            window.location.href = `{{ url('switch-language') }}/${lang}`;
+        }
+
+        const toggleBtn = document.getElementById('toggleLanguage');
+
+        toggleBtn.addEventListener('click', function() {
+            const loader = document.querySelector(".loader");
+            if (loader.style.display == 'none' || loader.style.display == '') {
+                loader.style.display = 'block';
+            } else {
+
+                loader.style.display = 'none';
+            }
+        })
+    </script>

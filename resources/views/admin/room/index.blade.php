@@ -13,7 +13,7 @@
                 <div class="panel-heading no-print mt-2 mb-2">
                     <div class="d-flex justify-content-between align-items-center">
                         <div class="ms-3">
-                            <a href="{{ Route('rooms.create') }}"><button type="button" class="btn btn-primary"><i class="fa fa-plus"></i> Add Rooms</button></a>
+                            <a href="{{ Route('rooms.create') }}"><button type="button" class="btn btn-primary"><i class="fa fa-plus"></i> {{__('messages.addRooms')}} </button></a>
                         </div>
                          
                     </div>
@@ -23,7 +23,7 @@
             @endif
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb mt-2">
-                    <li class="breadcrumb-item active" aria-current="page">All Rooms</li>
+                    <li class="breadcrumb-item active" aria-current="page">{{__('messages.allRooms')}} </li>
                 </ol>
             </nav>
             @if(Session::has('message'))
@@ -34,14 +34,14 @@
             <table class="table table-striped table-bordered">
                 <thead>
                     <tr>
-                        <th>SN</th>
-                        <th>Name</th>
-                        <th>Location</th>
-                        <th>Capacity</th>
-                        <th>Facilities</th>
+                        <th>{{__('messages.sn')}} </th>
+                        <th>{{__('messages.name')}} </th>
+                        <th>{{__('messages.locations')}} </th>
+                        <th>{{__('messages.capacity')}} </th>
+                        <th>{{__('messages.facilities')}} </th>
                         @if(isset(Auth()->user()->role->permission['name']['role']['can-edit']))
 
-                        <th>Action</th>
+                        <th>{{__('messages.action')}} </th>
                         @endif
                     </tr>
                 </thead>
@@ -82,21 +82,21 @@
                                     <div class="modal-dialog">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Delete!</h1>
+                                        <h1 class="modal-title fs-5" id="exampleModalLabel">{{__('messages.delete')}} !</h1>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
                                       
-                                        Are you sure? do you want to delete item?
+                                        {{__('messages.deleteMsg')}}
 
 
                                         </div>
                                         <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{__('messages.close')}} </button>
                                         <form action="{{Route('rooms.destroy', [$room->id])}}" method="post">@csrf
                                                     {{method_field('DELETE')}}
                                                     <button class="btn btn-outline-danger">
-                                                        Delete
+                                                        {{__('messages.delete')}}
                                                     </button>
                                         </form>
                                         </div>
@@ -111,7 +111,7 @@
                         <td></td>
                         <td></td>
                         <td></td>
-                        <td> No Rooms to display</td>
+                        <td>{{__('messages.noRoomsDisplayMsg')}} </td>
                         <td></td>
                         <td></td>
                       @endif

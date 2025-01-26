@@ -25,23 +25,23 @@
     </style>
 </head>
 <body onload="window.print()">
-    <h1>Meetings List</h1>
-    <button onclick="window.print()" class="no-print">Print</button>
+    <h1>{{__('messages.meetingsList')}} </h1>
+    <button onclick="window.print()" class="no-print">{{__('messages.print')}} </button>
     <table>
         <thead>
             <tr>
-                <th>Meeting ID</th>
-                <th>Room Name</th>
-                <th>Title</th>
-                <th>Date</th>
-                <th>Start Time</th>
-                <th>End Time</th>
-                <th>Host</th>
-                <th>Co-Host</th>
-                <th>Type</th>
-                <th>Status</th>
-                <th>Description</th>
-                <th>Participants</th>
+                <th>{{__('messages.meetingId')}} </th>
+                <th>{{__('messages.roomName')}} </th>
+                <th>{{__('messages.title')}} </th>
+                <th>{{__('messages.date')}} </th>
+                <th>{{__('messages.startTime')}} </th>
+                <th>{{__('messages.endTime')}} </th>
+                <th>{{__('messages.host')}} </th>
+                <th>{{__('messages.coHost')}} </th>
+                <th>{{__('messages.type')}} </th>
+                <th>{{__('messages.status')}} </th>
+                <th>{{__('messages.description')}} </th>
+                <th>{{__('messages.participants')}} </th>
             </tr>
         </thead>
         <tbody>

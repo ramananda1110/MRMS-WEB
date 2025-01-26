@@ -16,15 +16,15 @@
         <div class="col-md-10">
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item active" aria-current="page">Leave From</li>
+                <li class="breadcrumb-item active" aria-current="page">{{__('messages.leaveForm')}} </li>
             </ol>
         </nav>
         <div class="card">
-            <div class="card-header">Update Leave</div>
+            <div class="card-header">{{__('messages.updateLeave')}} </div>
 
                 <div class="card-body">
                     <div class="form-group">
-                        <label>From date</label>
+                        <label>{{__('messages.dateFrom')}} </label>
                         <input  name="from" 
                         class="form-control @error('from') is-invalid @enderror" value="{{$leave->from}}" placeholder="dd-mm-yyyy" id="datepicker">
 
@@ -37,7 +37,7 @@
                     </div>
 
                     <div class="form-group mt-2">
-                        <label>To date</label>
+                        <label>{{__('messages.dateTo')}} </label>
                         <input  name="to" 
                         class="form-control form-control @error('to') is-invalid @enderror" 
                         value="{{$leave->to}}" placeholder="yy-mm-dd" id="datepicker1">
@@ -51,18 +51,18 @@
                     </div>
 
                     <div class="form-group mt-2">
-                        <label>Type of leave</label>
+                        <label>{{__('messages.leaveType')}} </label>
                         <select class="form-control" name="type">
-                            <option value="annualeave">Annual Leave</option>
+                            <option value="annualeave">{{__('messages.annualLeave')}} </option>
                       
-                            <option value="sickleave">Sick Leave</option>
+                            <option value="sickleave">{{__('messages.sickLeave')}} </option>
                         
-                            <option value="parental">Parental Leave</option>
-                            <option value="other">Other Leave</option>
+                            <option value="parental">{{__('messages.parentalLeave')}} </option>
+                            <option value="other">{{__('messages.otherLeave')}} </option>
                         </select>
                    
                         <div class="form-group mt-2">
-                            <label for="description">Description</label>
+                            <label for="description">{{__('messages.description')}} </label>
                             <textarea class="form-control form-control @error('description') is-invalid @enderror" name="description" id="description" rows="3">{{$leave->description}}</textarea>
                             @error('description')
                                     <span class="invalid-feedback" role="alert">
@@ -71,7 +71,7 @@
                             @enderror
                         </div>
                     <div class="form-group mt-3">
-                        <button class="btn btn-outline-primary">Update</button>
+                        <button class="btn btn-outline-primary">{{__('messages.update')}} </button>
                     </div>
                 </div>
             </div>

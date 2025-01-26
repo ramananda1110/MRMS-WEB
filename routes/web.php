@@ -6,7 +6,7 @@ use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\UserController;
 
 use App\Http\Controllers\Auth\ChangePasswordController;
-
+use App\Http\Controllers\LocalizationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,18 +28,18 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 // Route::view('employee', 'admin.create');
 
 
-Route::group(['middleware'=> ['auth', 'has.permission']], function(){
+Route::group(['middleware' => ['auth', 'has.permission']], function () {
 
     Route::get('/', function () {
 
         return view('welcome');
     });
-    
+
 
 
     Route::get('/', [MeetingController::class, 'dashboardMeetingCount'])->name('meeting.count');
-    
-    
+
+
     Route::get('/change-password', [ChangePasswordController::class, 'showChangePasswordForm'])->name('change.password.form');
 
     Route::post('/change-password', [ChangePasswordController::class, 'changePasswordByWeb'])->name('password.change');
@@ -90,7 +90,7 @@ Route::group(['middleware'=> ['auth', 'has.permission']], function(){
 
     Route::post('/import-employee', [EmployeeController::class, 'import'])->name('import.excel');
 
-   
+
     Route::post('create-user\{id}', 'EmployeeController@createUser')->name('create.user');
 
     Route::get('/search-employee', [EmployeeController::class, 'searchEmployee'])->name('search.employee');
@@ -105,7 +105,7 @@ Route::group(['middleware'=> ['auth', 'has.permission']], function(){
 
 
     Route::get('/search-meeting', [MeetingController::class, 'searchMeeting'])->name('search.meeting');
-    
+
 
     Route::get('/meetings/all', [MeetingController::class, 'index'])->name('meetings.all');
     Route::get('/meetings/upcoming', [MeetingController::class, 'upcoming'])->name('meetings.upcoming');
@@ -122,7 +122,7 @@ Route::group(['middleware'=> ['auth', 'has.permission']], function(){
     Route::get('meetings/print', [MeetingController::class, 'printView'])->name('meetings.printView');
 
 
-    
+
     Route::get('employees/download-pdf', [EmployeeController::class, 'exportPdf'])->name('employee.exportPdf');
 
     // Route for CSV export
@@ -131,7 +131,6 @@ Route::group(['middleware'=> ['auth', 'has.permission']], function(){
 
     Route::get('employees/print', [EmployeeController::class, 'printView'])->name('employee.printView');
 
+    //Language Switch
+    Route::get('switch-language/{lang}', [LocalizationController::class, 'switchLanguage'])->name('switch.language');
 });
-
-
-

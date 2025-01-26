@@ -34,7 +34,7 @@
                             <div class="input-group mt-2">
                                 <input type="file" name="file" id="fileInput" placeholder="attached xlsx"
                                     class="form-control">
-                                <button id="importButton" class="btn btn-outline-primary" disabled>Import</button>
+                                <button id="importButton" class="btn btn-outline-primary" disabled>{{__('messages.import')}}</button>
                             </div>
                         @endif
                     </form>
@@ -44,7 +44,7 @@
 
                     <div class="mt-1">
                         <div class="d-flex align-items-center">
-                            <p class="fs-6 fw-lighter me-2 mb-0">Download sample template for file import</p>
+                            <p class="fs-6 fw-lighter me-2 mb-0">{{__('messages.sampleImport')}}</p>
                             <a href="../preview/employee_preview.xlsx" download class="text-primary text-decoration-none">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-download me-1 align-middle" viewBox="0 0 16 16">
                                     <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5"/>
@@ -61,16 +61,16 @@
                 <div class="col-sm-4 d-flex align-items-center justify-content-center">
                     <div class="dt-buttons btn-group border">
                         <form action="{{ route('employee.exportCsv') }}" method="get" target="_blank">
-                            <button class="btn btn-default buttons-csv border buttons-html5 btn-sm">Csv</button>
+                            <button class="btn btn-default buttons-csv border buttons-html5 btn-sm">{{__('messages.csv')}}</button>
                         </form>
                         <form action="{{ route('employee.download-excel') }}" method="post" target="_blank">@csrf
-                            <button class="btn btn-default buttons-csv border buttons-html5 btn-sm">Excel</button>
+                            <button class="btn btn-default buttons-csv border buttons-html5 btn-sm">{{__('messages.excel')}}</button>
                         </form>
                         <form action="{{ route('employee.exportPdf') }}" method="get" target="_blank">
-                            <button class="btn btn-default buttons-csv border buttons-html5 btn-sm">Pdf</button>
+                            <button class="btn btn-default buttons-csv border buttons-html5 btn-sm">{{__('messages.pdf')}} </button>
                         </form>
                         <form action="{{ route('employee.printView') }}" method="get" target="_blank">
-                            <button class="btn btn-default buttons-csv border buttons-html5 btn-sm">Print</button>
+                            <button class="btn btn-default buttons-csv border buttons-html5 btn-sm">{{__('messages.print')}}</button>
                         </form>
                     </div>
                 </div>

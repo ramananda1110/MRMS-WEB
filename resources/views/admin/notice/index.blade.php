@@ -14,7 +14,7 @@
                 <div class="panel-heading no-print mt-2 mb-2">
                     <div class="d-flex justify-content-between align-items-center">
                         <div class="ms-3">
-                            <a href="{{ Route('notices.create') }}"><button type="button" class="btn btn-primary"><i class="fa fa-plus"></i> Add Notice</button></a>
+                            <a href="{{ Route('notices.create') }}"><button type="button" class="btn btn-primary"><i class="fa fa-plus"></i> {{__('messages.addNotice')}} </button></a>
                         </div>
                         
                     </div>
@@ -23,7 +23,7 @@
             @endif
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb mt-2">
-                    <li class="breadcrumb-item active" aria-current="page">All Notice</li>
+                    <li class="breadcrumb-item active" aria-current="page">{{__('messages.allNotice')}} </li>
                 </ol>
             </nav>
             @if(Session::has('message'))
@@ -38,8 +38,8 @@
                 <div class="card-header alert alert-warning">{{$notice->title}}</div>
                 <div class="card-body">
                     <p>{{$notice->description}}</p>
-                    <p class="badge text-bg-success">Date: {{$notice->date}}</p>
-                    <p class="badge text-bg-warning">Created By: {{$notice->name}}</p>
+                    <p class="badge text-bg-success">{{__('messages.date')}}: {{$notice->date}}</p>
+                    <p class="badge text-bg-warning">{{__('messages.createdBy')}} : {{$notice->name}}</p>
                 </div>
                 <div class="card-footer">
                      @if(isset(Auth()->user()->role->permission['name']['notice']['can-edit']))
@@ -62,12 +62,12 @@
                                     <div class="modal-dialog">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Delete!</h1>
+                                        <h1 class="modal-title fs-5" id="exampleModalLabel">{{__('messages.delete')}}!</h1>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
                                        
-                                        Are you sure? do you want to delete item?
+                                        {{__('messages.deleteMsg')}}
 
 
                                         </div>
@@ -76,7 +76,7 @@
                                         <form action="{{route('notices.destroy', [$notice->id])}}" method="post">@csrf
                                                     {{method_field('DELETE')}}
                                                     <button class="btn btn-outline-danger">
-                                                        Delete
+                                                        {{__('messages.delete')}}
                                                     </button>
                                         </form>
                                         </div>
@@ -91,7 +91,7 @@
           
            
             @else 
-            <p>No notices created yet</p>
+            <p>{{__('messages.noNoticesCreatedMsg')}} </p>
 
             @endif
         </div>

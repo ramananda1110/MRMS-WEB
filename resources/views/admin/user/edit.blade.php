@@ -9,7 +9,7 @@
      @endif
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item active" aria-current="page">Update Employee</li>
+            <li class="breadcrumb-item active" aria-current="page">{{__('messages.updateUser')}} </li>
         </ol>
      </nav>
     
@@ -18,11 +18,11 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">General Information</div>
+                <div class="card-header">{{__('messages.genInfo')}} </div>
 
                 <div class="card-body">
                     <div class="form-group">
-                        <label>Full Name</label>
+                        <label>{{__('messages.fullName')}} </label>
                         <input type="text" name="name" 
                         class="form-control" required="" value="{{$user->name}}">
                     </div>
@@ -30,20 +30,20 @@
                     
 
                     <div class="form-group">
-                        <label">Address</label>
+                        <label">{{__('messages.address')}} </label>
                         <input type="text" name="address" 
                         class="form-control" value="{{$user->address}}" required="">
                     </div>
 
                     <div class="form-group">
-                        <label>Mobile Number</label>
+                        <label>{{__('messages.mobile')}} </label>
                         <input type="text" name="mobile_number" 
                         class="form-control" value="{{$user->mobile_number}}" required="">
     
                     </div>
 
                     <div class="form-group">
-                        <label>Department</label>
+                        <label>{{__('messages.division')}} </label>
                         <select class="form-control" name="department_id"
                         require="">
                             @foreach(App\Models\Department::all() as $department)
@@ -58,14 +58,14 @@
 
                     </div>
                     <div class="form-group">
-                        <label>Designation</label>
+                        <label>{{__('messages.designation')}} </label>
                         <input type="text" name="designation" 
                         class="form-control", value="{{$user->designation}}" required="">     
     
                     </div>
 
                     <div class="form-group">
-                        <label>Start Date</label>
+                        <label>{{__('messages.joiningDate')}} </label>
                         <input id="datepicker" name="start_from" 
                         class="form-control" value="{{$user->start_from}}" required="" placeholder="yy-mm-dd">
 
@@ -78,7 +78,7 @@
                     </div>
                 
                     <div class="form-group">
-                        <label>Image</label>
+                        <label>{{__('messages.image')}} </label>
                         <input type="file" name="image"  accept="image/*" 
                         class="form-control", value="{{$user->image}}">
 
@@ -91,24 +91,24 @@
         </div>
         <div class="col-md-4">
         <div class="card">
-            <div class="card-header">Login Information</div>
+            <div class="card-header">{{__('messages.loginInformation')}} </div>
 
                 <div class="card-body">
                     <div class="form-group">
-                        <label>Email</label>
+                        <label>{{__('messages.email')}} </label>
                         <input type="email" name="email"  value="{{$user->email}}"
                         class="form-control" required="">
 
                     </div>
 
                     <div class="form-group">
-                        <label>Password</label>
+                        <label>{{__('messages.password')}} </label>
                         <input type="password" name="password" 
                         class="form-control" >
                     </div>
 
                     <div class="form-group">
-                        <label>Role</label>
+                        <label>{{__('messages.role')}} </label>
                         <select class="form-control" name="role_id"
                         require="">
                             @foreach(App\Models\Role::all() as $role)
@@ -124,7 +124,7 @@
 
                          @if(isset(Auth()->user()->role->permission['name']['user']['can-edit']))
 
-                        <button class="btn btn-outline-primary">Update</button>
+                        <button class="btn btn-outline-primary">{{__('messages.update')}} </button>
                         @endif
                     </div>
                 </div>

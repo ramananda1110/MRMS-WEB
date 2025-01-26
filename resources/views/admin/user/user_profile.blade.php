@@ -29,7 +29,7 @@
                                         
                                         <div class="row">
                                             <div class="col-sm-3">
-                                                <p class="mb-0">Employee ID</p>
+                                                <p class="mb-0">{{__('messages.empId')}} </p>
                                             </div>
                                             <div class="col-sm-9">
                                                 <p class="text-muted mb-0">{{ $user->employee->employee_id }}</p>
@@ -38,7 +38,7 @@
                                         <hr>
                                         <div class="row">
                                             <div class="col-sm-3">
-                                                <p class="mb-0">Full Name</p>
+                                                <p class="mb-0">{{__('messages.fullName')}} </p>
                                             </div>
                                             <div class="col-sm-9">
                                                 <p class="text-muted mb-0">{{$user->name}}</p>
@@ -47,7 +47,7 @@
                                         <hr>
                                         <div class="row">
                                             <div class="col-sm-3">
-                                                <p class="mb-0">Designation</p>
+                                                <p class="mb-0">{{__('messages.designation')}} </p>
                                             </div>
                                             <div class="col-sm-9">
                                                 <p class="text-muted mb-0">{{ $user->employee->designation }}</p>
@@ -56,7 +56,7 @@
                                         <hr>
                                         <div class="row">
                                             <div class="col-sm-3">
-                                                <p class="mb-0">Grade</p>
+                                                <p class="mb-0">{{__('messages.grade')}} </p>
                                             </div>
                                             <div class="col-sm-9">
                                                 <p class="text-muted mb-0">{{ $user->employee->grade }}</p>
@@ -65,7 +65,7 @@
                                         <hr>
                                         <div class="row">
                                             <div class="col-sm-3">
-                                                <p class="mb-0">Project Code</p>
+                                                <p class="mb-0">{{__('messages.projectCode')}} </p>
                                             </div>
                                             <div class="col-sm-9">
                                                 <p class="text-muted mb-0">{{ $user->employee->project_code }}</p>
@@ -74,7 +74,7 @@
                                         <hr>
                                         <div class="row">
                                             <div class="col-sm-3">
-                                                <p class="mb-0">Project Name</p>
+                                                <p class="mb-0">{{__('messages.projectName')}} </p>
                                             </div>
                                             <div class="col-sm-9">
                                                 <p class="text-muted mb-0">{{ $user->employee->project_name }}</p>
@@ -83,7 +83,7 @@
                                         <hr>
                                         <div class="row">
                                             <div class="col-sm-3">
-                                                <p class="mb-0">Email</p>
+                                                <p class="mb-0">{{__('messages.email')}} </p>
                                             </div>
                                             <div class="col-sm-9">
                                                 <p class="text-muted mb-0">{{ $user->email }}</p>
@@ -93,7 +93,7 @@
                                         <hr>
                                         <div class="row">
                                             <div class="col-sm-3">
-                                                <p class="mb-0">Mobile</p>
+                                                <p class="mb-0">{{__('messages.mobile')}} </p>
                                             </div>
                                             <div class="col-sm-9">
                                                 <p class="text-muted mb-0">{{ $user->mobile_number }}</p>
@@ -102,7 +102,7 @@
                                         <hr>
                                         <div class="row">
                                             <div class="col-sm-3">
-                                                <p class="mb-0">Division</p>
+                                                <p class="mb-0">{{__('messages.division')}} </p>
                                             </div>
                                             <div class="col-sm-9">
                                                 <p class="text-muted mb-0">{{ $user->employee->division }}</p>

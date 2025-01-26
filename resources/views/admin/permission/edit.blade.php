@@ -17,7 +17,7 @@
             <form action="{{route('permissions.update', [$permission->id])}}" method="post">@csrf
             {{method_field('PATCH')}}
                 <div class="card">
-                    <div class="card-header">Update Permission</div>
+                    <div class="card-header">{{__('messages.updatePermissions')}} </div>
 
                     <div class="card-body">
                         <div class="form-group mt-2">
@@ -27,19 +27,19 @@
                             <table class="table table-gray mt-3">
                                 <thead>
                                     <tr>
-                                    <th scope="col">Permission Type</th>
-                                    <th scope="col">can-add</th>
-                                    <th scope="col">can-edit</th>
-                                    <th scope="col">can-view</th>
-                                    <th scope="col">can-delete</th>
-                                    <th scope="col">can-list</th>
-                                    <th scope="col">can-reschedule</th>
+                                        <th scope="col">{{__('messages.permissionType')}} </th>
+                                        <th scope="col">{{__('messages.canAdd')}} </th>
+                                        <th scope="col">{{__('messages.canEdit')}} </th>
+                                        <th scope="col">{{__('messages.canView')}} </th>
+                                        <th scope="col">{{__('messages.canDelete')}} </th>
+                                        <th scope="col">{{__('messages.canList')}} </th>
+                                        <th scope="col">{{__('messages.canReSchedule')}} </th>
                                     </tr>
                                 </thead>
                                 <tbody>
 
                                     <tr>
-                                        <td>User</td>
+                                        <td>{{__('messages.user')}} </td>
                                         <td><input type="checkbox" name="name[user][can-add]"
                                             @if(isset($permission['name']['user']['can-add'])) checked @endif value="1"></td>
                                         <td><input type="checkbox" name="name[user][can-edit]"
@@ -55,7 +55,7 @@
                                     </tr>
 
                                     <tr>
-                                        <td>Role</td>
+                                        <td>{{__('messages.role')}} </td>
                                         <td><input type="checkbox" name="name[role][can-add]" 
                                             @if(isset($permission['name']['role']['can-add'])) checked @endif value="1"></td>
                                         <td><input type="checkbox" name="name[role][can-edit]"
@@ -70,7 +70,7 @@
                                     </tr>
 
                                     <tr>
-                                        <td>Meeting</td>
+                                        <td>{{__('messages.meeting')}} </td>
                                         <td><input type="checkbox" name="name[meeting][can-add]" 
                                             @if(isset($permission['name']['meeting']['can-add'])) checked @endif value="1"></td>
                                         <td><input type="checkbox" name="name[meeting][can-edit]"
@@ -89,7 +89,7 @@
                                     </tr>
 
                                     <tr>
-                                        <td>Employee</td>
+                                        <td>{{__('messages.employee')}} </td>
                                         <td><input type="checkbox" name="name[employee][can-add]" 
                                             @if(isset($permission['name']['employee']['can-add'])) checked @endif value="1"></td>
                                         <td><input type="checkbox" name="name[employee][can-edit]"
@@ -105,7 +105,7 @@
                                     </tr>
 
                                     <tr>
-                                        <td>Department</td>
+                                        <td>{{__('messages.division')}} </td>
                                         <td><input type="checkbox" name="name[department][can-add]" 
                                             @if(isset($permission['name']['department']['can-add'])) checked @endif value="1"></td>
                                         <td><input type="checkbox" name="name[department][can-edit]"
@@ -122,7 +122,7 @@
                                    
                                     
                                     <tr>
-                                        <td>Permissions</td>
+                                        <td>{{__('messages.permission')}} </td>
                                         <td><input type="checkbox" name="name[permission][can-add]"
                                             @if(isset($permission['name']['permission']['can-add'])) checked @endif value="1"></td>
                                         <td><input type="checkbox" name="name[permission][can-edit]"
@@ -138,7 +138,7 @@
                                     
                                    
                                     <tr>
-                                        <td>Room</td>
+                                        <td>{{__('messages.room')}} </td>
                                         <td><input type="checkbox" name="name[room][can-add]"
                                             @if(isset($permission['name']['room']['can-add'])) checked @endif value="1"></td>
                                         <td><input type="checkbox" name="name[room][can-edit]"
@@ -154,7 +154,7 @@
                                     
                                    
                                     <tr>
-                                        <td>Notice</td>
+                                        <td>{{__('messages.notice')}} </td>
                                         <td><input type="checkbox" name="name[notice][can-add]"
                                             @if(isset($permission['name']['notice']['can-add'])) checked @endif value="1"></td>
                                         <td><input type="checkbox" name="name[notice][can-edit]"
@@ -185,11 +185,11 @@
                             <div class="form-group mt-3">
                             @if(isset(Auth()->user()->role->permission['name']['permission']['can-edit']))
 
-                            <button class="btn btn-outline-primary">Update</button>
+                            <button class="btn btn-outline-primary">{{__('messages.update')}} </button>
 
                             @endif
 
-                            <a href="{{route('permissions.index')}}" class="float-end">Back</a> 
+                            <a href="{{route('permissions.index')}}" class="float-end">{{__('messages.back')}} </a> 
                         </div>
 
                         </div>

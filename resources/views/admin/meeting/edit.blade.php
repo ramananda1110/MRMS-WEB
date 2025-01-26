@@ -17,7 +17,7 @@
 
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item active" aria-current="page">Rechedule Meeting</li>
+                <li class="breadcrumb-item active" aria-current="page">{{__('messages.rescheduleMeeting')}} </li>
             </ol>
         </nav>
 
@@ -28,11 +28,11 @@
             <div class="row">
                 <div class="col-sm-12">
                     <div class="card">
-                        <div class="card-header">Meeting Information</div>
+                        <div class="card-header">{{__('messages.meetingInfo')}} </div>
                         <div class="card-body mt-1">
 
                             <div class="form-group row">
-                                <label class="col-sm-3 col-form-label">Meeting Title</label>
+                                <label class="col-sm-3 col-form-label">{{__('messages.meetingTitle')}} </label>
                                 <div class="col-sm-9">
                                     <input type="text" name="meeting_title" value="{{ $meeting->meeting_title }}"
                                         class="form-control @error('meeting_title') is-invalid @enderror" required>
@@ -45,7 +45,7 @@
                             </div>
 
                             <div class="form-group row mt-3">
-                                <label class="col-sm-3 col-form-label">Room</label>
+                                <label class="col-sm-3 col-form-label">{{__(messages.room)}} </label>
                                 <div class="col-sm-9">
                                     <select class="form-control" name="room_id" required>
                                         @foreach (App\Models\Room::all() as $room)
@@ -59,7 +59,7 @@
                             </div>
 
                             <div class="form-group row mt-3">
-                                <label class="col-sm-3 col-form-label">Start Date</label>
+                                <label class="col-sm-3 col-form-label">{{__('messages.startDate')}} </label>
                                 <div class="col-sm-9">
                                     <input name="start_date" class="form-control" required
                                         value="{{ $meeting->start_date }}" id="datepicker" autocomplete="off">
@@ -72,7 +72,7 @@
                             </div>
 
                             <div class="form-group row mt-3">
-                                <label class="col-sm-3 col-form-label">Start Time</label>
+                                <label class="col-sm-3 col-form-label">{{__('messages.startTime')}} </label>
                                 <div class="col-sm-9">
                                     <input name="start_time" class="form-control"
                                         value="{{ \Carbon\Carbon::parse($meeting->start_time)->format('H:i') }}"
@@ -86,7 +86,7 @@
                             </div>
 
                             <div class="form-group row mt-3">
-                                <label class="col-sm-3 col-form-label">End Time</label>
+                                <label class="col-sm-3 col-form-label">{{__('messages.endTime')}} </label>
                                 <div class="col-sm-9">
                                     <input class="form-control"
                                         value="{{ \Carbon\Carbon::parse($meeting->end_time)->format('H:i') }}"
@@ -100,7 +100,7 @@
                             </div>
 
                             <div class="form-group row mt-3">
-                                <label class="col-sm-3 col-form-label">Host</label>
+                                <label class="col-sm-3 col-form-label">{{__('messages.host')}} </label>
                                 <div class="col-sm-9">
                                     <select class="form-control" name="host_id" required>
                                         @foreach ($activeEmployees as $host)
@@ -128,7 +128,7 @@
             </div> --}}
 
                             <div class="form-group row mt-3">
-                                <label class="col-sm-3 col-form-label">Co-Host</label>
+                                <label class="col-sm-3 col-form-label">{{__('messages.coHost')}} </label>
                                 <div class="col-sm-9">
                                     <select name="co_host_id" id="choices-multiple-co-host-button">
                                         @foreach ($activeEmployees as $coHost)
@@ -142,11 +142,11 @@
                             </div>
 
                             <div class="form-group row mt-3">
-                                <label class="col-sm-3 col-form-label">Participant</label>
+                                <label class="col-sm-3 col-form-label">{{__('messages.participants')}} </label>
                                 <div class="col-sm-9">
 
                                     <select name="participants[]" id="choices-multiple-remove-button"
-                                        placeholder="Select up to 25 Participants" multiple required>
+                                        placeholder="{{__('messages.selectParticipants')}}" multiple required>
                                         @foreach ($activeEmployees as $employee)
                                             <option value="{{ $employee->employee_id }}"
                                                 @if ($meeting->participants->contains('participant_id', $employee->employee_id)) selected @endif>
@@ -166,7 +166,7 @@
                         <div class="form-group row ms-1 mt-4">
                             <label class="col-sm-3 col-form-label"></label>
                             <div class="col-sm-9">
-                                <button type="submit" class="btn btn-primary mb-3">Submit</button>
+                                <button type="submit" class="btn btn-primary mb-3">{{__('messages.submit')}} </button>
                             </div>
                         </div>
 
@@ -181,15 +181,15 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="submitModalLabel">Submit Confirmation</h5>
+                    <h5 class="modal-title" id="submitModalLabel">{{__('messages.submitConfirmation')}} </h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    Are you sure you want to Reschedule this meeting?
+                    {{__('messages.rescheduleMeetingMsg')}}
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-outline-primary" id="confirmSubmitBtn">Confirm</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{__('messages.close')}} </button>
+                    <button type="button" class="btn btn-outline-primary" id="confirmSubmitBtn">{{__('messages.confirm')}} </button>
                 </div>
             </div>
         </div>

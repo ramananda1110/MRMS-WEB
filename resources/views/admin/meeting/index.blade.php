@@ -14,7 +14,9 @@
         @endif
 
         <div class="row justify-content-center rounded shadow p-3 mb-5 bg-white" style="background-color: white">
-
+            <div class="loader">
+                <img src="{{ asset('images/meeting animation.gif') }}" alt="">
+            </div>
 
             <div class="col-md-11">
 
@@ -26,7 +28,8 @@
                                 @if (isset(Auth()->user()->role->permission['name']['meeting']['can-add']))
                                     <div class="ms-3 col-sm-4 mt-1 d-flex justify-content-start">
                                         <a href="{{ Route('meeting.create') }}"><button type="button"
-                                                class="btn btn-primary"><i class="fa fa-plus"></i> Add Meeting</button></a>
+                                                class="btn btn-primary btn-loader"><i class="fa fa-plus"></i>
+                                                {{ __('messages.addMeeting') }} </button></a>
 
 
                                     </div>
@@ -38,10 +41,10 @@
                                             <form action="{{ route('meetings.exportCsv') }}" method="get" target="_blank">
                                                 @csrf
                                                 <input type="hidden" name="filter" id="exportFilterCsv" value="0">
-                                                <button 
+                                                <button
                                                     class="btn btn-default buttons-csv border buttons-html5 btn-sm btn-block"
                                                     tabindex="0" aria-controls="employees">
-                                                    Csv
+                                                    {{ __('messages.csv') }}
                                                 </button>
                                             </form>
                                         </div>
@@ -52,7 +55,8 @@
                                                 <input type="hidden" name="filter" id="exportFilterExcel" value="0">
 
                                                 <button
-                                                    class="btn btn-default buttons-csv border buttons-html5 btn-sm">Excel</button>
+                                                    class="btn btn-default buttons-csv border buttons-html5 btn-sm">{{ __('messages.excel') }}
+                                                </button>
 
                                             </form>
                                         </div>
@@ -61,15 +65,18 @@
                                                 <input type="hidden" name="filter" id="exportFilterPdf" value="0">
 
                                                 <button
-                                                    class="btn btn-default buttons-csv border buttons-html5 btn-sm btn-block">Pdf</button>
+                                                    class="btn btn-default buttons-csv border buttons-html5 btn-sm btn-block">{{ __('messages.pdf') }}
+                                                </button>
                                             </form>
                                         </div>
                                         <div class="col-md">
-                                            <form action="{{ route('meetings.printView') }}" method="get" target="_blank">
+                                            <form action="{{ route('meetings.printView') }}" method="get"
+                                                target="_blank">
                                                 <input type="hidden" name="filter" id="exportFilterPrint" value="0">
 
                                                 <button
-                                                    class="btn btn-default buttons-csv border buttons-html5 btn-sm btn-block">Print</button>
+                                                    class="btn btn-default buttons-csv border buttons-html5 btn-sm btn-block">{{ __('messages.print') }}
+                                                </button>
                                             </form>
                                         </div>
                                     </div>
@@ -79,18 +86,18 @@
                                     <!-- Search input -->
                                     <div class="me-2">
                                         <input id="searchInput" type="text" name="search" class="form-control"
-                                            placeholder="Search..." style="width: 200px;">
+                                            placeholder="{{ __('messages.search') }}" style="width: 200px;">
                                     </div>
 
-                                      <!-- Filter dropdown -->
-                                        <select class="form-select form-select-mm me-2" aria-label=".form-select-lg example">
-                                            <option value="0" selected>All</option>
-                                            <option value="1">Past 15 days</option>
-                                            <option value="2">Past 30 days</option>
-                                            <option value="3">Past 90 days</option>
-                                            <option value="4">Past 180 days</option>
-                                        </select>
-                                           
+                                    <!-- Filter dropdown -->
+                                    <select class="form-select form-select-mm me-2" aria-label=".form-select-lg example">
+                                        <option value="0" selected>{{ __('messages.all') }} </option>
+                                        <option value="1">{{ __('messages.past15Days') }} </option>
+                                        <option value="2">{{ __('messages.past30Days') }}</option>
+                                        <option value="3">{{ __('messages.past90Days') }}</option>
+                                        <option value="4">{{ __('messages.past180Days') }}</option>
+                                    </select>
+
                                 </div>
 
                             </div>
@@ -105,25 +112,26 @@
                     <ul class="nav nav-tabs mt-3">
                         <li class="nav-item" role="presentation">
 
-                            <a class="nav-link active" aria-current="page" href="{{ route('meetings.all') }}" id="all"
-                                onclick="setActiveTab(event, this)">All</a>
+                            <a class="nav-link active" aria-current="page" href="{{ route('meetings.all') }}"
+                                id="all" onclick="setActiveTab(event, this)">{{ __('messages.all') }} </a>
 
                         </li>
                         <li class="nav-item" role="presentation">
                             <a class="nav-link" href="{{ route('meetings.upcoming') }}" id="upcoming"
-                                onclick="setActiveTab(event, this)">Upcoming</a>
+                                onclick="setActiveTab(event, this)">{{ __('messages.upcoming') }} </a>
                         </li>
                         <li class="nav-item" role="presentation">
                             <a class="nav-link" href="{{ route('meetings.pending') }}" id="pending"
-                                onclick="setActiveTab(event, this)">Pending</a>
+                                onclick="setActiveTab(event, this)">{{ __('messages.pending') }} </a>
                         </li>
                         <li class="nav-item" role="presentation">
                             <a class="nav-link" href="{{ route('meetings.cenceled') }}" id="canceled"
-                                onclick="setActiveTab(event, this)">Canceled</a>
+                                onclick="setActiveTab(event, this)">{{ __('messages.cancelled') }} </a>
                         </li>
 
                         <li class="nav-item" role="presentation">
-                            <a class="nav-link" href="{{ route('meetings.rejected') }}" id="rejected" onclick="setActiveTab(event, this)" >Rejected</a>
+                            <a class="nav-link" href="{{ route('meetings.rejected') }}" id="rejected"
+                                onclick="setActiveTab(event, this)">{{ __('messages.rejected') }} </a>
                         </li>
 
                         <!-- Add more tabs if needed -->
@@ -167,7 +175,7 @@
             document.getElementById(formId).querySelector('[name="booking_status"]').value = status;
             document.getElementById(formId).submit();
         }
-       
+
 
         document.addEventListener('DOMContentLoaded', (event) => {
             const selectElement = document.querySelector('.form-select');
@@ -182,9 +190,12 @@
                 const filterValue = selectElement.value;
                 const searchValue = searchInput.value;
                 $.ajax({
-                    url: '{{ route("search.meeting") }}',
+                    url: '{{ route('search.meeting') }}',
                     method: 'GET',
-                    data: { filter: filterValue, search: searchValue },
+                    data: {
+                        filter: filterValue,
+                        search: searchValue
+                    },
                     success: function(response) {
                         $('#meetingTableContainer').html(response);
                     },
@@ -208,6 +219,9 @@
 
         });
 
+        document.querySelector('.btn-loader').addEventListener('click', function() {
+            document.querySelector('.loader').style.display = 'block';
+        })
     </script>
 @endsection
 @endsection

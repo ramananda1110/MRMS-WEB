@@ -16,7 +16,7 @@
                             <div class="d-flex justify-content-between align-items-center">
                                 <div class="ms-3">
                                     <a href="{{ Route('permissions.create') }}"><button type="button"
-                                            class="btn btn-primary"><i class="fa fa-plus"></i> Add Permissions</button></a>
+                                            class="btn btn-primary"><i class="fa fa-plus"></i>{{__('messages.addPermissions')}} </button></a>
                                 </div>
                             </div>
                         </div>
@@ -24,7 +24,7 @@
                 @endif
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb mt-3">
-                        <li class="breadcrumb-item active" aria-current="page">All Permissions</li>
+                        <li class="breadcrumb-item active" aria-current="page">{{__('messages.allPermissions')}} </li>
                     </ol>
                 </nav>
 
@@ -32,15 +32,15 @@
                 <table id="permissionTable" class="table table-striped table-bordered mt-2">
                     <thead>
                         <tr>
-                            <th>SN</th>
-                            <th>Name</th>
+                            <th>{{__('messages.sn')}} </th>
+                            <th>{{__('messages.name')}} </th>
                             @if (isset(Auth()->user()->role->permission['name']['permission']['can-edit']))
 
-                            <th>Edit</th>
+                            <th>{{__('messages.edit')}} </th>
                             @endif
                             @if (isset(Auth()->user()->role->permission['name']['permission']['can-delete']))
 
-                            <th>Delete</th>
+                            <th>{{__('messages.delete')}} </th>
                             @endif
                         </tr>
                     </thead>
@@ -76,24 +76,24 @@
                                             <div class="modal-dialog">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
-                                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Delete!</h1>
+                                                        <h1 class="modal-title fs-5" id="exampleModalLabel">{{__('messages.delete')}} !</h1>
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                             aria-label="Close"></button>
                                                     </div>
                                                     <div class="modal-body">
                                                         <!-- {{ $permission->id }} -->
-                                                        Are you sure? do you want to delete item?
 
+                                                        {{__('messages.deleteMsg')}}
                                                     </div>
                                                     <div class="modal-footer">
                                                         <button type="button" class="btn btn-secondary"
-                                                            data-bs-dismiss="modal">Close</button>
+                                                            data-bs-dismiss="modal">{{__('messages.close')}} </button>
                                                         <form
                                                             action="{{ route('permissions.destroy', [$permission->id]) }}"
                                                             method="post">@csrf
                                                             {{ method_field('DELETE') }}
                                                             <button class="btn btn-outline-danger">
-                                                                Delete
+                                                                {{__('messages.delete')}}
                                                             </button>
                                                         </form>
                                                     </div>
@@ -109,7 +109,7 @@
                             @endforeach
                         @else
                             <tr>
-                                <td colspan="6" class="text-center">No Permissions to display</td>
+                                <td colspan="6" class="text-center">{{__('messages.noPermissionDisplayMsg')}} </td>
                             </tr>
                         @endif
                     </tbody>

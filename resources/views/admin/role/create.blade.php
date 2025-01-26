@@ -11,11 +11,11 @@
                 @endif
             <form action="{{route('roles.store')}}" method="post">@csrf
                 <div class="card">
-                    <div class="card-header">Create New Role</div>
+                    <div class="card-header">{{__('messages.createRole')}} </div>
 
                     <div class="card-body">
                         <div class="form-group">
-                            <label for="name">Name</label>
+                            <label for="name">{{__('messages.name')}} </label>
                             <input type="text" name="name" 
                             class="form-control @error('name') is-invalid @enderror">
 
@@ -30,7 +30,7 @@
 
                         
                         <div class="form-group mt-2">
-                            <label>Description</label>
+                            <label>{{__('messages.description')}} </label>
                             <textarea type="text" name="description" rows="3" 
                             class="form-control @error('description') is-invalid @enderror"></textarea>
 
@@ -45,7 +45,7 @@
                        
 
                         <div class="form-group mt-5">
-                          <button class="btn btn-outline-primary">Submit</button>
+                          <button class="btn btn-outline-primary">{{__('messages.submit')}} </button>
                        </div>
                     </div>
                 </div>

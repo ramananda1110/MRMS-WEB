@@ -7,11 +7,11 @@
             <form action="{{route('roles.update', [$role->id])}}" method="post">@csrf
             {{method_field('PATCH')}}
                 <div class="card">
-                    <div class="card-header">Update Role</div>
+                    <div class="card-header">{{__('messages.updateRole')}} </div>
 
                     <div class="card-body">
                         <div class="form-group">
-                            <label for="name">Name</label>
+                            <label for="name">{{__('messages.name')}} </label>
                             <input type="text" name="name" 
                             class="form-control @error('name') is-invalid @enderror" value="{{$role->name}}">
 
@@ -26,7 +26,7 @@
 
                     
                         <div class="form-group mt-2">
-                            <label>Description</label>
+                            <label>{{__('messages.description')}} </label>
                             <textarea type="text" name="description" class="form-control mt-1 @error('description') is-invalid @enderror"> {{$role->description}}</textarea>
 
                             @error('description')
@@ -42,7 +42,7 @@
                         <div class="form-group mt-3">
                              @if(isset(Auth()->user()->role->permission['name']['role']['can-edit']))
 
-                                <button class="btn btn-outline-primary">Update</button>
+                                <button class="btn btn-outline-primary">{{__('messages.update')}} </button>
                              @endif
                        </div>
                     </div>

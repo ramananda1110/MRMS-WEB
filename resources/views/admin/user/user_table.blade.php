@@ -1,18 +1,18 @@
 <table id="userTable" class="table table-striped table-bordered mt-5">
     <thead>
         <tr>
-            <th>SN</th>
+            <th>{{__('messages.sn')}} </th>
             <!-- <th>Photo</th> -->
-            <th>Name</th>
-            <th>Employee ID</th>
-            <th>Role</th>
+            <th>{{__('messages.name')}} </th>
+            <th>{{__('messages.empId')}} </th>
+            <th>{{__('messages.role')}} </th>
 
-            <th>Designation</th>
+            <th>{{__('messages.designation')}} </th>
             <!-- <th>Start Date</th> -->
             <!-- <th>Address</th> -->
             <!-- <th>Mobile</th> -->
-            <th>Email</th>
-            <th>Department</th>
+            <th>{{__('messages.email')}} </th>
+            <th>{{__('messages.division')}} </th>
             @if (Auth::check() &&
                     Auth::user()->role &&
                     Auth::user()->role->permission &&
@@ -60,7 +60,7 @@
                                     <form>@csrf
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                <h1 class="modal-title fs-5" id="exampleModalLabel">User Details</h1>
+                                                <h1 class="modal-title fs-5" id="exampleModalLabel">{{__('messages.userDetails')}} </h1>
                                                 <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                     aria-label="Close"></button>
                                             </div>
@@ -71,20 +71,20 @@
                                                             <tbody>
     
                                                                 <tr>
-                                                                    <th>Employee ID</th>
+                                                                    <th>{{__('messages.empId')}} </th>
                                                                     <td>{{ $user->employee_id }}</td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <th>Employee Name</th>
+                                                                    <th>{{__('messages.empName')}} </th>
                                                                     <td>{{ $user->name }}</td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <th>Designation</th>
+                                                                    <th>{{__('messages.designation')}} </th>
                                                                     <td>{{ $user->designation }}</td>
                                                                 </tr>
                                                                
                                                                 <tr>
-                                                                    <th>Division</th>
+                                                                    <th>{{__('messages.division')}} </th>
                                                                     <td>{{ $user->department->name }}</td>
                                                                 </tr>
                                                                 {{-- 
@@ -94,15 +94,15 @@
                                                                     </tr> 
                                                                  --}}
                                                                 <tr>
-                                                                    <th>Role</th>
+                                                                    <th>{{__('messages.role')}} </th>
                                                                     <td>{{ $user->role->name }}</td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <th>Project Code</th>
+                                                                    <th>{{__('messages.projectCode')}} </th>
                                                                     <td>{{ $user->project_code }}</td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <th>Email</th>
+                                                                    <th>{{__('messages.email')}} </th>
                                                                     <td>{{ $user->email }}</td>
                                                                 </tr>
     
@@ -114,7 +114,7 @@
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-secondary"
-                                                    data-bs-dismiss="modal">Close</button>
+                                                    data-bs-dismiss="modal">{{__('messages.close')}} </button>
                                                 <!-- Add your form elements if needed -->
                                             </div>
                                         </div>
@@ -154,19 +154,19 @@
                                 <div class="modal-dialog">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h1 class="modal-title fs-5" id="acceptModalLabel">Confirm!</h1>
+                                            <h1 class="modal-title fs-5" id="acceptModalLabel">{{__('messages.confirm')}} !</h1>
                                             <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                 aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
 
-                                            Are you sure? do you want to change user status?
+                                            {{__('messages.userStatusChangeMsg')}}
 
 
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-secondary"
-                                                data-bs-dismiss="modal">Close</button>
+                                                data-bs-dismiss="modal">{{__('messages.close')}} </button>
                                             <form id="updateUser{{ $user->id }}"
                                                 action="{{ route('user.updateStatus', [$user->id]) }}" method="post">
                                                 @csrf
@@ -174,7 +174,7 @@
                                                     value="{{ $user->is_active ? '0' : '1' }}"
                                                     id="isActiveInput{{ $user->id }}">
                                                 <button class="btn btn-outline-success">
-                                                    Accept
+                                                    {{__('messages.accept')}}
                                                 </button>
                                             </form>
                                         </div>
@@ -192,23 +192,23 @@
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Delete!</h1>
+                                    <h1 class="modal-title fs-5" id="exampleModalLabel">{{__('messages.delete')}} !</h1>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal"
                                         aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
                                     <!-- {{ $user->id }} -->
-                                    Are you sure? do you want to delete item?
+                                   {{__('messages.deleteMsg')}}
 
 
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary"
-                                        data-bs-dismiss="modal">Close</button>
+                                        data-bs-dismiss="modal">{{__('messages.close')}} </button>
                                     <form action="{{ route('users.destroy', [$user->id]) }}" method="post">@csrf
                                         {{ method_field('DELETE') }}
                                         <button class="btn btn-outline-danger">
-                                            Delete
+                                            {{__('messages.delete')}}
                                         </button>
                                     </form>
                                 </div>
@@ -221,7 +221,7 @@
             @endforeach
         @else
             <tr>
-                <td colspan="9" class="text-center">No user record found!</td>
+                <td colspan="9" class="text-center">{{__('messages.noUserFoundMsg')}} </td>
             </tr>
 
         @endif

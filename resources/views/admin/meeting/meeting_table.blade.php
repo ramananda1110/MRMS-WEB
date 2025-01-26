@@ -4,14 +4,14 @@
      <thead>
          <tr>
 
-             <th scope="col">SN</th>
-             <th scope="col">Room Name</th>
-             <th scope="col">Meeting Title</th>
-             <th scope="col">Date</th>
-             <th scope="col">Duration</th>
-             <th scope="col">Status</th>
+             <th scope="col">{{__('messages.sn')}} </th>
+             <th scope="col">{{__('messages.roomName')}} </th>
+             <th scope="col">{{__('messages.meetingTitle')}} </th>
+             <th scope="col">{{__('messages.date')}} </th>
+             <th scope="col">{{__('messages.duration')}} </th>
+             <th scope="col">{{__('messages.status')}} </th>
 
-             <th scope="col">Action</th>
+             <th scope="col">{{__('messages.action')}} </th>
 
          </tr>
      </thead>
@@ -67,26 +67,25 @@
                                  <div class="modal-dialog">
                                      <div class="modal-content">
                                          <div class="modal-header">
-                                             <h1 class="modal-title fs-5" id="acceptModalLabel">Confirm!</h1>
+                                             <h1 class="modal-title fs-5" id="acceptModalLabel">{{__('messages.confirm')}}!</h1>
                                              <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                  aria-label="Close"></button>
                                          </div>
                                          <div class="modal-body">
 
-                                             Are you sure? do you want to accept meeting?
-
+                                            {{__('messages.meetingAcceptMsg')}}
 
                                          </div>
                                          <div class="modal-footer">
                                              <button type="button" class="btn btn-secondary"
-                                                 data-bs-dismiss="modal">Close</button>
+                                                 data-bs-dismiss="modal">{{__('messages.close')}} </button>
                                              <form id="acceptMeetingForm{{ $meeting->id }}"
                                                  action="{{ route('meeting.update.web', [$meeting->id]) }}"
                                                  method="post">@csrf
                                                  <input type="hidden" name="booking_status" id="accept_booking_status">
                                                  <button class="btn btn-outline-success"
                                                      onclick="submitForm('accepted', 'acceptMeetingForm{{ $meeting->id }}')">
-                                                     Accept
+                                                     {{__('messages.accept')}}
                                                  </button>
                                              </form>
                                          </div>
@@ -123,7 +122,7 @@
                                          </div>
                                          <div class="modal-body">
 
-                                             Are you sure? do you want to reject meeting?
+                                             {{__('messages.meetingRejectMsg')}}
 
 
                                          </div>
@@ -136,7 +135,7 @@
                                                  <input type="hidden" name="booking_status" id="reject_booking_status">
                                                  <button class="btn btn-outline-danger"
                                                      onclick="submitForm('rejected', 'rejectMeetingForm{{ $meeting->id }}')">
-                                                     REJECT
+                                                     {{__('messages.reject')}}
                                                  </button>
                                              </form>
                                          </div>
@@ -151,7 +150,7 @@
                                  <form>@csrf
                                      <div class="modal-content">
                                          <div class="modal-header">
-                                             <h1 class="modal-title fs-5" id="exampleModalLabel">Meeting Details</h1>
+                                             <h1 class="modal-title fs-5" id="exampleModalLabel">{{__('messages.meetingDetails')}} </h1>
                                              <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                  aria-label="Close"></button>
                                          </div>
@@ -162,42 +161,42 @@
                                                          <tbody>
 
                                                              <tr>
-                                                                 <th>Meeting Title</th>
+                                                                 <th>{{__('messages.meetingTitle')}} </th>
                                                                  <td>{{ $meeting->meeting_title }}</td>
                                                              </tr>
                                                              <tr>
-                                                                 <th>Room Name</th>
+                                                                 <th>{{__('messages.roomName')}} </th>
                                                                  <td>{{ $meeting->room->name }}</td>
                                                              </tr>
                                                              <tr>
-                                                                 <th>Room Location</th>
+                                                                 <th>{{__('messages.roomLocation')}} </th>
                                                                  <td>{{ $meeting->room->location }}</td>
                                                              </tr>
                                                              <tr>
-                                                                 <th>Start Date</th>
+                                                                 <th>{{__('messages.startDate')}} </th>
                                                                  <td>{{ \Carbon\Carbon::parse($meeting->start_date)->format('F j, Y') }}
                                                                  </td>
                                                              </tr>
                                                              <tr>
-                                                                 <th>Start Time</th>
+                                                                 <th>{{__('messages.startTime')}} </th>
                                                                  <td>{{ DateTime::createFromFormat('H:i:s', $meeting->start_time)->format('h:i A') }}
                                                                  </td>
                                                              </tr>
                                                              <tr>
-                                                                 <th>End Time</th>
+                                                                 <th>{{__('messages.endTime')}} </th>
                                                                  <td>{{ DateTime::createFromFormat('H:i:s', $meeting->end_time)->format('h:i A') }}
                                                                  </td>
                                                              </tr>
                                                              <tr>
-                                                                 <th>Host Name</th>
+                                                                 <th>{{__('messages.hostName')}} </th>
                                                                  <td>{{ $meeting->host->name }}</td>
                                                              </tr>
                                                              <tr>
-                                                                 <th>Co-Host Name</th>
+                                                                 <th>{{__('messages.coHostName')}} </th>
                                                                  <td>{{ $meeting->coHost->name ?? 'N/A' }}</td>
                                                              </tr>
                                                              <tr>
-                                                                 <th>Participants Name</th>
+                                                                 <th>{{__('messages.participants')}} </th>
                                                                  <td>
                                                                      @foreach ($meeting->participants as $index => $participant)
                                                                          {{ $participant->employee->name }}
@@ -209,7 +208,7 @@
                                                                  </td>
                                                              </tr>
                                                              <tr>
-                                                                 <th>Status</th>
+                                                                 <th>{{__('messages.status')}} </th>
                                                                  <td>{{ $meeting->booking_status }}</td>
                                                              </tr>
                                                          </tbody>
@@ -219,7 +218,7 @@
                                          </div>
                                          <div class="modal-footer">
                                              <button type="button" class="btn btn-secondary"
-                                                 data-bs-dismiss="modal">Close</button>
+                                                 data-bs-dismiss="modal">{{__('messages.close')}} </button>
                                              <!-- Add your form elements if needed -->
                                          </div>
                                      </div>
@@ -233,7 +232,7 @@
              @endforeach
          @else
              <tr>
-                 <td colspan="7" class="text-center">No meeting found!</td>
+                 <td colspan="7" class="text-center">{{__('messages.noMeetingFoundMsg')}} </td>
              </tr>
 
          @endif

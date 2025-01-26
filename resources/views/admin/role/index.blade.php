@@ -11,7 +11,7 @@
                 <div class="panel-heading no-print mt-2 mb-2">
                     <div class="d-flex justify-content-between align-items-center">
                         <div class="ms-3">
-                            <a href="{{ Route('roles.create') }}"><button type="button" class="btn btn-primary"><i class="fa fa-plus"></i> Add Roles</button></a>
+                            <a href="{{ Route('roles.create') }}"><button type="button" class="btn btn-primary"><i class="fa fa-plus"></i> {{__('messages.addRoles')}}</button></a>
                         </div>
                          
                     </div>
@@ -21,7 +21,7 @@
 
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb mt-2">
-                    <li class="breadcrumb-item active" aria-current="page">All Roles</li>
+                    <li class="breadcrumb-item active" aria-current="page"> {{__('messages.allRoles')}}</li>
                 </ol>
             </nav>
             @if(Session::has('message'))
@@ -32,16 +32,16 @@
             <table id="roleTable" class="table table-striped table-bordered mt-2">
                  <thead>
                     <tr>
-                        <th>SN</th>
-                        <th>Name</th>
-                        <th>Description</th>
+                        <th>{{__('messages.sn')}} </th>
+                        <th>{{__('messages.name')}} </th>
+                        <th>{{__('messages.description')}} </th>
                         @if(isset(Auth()->user()->role->permission['name']['role']['can-edit']))
 
-                        <th>Edit</th>
+                        <th>{{__('messages.edit')}} </th>
                         @endif
                         @if(isset(Auth()->user()->role->permission['name']['role']['can-delete']))
 
-                        <th>Delete</th>  
+                        <th>{{__('messages.delete')}} </th>
                         @endif
                     </tr>
                 </thead>
@@ -77,21 +77,21 @@
                                     <div class="modal-dialog">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Delete!</h1>
+                                        <h1 class="modal-title fs-5" id="exampleModalLabel">{{__('messages.delete')}}!</h1>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
                                         <!-- {{$role->id}} -->
-                                        Are you sure? do you want to delete item?
+                                        {{__('messages.deleteMsg')}}
 
 
                                         </div>
                                         <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{__('messages.close')}}</button>
                                         <form action="{{Route('roles.destroy', [$role->id])}}" method="post">@csrf
                                                     {{method_field('DELETE')}}
                                                     <button class="btn btn-outline-danger">
-                                                        Delete
+                                                        {{__('messages.delete')}}
                                                     </button>
                                         </form>
                                         </div>
