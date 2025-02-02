@@ -1,5 +1,5 @@
 
-# Employee-management-system
+# Meeting Room-management-system
 Employee Management System
 
  added database schema
