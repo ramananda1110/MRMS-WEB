@@ -1,70 +1,68 @@
+# 🖥️ Meeting Room Booking Management System – Backend (Laravel)
+📌 Project Overview
 
-# Meeting Room-management-system
-Employee Management System
+**Space Book** is a cross-platform mobile application built with Flutter and powered by a PHP Laravel backend.
+The system is designed to efficiently manage meeting room reservations within an organization by allowing users to:  
 
- added database schema
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
+This project is the **backend service** for the **Meeting Room Booking Management System**, developed using PHP Laravel.
+It provides secure **RESTful APIs** for managing users, meeting rooms, bookings, and notifications, and serves as the central data and business logic layer for the Flutter mobile application.
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+--- 
 
-## About Laravel
+## 🛠️ Technology Stack
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- PHP (Laravel Framework)
+- MySQL / PostgreSQL – Relational database
+- Laravel Sanctum / Passport – API authentication
+- RESTful APIs – Client-server communication
+- Firebase Cloud Messaging (FCM) – Push notifications
+- Composer – Dependency management
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+ #### ⚙️ Installation & Setup
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+ Prerequisites
+- PHP >= 8.0
+- Composer
+- MySQL / PostgreSQL
+- Laravel CLI
 
-## Learning Laravel
+Setup Steps
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+```bash
+git clone https://github.com/ramananda1110/MRMS-WEB.git
+cd meeting-room-backend
+composer install
+cp .env.example .env
+php artisan key:generate
+```
+Configure database credentials in .env.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## Run Migrations
+```bash
+php artisan migrate
+```
+## Start Server
+```bash
+php artisan serve
+```
+## API will be available at:
+```bash
+http://127.0.0.1:8000/api
+```
 
-## Laravel Sponsors
+## 📂 Key Features
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+- User authentication & authorization
+- Meeting room management
+- Booking creation, update & cancellation
+- Conflict-free scheduling logic
+- API support for mobile applications
+- Secure and scalable architecture
 
-### Premium Partners
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+## Author / Contact
 
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
-
+Ramananda Sarkar<br/>
+Email: rshc4u@gmail.com<br/>
+Mobile: +8801738039685
+  
